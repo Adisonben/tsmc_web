@@ -15,4 +15,9 @@ class Department extends Model
         'brn_id',
         'code'
     ];
+
+    public function getBrn()
+    {
+        return $this->belongsTo(Branch::class, 'brn_id', 'id');
+    }
 }

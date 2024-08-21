@@ -20,3 +20,10 @@ Don't forget to update the .env file after pulling the project from Git.
 after you install project,the default admin user is : 
 - Username: `tsmcadmin`
 - Password: `iddrivesadmin`
+
+
+if you can not login pls go to vendor/laravel/ui/auth-backend/AuthenticatesUsers.php  and change from 
+`return 'email';` 
+to 
+`return 'username';` 
+in line 157.

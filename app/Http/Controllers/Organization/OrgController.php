@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\Department;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 
@@ -55,7 +57,11 @@ class OrgController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $org = Organization::findOrFail($id);
+        $brns = Branch::where('org_id', $id)->get();
+        $brnIds = $brns->pluck('id')->toArray();
+        $dpms = Department::whereIn('brn_id', $brnIds)->get();
+        return view('organization.orgData.orgDetail', compact("org", 'brns', 'dpms'));
     }
 
     /**
@@ -116,6 +122,89 @@ class OrgController extends Controller
             Organization::where('id', $id)->delete();
             return response()->json([
                 'message' => 'Data deleted successfully : ' . $id
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeBranch(Request $request) {
+        try {
+            Branch::create([
+                'name'=> $request->brnName,
+                'org_id' => $request->orgId,
+            ]);
+            return redirect()->back()->with(['brnSuccess'=> 'สร้างสาขาสำเร็จ']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['brnError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
+        }
+    }
+
+    public function updateBranch(Request $request, string $id) {
+        try {
+            Branch::where("id", $id)->update([
+                "name"=> $request->brnName,
+            ]);
+            return redirect()->back()->with(['brnSuccess'=> 'แก้ไขสาขาสำเร็จ']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['brnError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
+        }
+    }
+
+    public function destroyBranch(string $id) {
+        try {
+            Branch::where("id", $id)->delete();
+            return response()->json([
+                'message' => 'Data deleted successfully'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeDepartment(Request $request) {
+        try {
+            Department::create([
+                'name'=> $request->dpmName,
+                'brn_id' => $request->brnId,
+            ]);
+            return redirect()->back()->with(['dpmSuccess'=> 'สร้างฝ่ายสำเร็จ']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['dpmError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
+        }
+    }
+
+    public function updateDepartment(Request $request, string $id) {
+        try {
+            Department::where("id", $id)->update([
+                "name"=> $request->dpmName,
+                'brn_id' => $request->brnId,
+            ]);
+            return redirect()->back()->with(['dpmSuccess'=> 'แก้ไขฝ่ายสำเร็จ']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['dpmError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
+        }
+    }
+
+    public function destroyDepartment(string $id) {
+        try {
+            Department::where("id", $id)->delete();
+            return response()->json([
+                'message' => 'Data deleted successfully'
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

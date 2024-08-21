@@ -43,7 +43,7 @@
                                         <td>
                                             <a href="{{ route('organizations.edit', ['organization' => $org->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข"><i class="bi bi-pencil-square"></i></a>
                                             <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $org->id }}" del-target="organizations" data-bs-toggle="tooltip" data-bs-title="ลบ"><i class="bi bi-trash"></i></button>
-                                            <a href="#" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด"><i class="bi bi-list"></i></a>
+                                            <a href="{{ route('organizations.show', ['organization' => $org->id]) }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด"><i class="bi bi-list"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

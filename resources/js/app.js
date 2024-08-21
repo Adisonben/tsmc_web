@@ -1,5 +1,6 @@
 import './bootstrap';
 import './prefix';
+import './organization';
 import './license_type';
 import './carType';
 

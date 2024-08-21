@@ -22,3 +22,10 @@ Route::resource('car-types', CarTypeController::class);
 
 Route::resource('organizations', OrgController::class);
 Route::post('/organizations/update/{organization}', [OrgController::class, 'update'])->name('org.update');
+Route::post('/organizations/store/branch', [OrgController::class, 'storeBranch'])->name('org.store.brn');
+Route::post('/organizations/update/branch/{brnId}', [OrgController::class, 'updateBranch'])->name('org.update.brn');
+Route::delete('/organizations/delete/branch/{brnId}', [OrgController::class, 'destroyBranch'])->name('org.delete.brn');
+
+Route::post('/organizations/store/department', [OrgController::class, 'storeDepartment'])->name('org.store.dpm');
+Route::post('/organizations/update/department/{dpmId}', [OrgController::class, 'updateDepartment'])->name('org.update.dpm');
+Route::delete('/organizations/delete/department/{dpmId}', [OrgController::class, 'destroyDepartment'])->name('org.delete.dpm');

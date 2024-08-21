@@ -16,4 +16,9 @@ class Branch extends Model
         'email',
         'org_id'
     ];
+
+    public function getOrg()
+    {
+        return $this->belongsTo(Organization::class, 'org_id', 'id');
+    }
 }
