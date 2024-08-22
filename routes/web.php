@@ -7,6 +7,7 @@ use App\Http\Controllers\AppData\PrefixController;
 use App\Http\Controllers\Organization\CarController;
 use App\Http\Controllers\Organization\OrgController;
 use App\Http\Controllers\Organization\PositionController;
+use App\Http\Controllers\PostController;
 use App\Models\License_type;
 use Illuminate\Support\Facades\Route;
 
@@ -42,3 +43,5 @@ Route::resource('driver-license-types', LicenseTypeController::class);
 
 Route::resource('cars', CarController::class);
 Route::post('/cars/update-data/{car}', [CarController::class, 'update'])->name('cars.update.post');
+
+Route::resource('posts', PostController::class);

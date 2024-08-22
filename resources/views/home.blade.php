@@ -10,7 +10,7 @@
                         <div class="d-flex gap-2">
                             <img src="/images/icons/tsmc_logo.png" width="40" alt="">
                         </div>
-                        <a href="/home" class="w-100"><input type="text" class="form-control rounded-pill" style="cursor: pointer" id="exampleFormControlInput1" placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
+                        <a href="{{ route('posts.index') }}" class="w-100"><input type="text" class="form-control rounded-pill" style="cursor: pointer" id="exampleFormControlInput1" placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                         <div class="d-flex gap-2">
                             <img src="/images/icons/tsmc_logo.png" class="object-fit-contain" width="30" alt="">
                         </div>
-                        <input type="text" class="form-control rounded-pill" style="cursor: pointer" id="exampleFormControlInput1" placeholder="เขียนความคิดเห็น...">
+                        <input type="text" class="form-control rounded-pill" id="exampleFormControlInput1" placeholder="เขียนความคิดเห็น...">
                         <button class="btn btn-primary btn-sm"><i class="bi bi-send"></i></button>
                     </div>
                 </div>
