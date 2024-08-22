@@ -21,7 +21,8 @@ class PrefixSeeder extends Seeder
 
         foreach ($prefixs as $prefix) {
             DB::table('prefixes')->insert([
-                'name' => $prefix
+                'name' => $prefix,
+                'created_by' => 0
             ]);
         }
     }

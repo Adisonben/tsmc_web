@@ -1,9 +1,13 @@
 <?php
 
-use App\Http\Controllers\AppData\CarController;
+use App\Http\Controllers\Account\UserController;
 use App\Http\Controllers\AppData\CarTypeController;
+use App\Http\Controllers\AppData\LicenseTypeController;
 use App\Http\Controllers\AppData\PrefixController;
+use App\Http\Controllers\Organization\CarController;
 use App\Http\Controllers\Organization\OrgController;
+use App\Http\Controllers\Organization\PositionController;
+use App\Models\License_type;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -29,3 +33,12 @@ Route::delete('/organizations/delete/branch/{brnId}', [OrgController::class, 'de
 Route::post('/organizations/store/department', [OrgController::class, 'storeDepartment'])->name('org.store.dpm');
 Route::post('/organizations/update/department/{dpmId}', [OrgController::class, 'updateDepartment'])->name('org.update.dpm');
 Route::delete('/organizations/delete/department/{dpmId}', [OrgController::class, 'destroyDepartment'])->name('org.delete.dpm');
+
+Route::resource('positions', PositionController::class);
+Route::post('/positions/update-data/{position}', [PositionController::class, 'update'])->name('positions.update.post');
+Route::resource('users', UserController::class);
+
+Route::resource('driver-license-types', LicenseTypeController::class);
+
+Route::resource('cars', CarController::class);
+Route::post('/cars/update-data/{car}', [CarController::class, 'update'])->name('cars.update.post');

@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class License_type extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'post_id',
-        'content',
-        'theme_color',
+        'name',
         'created_by'
     ];
 }

@@ -57,8 +57,8 @@ class OrgController extends Controller
      */
     public function show(string $id)
     {
-        $org = Organization::findOrFail($id);
-        $brns = Branch::where('org_id', $id)->get();
+        $org = Organization::where('org_id', $id)->firstOrFail();
+        $brns = Branch::where('org_id', $org->id)->get();
         $brnIds = $brns->pluck('id')->toArray();
         $dpms = Department::whereIn('brn_id', $brnIds)->get();
         return view('organization.orgData.orgDetail', compact("org", 'brns', 'dpms'));
@@ -69,7 +69,7 @@ class OrgController extends Controller
      */
     public function edit(string $id)
     {
-        $org = Organization::find($id);
+        $org = Organization::where('org_id', $id)->firstOrFail();
         return view('organization.orgData.editOrgForm', compact('org'));
     }
 

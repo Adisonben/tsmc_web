@@ -1,67 +1,69 @@
 // Create car type
 const createCartypeBtn = document.querySelector(".create-cartype-btn");
-createCartypeBtn.addEventListener("click", async () => {
+if (createCartypeBtn) {
+    createCartypeBtn.addEventListener("click", async () => {
 
-    const apiEndpoint = `car-types/`;
+        const apiEndpoint = `car-types/`;
 
-    const SwalResponse = await Swal.fire({
-        title: "เพิ่มประเภทรถ",
-        input: "text",
-        inputPlaceholder: 'กรุณากรอกประเภทรถ',
-        inputAttributes: {
-            autocapitalize: "off",
-        },
-        showCancelButton: true,
-        confirmButtonText: "บันทึก",
-        cancelButtonText: "ยกเลิก",
-        showLoaderOnConfirm: true,
-        preConfirm: async (inputValue) => {
-            // Input validation (optional)
-            if (!inputValue || inputValue.trim() === "") {
-                return Swal.showValidationMessage("กรุณากรอกประเภทรถ");
-            }
+        const SwalResponse = await Swal.fire({
+            title: "เพิ่มประเภทรถ",
+            input: "text",
+            inputPlaceholder: 'กรุณากรอกประเภทรถ',
+            inputAttributes: {
+                autocapitalize: "off",
+            },
+            showCancelButton: true,
+            confirmButtonText: "บันทึก",
+            cancelButtonText: "ยกเลิก",
+            showLoaderOnConfirm: true,
+            preConfirm: async (inputValue) => {
+                // Input validation (optional)
+                if (!inputValue || inputValue.trim() === "") {
+                    return Swal.showValidationMessage("กรุณากรอกประเภทรถ");
+                }
 
-            try {
-                const response = await axios.post(apiEndpoint, {
-                    carTypeName: inputValue,
-                });
-
-                if (response.status === 200 || response.status === 201) {
-                    Swal.fire({
-                        title: "Success!",
-                        text: "Create car type successfully.",
-                        icon: "success",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
+                try {
+                    const response = await axios.post(apiEndpoint, {
+                        carTypeName: inputValue,
                     });
 
-                    // Update UI or data display here (optional)
-                } else {
+                    if (response.status === 200 || response.status === 201) {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Create car type successfully.",
+                            icon: "success",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+
+                        // Update UI or data display here (optional)
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Failed to create car type. Please try again.",
+                            icon: "error",
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error updating prefix:", error);
                     Swal.fire({
                         title: "Error",
-                        text: "Failed to create car type. Please try again.",
+                        text: "There was a problem creating car type.",
                         icon: "error",
                     });
                 }
-            } catch (error) {
-                console.error("Error updating prefix:", error);
-                Swal.fire({
-                    title: "Error",
-                    text: "There was a problem creating car type.",
-                    icon: "error",
-                });
-            }
-        },
-        allowOutsideClick: () => !Swal.isLoading(),
-    });
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        });
 
-    // Handle cancellation (optional)
-    if (!SwalResponse.isConfirmed) {
-        console.log("Create cancelled.");
-    }
-});
+        // Handle cancellation (optional)
+        if (!SwalResponse.isConfirmed) {
+            console.log("Create cancelled.");
+        }
+    });
+}
 
 
 // Update Car type
@@ -72,7 +74,7 @@ updateCartypeBtns.forEach((updateBtn) => {
         const apiEndpoint = `car-types/${idToUpdate}`;
 
         const SwalResponse = await Swal.fire({
-            title: "แก้ไขคำนำหน้า",
+            title: "แก้ไขประเภทรถ",
             input: "text",
             inputAttributes: {
                 autocapitalize: "off",

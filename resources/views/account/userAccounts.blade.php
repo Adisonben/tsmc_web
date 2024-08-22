@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('องค์กร') }}</p>
+                            <p class="mb-0 fs-4">{{ __('ผู้ใช้ทั้งหมด') }}</p>
                             <a href="/organizations/create" class="btn btn-success btn-sm">สร้าง</a>
                         </div>
                     </div>
@@ -23,14 +23,14 @@
                             <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Logo</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Theme</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">ชื่อ</th>
+                                    <th scope="col">ตำแหน่ง</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($orgs as $index => $org)
+                                {{-- @foreach ($orgs as $index => $org)
                                     <tr>
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>
@@ -41,12 +41,12 @@
                                         <td>{{ $org->name }}</td>
                                         <td style="background-color: {{ $org->theme_color }}">{{ $org->theme_color }}</td>
                                         <td>
-                                            <a href="{{ route('organizations.edit', ['organization' => $org->org_id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข"><i class="bi bi-pencil-square"></i></a>
+                                            <a href="{{ route('organizations.edit', ['organization' => $org->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข"><i class="bi bi-pencil-square"></i></a>
                                             <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $org->id }}" del-target="organizations" data-bs-toggle="tooltip" data-bs-title="ลบ"><i class="bi bi-trash"></i></button>
-                                            <a href="{{ route('organizations.show', ['organization' => $org->org_id]) }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด"><i class="bi bi-list"></i></a>
+                                            <a href="{{ route('organizations.show', ['organization' => $org->id]) }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด"><i class="bi bi-list"></i></a>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>

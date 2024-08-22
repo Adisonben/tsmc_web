@@ -11,5 +11,6 @@ class Prefix extends Model
 
     protected $fillable = [
         'name',
+        'created_by',
     ];
 }

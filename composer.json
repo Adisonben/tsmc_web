@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "illuminate/translation": "*",
+        "kalnoy/nestedset": "^6.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5"

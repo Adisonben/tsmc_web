@@ -10,6 +10,7 @@ class Organization extends Model
     use HasFactory;
 
     protected $fillable = [
+        'org_id',
         'name',
         'theme_color',
         'logo_img',

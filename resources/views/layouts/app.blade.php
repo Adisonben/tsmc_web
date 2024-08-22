@@ -61,7 +61,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a href="{{ route('users.index') }}" class="sidebar-link">
                             <i class="bi bi-people"></i>
                             บัญชีผู้ใช้
                         </a>
@@ -80,10 +80,10 @@
                                 <a href="{{ route('organizations.index') }}" class="sidebar-link">ข้อมูลองค์กร</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">ข้อมูลรถ</a>
+                                <a href="{{ route('cars.index') }}" class="sidebar-link">ข้อมูลรถ</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">ตำแหน่ง</a>
+                                <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="#" class="sidebar-link">การอนุญาต</a>
@@ -101,7 +101,7 @@
                                 <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">ประเภทใบขับขี่</a>
+                                <a href="{{ route('driver-license-types.index') }}" class="sidebar-link">ประเภทใบขับขี่</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="{{ route('car-types.index') }}" class="sidebar-link">ประเภทรถ</a>

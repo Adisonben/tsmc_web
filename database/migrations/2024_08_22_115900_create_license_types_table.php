@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('positions', function (Blueprint $table) {
+        Schema::create('license_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('level')->nullable();
-            $table->string('created_by');
-            $table->string('org')->nullable();
-            $table->nestedSet();
+            $table->string('created_by')->default(0);
             $table->timestamps();
         });
     }
@@ -27,9 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('positions', function (Blueprint $table) {
-            $table->dropNestedSet();
-        });
-        Schema::dropIfExists('positions');
+        Schema::dropIfExists('license_types');
     }
 };

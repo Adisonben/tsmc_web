@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
         $prefix = Prefix::where('name', 'นาย')->first();
 
         $adminUser = User::create([
-            'user_id' => 'superadmin',
             'username' => 'tsmcadmin',
             'password' => Hash::make('iddrivesadmin'),
         ]);

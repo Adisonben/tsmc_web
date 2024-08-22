@@ -11,5 +11,6 @@ class Car_type extends Model
 
     protected $fillable = [
         'name',
+        'created_by'
     ];
 }

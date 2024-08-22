@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -13,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
-            $table->string('dpm_id')->nullable();
+            $table->uuid('dpm_id')->unique()->default(Str::uuid());
             $table->string('name');
             $table->foreignId('brn_id')->constrained('branches')->onDelete('cascade');
             $table->string('code')->nullable();

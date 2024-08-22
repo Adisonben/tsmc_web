@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\AppData;
 
 use App\Http\Controllers\Controller;
-use App\Models\Car_type;
+use App\Models\License_type;
 use Illuminate\Http\Request;
 
-class CarTypeController extends Controller
+class LicenseTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $car_types = Car_type::orderByDesc('id')->get();
-        return view('appData.carType.carTypeTable', compact('car_types'));
+        $license_types = License_type::orderByDesc('id')->get();
+        return view('appData.licenseType.licenseTypeTable', compact('license_types'));
     }
 
     /**
@@ -31,12 +31,11 @@ class CarTypeController extends Controller
     public function store(Request $request)
     {
         try {
-            Car_type::create([
-                'name' => $request->carTypeName,
-                'created_by' => $request->user()->id ?? 0,
+            License_type::create([
+                'name' => $request->licTypeName,
             ]);
             return response()->json([
-                'message' => 'Car type create successfully.'
+                'message' => 'License type create successfully.'
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -67,11 +66,11 @@ class CarTypeController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            Car_type::where('id', $id)->update([
-                'name' => $request->carTypeName,
+            License_type::where('id', $id)->update([
+                'name' => $request->licTypeName,
             ]);
             return response()->json([
-                'message' => 'แก้ไขประเภทรถสำเร็จ'
+                'message' => 'แก้ไขประเภทใบขับขี่สำเร็จ'
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -86,7 +85,7 @@ class CarTypeController extends Controller
     public function destroy(string $id)
     {
         try {
-            Car_type::where('id', $id)->delete();
+            License_type::where('id', $id)->delete();
             return response()->json([
                 'message' => 'Data deleted successfully : ' . $id
             ], 200);

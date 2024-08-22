@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('post_id');
             $table->string('file_name');
             $table->string('type');
+            $table->string('created_by');
             $table->timestamps();
         });
     }

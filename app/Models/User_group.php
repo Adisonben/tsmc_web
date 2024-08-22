@@ -11,6 +11,7 @@ class User_group extends Model
 
     protected $fillable = [
         'name',
+        'created_by',
     ];
 
     // Group.php

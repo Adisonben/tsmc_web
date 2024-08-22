@@ -27,3 +27,6 @@ if you can not login pls go to vendor/laravel/ui/auth-backend/AuthenticatesUsers
 to 
 `return 'username';` 
 in line 157.
+
+[NestedsetDocument](https://github.com/lazychaser/laravel-nestedset)
+

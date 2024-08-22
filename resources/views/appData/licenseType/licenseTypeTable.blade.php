@@ -7,8 +7,8 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('คำนำหน้า') }}</p>
-                            <a href="/prefixes/create" class="btn btn-success btn-sm">สร้าง</a>
+                            <p class="mb-0 fs-4">{{ __('ประเภทใบขับขี่') }}</p>
+                            <button class="btn btn-success btn-sm create-lictype-btn">สร้าง</button>
                         </div>
                     </div>
 
@@ -28,13 +28,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($prefixes as $index => $prefix)
+                                @foreach ($license_types as $index => $lictype)
                                     <tr>
                                         <th scope="row">{{ $index + 1 }}</th>
-                                        <td>{{ $prefix->name }}</td>
+                                        <td>{{ $lictype->name }}</td>
                                         <td>
-                                            <button class="btn btn-primary btn-sm update-prefix-btn" edit-id="{{ $prefix->id }}" edit-value="{{ $prefix->name }}" data-bs-toggle="tooltip" data-bs-title="แก้ไข"><i class="bi bi-pencil-square"></i></button>
-                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $prefix->id }}" del-target="prefixes" data-bs-toggle="tooltip" data-bs-title="ลบ" {{ $prefix->created_by ? '' : 'disabled' }}><i class="bi bi-trash"></i></button>
+                                            <button class="btn btn-primary btn-sm update-lictype-btn" edit-id="{{ $lictype->id }}" edit-value="{{ $lictype->name }}" data-bs-toggle="tooltip" data-bs-title="แก้ไข"><i class="bi bi-pencil-square"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $lictype->id }}" del-target="driver-license-types" data-bs-toggle="tooltip" data-bs-title="ลบ"><i class="bi bi-trash"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
