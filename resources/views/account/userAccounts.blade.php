@@ -8,7 +8,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('ผู้ใช้ทั้งหมด') }}</p>
-                            <a href="/organizations/create" class="btn btn-success btn-sm">สร้าง</a>
+                            <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">สร้าง</a>
                         </div>
                     </div>
 
@@ -25,28 +25,33 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Username</th>
                                     <th scope="col">ชื่อ</th>
+                                    <th scope="col">หน่วยงาน</th>
+                                    <th scope="col">สาขา</th>
+                                    <th scope="col">แผนก</th>
                                     <th scope="col">ตำแหน่ง</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($orgs as $index => $org)
+                                @foreach ($users as $index => $user)
                                     <tr>
                                         <th scope="row">{{ $index + 1 }}</th>
+                                        <td>{{ $user->username }}</td>
+                                        <td>{{ $user->full_name }}</td>
+                                        <td>{{ optional($user->userDetail->getOrg)->name }}</td>
+                                        <td>{{ optional($user->userDetail->getBrn)->name }}</td>
+                                        <td>{{ optional($user->userDetail->getDpm)->name }}</td>
+                                        <td>{{ optional($user->userDetail->getPosition)->name }}</td>
                                         <td>
-                                            @if ($org->logo_img ?? false)
-                                                <img src="/uploads/orglogoes/{{ $org->logo_img }}" width="35" alt="">
-                                            @endif
-                                        </td>
-                                        <td>{{ $org->name }}</td>
-                                        <td style="background-color: {{ $org->theme_color }}">{{ $org->theme_color }}</td>
-                                        <td>
-                                            <a href="{{ route('organizations.edit', ['organization' => $org->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข"><i class="bi bi-pencil-square"></i></a>
-                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $org->id }}" del-target="organizations" data-bs-toggle="tooltip" data-bs-title="ลบ"><i class="bi bi-trash"></i></button>
-                                            <a href="{{ route('organizations.show', ['organization' => $org->id]) }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด"><i class="bi bi-list"></i></a>
+                                            <a href="{{ route('users.edit', ['user' => $user->user_id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $user->id }}" del-target="users" data-bs-toggle="tooltip" data-bs-title="ลบ">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

@@ -35,13 +35,19 @@ Route::post('/organizations/store/department', [OrgController::class, 'storeDepa
 Route::post('/organizations/update/department/{dpmId}', [OrgController::class, 'updateDepartment'])->name('org.update.dpm');
 Route::delete('/organizations/delete/department/{dpmId}', [OrgController::class, 'destroyDepartment'])->name('org.delete.dpm');
 
+
 Route::resource('positions', PositionController::class);
 Route::post('/positions/update-data/{position}', [PositionController::class, 'update'])->name('positions.update.post');
+
+
 Route::resource('users', UserController::class);
+
 
 Route::resource('driver-license-types', LicenseTypeController::class);
 
+
 Route::resource('cars', CarController::class);
 Route::post('/cars/update-data/{car}', [CarController::class, 'update'])->name('cars.update.post');
+
 
 Route::resource('posts', PostController::class);

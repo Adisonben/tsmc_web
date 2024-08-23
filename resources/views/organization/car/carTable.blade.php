@@ -9,7 +9,7 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('ตำแหน่ง') }}</p>
+                            <p class="mb-0 fs-4">{{ __('ข้อมูลรถ') }}</p>
                             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#createCarModal">
                                 เพิ่ม

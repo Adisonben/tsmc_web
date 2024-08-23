@@ -14,6 +14,6 @@ class Position extends Model
         'name',
         'level',
         'created_by',
-        'org'
+        'org',
     ];
 }

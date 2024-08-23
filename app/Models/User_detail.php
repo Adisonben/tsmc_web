@@ -32,4 +32,22 @@ class User_detail extends Model
     {
         return $this->belongsTo(Prefix::class, 'prefix', 'id');
     }
+
+    public function getDpm()
+    {
+        return $this->belongsTo(Department::class, 'dpm', 'id');
+    }
+    public function getBrn()
+    {
+        return $this->belongsTo(Branch::class, 'brn', 'id');
+    }
+    public function getOrg()
+    {
+        return $this->belongsTo(Organization::class, 'org', 'id');
+    }
+
+    public function getPosition()
+    {
+        return $this->belongsTo(Position::class, 'position', 'id');
+    }
 }

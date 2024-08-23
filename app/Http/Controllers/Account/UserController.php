@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\Department;
+use App\Models\Organization;
+use App\Models\Prefix;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -22,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('account.createForm');
     }
 
     /**
@@ -30,7 +34,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -46,7 +50,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $edit_id = $id;
+        return view('account.createForm', compact('edit_id'));
     }
 
     /**
@@ -62,6 +67,15 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            User::where('id', $id)->delete();
+            return response()->json([
+                'message' => 'Data deleted successfully : ' . $id
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 }

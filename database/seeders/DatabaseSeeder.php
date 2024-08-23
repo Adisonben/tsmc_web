@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PrefixSeeder::class,
             UserSeeder::class,
+            PositionSeeder::class,
         ]);
     }
 }

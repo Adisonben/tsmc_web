@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Organization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class OrgController extends Controller
 {
@@ -39,16 +40,19 @@ class OrgController extends Controller
         ]);
         try {
             $imageName = time() . '.' . $request->orgLogo->extension();
-            $request->orgLogo->move(public_path('uploads/orglogoes'), $imageName);
 
             Organization::create([
+                'org_id' => Str::uuid(),
                 'name' => $request->orgName,
                 'theme_color' => $request->orgTheme,
                 'logo_img' => $imageName
             ]);
+
+            $request->orgLogo->move(public_path('uploads/orglogoes'), $imageName);
+
             return redirect()->route('organizations.index')->with(['success' => "เพิ่มหน่วยงานสำเร็จ"]);
         } catch (\Throwable $th) {
-            return redirect()->back()->with(['error' => "ไม่สามารถเพิ่มคำนำหน้า"]);
+            return redirect()->back()->with(['error' => "ไม่สามารถเพิ่มหน่วยงาน"]);
         }
     }
 
@@ -136,6 +140,7 @@ class OrgController extends Controller
     public function storeBranch(Request $request) {
         try {
             Branch::create([
+                'brn_id' => Str::uuid(),
                 'name'=> $request->brnName,
                 'org_id' => $request->orgId,
             ]);
@@ -177,6 +182,7 @@ class OrgController extends Controller
     public function storeDepartment(Request $request) {
         try {
             Department::create([
+                'dpm_id' => Str::uuid(),
                 'name'=> $request->dpmName,
                 'brn_id' => $request->brnId,
             ]);

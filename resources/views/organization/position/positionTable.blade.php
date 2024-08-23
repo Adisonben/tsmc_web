@@ -29,6 +29,18 @@
                                 <form action="{{ route('positions.store') }}" method="post">
                                     @csrf
                                     <div class="modal-body">
+
+                                        <div class="mb-3">
+                                            <label for="positDpm" class="form-label">แผนก</label>
+                                            <select class="form-select" aria-label="Default select example" id="positDpm"
+                                                name="positDpm" required>
+                                                <option selected disabled value="">เลือกแผนก</option>
+                                                @foreach ($dpms as $dpm)
+                                                    <option value="{{ $dpm->id }}">{{ $dpm->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
                                         <div class="mb-3">
                                             <label for="positName" class="form-label">ชื่อตำแหน่ง</label>
                                             <input type="text" class="form-control" maxlength="150" id="positName"
@@ -80,13 +92,13 @@
                                 @foreach ($positions as $index => $position)
                                     <tr>
                                         <th scope="row">{{ $index + 1 }}</th>
-                                        <td>{{ $position->name }} {{ $position->descendants()->pluck('name') }}</td>
+                                        <td>{{ $position->name }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#updatePositModal{{ $index }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
-                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn"
+                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn" {{ $position->org ? '' : 'disabled' }}
                                                 del-id="{{ $position->id }}" del-target="positions"
                                                 data-bs-toggle="tooltip" data-bs-title="ลบ"><i
                                                     class="bi bi-trash"></i></button>
@@ -107,6 +119,16 @@
                                                 <form action="{{ route('positions.update.post', ['position' => $position->id]) }}" method="post">
                                                     @csrf
                                                     <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="positDpm" class="form-label">แผนก</label>
+                                                            <select class="form-select" aria-label="Default select example" id="positDpm"
+                                                                name="positDpm" required>
+                                                                <option selected disabled value="">เลือกแผนก</option>
+                                                                @foreach ($dpms as $dpm)
+                                                                    <option value="{{ $dpm->id }}" {{ $dpm->id == $position->dpm ? 'selected' : '' }}>{{ $dpm->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
                                                         <div class="mb-3">
                                                             <label for="positName" class="form-label">ชื่อตำแหน่ง</label>
                                                             <input type="text" class="form-control" maxlength="150"
@@ -142,6 +164,9 @@
                         </table>
                     </div>
                 </div> {{-- End Department Card --}}
+                <div class="d-flex justify-content-center">
+                    <img src="/images/assets/position_diagram.png" alt="">
+                </div>
             </div>
         </div>
     </div>

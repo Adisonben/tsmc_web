@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('องค์กร') }}</p>
+                            <p class="mb-0 fs-4">{{ __('ข้อมูลองค์กร') }}</p>
                             <a href="/organizations/create" class="btn btn-success btn-sm">สร้าง</a>
                         </div>
                     </div>

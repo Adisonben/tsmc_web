@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use App\Models\Position;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class PositionController extends Controller
     public function index()
     {
         $positions = Position::all();
-        return view('organization.position.positionTable', compact('positions'));
+        $dpms = Department::all();
+        return view('organization.position.positionTable', compact('positions', 'dpms'));
     }
 
     /**
@@ -35,6 +37,7 @@ class PositionController extends Controller
                 'name' => $request->positName,
                 'created_by' => $request->user()->id,
                 'org' => $request->user()->userDetail->org ?? null,
+                'dpm' => $request->positDpm,
             ]);
             if ($request->parent && $request->parent !== '-') {
                 $parent = Position::find($request->parent);
@@ -75,6 +78,7 @@ class PositionController extends Controller
             $updPosition = Position::where('id', $id)->firstOrFail();
             $updPosition->update([
                 'name' => $request->positName,
+                'dpm' => $request->positDpm,
             ]);
             if ($request->parent && $request->parent !== '-') {
                 $parent = Position::find($request->parent);
