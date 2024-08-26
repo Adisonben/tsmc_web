@@ -7,13 +7,12 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('แก้ไขบัญชีผู้ใช้') }}</p>
-                            <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm">ย้อนกลับ</a>
+                            <p class="mb-0 fs-4">{{ __('แก้ไขบัญชีของฉัน') }}</p>
+                            <a href="{{ route('users.show', ['user' => $edit_id]) }}" class="btn btn-secondary btn-sm">ย้อนกลับ</a>
                         </div>
                     </div>
-
                     <div class="card-body px-md-5">
-                        @livewire('editr-user-form', ['edit_id' => $edit_id])
+                        @livewire('edit-user-by-own-form', ['edit_id' => $edit_id])
                     </div>
                 </div>
             </div>

@@ -37,7 +37,6 @@ class PositionController extends Controller
                 'name' => $request->positName,
                 'created_by' => $request->user()->id,
                 'org' => $request->user()->userDetail->org ?? null,
-                'dpm' => $request->positDpm,
             ]);
             if ($request->parent && $request->parent !== '-') {
                 $parent = Position::find($request->parent);
@@ -78,7 +77,6 @@ class PositionController extends Controller
             $updPosition = Position::where('id', $id)->firstOrFail();
             $updPosition->update([
                 'name' => $request->positName,
-                'dpm' => $request->positDpm,
             ]);
             if ($request->parent && $request->parent !== '-') {
                 $parent = Position::find($request->parent);

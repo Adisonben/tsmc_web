@@ -3,6 +3,7 @@ import './prefix';
 import './organization';
 import './license_type';
 import './carType';
+import './post';
 
 const toggler = document.querySelector(".btn");
 const sidebar = document.querySelector("#sidebar");

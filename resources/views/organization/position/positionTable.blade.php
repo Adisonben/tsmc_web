@@ -30,7 +30,7 @@
                                     @csrf
                                     <div class="modal-body">
 
-                                        <div class="mb-3">
+                                        {{-- <div class="mb-3">
                                             <label for="positDpm" class="form-label">แผนก</label>
                                             <select class="form-select" aria-label="Default select example" id="positDpm"
                                                 name="positDpm" required>
@@ -39,7 +39,7 @@
                                                     <option value="{{ $dpm->id }}">{{ $dpm->name }}</option>
                                                 @endforeach
                                             </select>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="mb-3">
                                             <label for="positName" class="form-label">ชื่อตำแหน่ง</label>
@@ -98,7 +98,7 @@
                                                 data-bs-target="#updatePositModal{{ $index }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
-                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn" {{ $position->org ? '' : 'disabled' }}
+                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn" {{ $position->created_by ? '' : 'disabled' }}
                                                 del-id="{{ $position->id }}" del-target="positions"
                                                 data-bs-toggle="tooltip" data-bs-title="ลบ"><i
                                                     class="bi bi-trash"></i></button>
@@ -119,7 +119,7 @@
                                                 <form action="{{ route('positions.update.post', ['position' => $position->id]) }}" method="post">
                                                     @csrf
                                                     <div class="modal-body">
-                                                        <div class="mb-3">
+                                                        {{-- <div class="mb-3">
                                                             <label for="positDpm" class="form-label">แผนก</label>
                                                             <select class="form-select" aria-label="Default select example" id="positDpm"
                                                                 name="positDpm" required>
@@ -128,7 +128,7 @@
                                                                     <option value="{{ $dpm->id }}" {{ $dpm->id == $position->dpm ? 'selected' : '' }}>{{ $dpm->name }}</option>
                                                                 @endforeach
                                                             </select>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="mb-3">
                                                             <label for="positName" class="form-label">ชื่อตำแหน่ง</label>
                                                             <input type="text" class="form-control" maxlength="150"

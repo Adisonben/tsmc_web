@@ -16,6 +16,7 @@
                         @if (session('error'))
                             <div class="alert alert-danger" role="alert">
                                 {{ session('error') }}
+                                {{-- "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" --}}
                             </div>
                         @endif
                         @if ($errors->has('orgLogo'))
@@ -23,32 +24,39 @@
                                 {{ $errors->first('orgLogo') }}
                             </div>
                         @endif
-                        <form action="{{ route('organizations.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mb-3">
-                                <label for="orgName" class="form-label">ข้อความ</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <label for="postContent" class="form-label">ข้อความ</label>
+                                <textarea class="form-control" maxlength="1000" id="postContent" name="postContent" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="postColor" class="form-label">ธีมสี</label>
+                                <input type="color" class="form-control form-control-color" id="postColor" name="postColor" value="#ffffff" title="Choose your color" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="orgTheme" class="form-label">ไฟล์เอกสาร</label>
-                                <input class="form-control" type="file" id="formFile">
+                                <input class="form-control" type="file" id="formFile" disabled>
                             </div>
 
                             <div class="mb-3">
                                 <label for="orgLogo" class="form-label">ไฟล์ภาพ (ขนาดไฟล์ละไม่เกิน 2 MB)</label>
-                                <input class="form-control" type="file" id="orgLogo" name="orgLogo">
+                                <input class="form-control" type="file" id="orgLogo" name="orgLogo" disabled>
                             </div>
 
                             <div class="mb-3">
                                 <label for="postPerm" class="form-label">สิทธื์การเข้าถึง</label>
-                                <select class="form-select" id="postPerm" aria-label="Default select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                  </select>
+                                <select class="form-select" id="postPerm" aria-label="Default select example" disabled>
+                                    @foreach ($post_perms as $post_perm)
+                                        <option value="{{ $post_perm->name }}">{{ $post_perm->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3" id="targetSelect">
+
                             </div>
 
                             <button type="submit" class="btn btn-primary mb-3">โพสต์</button>
@@ -58,4 +66,26 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#postPerm').change(function() {
+                var selectedValue = $(this).val();
+                var targetSelect = $('#targetSelect');
+                if (selectedValue !== 'ทั้งหมด') {
+                    console.log(selectedValue);
+                    targetSelect.show();
+                    // Add the select element to targetSelect
+                    targetSelect.append('<select class="form-select" id="targetSelectInput" aria-label="Default select example">\
+                                        <option value="option1">Option 1</option>\
+                                        <option value="option2">Option 2</option>\
+                                        \
+                                    </select>');
+                } else {
+                    targetSelect.hide();
+                    targetSelect.empty(); // Clear any existing content
+                }
+            });
+        });
+    </script>
 @endsection

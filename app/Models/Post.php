@@ -15,4 +15,14 @@ class Post extends Model
         'theme_color',
         'created_by'
     ];
+
+    public function getUser()
+    {
+        return $this->belongsTo(User_detail::class, 'created_by', 'user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Post_comment::class, 'post_id', 'post_id');
+    }
 }

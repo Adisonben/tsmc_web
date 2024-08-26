@@ -55,7 +55,7 @@
                         ผู้ใช้
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a href="{{ route('users.show', ['user' => Auth::user()->user_id]) }}" class="sidebar-link">
                             <i class="bi bi-person"></i>
                             บัญชีของฉัน
                         </a>
@@ -105,9 +105,6 @@
                             </li>
                             <li class="sidebar-item">
                                 <a href="{{ route('car-types.index') }}" class="sidebar-link">ประเภทรถ</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">ประวัติการเข้าใช้ระบบ</a>
                             </li>
                         </ul>
                     </li>

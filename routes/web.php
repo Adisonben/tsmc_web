@@ -41,6 +41,8 @@ Route::post('/positions/update-data/{position}', [PositionController::class, 'up
 
 
 Route::resource('users', UserController::class);
+Route::get('/users/{user}/edit-my-profile', [UserController::class, 'editByOwn'])->name('users.editByOwn');
+Route::post('/users/store-image', [UserController::class, 'storeImage'])->name('users.store.image');
 
 
 Route::resource('driver-license-types', LicenseTypeController::class);
@@ -51,3 +53,5 @@ Route::post('/cars/update-data/{car}', [CarController::class, 'update'])->name('
 
 
 Route::resource('posts', PostController::class);
+Route::post('/posts/comment', [PostController::class, 'storeComment'])->name('posts.comment');
+Route::delete('/posts/comment/{id}', [PostController::class, 'delComment'])->name('posts.comment.delete');

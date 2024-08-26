@@ -13,11 +13,7 @@
                     </div>
 
                     <div class="card-body px-md-5">
-                        @if ($edit_id ?? false)
-                            @livewire('editr-user-form', ['edit_id' => $edit_id])
-                        @else
-                            @livewire('register-user-form')
-                        @endif
+                        @livewire('register-user-form')
                     </div>
                 </div>
             </div>
