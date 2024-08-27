@@ -55,12 +55,12 @@
                         แบบฟอร์ม
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#org"
+                        <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#form"
                             aria-expanded="false" aria-controls="org">
                             <i class="bi bi-gear"></i>
                             จัดการแบบฟอร์ม
                         </a>
-                        <ul id="org" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <ul id="form" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
                                 <a href="{{ route('forms.create') }}" class="sidebar-link">สร้างแบบฟอร์ม</a>
                             </li>

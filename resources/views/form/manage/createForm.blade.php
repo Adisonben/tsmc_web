@@ -18,91 +18,123 @@
                                     {{ $error }}
                                 </div>
                             @endif --}}
-                            <form action="" method="post">
+                            <form id="createCheckForm" method="post">
                                 @csrf
-                                    <h5 class="text-center">ข้อมูลฟอร์ม</h5>
+                                <h5 class="text-center">ข้อมูลฟอร์ม</h5>
 
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">ชื่อแบบฟอร์ม</label>
-                                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                                <div class="mb-3">
+                                    <label for="formName" class="form-label">ชื่อแบบฟอร์ม</label>
+                                    <input type="text" class="form-control" maxlength="200" id="formName" name="formName" required
+                                        placeholder="กรอกชื่อแบบฟอร์ม">
+                                </div>
+
+                                <div class="d-flex gap-3">
+                                    <div>
+                                        <label class="form-label">หมวดหมู่แบบฟอร์ม</label>
+                                        <select class="form-select" aria-label="Default select example" name="formType" required>
+                                            <option selected disabled>เลือกหมวดหมู่แบบฟอร์ม</option>
+                                            @foreach ($form_types as $form_type)
+                                                <option value="{{ $form_type->id }}">{{ $form_type->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-
-                                    <div class="d-flex gap-3">
-                                        <div>
-                                            <label for="exampleFormControlInput1" class="form-label">หมวดหมู่แบบฟอร์ม</label>
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>เลือกหมวดหมู่แบบฟอร์ม</option>
-                                                @foreach ($form_types as $form_type)
-                                                    <option value="{{ $form_type->id }}">{{ $form_type->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="exampleFormControlInput1" class="form-label">ประเภทตัวเลือก</label>
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>เลือกประเภทตัวเลือก</option>
-                                                @foreach ($opt_types as $opt_type)
-                                                    <option value="{{ $opt_type->id }}">{{ $opt_type->name }}</option>
-                                                @endforeach
-                                              </select>
-                                        </div>
-                                        <div>
-                                            <label for="exampleFormControlInput1" class="form-label">คุณสมบัติฟอร์ม</label>
-                                            <div class="d-flex gap-3">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                      แสดง Comment
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                      แสดงคะแนน
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                      การตรวจสอบ
-                                                    </label>
-                                                </div>
+                                    <div>
+                                        <label class="form-label">ประเภทตัวเลือก</label>
+                                        <select class="form-select" aria-label="Default select example" name="opt_type">
+                                            <option selected disabled>เลือกประเภทตัวเลือก</option>
+                                            @foreach ($opt_types as $opt_type)
+                                                <option value="{{ $opt_type->id }}">{{ $opt_type->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">คุณสมบัติฟอร์ม</label>
+                                        <div class="d-flex gap-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="1"
+                                                    id="commentCheck" name="commentCheck">
+                                                <label class="form-check-label" for="commentCheck">
+                                                    แสดง Comment
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="1"
+                                                    id="scoreCheck" name="scoreCheck">
+                                                <label class="form-check-label" for="scoreCheck">
+                                                    แสดงคะแนน
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="1"
+                                                    id="approveCheck" name="approveCheck">
+                                                <label class="form-check-label" for="approveCheck">
+                                                    การตรวจสอบ
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <hr>
+                                <hr>
 
-                                    <h5 class="text-center">รายการตรวจประเมิน</h5>
-
-                                    <div class="card my-3">
+                                <h5 class="text-center">รายการตรวจประเมิน</h5>
+                                <div id="groupCardContainer">
+                                    <div class="card my-3 checkCard">
                                         <div class="card-body">
-                                            <input type="email" class="form-control mb-3 list-group-item" id="exampleFormControlInput1" placeholder="ชื่อหมวดหมู่">
+                                            <input type="text" class="form-control mb-3 list-group-item groupName"
+                                                placeholder="ชื่อหมวดหมู่">
                                             <ol class="list-group-numbered">
                                                 <li class="list-group-item d-flex gap-3">
-                                                    <input type="email" class="form-control list-group-item" id="exampleFormControlInput1" placeholder="รายการตรวจประเมิน 1">
+                                                    <input type="text" class="form-control list-group-item groupSubText"
+                                                        placeholder="รายการตรวจประเมิน 1">
+                                                    <a type="button" onclick="delGroupList(this)"><i
+                                                            class="bi bi-x"></i></a>
                                                 </li>
                                                 <li class="list-group-item d-flex gap-3">
-                                                    <input type="email" class="form-control list-group-item" id="exampleFormControlInput1" placeholder="รายการตรวจประเมิน 2">
+                                                    <input type="text" class="form-control list-group-item groupSubText"
+                                                        placeholder="รายการตรวจประเมิน 1">
+                                                    <a type="button" onclick="delGroupList(this)"><i
+                                                            class="bi bi-x"></i></a>
                                                 </li>
-                                                <li class="list-group-item d-flex gap-3">
-                                                    <input type="email" class="form-control list-group-item" id="exampleFormControlInput1" placeholder="รายการตรวจประเมิน 3">
-                                                </li>
-                                                <li class="list-group-item d-flex gap-3">
-                                                    <input type="email" class="form-control list-group-item" id="exampleFormControlInput1" placeholder="รายการตรวจประเมิน 4">
-                                                </li>
-                                                <li class="list-group-item d-flex gap-3">
-                                                    <input type="email" class="form-control list-group-item" id="exampleFormControlInput1" placeholder="รายการตรวจประเมิน 5">
-                                                </li>
-                                              </ol>
+                                            </ol>
                                         </div>
                                         <div class="card-footer">
-                                            <button type="button" class="btn btn-sm btn-success">เพิ่มรายการตรวจประเมิน</button>
-                                            <button type="button" class="btn btn-sm btn-danger">ลบหมวดหมู่</button>
+                                            <button type="button" class="btn btn-sm btn-success"
+                                                onclick="addGroupList(this)">เพิ่มรายการตรวจประเมิน</button>
+                                            <button type="button"
+                                                class="btn btn-sm btn-danger delete-card-btn">ลบหมวดหมู่</button>
                                         </div>
                                     </div>
+                                    <div class="card my-3 checkCard">
+                                        <div class="card-body">
+                                            <input type="text" class="form-control mb-3 list-group-item groupName"
+                                                placeholder="ชื่อหมวดหมู่">
+                                            <ol class="list-group-numbered">
+                                                <li class="list-group-item d-flex gap-3">
+                                                    <input type="text" class="form-control list-group-item groupSubText"
+                                                        placeholder="รายการตรวจประเมิน 1">
+                                                    <a type="button" onclick="delGroupList(this)"><i
+                                                            class="bi bi-x"></i></a>
+                                                </li>
+                                                <li class="list-group-item d-flex gap-3">
+                                                    <input type="text" class="form-control list-group-item groupSubText"
+                                                        placeholder="รายการตรวจประเมิน 1">
+                                                    <a type="button" onclick="delGroupList(this)"><i
+                                                            class="bi bi-x"></i></a>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button type="button" class="btn btn-sm btn-success"
+                                                onclick="addGroupList(this)">เพิ่มรายการตรวจประเมิน</button>
+                                            <button type="button"
+                                                class="btn btn-sm btn-danger delete-card-btn">ลบหมวดหมู่</button>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <button type="button" class="btn btn-success mb-3">เพิ่มหมวดหมู่</button>
+                                <button type="button" class="btn btn-success mb-3"
+                                    id="addFormGroupBtn">เพิ่มหมวดหมู่</button>
                                 <button type="submit" class="btn btn-primary mb-3">บันทึก</button>
                             </form>
                         </div>
@@ -111,4 +143,35 @@
             </div>
         </div>
     </div>
+    <script>
+        function addGroupList(button) {
+            const ol = button.closest('.card').querySelector('ol');
+            const newListItem = document.createElement('li');
+            const liNum = ol.querySelectorAll('li').length;
+            newListItem.classList.add('list-group-item', 'd-flex', 'gap-3');
+            newListItem.innerHTML =
+                `<input type="text" class="form-control list-group-item" placeholder="รายการตรวจประเมิน ${liNum + 1}"><a type="button" onclick="delGroupList(this)"><i class="bi bi-x"></i></a>`;
+            ol.appendChild(newListItem);
+        }
+
+        function delGroupList(element) {
+            // Find the parent list item
+            const listItem = element.closest('li');
+
+            // Remove the list item from its parent list
+            listItem.remove();
+
+            // Reorder the remaining list items
+            const listItems = listItem.parentElement.querySelectorAll('li');
+            listItems.forEach((item, index) => {
+                item.setAttribute('data-order', index + 1);
+            });
+        }
+    </script>
+    <style>
+        li {
+            counter-increment: list-item;
+            list-style: none;
+        }
+    </style>
 @endsection
