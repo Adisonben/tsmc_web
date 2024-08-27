@@ -11,10 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('car_types', function (Blueprint $table) {
+        Schema::create('forms', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->uuid('form_id')->unique();
+            $table->string('title');
+            $table->string('category');
+            $table->boolean('has_comment')->default(false);
+            $table->boolean('has_score')->default(false);
+            $table->boolean('has_approve')->default(false);
             $table->string('created_by')->nullable();
+            $table->string('org')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('car_types');
+        Schema::dropIfExists('forms');
     }
 };

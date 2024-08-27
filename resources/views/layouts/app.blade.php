@@ -52,6 +52,24 @@
                         </a>
                     </li>
                     <li class="sidebar-header">
+                        แบบฟอร์ม
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#org"
+                            aria-expanded="false" aria-controls="org">
+                            <i class="bi bi-gear"></i>
+                            จัดการแบบฟอร์ม
+                        </a>
+                        <ul id="org" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="{{ route('forms.create') }}" class="sidebar-link">สร้างแบบฟอร์ม</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{ route('forms.index') }}" class="sidebar-link">แบบฟอร์มทั้งหมด</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-header">
                         ผู้ใช้
                     </li>
                     <li class="sidebar-item">
@@ -67,7 +85,7 @@
                         </a>
                     </li>
                     <li class="sidebar-header">
-                        ผู้ดูแลระบบ
+                        ข้อมูลระบบ
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#org"

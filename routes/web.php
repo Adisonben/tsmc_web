@@ -4,6 +4,7 @@ use App\Http\Controllers\Account\UserController;
 use App\Http\Controllers\AppData\CarTypeController;
 use App\Http\Controllers\AppData\LicenseTypeController;
 use App\Http\Controllers\AppData\PrefixController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\Organization\CarController;
 use App\Http\Controllers\Organization\OrgController;
 use App\Http\Controllers\Organization\PositionController;
@@ -55,3 +56,5 @@ Route::post('/cars/update-data/{car}', [CarController::class, 'update'])->name('
 Route::resource('posts', PostController::class);
 Route::post('/posts/comment', [PostController::class, 'storeComment'])->name('posts.comment');
 Route::delete('/posts/comment/{id}', [PostController::class, 'delComment'])->name('posts.comment.delete');
+
+Route::resource('forms', FormController::class);

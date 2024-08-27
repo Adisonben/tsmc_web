@@ -17,6 +17,11 @@ class DatabaseSeeder extends Seeder
             PrefixSeeder::class,
             UserSeeder::class,
             PositionSeeder::class,
+            CarTypeSeeder::class,
+            FormCategoriesSeeder::class,
+            OptionSeeder::class,
+            PostPermissionSeeder::class,
+            ReportStatusSeeder::class,
         ]);
     }
 }
