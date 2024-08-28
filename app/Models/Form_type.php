@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Form extends Model
+class Form_type extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'category',
-        'type',
-        'has_comment',
-        'has_score',
-        'has_approve',
-        'org',
-        'form_id'
+        'name',
+        'category'
     ];
+
+    public function formCategory()
+    {
+        return $this->belongsTo(Form_category::class, 'category');
+    }
 }

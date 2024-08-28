@@ -58,3 +58,5 @@ Route::post('/posts/comment', [PostController::class, 'storeComment'])->name('po
 Route::delete('/posts/comment/{id}', [PostController::class, 'delComment'])->name('posts.comment.delete');
 
 Route::resource('forms', FormController::class);
+Route::get('/forms/table/{formtype}', [FormController::class, 'showFormTable'])->name('forms.tables');
+Route::delete('/forms/table/form/{formid}', [FormController::class, 'destroy'])->name('forms.tables.delete');

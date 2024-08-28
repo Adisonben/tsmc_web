@@ -13,4 +13,9 @@ class Quest_group extends Model
         'form_id',
         'title',
     ];
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'group_id', 'id');
+    }
 }

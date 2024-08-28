@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('form_id')->unique();
             $table->string('title');
             $table->string('category');
+            $table->string('type');
             $table->boolean('has_comment')->default(false);
             $table->boolean('has_score')->default(false);
             $table->boolean('has_approve')->default(false);

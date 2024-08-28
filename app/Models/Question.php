@@ -10,8 +10,14 @@ class Question extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title',
         'form_id',
         'group_id',
         'option_type',
     ];
+
+    public function questionGroup()
+    {
+        return $this->belongsTo(Quest_group::class, 'group_id');
+    }
 }

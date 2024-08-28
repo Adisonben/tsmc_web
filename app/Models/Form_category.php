@@ -12,4 +12,9 @@ class Form_category extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function formTypes()
+    {
+        return $this->hasMany(Form_type::class, 'category', 'id');
+    }
 }

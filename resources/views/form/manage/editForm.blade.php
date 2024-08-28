@@ -18,13 +18,13 @@
                                     {{ $error }}
                                 </div>
                             @endif --}}
-                            <form id="createCheckForm" method="post">
+                            <form id="updateCheckForm" form-id="{{ $form_edit->id }}">
                                 @csrf
                                 <h5 class="text-center">ข้อมูลฟอร์ม</h5>
 
                                 <div class="mb-3">
                                     <label for="formName" class="form-label">ชื่อแบบฟอร์ม</label>
-                                    <input type="text" class="form-control" maxlength="200" id="formName" name="formName" required value="แบบฟอร์มการสอบสัมภาษณ์พนักงานขับรถ"
+                                    <input type="text" class="form-control" maxlength="200" id="formName" name="formName" required value="{{ $form_edit->title }}"
                                         placeholder="กรอกชื่อแบบฟอร์ม">
                                 </div>
 
@@ -34,7 +34,7 @@
                                         <select class="form-select" aria-label="Default select example" name="formType" required>
                                             <option disabled>เลือกหมวดหมู่แบบฟอร์ม</option>
                                             @foreach ($form_types as $form_type)
-                                                <option value="{{ $form_type->id }}">{{ $form_type->name }}</option>
+                                                <option value="{{ $form_type->id }}" {{ $form_type->id == $form_edit->type ? 'selected' : '' }}>{{ $form_type->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -43,7 +43,7 @@
                                         <select class="form-select" aria-label="Default select example" name="opt_type">
                                             <option selected disabled>เลือกประเภทตัวเลือก</option>
                                             @foreach ($opt_types as $opt_type)
-                                                <option value="{{ $opt_type->id }}">{{ $opt_type->name }}</option>
+                                                <option value="{{ $opt_type->id }}" {{ $opt_type->id == $sopt_type ? 'selected' : '' }}>{{ $opt_type->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -51,21 +51,21 @@
                                         <label class="form-label">คุณสมบัติฟอร์ม</label>
                                         <div class="d-flex gap-3">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="1"
+                                                <input class="form-check-input" type="checkbox" value="1" {{ $form_edit->has_comment ? 'checked' : '' }}
                                                     id="commentCheck" name="commentCheck">
                                                 <label class="form-check-label" for="commentCheck">
                                                     แสดง Comment
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="1"
+                                                <input class="form-check-input" type="checkbox" value="1" {{ $form_edit->has_score ? 'checked' : '' }}
                                                     id="scoreCheck" name="scoreCheck">
                                                 <label class="form-check-label" for="scoreCheck">
                                                     แสดงคะแนน
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="1"
+                                                <input class="form-check-input" type="checkbox" value="1" {{ $form_edit->has_approve ? 'checked' : '' }}
                                                     id="approveCheck" name="approveCheck">
                                                 <label class="form-check-label" for="approveCheck">
                                                     การตรวจสอบ
@@ -79,32 +79,36 @@
 
                                 <h5 class="text-center">รายการตรวจประเมิน</h5>
                                 <div id="groupCardContainer">
-                                    {{-- <div class="card my-3 checkCard">
-                                        <div class="card-body">
-                                            <input type="text" class="form-control mb-3 list-group-item groupName"
-                                                placeholder="ชื่อหมวดหมู่">
-                                            <ol class="list-group-numbered">
-                                                <li class="list-group-item d-flex gap-3">
-                                                    <input type="text" class="form-control list-group-item groupSubText"
-                                                        placeholder="รายการตรวจประเมิน 1">
-                                                    <a type="button" onclick="delGroupList(this)"><i
-                                                            class="bi bi-x"></i></a>
-                                                </li>
-                                                <li class="list-group-item d-flex gap-3">
-                                                    <input type="text" class="form-control list-group-item groupSubText"
-                                                        placeholder="รายการตรวจประเมิน 1">
-                                                    <a type="button" onclick="delGroupList(this)"><i
-                                                            class="bi bi-x"></i></a>
-                                                </li>
-                                            </ol>
+                                    @foreach ($quest_groups ?? [] as $qgroup)
+                                        <div class="card my-3 checkCard">
+                                            <div class="card-body">
+                                                <input type="text" class="form-control mb-3 list-group-item groupName"
+                                                    placeholder="ชื่อหมวดหมู่" value="{{ $qgroup->title }}">
+                                                <ol class="list-group-numbered">
+                                                    @foreach ($qgroup->questions as $quest)
+                                                        <li class="list-group-item d-flex gap-3">
+                                                            <input type="text" class="form-control list-group-item groupSubText"
+                                                                placeholder="รายการตรวจประเมิน 1" value="{{ $quest->title }}">
+                                                            <a type="button" onclick="delGroupList(this)"><i
+                                                                    class="bi bi-x"></i></a>
+                                                        </li>
+                                                    @endforeach
+                                                    {{-- <li class="list-group-item d-flex gap-3">
+                                                        <input type="text" class="form-control list-group-item groupSubText"
+                                                            placeholder="รายการตรวจประเมิน 1">
+                                                        <a type="button" onclick="delGroupList(this)"><i
+                                                                class="bi bi-x"></i></a>
+                                                    </li> --}}
+                                                </ol>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" class="btn btn-sm btn-success"
+                                                    onclick="addGroupList(this)">เพิ่มรายการตรวจประเมิน</button>
+                                                <button type="button"
+                                                    class="btn btn-sm btn-danger delete-card-btn">ลบหมวดหมู่</button>
+                                            </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <button type="button" class="btn btn-sm btn-success"
-                                                onclick="addGroupList(this)">เพิ่มรายการตรวจประเมิน</button>
-                                            <button type="button"
-                                                class="btn btn-sm btn-danger delete-card-btn">ลบหมวดหมู่</button>
-                                        </div>
-                                    </div> --}}
+                                    @endforeach
                                 </div>
 
                                 <button type="button" class="btn btn-success mb-3"
