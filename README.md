@@ -1,4 +1,8 @@
 # TSMC Web application (Transport Safety Manager Communication)
+tools:
+- Laravel >= 11.x.x
+- php >= 8.2.xx
+- Mysql
  
 install project as :
 - `composer install`
