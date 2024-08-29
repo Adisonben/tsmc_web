@@ -42,7 +42,7 @@ class FormCategoriesSeeder extends Seeder
             [
                 'title' => 'การวิเคราะห์และประเมินผล',
                 'type' => [
-
+                    "แบบฟอร์มบันทึกหมายเลขโทรศัพท์ฉุกเฉิน"
                 ],
             ],
         ];

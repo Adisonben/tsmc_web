@@ -4,7 +4,7 @@
     <div class="">
         <div class="row justify-content-center">
             <div class="px-3 px-md-5">
-                <div class="card">
+                <div class="card" id="printPaper">
                     <div class="card-body px-md-5">
                         @if (session('error'))
                             <div class="alert alert-danger" role="alert">
@@ -77,6 +77,10 @@
                             </div>
                         </form>
                     </div>
+                </div>
+                <div class="my-3 d-flex justify-content-center">
+                    <a href="{{ route('form.report', ['formresid' => $form_resp->id]) }}" target="_Blank" class="btn btn-primary">Print</a>
+                    {{-- <button class="btn btn-success" onclick="printAsPDF()">Print</button> --}}
                 </div>
             </div>
         </div>

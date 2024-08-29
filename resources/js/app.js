@@ -4,7 +4,8 @@ import './organization';
 import './license_type';
 import './carType';
 import './post';
-import './formscript'
+import './formscript';
+import './phonenum';
 
 const toggler = document.querySelector(".btn");
 const sidebar = document.querySelector("#sidebar");

@@ -41,7 +41,7 @@
                                         <td>{{ $header_data->posit }}</td>
                                         <td>{{ $form_response->updated_at }}</td>
                                         <td>
-                                            <a href="{{ route('form.detail', ['formresid' => $form_response->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข">
+                                            <a href="{{ route('form.detail', ['formresid' => $form_response->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด">
                                                 <i class="bi bi-card-list"></i>
                                             </a>
                                             {{-- <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $user->id }}" del-target="users" data-bs-toggle="tooltip" data-bs-title="ลบ">

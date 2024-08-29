@@ -9,6 +9,7 @@ use App\Models\Form_response;
 use App\Models\Form_type;
 use App\Models\Option;
 use App\Models\Option_type;
+use App\Models\Phone_number;
 use App\Models\Quest_group;
 use App\Models\Question;
 use App\Models\User_detail;
@@ -229,6 +230,11 @@ class FormController extends Controller
         return view('form.table.formDataTable', compact('form', 'form_responses'));
     }
 
+    public function tableNotHasForm() {
+        $phonenum_lists = Phone_number::all();
+        return view('form.table.phoneNumberTable', compact('phonenum_lists'));
+    }
+
     public function formResDetail(Request $request, $formresid) {
         $form_resp = Form_response::find($formresid);
         $formdata = Form::where('id', $form_resp->form_id)->firstOrFail();
@@ -236,5 +242,61 @@ class FormController extends Controller
         $quest_groups = Quest_group::where('form_id', $formdata->id)->get();
         $header_data = json_decode($form_resp->header_data ?? "");
         return view('form.checking.readonly.TSM-HR-003', compact('formdata', 'userDetail', 'quest_groups', 'form_resp', 'header_data'));
+    }
+
+    public function formReport(Request $request, $formresid) {
+        $form_resp = Form_response::find($formresid);
+        $formdata = Form::where('id', $form_resp->form_id)->firstOrFail();
+        $userDetail = User_detail::where('user_id', $request->user()->id)->firstOrFail();
+        $quest_groups = Quest_group::where('form_id', $formdata->id)->get();
+        $header_data = json_decode($form_resp->header_data ?? "");
+        return view('form.exports.TSM-HR-003', compact('formdata', 'userDetail', 'quest_groups', 'form_resp', 'header_data'));
+    }
+
+    public function storePhonenum(Request $request) {
+        try {
+            Phone_number::create([
+                "person_name" => $request->personName,
+                "position" => $request->position ?? null,
+                "office_num" => $request->officePhone ?? null,
+                "home_num" => $request->homePhone ?? null,
+                "cellphone" => $request->cellPhone ?? null,
+                "created_by" => $request->user()->id ?? null,
+                "org" => $request->user()->userDetail->org ?? null,
+            ]);
+            return redirect()->back()->with(['success' => "แก้ไขหมายเลขโทรศัพท์ฉุกเฉินสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถแก้ไขหมายเลขโทรศัพท์ฉุกเฉิน"]);
+        }
+    }
+
+    public function updatePhonenum(Request $request, $phonenum_id) {
+        try {
+            Phone_number::where('id', $phonenum_id)->update([
+                "person_name" => $request->personName,
+                "position" => $request->position ?? null,
+                "office_num" => $request->officePhone ?? null,
+                "home_num" => $request->homePhone ?? null,
+                "cellphone" => $request->cellPhone ?? null,
+            ]);
+            return redirect()->back()->with(['success' => "บันทึกหมายเลขโทรศัพท์ฉุกเฉินสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถบันทึกหมายเลขโทรศัพท์ฉุกเฉิน"]);
+        }
+    }
+
+    public function deletePhonenum($id) {
+        try {
+            Phone_number::where('id', $id)->delete();
+            return response()->json([
+                'message' => 'Data deleted successfully : ' . $id
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 }
