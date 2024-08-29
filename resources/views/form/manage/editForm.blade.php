@@ -7,7 +7,8 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('สร้างแบบฟอร์ม') }}</p>
+                            <p class="mb-0 fs-4">{{ __('แก้ไขแบบฟอร์ม') }}</p>
+                            <a class="btn btn-sm btn-secondary" href="{{ route('forms.tables', ['formtype' => $form_edit->getType->name]) }}">กลับ</a>
                         </div>
                     </div>
 
@@ -18,7 +19,7 @@
                                     {{ $error }}
                                 </div>
                             @endif --}}
-                            <form id="updateCheckForm" form-id="{{ $form_edit->id }}">
+                            <form id="updateCheckForm" form-id="{{ $form_edit->id }}" method="post">
                                 @csrf
                                 <h5 class="text-center">ข้อมูลฟอร์ม</h5>
 

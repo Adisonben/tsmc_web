@@ -30,7 +30,7 @@ if you can not login pls go to vendor/laravel/ui/auth-backend/AuthenticatesUsers
 `return 'email';` 
 to 
 `return 'username';` 
-in line 157.
+in line 157 ( in function username()).
 
 [NestedsetDocument](https://github.com/lazychaser/laravel-nestedset)
 

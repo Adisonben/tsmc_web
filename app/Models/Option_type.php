@@ -12,4 +12,9 @@ class Option_type extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function getOptionList()
+    {
+        return $this->hasMany(Option::class, 'opt_type', 'id');
+    }
 }

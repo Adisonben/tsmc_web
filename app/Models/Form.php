@@ -19,4 +19,14 @@ class Form extends Model
         'org',
         'form_id'
     ];
+
+    public function getType()
+    {
+        return $this->belongsTo(Form_type::class, 'type', 'id');
+    }
+
+    public function formCategory()
+    {
+        return $this->belongsTo(Form_category::class, 'category');
+    }
 }

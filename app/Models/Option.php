@@ -14,4 +14,9 @@ class Option extends Model
         'score',
         'opt_type'
     ];
+
+    public function getOptionType()
+    {
+        return $this->belongsTo(Option_type::class, 'opt_type');
+    }
 }

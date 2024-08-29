@@ -20,4 +20,9 @@ class Question extends Model
     {
         return $this->belongsTo(Quest_group::class, 'group_id');
     }
+
+    public function getOption()
+    {
+        return $this->belongsTo(Option_type::class, 'option_type', 'id');
+    }
 }

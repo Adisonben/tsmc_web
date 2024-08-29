@@ -60,3 +60,11 @@ Route::delete('/posts/comment/{id}', [PostController::class, 'delComment'])->nam
 Route::resource('forms', FormController::class);
 Route::get('/forms/table/{formtype}', [FormController::class, 'showFormTable'])->name('forms.tables');
 Route::delete('/forms/table/form/{formid}', [FormController::class, 'destroy'])->name('forms.tables.delete');
+Route::post('/forms/update/{formid}', [FormController::class, 'update'])->name('form.update.data');
+
+Route::get('/form/checking/type', [FormController::class, 'checkingType'])->name('form.checking.type');
+Route::get('/form/checking/{formid}', [FormController::class, 'checkingForm'])->name('form.checking');
+Route::post('/form/checked/store', [FormController::class, 'storeCheckedForm'])->name('form.checked.store');
+Route::get('/form/table/type', [FormController::class, 'tableType'])->name('form.table.type');
+Route::get('/form/table/{formid}', [FormController::class, 'tableForm'])->name('form.table');
+Route::get('/form/response/{formresid}/detail', [FormController::class, 'formResDetail'])->name('form.detail');

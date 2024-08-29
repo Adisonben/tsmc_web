@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Form;
+use App\Models\Form_answer;
 use App\Models\Form_category;
+use App\Models\Form_response;
 use App\Models\Form_type;
 use App\Models\Option;
 use App\Models\Option_type;
 use App\Models\Quest_group;
 use App\Models\Question;
+use App\Models\User_detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -108,35 +111,37 @@ class FormController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            // $checkData = json_decode($request->input('checkData'), true); // [{"groupName":"awdada","groupSubText":["dawdawdawdawd"]}]
-            // $formType = Form_type::find($request->formType);
-            // $newForm = Form::create([
-            //     'title' => $request->formName,
-            //     'category' => $formType->category,
-            //     'type' => $formType->id,
-            //     'has_comment' => $request->commentCheck ? true : false,
-            //     'has_score' => $request->scoreCheck ? true : false,
-            //     'has_approve' => $request->approveCheck ? true : false,
-            //     'org' => $request->user()->userDetail->org,
-            //     'form_id' => Str::uuid(),
-            // ]);
+            $checkData = json_decode($request->input('checkData'), true); // [{"groupName":"awdada","groupSubText":["dawdawdawdawd"]}]
+            $formType = Form_type::find($request->formType);
+            $updateForm = Form::find($id);
+            $updateForm->update([
+                'title' => $request->formName,
+                'category' => $formType->category,
+                'type' => $formType->id,
+                'has_comment' => $request->commentCheck ? true : false,
+                'has_score' => $request->scoreCheck ? true : false,
+                'has_approve' => $request->approveCheck ? true : false,
+            ]);
 
-            // foreach ($checkData ?? [] as $group) {
-            //     $newGroup = Quest_group::create([
-            //         'form_id' => $newForm->id,
-            //         'title' => $group['groupName'],
-            //     ]);
-            //     if (count($group['groupSubText'] ?? []) > 0) {
-            //         foreach ($group['groupSubText'] as $ques) {
-            //             Question::create([
-            //                 'form_id' => $newForm->id,
-            //                 'group_id'=> $newGroup->id,
-            //                 'option_type' => $request->opt_type,
-            //                 'title' => $ques
-            //             ]);
-            //         }
-            //     }
-            // }
+            Quest_group::where('form_id', $id)->delete();
+            Question::where('form_id', $id)->delete();
+
+            foreach ($checkData ?? [] as $group) {
+                $newGroup = Quest_group::create([
+                    'form_id' => $updateForm->id,
+                    'title' => $group['groupName'],
+                ]);
+                if (count($group['groupSubText'] ?? []) > 0) {
+                    foreach ($group['groupSubText'] as $ques) {
+                        Question::create([
+                            'form_id' => $updateForm->id,
+                            'group_id'=> $newGroup->id,
+                            'option_type' => $request->opt_type,
+                            'title' => $ques
+                        ]);
+                    }
+                }
+            }
             return response()->json([
                 'message' => 'Form has created successfully.'
             ], 200);
@@ -168,5 +173,68 @@ class FormController extends Controller
         $form_type = Form_type::where('name', $formTypeName)->first();
         $form_lists = Form::where('type', $form_type->id)->get();
         return view('form.manage.formTables', compact('form_type', 'form_lists'));
+    }
+
+    public function checkingType() {
+        $form_cates = Form_category::with('formTypes')->get();
+        return view('form.checking.selectForm', compact('form_cates'));
+    }
+
+    public function checkingForm(Request $request, $formid) {
+        $formdata = Form::where('form_id', $formid)->firstOrFail();
+        $userDetail = User_detail::where('user_id', $request->user()->id)->firstOrFail();
+        $quest_groups = Quest_group::where('form_id', $formdata->id)->get();
+        return view('form.checking.formFormat.TSM-HR-003', compact('formdata', 'userDetail', 'quest_groups'));
+    }
+
+    public function storeCheckedForm(Request $request) {
+        try {
+            $form = Form::where('id', $request->form_id)->firstOrFail();
+            $questions = Question::where('form_id', $request->form_id)->get();
+            $resp = Form_response::create([
+                'user_id' => $request->interviewBy,
+                'form_id' => $request->form_id,
+                'times' => 0,
+                'status' => $form->has_approve ? 2 : 1,
+                'header_data' => json_encode([
+                    'name' => $request->driverName,
+                    'posit' => $request->driverPosit
+                ]),
+            ]);
+            if ($questions) {
+                foreach ($questions as $ques) {
+                    Form_answer::create([
+                        'user_id' => $request->interviewBy,
+                        'resp_id' => $resp->id,
+                        'quest_id' => $ques->id,
+                        'answer' => $request->input("questid_" . $ques->id) ?? null,
+                        'comment' => $request->input("comment_" . $ques->id) ?? null,
+                    ]);
+                }
+            }
+            return redirect()->route('form.checking.type')->with('success', 'Form submitted successfully!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function tableType() {
+        $form_cates = Form_category::with('formTypes')->get();
+        return view('form.table.selectFormType', compact('form_cates'));
+    }
+
+    public function tableForm(Request $request, $formid) {
+        $form = Form::where('form_id', $formid)->firstOrFail();
+        $form_responses = Form_response::where('form_id', $form->id)->get();
+        return view('form.table.formDataTable', compact('form', 'form_responses'));
+    }
+
+    public function formResDetail(Request $request, $formresid) {
+        $form_resp = Form_response::find($formresid);
+        $formdata = Form::where('id', $form_resp->form_id)->firstOrFail();
+        $userDetail = User_detail::where('user_id', $request->user()->id)->firstOrFail();
+        $quest_groups = Quest_group::where('form_id', $formdata->id)->get();
+        $header_data = json_decode($form_resp->header_data ?? "");
+        return view('form.checking.readonly.TSM-HR-003', compact('formdata', 'userDetail', 'quest_groups', 'form_resp', 'header_data'));
     }
 }

@@ -17,4 +17,9 @@ class Form_category extends Model
     {
         return $this->hasMany(Form_type::class, 'category', 'id');
     }
+
+    public function getForms()
+    {
+        return $this->hasMany(Form::class, 'category', 'id');
+    }
 }

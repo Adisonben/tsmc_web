@@ -10,9 +10,17 @@ class Form_response extends Model
     use HasFactory;
 
     protected $fillable = [
+        'header_data',
         'user_id',
         'form_id',
         'times',
-        'status'
+        'status',
+        'score',
+        'totalScore'
     ];
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

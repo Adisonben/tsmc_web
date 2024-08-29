@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('form_responses', function (Blueprint $table) {
             $table->id();
+            $table->text('header_data')->nullable();
             $table->string('user_id');
             $table->string('form_id');
             $table->integer('times');

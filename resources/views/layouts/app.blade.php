@@ -34,13 +34,13 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a href="{{ route('form.checking.type') }}" class="sidebar-link">
                             <i class="bi bi-clipboard"></i>
                             แบบฟอร์มเอกสาร
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a href="{{ route('form.table.type') }}" class="sidebar-link">
                             <i class="bi bi-table"></i>
                             ทะเบียนเอกสาร
                         </a>
