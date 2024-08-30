@@ -8,7 +8,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ $form_type->name }}</p>
-                            <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">สร้าง</a>
+                            <a href="{{ route('forms.create') }}" class="btn btn-success btn-sm">สร้าง</a>
                         </div>
                     </div>
 
