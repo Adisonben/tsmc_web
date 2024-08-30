@@ -21,7 +21,7 @@
 
                             <input type="hidden" name="form_id" value="{{ $formdata->id }}">
 
-                            <div class="d-flex gap-4 mb-3">
+                            <div class="d-flex flex-wrap gap-2 gap-md-4 mb-3">
                                 <div class="align-items-center">
                                     <p class="mb-0">ชื่อพนักงาน : <span class="fw-bold"><u>{{ $header_data->empName }}</u></span></p>
                                 </div>
@@ -32,7 +32,7 @@
                                     <p class="mb-0">หมายเลขพนักงาน : <span class="fw-bold"><u>{{ $header_data->empId }}</u></span></p>
                                 </div>
                             </div>
-                            <div class="d-flex gap-4 mb-3">
+                            <div class="d-flex flex-wrap gap-2 gap-sm-4 mb-3">
                                 <div class="align-items-center">
                                     <p class="mb-0">แผนก : <span class="fw-bold"><u>{{ $header_data->department }}</u></span></p>
                                 </div>

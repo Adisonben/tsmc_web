@@ -17,42 +17,43 @@
                                 {{ session('success') }}
                             </div>
                         @endif --}}
-
-                        <table class="table table-hover table-bordered">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">ชื่อแบบฟอร์ม</th>
-                                    <th scope="col">ผู้จัดทำ</th>
-                                    <th scope="col">ตำแหน่ง</th>
-                                    <th scope="col">วันที่จัดทำ</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (count($form_responses ?? []) > 0)
-                                    @foreach ($form_responses as $index => $formres)
-                                        <tr>
-                                            <th scope="row">{{ $index + 1 }}</th>
-                                            <td>{{ $formres->getForm->title }}</td>
-                                            <td>{{ $formres->getUser->full_name }}</td>
-                                            <td>{{ $formres->getUser->userDetail->getPosition->name }}</td>
-                                            <td>{{ $formres->updated_at }}</td>
-                                            <td>
-                                                <a href="{{ route('form.detail', ['formresid' => $formres->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด">
-                                                    <i class="bi bi-card-list"></i>
-                                                </a>
-                                                <button class="btn btn-success btn-sm verify-form-btn" formres-id="{{ $formres->id }}" data-bs-toggle="tooltip" data-bs-title="อนุมัติเอกสาร"><i class="bi bi-check"></i></button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-sm">
+                                <thead class="table-dark">
                                     <tr>
-                                        <td colspan="6"><div class="text-center">ไม่พบเอกสารที่ต้องตรวจสอบ</div></td>
+                                        <th scope="col">#</th>
+                                        <th scope="col">ชื่อแบบฟอร์ม</th>
+                                        <th scope="col">ผู้จัดทำ</th>
+                                        <th scope="col">ตำแหน่ง</th>
+                                        <th scope="col">วันที่จัดทำ</th>
+                                        <th scope="col">Action</th>
                                     </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @if (count($form_responses ?? []) > 0)
+                                        @foreach ($form_responses as $index => $formres)
+                                            <tr>
+                                                <th scope="row">{{ $index + 1 }}</th>
+                                                <td>{{ $formres->getForm->title }}</td>
+                                                <td>{{ $formres->getUser->full_name }}</td>
+                                                <td>{{ $formres->getUser->userDetail->getPosition->name }}</td>
+                                                <td>{{ $formres->updated_at }}</td>
+                                                <td>
+                                                    <a href="{{ route('form.detail', ['formresid' => $formres->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด">
+                                                        <i class="bi bi-card-list"></i>
+                                                    </a>
+                                                    <button class="btn btn-success btn-sm verify-form-btn" formres-id="{{ $formres->id }}" data-bs-toggle="tooltip" data-bs-title="อนุมัติเอกสาร"><i class="bi bi-check"></i></button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="6"><div class="text-center">ไม่พบเอกสารที่ต้องตรวจสอบ</div></td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -281,7 +281,7 @@ class FormController extends Controller
 
     public function tableForm(Request $request, $formid) {
         $form = Form::where('form_id', $formid)->firstOrFail();
-        $form_responses = Form_response::where('form_id', $form->id)->get();
+        $form_responses = Form_response::where('form_id', $form->id)->whereNot('status', '2')->get();
         $formtype_check = optional($form->getType)->name ?? "";
         $formFormat = "";
         switch ($formtype_check) {

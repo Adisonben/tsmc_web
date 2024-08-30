@@ -21,7 +21,7 @@
 
                             <input type="hidden" name="form_id" value="{{ $formdata->id }}">
 
-                            <div class="mb-3 d-flex gap-3">
+                            <div class="mb-3 d-flex flex-wrap gap-3">
                                 <div class="row g-3 align-items-center">
                                     <div class="col-auto">
                                       <label for="driverName" class="col-form-label">ชื่อพนักงานขับรถ</label>
