@@ -171,7 +171,7 @@ class FormController extends Controller
     }
 
     public function showFormTable($formTypeName) {
-        $form_type = Form_type::where('name', $formTypeName)->first();
+        $form_type = Form_type::where('name', $formTypeName)->firstOrFail();
         $form_lists = Form::where('type', $form_type->id)->get();
         return view('form.manage.formTables', compact('form_type', 'form_lists'));
     }
