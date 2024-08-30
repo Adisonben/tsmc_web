@@ -58,6 +58,7 @@ Route::post('/posts/comment', [PostController::class, 'storeComment'])->name('po
 Route::delete('/posts/comment/{id}', [PostController::class, 'delComment'])->name('posts.comment.delete')->middleware('auth');
 
 Route::resource('forms', FormController::class)->middleware('auth');
+Route::get('/forms/table/verify-form', [FormController::class, 'verifyFormTable'])->name('form.table.verify_form')->middleware('auth');
 Route::get('/forms/table/{formtype}', [FormController::class, 'showFormTable'])->name('forms.tables')->middleware('auth');
 Route::delete('/forms/table/form/{formid}', [FormController::class, 'destroy'])->name('forms.tables.delete')->middleware('auth');
 Route::post('/forms/update/{formid}', [FormController::class, 'update'])->name('form.update.data')->middleware('auth');
@@ -71,6 +72,8 @@ Route::get('/form/response/{formresid}/detail', [FormController::class, 'formRes
 Route::get('/form/report/{formresid}', [FormController::class, 'formReport'])->name('form.report')->middleware('auth');
 Route::get('/table/phone-number', [FormController::class, 'tableNotHasForm'])->name('phonenum.table')->middleware('auth');
 Route::post('/form/phone-number/store', [FormController::class, 'storePhonenum'])->name('form.store.phonenum')->middleware('auth');
+
+Route::get('/form/approve/{formresid}/{formresstatus}', [FormController::class, 'approveForm'])->name('form.approve')->middleware('auth');
 
 Route::post('/form/phone-number/{phonenumid}/update', [FormController::class, 'updatePhonenum'])->name('form.update.phonenum')->middleware('auth');
 Route::delete('/phonenum/delete/{phonenumid}', [FormController::class, 'deletePhonenum'])->name('form.delete.phonenum')->middleware('auth');

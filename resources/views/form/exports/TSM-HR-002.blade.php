@@ -43,26 +43,38 @@
     <div class="card" id="printPaper">
         <div class="card-body px-md-5">
             <p class="text-center fs-5 mb-0 fw-bold">{{ $userDetail->getOrg->name }}</p>
-            <p class="text-center fw-bold" style="font-size: 16px">{{ $formdata->title }}</p>
-            <form action="{{ route('form.checked.store') }}" method="post">
+            <p class="text-center fs-5 fw-bold">{{ $formdata->title }}</p>
+            <form action="#" method="post">
                 @csrf
 
                 <input type="hidden" name="form_id" value="{{ $formdata->id }}">
 
-                <div class="row g-3 align-items-center mb-4">
-                    <div class="col-12 col-md-6">
-                      <p class="mb-0">ชื่อพนักงานขับรถ : <span class="fw-bold"><u>{{ $header_data->name }}</u></span></p>
+                <div class="d-flex mb-2 gap-4">
+                    <div class="align-items-center">
+                        <p class="mb-0">ชื่อพนักงานขับรถ : <span class="fw-bold"><u>{{ $header_data->driverName }}</u></span></p>
                     </div>
-                    <div class="col-12 col-md-6">
-                      <p class="mb-0">ตำแหน่ง : <span class="fw-bold"><u>{{ $header_data->posit }}</u></span></p>
+                    <div class="align-items-center">
+                        <p class="mb-0">ตำแหน่ง : <span class="fw-bold"><u>{{ $header_data->position }}</u></span></p>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <p class="mb-0">ผู้สอบสัมภาษณ์ : <span class="fw-bold"><u>{{ $form_resp->getUser->full_name }}</u></span></p>
+                    <div class="align-items-center">
+                        <p class="mb-0">วันที่ : <span class="fw-bold"><u>{{ $form_resp->updated_at }}</u></span></p>
                     </div>
-                    <div class="col-12 col-md-6">
-                      <p class="mb-0">วันที่สอบ : <span class="fw-bold"><u>{{ $form_resp->updated_at }}</u></span></p>
+                    <div class="align-items-center">
+                        <p class="mb-0">สถานที่ : <span class="fw-bold"><u>{{ $header_data->location }}</u></span></p>
                     </div>
                 </div>
+                <div class="d-flex gap-4 mb-3">
+                    <div class="align-items-center">
+                        <p class="mb-0">ชื่อผู้ฝึกสอน : <span class="fw-bold"><u>{{ $header_data->trainerName }}</u></span></p>
+                    </div>
+                    <div class="align-items-center">
+                        <p class="mb-0">ยานยนต์ : <span class="fw-bold"><u>{{ $header_data->carInfo }}</u></span></p>
+                    </div>
+                    <div class="align-items-center">
+                        <p class="mb-0">เลขที่ : <span class="fw-bold"><u>{{ $header_data->number }}</u></span></p>
+                    </div>
+                </div>
+                <p><span class="text-danger">*</span>ก่อนการขับรถผู้ฝึกสอนจะต้องอธิบายอุปกรณ์ควบคุมต่าง ๆ เครื่องยนต์และเกียร์ของรถ</p>
 
                 <div>
                     <table class="table table-hover table-bordered">

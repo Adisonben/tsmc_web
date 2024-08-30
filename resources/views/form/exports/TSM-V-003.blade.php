@@ -43,7 +43,7 @@
     <div class="card" id="printPaper">
         <div class="card-body px-md-5">
             <p class="text-center fs-5 mb-0 fw-bold">{{ $userDetail->getOrg->name }}</p>
-            <p class="text-center fw-bold" style="font-size: 16px">{{ $formdata->title }}</p>
+            <div class="d-flex justify-content-center"><p class="text-center fw-bold w-75" style="font-size: 16px">{{ $formdata->title }}</p></div>
             <form action="{{ route('form.checked.store') }}" method="post">
                 @csrf
 
@@ -51,16 +51,13 @@
 
                 <div class="row g-3 align-items-center mb-4">
                     <div class="col-12 col-md-6">
-                      <p class="mb-0">ชื่อพนักงานขับรถ : <span class="fw-bold"><u>{{ $header_data->name }}</u></span></p>
+                      <p class="mb-0">ชื่อพนักงานขับรถ : <span class="fw-bold"><u>{{ $form_resp->getUser->full_name }}</u></span></p>
                     </div>
                     <div class="col-12 col-md-6">
-                      <p class="mb-0">ตำแหน่ง : <span class="fw-bold"><u>{{ $header_data->posit }}</u></span></p>
+                      <p class="mb-0">ทะเบียนรถ : <span class="fw-bold"><u>{{ $header_data->car_plate }}</u></span></p>
                     </div>
                     <div class="col-12 col-md-6">
-                        <p class="mb-0">ผู้สอบสัมภาษณ์ : <span class="fw-bold"><u>{{ $form_resp->getUser->full_name }}</u></span></p>
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <p class="mb-0">วันที่สอบ : <span class="fw-bold"><u>{{ $form_resp->updated_at }}</u></span></p>
+                      <p class="mb-0">วันที่ : <span class="fw-bold"><u>{{ $form_resp->updated_at }}</u></span></p>
                     </div>
                 </div>
 
@@ -86,7 +83,7 @@
                                         <td>{{ $index + 1 }}. {{ $quest->title }}</td>
                                         <td>
                                             @foreach (optional($quest->getOption)->getOptionList ?? [] as $option)
-                                                @if ($option->id == $answer->answer)
+                                                @if ($option->id == ($answer->answer ?? false))
                                                     <p class="{{ $option->score ? 'text-success' : 'text-danger' }}">{{ $option->opt_text }}</p>
                                                 @endif
                                                 {{-- <div class="form-check form-check-inline">

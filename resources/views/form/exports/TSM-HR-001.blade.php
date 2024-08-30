@@ -42,25 +42,41 @@
 <body>
     <div class="card" id="printPaper">
         <div class="card-body px-md-5">
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    Form submit unsuccessfully!
+                </div>
+                <script>
+                    console.log("{{ session('error') }}")
+                </script>
+            @endif
             <p class="text-center fs-5 mb-0 fw-bold">{{ $userDetail->getOrg->name }}</p>
-            <p class="text-center fw-bold" style="font-size: 16px">{{ $formdata->title }}</p>
+            <p class="text-center fs-5 fw-bold">{{ $formdata->title }}</p>
             <form action="{{ route('form.checked.store') }}" method="post">
                 @csrf
 
                 <input type="hidden" name="form_id" value="{{ $formdata->id }}">
 
-                <div class="row g-3 align-items-center mb-4">
-                    <div class="col-12 col-md-6">
-                      <p class="mb-0">ชื่อพนักงานขับรถ : <span class="fw-bold"><u>{{ $header_data->name }}</u></span></p>
+                <div class="d-flex gap-4 mb-3">
+                    <div class="align-items-center">
+                        <p class="mb-0">ชื่อพนักงาน : <span class="fw-bold"><u>{{ $header_data->empName }}</u></span></p>
                     </div>
-                    <div class="col-12 col-md-6">
-                      <p class="mb-0">ตำแหน่ง : <span class="fw-bold"><u>{{ $header_data->posit }}</u></span></p>
+                    <div class="align-items-center">
+                        <p class="mb-0">ตำแหน่ง : <span class="fw-bold"><u>{{ $header_data->position }}</u></span></p>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <p class="mb-0">ผู้สอบสัมภาษณ์ : <span class="fw-bold"><u>{{ $form_resp->getUser->full_name }}</u></span></p>
+                    <div class="align-items-center">
+                        <p class="mb-0">หมายเลขพนักงาน : <span class="fw-bold"><u>{{ $header_data->empId }}</u></span></p>
                     </div>
-                    <div class="col-12 col-md-6">
-                      <p class="mb-0">วันที่สอบ : <span class="fw-bold"><u>{{ $form_resp->updated_at }}</u></span></p>
+                </div>
+                <div class="d-flex gap-4 mb-3">
+                    <div class="align-items-center">
+                        <p class="mb-0">แผนก : <span class="fw-bold"><u>{{ $header_data->department }}</u></span></p>
+                    </div>
+                    <div class="align-items-center">
+                        <p class="mb-0">วันเกิด : <span class="fw-bold"><u>{{ $header_data->dob }}</u></span></p>
+                    </div>
+                    <div class="align-items-center">
+                        <p class="mb-0">วันที่ : <span class="fw-bold"><u>{{ $form_resp->updated_at }}</u></span></p>
                     </div>
                 </div>
 

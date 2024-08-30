@@ -23,4 +23,13 @@ class Form_response extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function getForm()
+    {
+        return $this->belongsTo(Form::class, 'form_id');
+    }
+
+    public function getStatus() {
+        return $this->belongsTo(Response_status::class, 'status');
+    }
 }

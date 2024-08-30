@@ -185,27 +185,82 @@ class FormController extends Controller
         $formdata = Form::where('form_id', $formid)->firstOrFail();
         $userDetail = User_detail::where('user_id', $request->user()->id)->firstOrFail();
         $quest_groups = Quest_group::where('form_id', $formdata->id)->get();
-        return view('form.checking.formFormat.TSM-HR-003', compact('formdata', 'userDetail', 'quest_groups'));
+        $formtype_check = optional($formdata->getType)->name ?? "";
+        $formFormat = "";
+        switch ($formtype_check) {
+            case 'แบบฟอร์มการสอบสัมภาษณ์พนักงานขับรถ':
+                $formFormat = "TSM-HR-003";
+                break;
+            case 'แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ':
+                $formFormat = "TSM-V-003";
+                break;
+            case 'แบบประเมินความสามารถ':
+                $formFormat = "TSM-HR-002";
+                break;
+            case 'แบบฟอร์มการตรวจสุขภาพ':
+                $formFormat = "TSM-HR-001";
+                break;
+
+            default:
+
+                break;
+        }
+        return view('form.checking.formFormat.' . $formFormat, compact('formdata', 'userDetail', 'quest_groups'));
     }
 
     public function storeCheckedForm(Request $request) {
         try {
             $form = Form::where('id', $request->form_id)->firstOrFail();
             $questions = Question::where('form_id', $request->form_id)->get();
+            $formtype_check = optional($form->getType)->name ?? "";
             $resp = Form_response::create([
-                'user_id' => $request->interviewBy,
+                'user_id' => $request->user()->id,
                 'form_id' => $request->form_id,
                 'times' => 0,
                 'status' => $form->has_approve ? 2 : 1,
-                'header_data' => json_encode([
-                    'name' => $request->driverName,
-                    'posit' => $request->driverPosit
-                ]),
             ]);
+            switch ($formtype_check) {
+                case 'แบบฟอร์มการสอบสัมภาษณ์พนักงานขับรถ':
+                    $resp->header_data = json_encode([
+                        'name' => $request->driverName,
+                        'posit' => $request->driverPosit
+                    ]);
+                    break;
+                case 'แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ':
+                    $resp->header_data = json_encode([
+                        'car_plate' => $request->car_plate,
+                    ]);
+                    break;
+                case 'แบบประเมินความสามารถ':
+                    $resp->header_data = json_encode([
+                        'driverName' => $request->driverName,
+                        'position' => $request->position,
+                        'location' => $request->location,
+                        'trainerName' => $request->trainerName,
+                        'carInfo' => $request->carInfo,
+                        'number' => $request->number,
+                    ]);
+                    break;
+                case 'แบบฟอร์มการตรวจสุขภาพ':
+                    $resp->header_data = json_encode([
+                        'empName' => $request->empName,
+                        'position' => $request->position,
+                        'empId' => $request->empId,
+                        'department' => $request->department,
+                        'dob' => $request->dob,
+                    ]);
+                    break;
+
+                default:
+
+                    break;
+            }
+            $resp->save();
+
             if ($questions) {
                 foreach ($questions as $ques) {
                     Form_answer::create([
-                        'user_id' => $request->interviewBy,
+                        'user_id' => $request->user()->id,
                         'resp_id' => $resp->id,
                         'quest_id' => $ques->id,
                         'answer' => $request->input("questid_" . $ques->id) ?? null,
@@ -227,7 +282,27 @@ class FormController extends Controller
     public function tableForm(Request $request, $formid) {
         $form = Form::where('form_id', $formid)->firstOrFail();
         $form_responses = Form_response::where('form_id', $form->id)->get();
-        return view('form.table.formDataTable', compact('form', 'form_responses'));
+        $formtype_check = optional($form->getType)->name ?? "";
+        $formFormat = "";
+        switch ($formtype_check) {
+            case 'แบบฟอร์มการสอบสัมภาษณ์พนักงานขับรถ':
+                $formFormat = "TSM-HR-003";
+                break;
+            case 'แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ':
+                $formFormat = "TSM-V-003";
+                break;
+            case 'แบบประเมินความสามารถ':
+                $formFormat = "TSM-HR-002";
+                break;
+            case 'แบบฟอร์มการตรวจสุขภาพ':
+                $formFormat = "TSM-HR-001";
+                break;
+
+            default:
+
+                break;
+        }
+        return view('form.table.formFormat.' . $formFormat, compact('form', 'form_responses'));
     }
 
     public function tableNotHasForm() {
@@ -241,7 +316,27 @@ class FormController extends Controller
         $userDetail = User_detail::where('user_id', $request->user()->id)->firstOrFail();
         $quest_groups = Quest_group::where('form_id', $formdata->id)->get();
         $header_data = json_decode($form_resp->header_data ?? "");
-        return view('form.checking.readonly.TSM-HR-003', compact('formdata', 'userDetail', 'quest_groups', 'form_resp', 'header_data'));
+        $formtype_check = optional($formdata->getType)->name ?? "";
+        $formFormat = "";
+        switch ($formtype_check) {
+            case 'แบบฟอร์มการสอบสัมภาษณ์พนักงานขับรถ':
+                $formFormat = "TSM-HR-003";
+                break;
+            case 'แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ':
+                $formFormat = "TSM-V-003";
+                break;
+            case 'แบบประเมินความสามารถ':
+                $formFormat = "TSM-HR-002";
+                break;
+            case 'แบบฟอร์มการตรวจสุขภาพ':
+                $formFormat = "TSM-HR-001";
+                break;
+
+            default:
+
+                break;
+        }
+        return view('form.checking.readonly.' . $formFormat, compact('formdata', 'userDetail', 'quest_groups', 'form_resp', 'header_data'));
     }
 
     public function formReport(Request $request, $formresid) {
@@ -250,7 +345,27 @@ class FormController extends Controller
         $userDetail = User_detail::where('user_id', $request->user()->id)->firstOrFail();
         $quest_groups = Quest_group::where('form_id', $formdata->id)->get();
         $header_data = json_decode($form_resp->header_data ?? "");
-        return view('form.exports.TSM-HR-003', compact('formdata', 'userDetail', 'quest_groups', 'form_resp', 'header_data'));
+        $formtype_check = optional($formdata->getType)->name ?? "";
+        $formFormat = "";
+        switch ($formtype_check) {
+            case 'แบบฟอร์มการสอบสัมภาษณ์พนักงานขับรถ':
+                $formFormat = "TSM-HR-003";
+                break;
+            case 'แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ':
+                $formFormat = "TSM-V-003";
+                break;
+            case 'แบบประเมินความสามารถ':
+                $formFormat = "TSM-HR-002";
+                break;
+            case 'แบบฟอร์มการตรวจสุขภาพ':
+                $formFormat = "TSM-HR-001";
+                break;
+
+            default:
+
+                break;
+        }
+        return view('form.exports.' . $formFormat, compact('formdata', 'userDetail', 'quest_groups', 'form_resp', 'header_data'));
     }
 
     public function storePhonenum(Request $request) {
@@ -292,6 +407,26 @@ class FormController extends Controller
             Phone_number::where('id', $id)->delete();
             return response()->json([
                 'message' => 'Data deleted successfully : ' . $id
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function verifyFormTable() {
+        $form_responses = Form_response::where('status', "2")->get();
+        return view('form.approveTable', compact('form_responses'));
+    }
+
+    public function approveForm($formresid, $formresstatus) {
+        try {
+            $form_res = Form_response::findOrFail($formresid);
+            $form_res->status = $formresstatus ? 1 : 3;
+            $form_res->save();
+            return response()->json([
+                'message' => 'Data deleted successfully.' . $formresid . ($formresstatus ? 'true' : 'false')
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

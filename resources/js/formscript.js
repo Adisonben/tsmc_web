@@ -140,3 +140,66 @@ if (updateCheckForm) {
             });
     })
 }
+
+// Verify function
+const verifyBtns = document.querySelectorAll(".verify-form-btn");
+verifyBtns.forEach((verifyBtn) => {
+    verifyBtn.addEventListener("click", () => {
+        const idToverify = verifyBtn.getAttribute("formres-id");
+        const apiEndpoint = `/form/approve/${idToverify}`;
+        Swal.fire({
+            title: "ผลการตรวจสอบเอกสาร?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "ผ่าน",
+            denyButtonText: `ไม่ผ่าน`
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                axios
+                    .get(apiEndpoint + "/1")
+                    .then((res) => {
+                        console.log(res.data);
+                        Swal.fire({
+                            title: "บันทึกสำเร็จ!",
+                            icon: "success",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    })
+                    .catch((error) => {
+                        console.log("Error deleting data: ", error);
+                        Swal.fire({
+                            title: "Sorry!",
+                            text: "Something went wrong!",
+                            icon: "error",
+                        });
+                    });
+            } else if (result.isDenied) {
+                axios
+                    .get(apiEndpoint + "/0")
+                    .then((res) => {
+                        console.log(res.data);
+                        Swal.fire({
+                            title: "บันทึกสำเร็จ!",
+                            icon: "success",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    })
+                    .catch((error) => {
+                        console.log("Error deleting data: ", error);
+                        Swal.fire({
+                            title: "Sorry!",
+                            text: "Something went wrong!",
+                            icon: "error",
+                        });
+                    });
+            }
+          });
+    });
+});
