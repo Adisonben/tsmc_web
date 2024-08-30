@@ -63,7 +63,9 @@
                                         <tr>
                                             <th>เกณฑ์การพิจารณา</th>
                                             <th>ผลการตรวจสอบ</th>
-                                            <th>Comment</th>
+                                            @if ($formdata->has_comment ?? false)
+                                                <th>Comment</th>
+                                            @endif
                                             {{-- <th>ผลคะแนน</th> --}}
                                         </tr>
                                     </thead>
@@ -72,7 +74,7 @@
                                             <tr><td colspan="4">{{ $group->title }}</td></tr>
                                             @foreach ($group->questions as $index => $quest)
                                                 <tr>
-                                                    <td>{{ $index + 1 }}. {{ $quest->title }}</td>
+                                                    <td><p class="mb-0 ps-4">{{ $index + 1 }}. {{ $quest->title }}</p></td>
                                                     <td>
                                                         @foreach (optional($quest->getOption)->getOptionList ?? [] as $option)
                                                             <div class="form-check form-check-inline">
@@ -81,7 +83,9 @@
                                                             </div>
                                                         @endforeach
                                                     </td>
-                                                    <td><input class="form-control" type="text" name="comment_{{ $quest->id }}" maxlength="200"></td>
+                                                    @if ($formdata->has_comment ?? false)
+                                                        <td><input class="form-control" type="text" name="comment_{{ $quest->id }}" maxlength="200"></td>
+                                                    @endif
                                                     {{-- <td></td> --}}
                                                 </tr>
                                             @endforeach

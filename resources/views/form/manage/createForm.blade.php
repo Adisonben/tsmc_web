@@ -66,7 +66,7 @@
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="1"
-                                                    id="approveCheck" name="approveCheck">
+                                                    id="approveCheck" name="approveCheck" disabled>
                                                 <label class="form-check-label" for="approveCheck">
                                                     การตรวจสอบ
                                                 </label>

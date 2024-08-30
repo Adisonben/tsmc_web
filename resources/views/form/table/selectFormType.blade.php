@@ -25,16 +25,18 @@
                                             {{ $cate->name }}
                                         </div>
                                         <div class="card-body">
-                                            @if (count($cate->getForms ?? []) > 0)
-                                                @foreach ($cate->getForms as $form)
-                                                    {{-- <a href="">{{ $formType->name }}</a> --}}
-                                                    <a href="{{ route('form.table', ['formid' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a>
-                                                @endforeach
-                                            @elseif ($cate->name == "การวิเคราะห์และประเมินผล")
-                                                @foreach ($cate->formTypes ?? [] as $ftype)
-                                                    <a href="{{ route('phonenum.table') }}" class="mb-1">{{ $ftype->name }}</a>
-                                                @endforeach
-                                            @endif
+                                            <ol class="list-group-numbered">
+                                                @if (count($cate->getForms ?? []) > 0)
+                                                    @foreach ($cate->getForms as $form)
+                                                        {{-- <a href="">{{ $formType->name }}</a> --}}
+                                                        <li class="list-group-item"><a href="{{ route('form.table', ['formid' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a></li>
+                                                    @endforeach
+                                                @elseif ($cate->name == "การวิเคราะห์และประเมินผล")
+                                                    @foreach ($cate->formTypes ?? [] as $ftype)
+                                                        <li class="list-group-item"><a href="{{ route('phonenum.table') }}" class="mb-1">{{ $ftype->name }}</a></li>
+                                                    @endforeach
+                                                @endif
+                                            </ol>
                                         </div>
                                     </div>
                                 </div>
