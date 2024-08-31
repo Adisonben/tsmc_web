@@ -28,7 +28,7 @@
                                         placeholder="กรอกชื่อแบบฟอร์ม">
                                 </div>
 
-                                <div class="d-flex gap-3">
+                                <div class="d-flex flex-wrap gap-3">
                                     <div>
                                         <label class="form-label">หมวดหมู่แบบฟอร์ม</label>
                                         <select class="form-select" aria-label="Default select example" name="formType" required>
@@ -58,7 +58,7 @@
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="1"
+                                                <input class="form-check-input" type="checkbox" value="1" disabled
                                                     id="scoreCheck" name="scoreCheck">
                                                 <label class="form-check-label" for="scoreCheck">
                                                     แสดงคะแนน
@@ -66,7 +66,7 @@
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="1"
-                                                    id="approveCheck" name="approveCheck" disabled>
+                                                    id="approveCheck" name="approveCheck">
                                                 <label class="form-check-label" for="approveCheck">
                                                     การตรวจสอบ
                                                 </label>
