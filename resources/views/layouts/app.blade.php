@@ -78,63 +78,65 @@
                             บัญชีของฉัน
                         </a>
                     </li>
-                    <li class="sidebar-item">
-                        <a href="{{ route('users.index') }}" class="sidebar-link">
-                            <i class="bi bi-people"></i>
-                            บัญชีผู้ใช้
-                        </a>
-                    </li>
-                    <li class="sidebar-header">
-                        ข้อมูลระบบ
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#org"
-                            aria-expanded="false" aria-controls="org">
-                            <i class="bi bi-building"></i>
-                            องค์กร
-                        </a>
-                        <ul id="org" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
-                                <a href="{{ route('organizations.index') }}" class="sidebar-link">ข้อมูลองค์กร</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="{{ route('cars.index') }}" class="sidebar-link">ข้อมูลรถ</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">การอนุญาต</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#sys"
-                            aria-expanded="false" aria-controls="sys">
-                            <i class="bi bi-database-gear"></i>
-                            ระบบ
-                        </a>
-                        <ul id="sys" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
-                                <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="{{ route('driver-license-types.index') }}" class="sidebar-link">ประเภทใบขับขี่</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="{{ route('car-types.index') }}" class="sidebar-link">ประเภทรถ</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="sidebar-header">
-                        ทั่วไป
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <i class="bi bi-clock-history"></i>
-                            ประวัติการเข้าใช้ระบบ
-                        </a>
-                    </li>
+                    @if (Auth::user()->username == "tsmcadmin")
+                        <li class="sidebar-item">
+                            <a href="{{ route('users.index') }}" class="sidebar-link">
+                                <i class="bi bi-people"></i>
+                                บัญชีผู้ใช้
+                            </a>
+                        </li>
+                        <li class="sidebar-header">
+                            ข้อมูลระบบ
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#org"
+                                aria-expanded="false" aria-controls="org">
+                                <i class="bi bi-building"></i>
+                                องค์กร
+                            </a>
+                            <ul id="org" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                <li class="sidebar-item">
+                                    <a href="{{ route('organizations.index') }}" class="sidebar-link">ข้อมูลองค์กร</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ route('cars.index') }}" class="sidebar-link">ข้อมูลรถ</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">การอนุญาต</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#sys"
+                                aria-expanded="false" aria-controls="sys">
+                                <i class="bi bi-database-gear"></i>
+                                ระบบ
+                            </a>
+                            <ul id="sys" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                <li class="sidebar-item">
+                                    <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ route('driver-license-types.index') }}" class="sidebar-link">ประเภทใบขับขี่</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ route('car-types.index') }}" class="sidebar-link">ประเภทรถ</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-header">
+                            ทั่วไป
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">
+                                <i class="bi bi-clock-history"></i>
+                                ประวัติการเข้าใช้ระบบ
+                            </a>
+                        </li>
+                    @endif
                 </ul>
 
                 <div class="sidebar-footer">
