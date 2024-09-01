@@ -36,7 +36,7 @@
                                 <input type="color" class="form-control form-control-color" id="postColor" name="postColor" value="#ffffff" title="Choose your color" required>
                             </div>
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label for="orgTheme" class="form-label">ไฟล์เอกสาร</label>
                                 <input class="form-control" type="file" id="formFile" disabled>
                             </div>
@@ -53,7 +53,7 @@
                                         <option value="{{ $post_perm->name }}">{{ $post_perm->name }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
 
                             <div class="mb-3" id="targetSelect">
 

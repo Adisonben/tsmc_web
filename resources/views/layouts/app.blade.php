@@ -78,13 +78,13 @@
                             บัญชีของฉัน
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a href="{{ route('users.index') }}" class="sidebar-link">
+                            <i class="bi bi-people"></i>
+                            บัญชีผู้ใช้ทั้งหมด
+                        </a>
+                    </li>
                     @if (Auth::user()->username == "tsmcadmin")
-                        <li class="sidebar-item">
-                            <a href="{{ route('users.index') }}" class="sidebar-link">
-                                <i class="bi bi-people"></i>
-                                บัญชีผู้ใช้
-                            </a>
-                        </li>
                         <li class="sidebar-header">
                             ข้อมูลระบบ
                         </li>

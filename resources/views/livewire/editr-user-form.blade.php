@@ -8,13 +8,13 @@
         @csrf
 
         <div class="row mb-3">
-            <div class="col">
+            <div class="col-md-6">
                 <label for="username" class="form-label">ชื่อผู้ใช้</label>
                 <input type="text" maxlength="150" class="form-control" id="username" name="username" wire:model="username"
                     placeholder="กรุณากรอกชื่อผู้ใช้" required>
             </div>
 
-            <div class="col">
+            <div class="col-md-6">
                 <label for="password" class="form-label">รหัสผ่าน (หากไม่กรอก จะใช้รหัสผ่านเดิม)</label>
                 <input type="text" maxlength="20" minlength="8" class="form-control" id="password" name="password" wire:model="password"
                     placeholder="กรุณากรอกรหัสผ่าน">
