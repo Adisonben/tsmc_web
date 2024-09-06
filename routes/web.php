@@ -4,6 +4,7 @@ use App\Http\Controllers\Account\UserController;
 use App\Http\Controllers\AppData\CarTypeController;
 use App\Http\Controllers\AppData\LicenseTypeController;
 use App\Http\Controllers\AppData\PrefixController;
+use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\Organization\CarController;
 use App\Http\Controllers\Organization\OrgController;
@@ -55,6 +56,7 @@ Route::post('/cars/update-data/{car}', [CarController::class, 'update'])->name('
 
 Route::resource('posts', PostController::class)->middleware('auth');
 Route::post('/posts/comment', [PostController::class, 'storeComment'])->name('posts.comment')->middleware('auth');
+Route::post('/posts/update/{post}', [PostController::class, 'update'])->name('posts.getUpdate')->middleware('auth');
 Route::delete('/posts/comment/{id}', [PostController::class, 'delComment'])->name('posts.comment.delete')->middleware('auth');
 
 Route::resource('forms', FormController::class)->middleware('auth');
@@ -77,3 +79,7 @@ Route::get('/form/approve/{formresid}/{formresstatus}', [FormController::class, 
 
 Route::post('/form/phone-number/{phonenumid}/update', [FormController::class, 'updatePhonenum'])->name('form.update.phonenum')->middleware('auth');
 Route::delete('/phonenum/delete/{phonenumid}', [FormController::class, 'deletePhonenum'])->name('form.delete.phonenum')->middleware('auth');
+
+// upload file route
+Route::post('/posts/file-upload',[FileUploadController::class,'filepondUpload']);
+Route::delete('/filepond/delete',[FileUploadController::class,'filepondDelete']);

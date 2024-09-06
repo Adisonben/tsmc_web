@@ -1,5 +1,10 @@
 @extends('layouts.app')
+@push('scripts')
+    @vite(['resources/js/post.js'])
 
+    <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
+    <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet"></link>
+@endpush
 @section('content')
     <div class="">
         <div class="row justify-content-center">
@@ -33,30 +38,52 @@
                             </div>
                             <div class="mb-3">
                                 <label for="postColor" class="form-label">ธีมสี</label>
-                                <input type="color" class="form-control form-control-color" id="postColor" name="postColor" value="#ffffff" title="Choose your color" required>
-                            </div>
-
-                            {{-- <div class="mb-3">
-                                <label for="orgTheme" class="form-label">ไฟล์เอกสาร</label>
-                                <input class="form-control" type="file" id="formFile" disabled>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="orgLogo" class="form-label">ไฟล์ภาพ (ขนาดไฟล์ละไม่เกิน 2 MB)</label>
-                                <input class="form-control" type="file" id="orgLogo" name="orgLogo" disabled>
+                                <input type="color" class="form-control form-control-color" id="postColor"
+                                    name="postColor" value="#ffffff" title="Choose your color" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="postPerm" class="form-label">สิทธื์การเข้าถึง</label>
-                                <select class="form-select" id="postPerm" aria-label="Default select example" disabled>
+                                <select class="form-select" id="postPerm" name="postPerm" aria-label="Default select example">
                                     @foreach ($post_perms as $post_perm)
                                         <option value="{{ $post_perm->name }}">{{ $post_perm->name }}</option>
                                     @endforeach
                                 </select>
-                            </div> --}}
+                            </div>
 
-                            <div class="mb-3" id="targetSelect">
+                            <div class="mb-3" id="dpmTarget" hidden>
+                                <label for="dpmPermTarget" class="form-label">ขอบเขตการเข้าถึง</label>
+                                <select class="form-select" id="dpmPermTarget" name="dpmPermTarget[]" multiple>
+                                    @foreach ($dpms as $dpm)
+                                        <option value="{{ $dpm->id }}">{{ $dpm->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
+                            <div class="mb-3" id="positTarget" hidden>
+                                <label for="positPermTarget" class="form-label">ขอบเขตการเข้าถึง</label>
+                                <select class="form-select" id="positPermTarget" name="positPermTarget[]" multiple>
+                                    @foreach ($positions as $position)
+                                        <option value="{{ $position->id }}">{{ $position->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3" id="userTarget" hidden>
+                                <label for="userPermTarget" class="form-label">ขอบเขตการเข้าถึง</label>
+                                <select class="form-select" id="userPermTarget" name="userPermTarget[]" multiple>
+                                    @foreach ($user_list as $userdetail)
+                                        <option value="{{ $userdetail->user_id }}">
+                                            {{ optional($userdetail->getPrefix)->name . $userdetail->fname . ' ' . $userdetail->lname }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="orgTheme" class="form-label">แนบไฟล์</label>
+                                <input class="form-control filepond" type="file" id="docFileUpload" multiple
+                                    data-max-file-size="5MB">
                             </div>
 
                             <button type="submit" class="btn btn-primary mb-3">โพสต์</button>
@@ -71,21 +98,55 @@
         $(document).ready(function() {
             $('#postPerm').change(function() {
                 var selectedValue = $(this).val();
-                var targetSelect = $('#targetSelect');
-                if (selectedValue !== 'ทั้งหมด') {
-                    console.log(selectedValue);
-                    targetSelect.show();
-                    // Add the select element to targetSelect
-                    targetSelect.append('<select class="form-select" id="targetSelectInput" aria-label="Default select example">\
-                                        <option value="option1">Option 1</option>\
-                                        <option value="option2">Option 2</option>\
-                                        \
-                                    </select>');
-                } else {
-                    targetSelect.hide();
-                    targetSelect.empty(); // Clear any existing content
+                switch (selectedValue) {
+                    case "ฝ่าย":
+                        $('#positTarget').attr('hidden', 'hidden');
+                        $('#userTarget').attr('hidden', 'hidden');
+                        $('#dpmTarget').removeAttr('hidden');
+                        break;
+                    case "ตำแหน่ง":
+                        $('#dpmTarget').attr('hidden', 'hidden');
+                        $('#userTarget').attr('hidden', 'hidden');
+                        $('#positTarget').removeAttr('hidden');
+                        break;
+                    case "บุคคล":
+                        $('#dpmTarget').attr('hidden', 'hidden');
+                        $('#positTarget').attr('hidden', 'hidden');
+                        $('#userTarget').removeAttr('hidden');
+                        break;
+
+                    default:
+                        $('#dpmTarget').attr('hidden', 'hidden');
+                        $('#positTarget').attr('hidden', 'hidden');
+                        $('#userTarget').attr('hidden', 'hidden');
+                        break;
                 }
             });
         });
+
+        new SlimSelect({
+            select: '#dpmPermTarget',
+            settings: {
+                hideSelected: true,
+                placeholderText: 'เลือกฝ่าย',
+            }
+        })
+        new SlimSelect({
+            select: '#userPermTarget',
+            settings: {
+                hideSelected: true,
+                placeholderText: 'เลือกผู้ใช้',
+            }
+        })
+        new SlimSelect({
+            select: '#positPermTarget',
+            settings: {
+                hideSelected: true,
+                placeholderText: 'เลือกตำแหน่ง',
+            }
+        })
     </script>
 @endsection
+<style>
+
+</style>

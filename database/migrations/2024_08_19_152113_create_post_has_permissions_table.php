@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_has_permissions', function (Blueprint $table) {
+        Schema::create('post_has__permissions', function (Blueprint $table) {
             $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('permission_id');
-
+            $table->string('target')->nullable();
             $table->timestamps();
 
             $table->foreign('post_id')

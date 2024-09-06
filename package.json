@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "bootstrap-icons": "^1.11.3",
+        "filepond": "^4.31.2",
         "sweetalert2": "^11.12.4"
     }
 }

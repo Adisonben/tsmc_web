@@ -1,4 +1,6 @@
 import axios from "axios";
+import * as FilePond from 'filepond';
+import 'filepond/dist/filepond.min.css';
 
 const commentFormbtns = document.querySelectorAll('.commentForm');
 commentFormbtns.forEach((commentForm) => {
@@ -75,4 +77,40 @@ deleteCommentBtns.forEach((delBtn) => {
             }
         });
     });
+});
+
+// upload file using Filepond
+const inputElement = document.getElementById('docFileUpload');
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+FilePond.setOptions({
+    server: {
+        process: {
+            url: '/posts/file-upload',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        },
+        // revert: '/posts/file-delete',
+        revert: {
+            url: '/filepond/delete',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            onload: (response) => {
+                console.log("On load : ", response)
+            },
+            onerror: (response) => {
+                console.log("On error : ", response.data)
+            },
+            ondata: (formData) => {
+                console.log("From data : ",formData)
+            },
+        },
+    },
+});
+
+const pond = FilePond.create(inputElement, {
+    allowMultiple: true,
+    name: 'doc_files[]',
 });

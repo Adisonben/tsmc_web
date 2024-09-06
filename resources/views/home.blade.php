@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@push('scripts')
+    @vite(['resources/js/post.js'])
+@endpush
 @section('content')
 <div class="">
     <div class="row justify-content-center">
@@ -19,7 +21,7 @@
             @if ($posts)
                 @foreach ($posts as $post)
                     <div class="card rounded-5 mb-3">
-                        <div class="card-header" style="background-color: {{ $post->theme_color ?? '#F1F3F5' }}">
+                        <div class="card-header d-flex justify-content-between" style="background-color: {{ $post->theme_color ?? '#F1F3F5' }}">
                             <div class="d-flex gap-2">
                                 <div class="d-flex gap-2">
                                     @if (($post->getUser->icon ?? false) && file_exists(public_path('uploads/userImages/' . $post->getUser->icon)))
@@ -33,9 +35,22 @@
                                     <p class="mb-0" style="font-size: .8rem">{{ optional($post->getUser->getPosition)->name ?? '-' }} | <i class="bi bi-clock"></i> {{ $post->updated_at }}</p>
                                 </div>
                             </div>
+                            <div {{ Auth::user()->id == $post->created_by ? '' : 'hidden' }}>
+                                <a href="{{ route('posts.edit', ['post' => $post->post_id]) }}" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                                <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $post->id }}" del-target="posts" data-bs-toggle="tooltip" data-bs-title="ลบ">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
-                            {!! $post->content !!}
+                            <div class="mb-2">
+                                {!! $post->content !!}
+                            </div>
+                            <div>
+                                @foreach ($post->getMedias ?? [] as $media)
+                                    <a href="/{{ $media->folder }}/{{ $media->file_name }}" class="btn btn-sm btn-secondary" target="_BLANK">{{ $media->originalName }}</a>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="card-footer px-4">
                             @php

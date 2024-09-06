@@ -11,6 +11,7 @@ class Post_has_Permission extends Model
 
     protected $fillable = [
         'post_id',
-        'permission_id'
+        'permission_id',
+        'target'
     ];
 }

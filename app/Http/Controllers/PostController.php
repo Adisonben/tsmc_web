@@ -6,6 +6,8 @@ use App\Models\Department;
 use App\Models\Position;
 use App\Models\Post;
 use App\Models\Post_comment;
+use App\Models\Post_has_Permission;
+use App\Models\Post_media;
 use App\Models\Post_permission;
 use App\Models\User_detail;
 use Illuminate\Http\Request;
@@ -28,8 +30,8 @@ class PostController extends Controller
         $post_perms = Post_permission::all();
         $dpms = Department::all();
         $positions = Position::all();
-        $users = User_detail::all();
-        return view('post.createPostForm', compact('post_perms', 'dpms', 'positions', 'users'));
+        $user_list = User_detail::whereNot('fname', 'admin')->get();
+        return view('post.createPostForm', compact('post_perms', 'dpms', 'positions', 'user_list'));
     }
 
     /**
@@ -42,12 +44,53 @@ class PostController extends Controller
                 'postContent' => 'required|string|max:2000',
                 'postColor' => 'required',
             ]);
-            Post::create([
+            $post = Post::create([
                 'post_id' => Str::uuid(),
                 'content' => $request->postContent,
                 'theme_color' => $request->postColor,
                 'created_by' => $request->user()->id
             ]);
+
+            $doc_file_ids = $request->doc_files;
+            if (count($doc_file_ids ?? []) > 0) {
+                foreach ($doc_file_ids as $doc_file_id) {
+                    Post_media::where('id' ,$doc_file_id)->update([
+                        "post_id" => $post->id
+                    ]);
+                }
+            }
+            $postPerm = $request->postPerm ?? "ทั้งหมด";
+            $perm = Post_permission::where('name', $postPerm)->first();
+            if ($postPerm == "ฝ่าย" && $request->dpmPermTarget) {
+                foreach ($request->dpmPermTarget as $target) {
+                    Post_has_Permission::create([
+                        "post_id" => $post->id,
+                        "permission_id" => $perm->id,
+                        "target" => $target
+                    ]);
+                }
+            } elseif ($postPerm == "ตำแหน่ง" && $request->positPermTarget) {
+                foreach ($request->positPermTarget as $target) {
+                    Post_has_Permission::create([
+                        "post_id" => $post->id,
+                        "permission_id" => $perm->id,
+                        "target" => $target
+                    ]);
+                }
+            } elseif ($postPerm == "บุคคล" && $request->userPermTarget) {
+                foreach ($request->userPermTarget as $target) {
+                    Post_has_Permission::create([
+                        "post_id" => $post->id,
+                        "permission_id" => $perm->id,
+                        "target" => $target
+                    ]);
+                }
+            } else {
+                Post_has_Permission::create([
+                    "post_id" => $post->id,
+                    "permission_id" => $perm->id,
+                ]);
+            }
 
             return redirect()->route('home')->with(['success' => "โพสสำเร็จ"]);
         } catch (\Throwable $th) {
@@ -69,7 +112,12 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $postData = Post::where('post_id', $id)->firstOrFail();
+        $post_perms = Post_permission::all();
+        $dpms = Department::all();
+        $positions = Position::all();
+        $users = User_detail::all();
+        return view('post.editPostForm', compact('post_perms', 'dpms', 'positions', 'users', 'postData'));
     }
 
     /**
@@ -77,7 +125,23 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $post = Post::findOrFail($id);
+            $request->validate([
+                'postContent' => 'required|string|max:2000',
+                'postColor' => 'required',
+            ]);
+
+            $post->update([
+                'content' => $request->postContent,
+                'theme_color' => $request->postColor,
+            ]);
+
+            return redirect()->route('home')->with(['success' => "แก้ไขโพสสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => $th->getMessage()]);
+        }
     }
 
     /**
@@ -85,7 +149,24 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            Post::where('id', $id)->delete();
+            $post_medias = Post_media::where('post_id', $id)->get();
+            foreach ($post_medias as $media) {
+                $filePath = public_path($media->folder . '/' . $media->file_name);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                    $media->delete();
+                }
+            }
+            return response()->json([
+                'message' => 'Data deleted successfully : ' . $id
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     public function storeComment(Request $request)
