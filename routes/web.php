@@ -40,6 +40,8 @@ Route::delete('/organizations/delete/department/{dpmId}', [OrgController::class,
 
 Route::resource('positions', PositionController::class)->middleware('auth')->middleware('auth');
 Route::post('/positions/update-data/{position}', [PositionController::class, 'update'])->name('positions.update.post')->middleware('auth');
+Route::get('/position-permission/manage', [PositionController::class, 'managePermission'])->name('posit.perm')->middleware('auth');
+Route::get('/position-permission/update/{positId}/{permId}/{status}', [PositionController::class, 'updatePermission'])->name('posit.perm.update')->middleware('auth');
 
 
 Route::resource('users', UserController::class)->middleware('auth');

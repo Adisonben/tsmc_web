@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             OptionSeeder::class,
             PostPermissionSeeder::class,
             ReportStatusSeeder::class,
+            PositionPermissionSeeder::class,
         ]);
     }
 }
