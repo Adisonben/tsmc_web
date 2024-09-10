@@ -42,7 +42,7 @@
                                                     <a href="{{ route('form.detail', ['formresid' => $formres->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด">
                                                         <i class="bi bi-card-list"></i>
                                                     </a>
-                                                    <button class="btn btn-success btn-sm verify-form-btn" formres-id="{{ $formres->id }}" data-bs-toggle="tooltip" data-bs-title="อนุมัติเอกสาร"><i class="bi bi-check"></i></button>
+                                                    <button class="btn btn-success btn-sm verify-form-btn" formres-id="{{ $formres->id }}" data-bs-toggle="tooltip" data-bs-title="ตรวจสอบเอกสาร"><i class="bi bi-check"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach

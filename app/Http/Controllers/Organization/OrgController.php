@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Organization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class OrgController extends Controller
@@ -16,7 +17,11 @@ class OrgController extends Controller
      */
     public function index()
     {
-        $orgs = Organization::all();
+        if (is_null(Auth()->user()->userDetail->org)) {
+            $orgs = Organization::all();
+        } else {
+            $orgs = Organization::where('id', Auth()->user()->userDetail->org)->get();
+        }
         return view('organization.orgData.orgTable', compact('orgs'));
     }
 

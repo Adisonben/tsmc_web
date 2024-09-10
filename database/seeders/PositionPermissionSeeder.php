@@ -28,7 +28,7 @@ class PositionPermissionSeeder extends Seeder
             ],
             [
                 'name' => 'can_approve_table',
-                'label' => 'อนุมัติเอกสาร',
+                'label' => 'ตรวจสอบเอกสาร',
             ],
             [
                 'name' => 'can_manage_form',

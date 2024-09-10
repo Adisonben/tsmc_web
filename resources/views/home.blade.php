@@ -6,16 +6,21 @@
 <div class="">
     <div class="row justify-content-center">
         <div class="px-3 px-md-5">
-            <div class="card rounded-5 mb-3">
-                <div class="card-body">
-                    <div class="d-flex gap-3">
-                        <div class="d-flex gap-2">
-                            <img src="/images/icons/tsmc_logo.png" width="40" alt="">
+            {{-- @php
+                dd((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org) ?? false));
+            @endphp --}}
+            @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org) ?? false) || (Auth::user()->userDetail->fname === "admin"))
+                <div class="card rounded-5 mb-3">
+                    <div class="card-body">
+                        <div class="d-flex gap-3">
+                            <div class="d-flex gap-2">
+                                <img src="/images/icons/tsmc_logo.png" width="40" alt="">
+                            </div>
+                            <a href="{{ route('posts.create') }}" class="w-100"><input type="text" class="form-control rounded-pill" style="cursor: pointer" id="exampleFormControlInput1" placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
                         </div>
-                        <a href="{{ route('posts.create') }}" class="w-100"><input type="text" class="form-control rounded-pill" style="cursor: pointer" id="exampleFormControlInput1" placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
                     </div>
                 </div>
-            </div>
+            @endif
 
             {{-- Post Card --}}
             @if ($posts)

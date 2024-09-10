@@ -31,9 +31,9 @@
                                                         {{-- <a href="">{{ $formType->name }}</a> --}}
                                                         <li class="list-group-item"><a href="{{ route('form.table', ['formid' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a></li>
                                                     @endforeach
-                                                @elseif ($cate->name == "การวิเคราะห์และประเมินผล")
+                                                @elseif ($cate->name == "การวิเคราะห์และประเมินผล" || $cate->name == "การจัดการเดินรถ")
                                                     @foreach ($cate->formTypes ?? [] as $ftype)
-                                                        <li class="list-group-item"><a href="{{ route('phonenum.table') }}" class="mb-1">{{ $ftype->name }}</a></li>
+                                                        <li class="list-group-item"><a href="{{ route('formtype.table', ['fcode' => $ftype->type_code]) }}" class="mb-1">{{ $ftype->name }}</a></li>
                                                     @endforeach
                                                 @endif
                                             </ol>

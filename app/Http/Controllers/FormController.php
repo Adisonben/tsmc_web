@@ -305,7 +305,16 @@ class FormController extends Controller
         return view('form.table.formFormat.' . $formFormat, compact('form', 'form_responses'));
     }
 
-    public function tableNotHasForm() {
+    public function tableNotHasForm($fcode) {
+        if ($fcode == "TSM-AI-004") {
+            $phonenum_lists = Phone_number::all();
+            return view('form.table.formFormat.' . $fcode, compact('phonenum_lists'));
+        } elseif ($fcode == "TSM-RP-002") {
+            return view('form.table.formFormat.' . $fcode);
+        }
+    }
+
+    public function tableDailyWork() {
         $phonenum_lists = Phone_number::all();
         return view('form.table.phoneNumberTable', compact('phonenum_lists'));
     }
@@ -432,6 +441,50 @@ class FormController extends Controller
             return response()->json([
                 'message' => $th->getMessage()
             ], 500);
+        }
+    }
+
+    public function formType() {
+        $form_cates = Form_category::all();
+        $form_types = Form_type::all();
+        return view('appData.formType.formTypeTable', compact('form_cates', 'form_types'));
+    }
+
+    public function formTypeStore(Request $request) {
+        try {
+            Form_type::create([
+                "name" => $request->formTypeName,
+                "category" => $request->formCate,
+                "type_code" => $request->formTypeCode
+            ]);
+            return redirect()->back()->with(['success' => "บันทึกประเภทแบบฟอร์มสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถบันทึกประเภทแบบฟอร์ม"]);
+        }
+    }
+
+    public function formTypeUpdate(Request $request, $ftid) {
+        try {
+            Form_type::where('id', $ftid)->update([
+                "name" => $request->formTypeName,
+                "category" => $request->formCate,
+                "type_code" => $request->formTypeCode
+            ]);
+            return redirect()->back()->with(['success' => "แก้ไขประเภทแบบฟอร์มสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถแก้ไขประเภทแบบฟอร์ม"]);
+        }
+    }
+
+    public function formTypeDelete($ftid) {
+        try {
+            Form_type::where('id', $ftid)->delete();
+            return redirect()->back()->with(['success' => "ลบประเภทแบบฟอร์มสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถลบประเภทแบบฟอร์ม"]);
         }
     }
 }

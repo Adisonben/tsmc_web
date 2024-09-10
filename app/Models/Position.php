@@ -44,4 +44,22 @@ class Position extends Model
 
         return $query->first();
     }
+
+    public function hasPermissionName($permissionName, $orgId = null)
+    {
+        $query = $this->permissions()
+            ->where('perm_name', $permissionName);
+
+        if ($orgId !== null) {
+            $query->where('position_has_permissions.org', $orgId);
+        } else {
+            $query->whereNull('position_has_permissions.org');
+        }
+        if ($query->exists()) {
+            $perm = $query->first();
+        } else {
+            $perm = $this->permissions()->where('perm_name', $permissionName)->whereNull('position_has_permissions.org')->first();
+        }
+        return $perm;
+    }
 }

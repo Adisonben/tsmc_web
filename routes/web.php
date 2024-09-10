@@ -74,10 +74,15 @@ Route::get('/form/table/type', [FormController::class, 'tableType'])->name('form
 Route::get('/form/table/{formid}', [FormController::class, 'tableForm'])->name('form.table')->middleware('auth');
 Route::get('/form/response/{formresid}/detail', [FormController::class, 'formResDetail'])->name('form.detail')->middleware('auth');
 Route::get('/form/report/{formresid}', [FormController::class, 'formReport'])->name('form.report')->middleware('auth');
-Route::get('/table/phone-number', [FormController::class, 'tableNotHasForm'])->name('phonenum.table')->middleware('auth');
+Route::get('/formtable/{fcode}', [FormController::class, 'tableNotHasForm'])->name('formtype.table')->middleware('auth');
 Route::post('/form/phone-number/store', [FormController::class, 'storePhonenum'])->name('form.store.phonenum')->middleware('auth');
 
 Route::get('/form/approve/{formresid}/{formresstatus}', [FormController::class, 'approveForm'])->name('form.approve')->middleware('auth');
+
+Route::get('/form-types', [FormController::class, 'formType'])->name('form.types')->middleware('auth');
+Route::post('/form-types/store', [FormController::class, 'formTypeStore'])->name('form.types.store')->middleware('auth');
+Route::get('/form-types/delete/{ftid}', [FormController::class, 'formTypeDelete'])->name('form.types.delete')->middleware('auth');
+Route::post('/form-types/update/{ftid}', [FormController::class, 'formTypeUpdate'])->name('form.types.update')->middleware('auth');
 
 Route::post('/form/phone-number/{phonenumid}/update', [FormController::class, 'updatePhonenum'])->name('form.update.phonenum')->middleware('auth');
 Route::delete('/phonenum/delete/{phonenumid}', [FormController::class, 'deletePhonenum'])->name('form.delete.phonenum')->middleware('auth');
