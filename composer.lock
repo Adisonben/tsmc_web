@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3284dfbdf4436fb17e7e0be087a36c7e",
+    "content-hash": "483eefceab0f410014e3aba687772e62",
     "packages": [
         {
             "name": "brick/math",
@@ -2122,16 +2122,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.7.0",
+            "version": "3.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "cb4374784c87d0a0294e8513a52eb63c0aff3139"
+                "reference": "bbd3eef89af8ba66a3aa7952b5439168fbcc529f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/cb4374784c87d0a0294e8513a52eb63c0aff3139",
-                "reference": "cb4374784c87d0a0294e8513a52eb63c0aff3139",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bbd3eef89af8ba66a3aa7952b5439168fbcc529f",
+                "reference": "bbd3eef89af8ba66a3aa7952b5439168fbcc529f",
                 "shasum": ""
             },
             "require": {
@@ -2224,7 +2224,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-16T22:29:20+00:00"
+            "time": "2024-08-19T06:22:39+00:00"
         },
         {
             "name": "nette/schema",
@@ -2519,6 +2519,61 @@
                 }
             ],
             "time": "2024-03-06T16:17:14+00:00"
+        },
+        {
+            "name": "phattarachai/thaidate",
+            "version": "12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phattarachai/thaidate.git",
+                "reference": "4a759081179f3401a5dd47a39db923aee51c301c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phattarachai/thaidate/zipball/4a759081179f3401a5dd47a39db923aee51c301c",
+                "reference": "4a759081179f3401a5dd47a39db923aee51c301c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.13",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Phattarachai\\Thaidate\\ThaidateServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/function.php"
+                ],
+                "psr-4": {
+                    "Phattarachai\\Thaidate\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Phattarachai Chaimongkol",
+                    "email": "phatchai28@gmail.com"
+                }
+            ],
+            "description": "A Laravel, PHP package for thaidate() function",
+            "homepage": "https://phattarachai.dev",
+            "support": {
+                "issues": "https://github.com/phattarachai/thaidate/issues",
+                "source": "https://github.com/phattarachai/thaidate/tree/12.1"
+            },
+            "time": "2021-06-07T20:17:19+00:00"
         },
         {
             "name": "phpoption/phpoption",
