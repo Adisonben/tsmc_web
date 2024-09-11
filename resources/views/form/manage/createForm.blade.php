@@ -34,7 +34,7 @@
                                         <select class="form-select" aria-label="Default select example" name="formType" required>
                                             <option disabled>เลือกหมวดหมู่แบบฟอร์ม</option>
                                             @foreach ($form_types as $form_type)
-                                                <option value="{{ $form_type->id }}">{{ $form_type->name }}</option>
+                                                <option value="{{ $form_type->id }}">{{ $form_type->type_code ?? '' }} : {{ $form_type->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
