@@ -114,8 +114,13 @@
                                                 <td>{{ $dailywork->vehicle_plate }}</td>
                                                 <td>{{ $dailywork->employee_name }}</td>
                                                 <td>{{ $dailywork->customer_name }}</td>
-                                                <td>{{ $dailywork->receive_date }}</td>
-                                                <td>{{ $dailywork->drop_date }}</td>
+                                                @php
+                                                    $receiveDate = new Carbon\Carbon($dailywork->receive_date);
+                                                    $dropDate = new Carbon\Carbon($dailywork->drop_date);
+                                                    // dd($receiveDate->format('j M Y H:i:s'));
+                                                @endphp
+                                                <td>{{ $receiveDate->thaidate('j M Y \\เวลา H:i') }}</td>
+                                                <td>{{ $dropDate->thaidate('j M Y \\เวลา H:i') }}</td>
                                                 <td>
                                                     @if ($dailywork->status)
                                                         <span class="badge text-bg-success">ดำเนินการสำเร็จ</span>
@@ -198,6 +203,17 @@
                                                                             ดำเนินการเสร็จสิ้น
                                                                         </label>
                                                                     </div>
+                                                                    @if ($dailywork->status)
+                                                                        <div class="col-12 mb-3">
+                                                                            @php
+                                                                                $receiveDate = new Carbon\Carbon($dailywork->receive_date);
+                                                                                $dropDate = new Carbon\Carbon($dailywork->drop_date);
+
+                                                                                $difference = $receiveDate->diffAsCarbonInterval($dropDate); // y m d h i s d invert days
+                                                                            @endphp
+                                                                            <p>เวลาที่ใช้ : {{ $difference->d ? $difference->d . " วัน " : '' }}{{ $difference->h ? $difference->h . " ชม. " : '' }}</p>
+                                                                        </div>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
