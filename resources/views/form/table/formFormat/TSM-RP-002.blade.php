@@ -148,7 +148,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">เพิ่มการปฏิบัติงานประจำวัน</h1>
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">แก้ไขการปฏิบัติงานประจำวัน</h1>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
@@ -197,12 +197,6 @@
                                                                         <label for="prodVolume" class="form-label">ปริมาณสินค้า</label>
                                                                         <input type="text" class="form-control" maxlength="100" value="{{ $dailywork->product_volume }}" {{ $dailywork->status ? 'disabled' : '' }} id="prodVolume" name="prodVolume" placeholder="กรอกปริมาณสินค้า">
                                                                     </div>
-                                                                    <div class="col-12 mb-3">
-                                                                        <input class="form-check-input" type="checkbox" value="1" name="checkFinish" id="checkFinish" {{ $dailywork->status ? 'disabled' : '' }} {{ $dailywork->status ? 'checked' : '' }}>
-                                                                        <label class="form-check-label" for="checkFinish">
-                                                                            ดำเนินการเสร็จสิ้น
-                                                                        </label>
-                                                                    </div>
                                                                     @if ($dailywork->status)
                                                                         <div class="col-12 mb-3">
                                                                             @php
@@ -212,6 +206,13 @@
                                                                                 $difference = $receiveDate->diffAsCarbonInterval($dropDate); // y m d h i s d invert days
                                                                             @endphp
                                                                             <p>เวลาที่ใช้ : {{ $difference->d ? $difference->d . " วัน " : '' }}{{ $difference->h ? $difference->h . " ชม. " : '' }}</p>
+                                                                        </div>
+                                                                    @else
+                                                                        <div class="col-12 mb-3">
+                                                                            <input class="form-check-input" type="checkbox" value="1" name="checkFinish" id="checkFinish" {{ $dailywork->status ? 'disabled' : '' }} {{ $dailywork->status ? 'checked' : '' }}>
+                                                                            <label class="form-check-label" for="checkFinish">
+                                                                                ดำเนินการเสร็จสิ้น
+                                                                            </label>
                                                                         </div>
                                                                     @endif
                                                                 </div>

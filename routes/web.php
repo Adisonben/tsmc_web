@@ -94,3 +94,7 @@ Route::delete('/filepond/delete',[FileUploadController::class,'filepondDelete'])
 Route::post('/form/daily-work/store', [FormController::class, 'storeDailyWork'])->name('form.store.dailywork')->middleware('auth');
 Route::post('/form/daily-work/update/{fid}', [FormController::class, 'updateDailyWork'])->name('form.update.dailywork')->middleware('auth');
 Route::get('/form/daily-work/delete/{fid}', [FormController::class, 'deleteDailyWork'])->name('form.delete.dailywork')->middleware('auth');
+
+Route::post('/form/repair-emergency/store', [FormController::class, 'storeRepairEmerg'])->name('form.store.repair.emergency')->middleware('auth');
+Route::post('/form/repair-emergency/update/{fid}', [FormController::class, 'updateRepairEmerg'])->name('form.update.repair.emergency')->middleware('auth');
+Route::get('/form/repair-emergency/delete/{fid}', [FormController::class, 'deleteRepairEmerg'])->name('form.delete.repair.emergency')->middleware('auth');
