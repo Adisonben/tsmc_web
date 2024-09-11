@@ -57,7 +57,7 @@ class FormCategoriesSeeder extends Seeder
                 'title' => 'การวิเคราะห์และประเมินผล',
                 'type' => [
                     [
-                        "name" => "แบบฟอร์มบันทึกหมายเลขโทรศัพท์ฉุกเฉิน",
+                        "name" => "บันทึกหมายเลขโทรศัพท์ฉุกเฉิน",
                         "code" => "TSM-AI-004"
                     ]
                 ],

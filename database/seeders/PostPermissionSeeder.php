@@ -17,7 +17,7 @@ class PostPermissionSeeder extends Seeder
             'ทั้งหมด',
             'ฝ่าย',
             'ตำแหน่ง',
-            'ผู้ใช้',
+            'บุคคล',
         ];
 
         foreach ($postPerms as $postPerm) {
