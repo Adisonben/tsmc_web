@@ -167,8 +167,8 @@
                         </table>
                     </div>
                 </div> {{-- End Department Card --}}
-                <div class="d-flex justify-content-center">
-                    <img src="/images/assets/position_diagram.png" alt="">
+                <div class="d-flex justify-content-center w-100">
+                    <img src="/images/assets/position_diagram.png" class="object-fit-contain mw-100" alt="">
                 </div>
             </div>
         </div>
