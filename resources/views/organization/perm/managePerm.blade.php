@@ -40,10 +40,6 @@
                                 </div>
                                 <hr>
                             @endforeach
-
-                            <div>
-                                <button class="btn btn-success">บันทึก</button>
-                            </div>
                         </form>
                     </div>
                 </div>
