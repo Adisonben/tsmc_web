@@ -32,7 +32,8 @@ class FormController extends Controller
      */
     public function create()
     {
-        $form_types = Form_type::all();
+        $can_create_forms = ["TSM-V-001", "TSM-HR-003", "TSM-HR-002", "TSM-HR-001"];
+        $form_types = Form_type::whereIn("type_code", $can_create_forms)->get();
         $opt_types = Option_type::all();
         return view('form.manage.createForm', compact('form_types', 'opt_types'));
     }
