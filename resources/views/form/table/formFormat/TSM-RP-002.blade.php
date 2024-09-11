@@ -42,7 +42,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-6 mb-3">
                                                     <label for="assignDate" class="form-label">วันที่สั่งงาน</label>
-                                                    <input type="date" class="form-control" id="assignDate" name="assignDate">
+                                                    <input type="datetime-local" class="form-control" id="assignDate" name="assignDate">
                                                 </div>
                                                 <div class="col-12 mb-3">
                                                     <label for="cusName" class="form-label">ชื่อลูกค้า</label>
@@ -54,7 +54,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-6 mb-3">
                                                     <label for="recDate" class="form-label">วันที่รับสินค้า</label>
-                                                    <input type="date" class="form-control" id="recDate" name="recDate">
+                                                    <input type="datetime-local" class="form-control" id="recDate" name="recDate">
                                                 </div>
                                                 <div class="col-12 col-md-6 mb-3">
                                                     <label for="sendPlace" class="form-label">สถานที่ส่งสินค้า</label>
@@ -62,7 +62,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-6 mb-3">
                                                     <label for="sendDate" class="form-label">วันที่ส่งสินค้า</label>
-                                                    <input type="date" class="form-control" id="sendDate" name="sendDate">
+                                                    <input type="datetime-local" class="form-control" id="sendDate" name="sendDate">
                                                 </div>
                                                 <div class="col-12 mb-3">
                                                     <label for="prodVolume" class="form-label">ปริมาณสินค้า</label>
@@ -166,7 +166,7 @@
                                                                     </div>
                                                                     <div class="col-12 col-md-6 mb-3">
                                                                         <label for="assignDate" class="form-label">วันที่สั่งงาน</label>
-                                                                        <input type="date" class="form-control" id="assignDate" value="{{ (new DateTime($dailywork->assign_date))->format('Y-m-d') }}" {{ $dailywork->status ? 'disabled' : '' }} name="assignDate">
+                                                                        <input type="datetime-local" class="form-control" id="assignDate" value="{{ $dailywork->assign_date }}" {{ $dailywork->status ? 'disabled' : '' }} name="assignDate">
                                                                     </div>
                                                                     <div class="col-12 mb-3">
                                                                         <label for="cusName" class="form-label">ชื่อลูกค้า</label>
@@ -178,7 +178,7 @@
                                                                     </div>
                                                                     <div class="col-12 col-md-6 mb-3">
                                                                         <label for="recDate" class="form-label">วันที่รับสินค้า</label>
-                                                                        <input type="date" class="form-control" id="recDate" value="{{ (new DateTime($dailywork->receive_date))->format('Y-m-d') }}" {{ $dailywork->status ? 'disabled' : '' }} name="recDate">
+                                                                        <input type="datetime-local" class="form-control" id="recDate" value="{{ $dailywork->receive_date }}" {{ $dailywork->status ? 'disabled' : '' }} name="recDate">
                                                                     </div>
                                                                     <div class="col-12 col-md-6 mb-3">
                                                                         <label for="sendPlace" class="form-label">สถานที่ส่งสินค้า</label>
@@ -186,7 +186,7 @@
                                                                     </div>
                                                                     <div class="col-12 col-md-6 mb-3">
                                                                         <label for="sendDate" class="form-label">วันที่ส่งสินค้า</label>
-                                                                        <input type="date" class="form-control" id="sendDate" value="{{ (new DateTime($dailywork->drop_date))->format('Y-m-d') }}" {{ $dailywork->status ? 'disabled' : '' }} name="sendDate">
+                                                                        <input type="datetime-local" class="form-control" id="sendDate" value="{{ $dailywork->drop_date }}" {{ $dailywork->status ? 'disabled' : '' }} name="sendDate">
                                                                     </div>
                                                                     <div class="col-12 mb-3">
                                                                         <label for="prodVolume" class="form-label">ปริมาณสินค้า</label>
