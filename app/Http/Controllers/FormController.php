@@ -12,8 +12,10 @@ use App\Models\Option_type;
 use App\Models\Phone_number;
 use App\Models\Quest_group;
 use App\Models\Question;
+use App\Models\tsm_rp_002_data;
 use App\Models\User_detail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class FormController extends Controller
@@ -311,7 +313,8 @@ class FormController extends Controller
             $phonenum_lists = Phone_number::all();
             return view('form.table.formFormat.' . $fcode, compact('phonenum_lists'));
         } elseif ($fcode == "TSM-RP-002") {
-            return view('form.table.formFormat.' . $fcode);
+            $dailyworks = tsm_rp_002_data::where('org', Auth()->user()->userDetail->org)->get();
+            return view('form.table.formFormat.' . $fcode , compact('dailyworks'));
         }
     }
 
@@ -486,6 +489,64 @@ class FormController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with(['error' => "ไม่สามารถลบประเภทแบบฟอร์ม"]);
+        }
+    }
+
+    public function storeDailyWork(Request $request) {
+        // dd($request->all());
+        try {
+            tsm_rp_002_data::create([
+                'work_num' => $request->workNum,
+                'vehicle_plate' => $request->vehPlate,
+                'employee_name' => $request->empName,
+                'assign_date' => $request->assignDate,
+                'customer_name' => $request->cusName,
+                'receive_place' => $request->recPlace,
+                'receive_date' => $request->recDate,
+                'drop_place' => $request->sendPlace,
+                'drop_date' => $request->sendDate,
+                'product_volume' => $request->prodVolume,
+                'status' => 0,
+                'created_by' => $request->user()->id,
+                'org' => $request->user()->userDetail->org,
+            ]);
+            return redirect()->back()->with(['success' => "เพิ่มการปฏิบัติงานประจำวันสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถเพิ่มการปฏิบัติงานประจำวัน"]);
+        }
+    }
+
+    public function updateDailyWork(Request $request, $formid) {
+        // dd($request->all(), $formid);
+        try {
+            tsm_rp_002_data::where('id', $formid)->update([
+                'work_num' => $request->workNum,
+                'vehicle_plate' => $request->vehPlate,
+                'employee_name' => $request->empName,
+                'assign_date' => $request->assignDate,
+                'customer_name' => $request->cusName,
+                'receive_place' => $request->recPlace,
+                'receive_date' => $request->recDate,
+                'drop_place' => $request->sendPlace,
+                'drop_date' => $request->sendDate,
+                'product_volume' => $request->prodVolume,
+                'status' => $request->checkFinish ? 1 : 0,
+            ]);
+            return redirect()->back()->with(['success' => "อัพเดทการปฏิบัติงานประจำวันสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถอัพเดทการปฏิบัติงานประจำวัน"]);
+        }
+    }
+    public function deleteDailyWork($formid) {
+        // dd($request->all(), $formid);
+        try {
+            tsm_rp_002_data::where('id', $formid)->delete();
+            return redirect()->back()->with(['success' => "ลบการปฏิบัติงานประจำวันสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถลบการปฏิบัติงานประจำวัน"]);
         }
     }
 }

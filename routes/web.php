@@ -90,3 +90,7 @@ Route::delete('/phonenum/delete/{phonenumid}', [FormController::class, 'deletePh
 // upload file route
 Route::post('/posts/file-upload',[FileUploadController::class,'filepondUpload']);
 Route::delete('/filepond/delete',[FileUploadController::class,'filepondDelete']);
+
+Route::post('/form/daily-work/store', [FormController::class, 'storeDailyWork'])->name('form.store.dailywork')->middleware('auth');
+Route::post('/form/daily-work/update/{fid}', [FormController::class, 'updateDailyWork'])->name('form.update.dailywork')->middleware('auth');
+Route::get('/form/daily-work/delete/{fid}', [FormController::class, 'deleteDailyWork'])->name('form.delete.dailywork')->middleware('auth');
