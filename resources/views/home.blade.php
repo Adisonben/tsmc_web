@@ -40,7 +40,7 @@
                                     <p class="mb-0" style="font-size: .8rem">{{ optional($post->getUser->getPosition)->name ?? '-' }} | <i class="bi bi-clock"></i> {{ $post->updated_at }}</p>
                                 </div>
                             </div>
-                            <div {{ Auth::user()->id == $post->created_by ? '' : 'hidden' }}>
+                            <div {{ (Auth::user()->id == $post->created_by || Auth::user()->id == 1) ? '' : 'hidden' }}>
                                 <a href="{{ route('posts.edit', ['post' => $post->post_id]) }}" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></a>
                                 <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $post->id }}" del-target="posts" data-bs-toggle="tooltip" data-bs-title="ลบ">
                                     <i class="bi bi-trash"></i>
