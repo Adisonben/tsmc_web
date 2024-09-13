@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
 use App\Models\Form;
 use App\Models\Form_answer;
 use App\Models\Form_category;
@@ -12,8 +13,10 @@ use App\Models\Option_type;
 use App\Models\Phone_number;
 use App\Models\Quest_group;
 use App\Models\Question;
+use App\Models\Repair_history_data;
 use App\Models\tsm_ai_005_data;
 use App\Models\tsm_rp_002_data;
+use App\Models\tsm_v_002_data;
 use App\Models\User_detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -285,7 +288,7 @@ class FormController extends Controller
 
     public function tableForm(Request $request, $formid) {
         $form = Form::where('form_id', $formid)->firstOrFail();
-        $form_responses = Form_response::where('form_id', $form->id)->whereNot('status', '2')->get();
+        $form_responses = Form_response::where('form_id', $form->id)->whereNot('status', '2')->orderBy("created_at", "desc")->get();
         $formtype_check = optional($form->getType)->name ?? "";
         $formFormat = "";
         switch ($formtype_check) {
@@ -311,14 +314,17 @@ class FormController extends Controller
 
     public function tableNotHasForm($fcode) {
         if ($fcode == "TSM-AI-004") {
-            $phonenum_lists = Phone_number::all();
+            $phonenum_lists = Phone_number::orderBy("created_at", "desc")->get();
             return view('form.table.formFormat.' . $fcode, compact('phonenum_lists'));
         } elseif ($fcode == "TSM-RP-002") {
-            $dailyworks = tsm_rp_002_data::where('org', Auth()->user()->userDetail->org)->get();
+            $dailyworks = tsm_rp_002_data::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
             return view('form.table.formFormat.' . $fcode , compact('dailyworks'));
         } elseif ($fcode == "TSM-AI-005") {
-            $repairEmergs = tsm_ai_005_data::where('org', Auth()->user()->userDetail->org)->get();
+            $repairEmergs = tsm_ai_005_data::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
             return view('form.table.formFormat.' . $fcode, compact('repairEmergs'));
+        } elseif ($fcode == "TSM-V-002") {
+            $repairHistories = tsm_v_002_data::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
+            return view('form.table.formFormat.' . $fcode, compact('repairHistories'));
         }
     }
 
@@ -458,7 +464,8 @@ class FormController extends Controller
             Form_type::create([
                 "name" => $request->formTypeName,
                 "category" => $request->formCate,
-                "type_code" => $request->formTypeCode
+                "type_code" => $request->formTypeCode,
+                "form_group" => $request->formGroup,
             ]);
             return redirect()->back()->with(['success' => "บันทึกประเภทแบบฟอร์มสำเร็จ"]);
         } catch (\Throwable $th) {
@@ -472,7 +479,8 @@ class FormController extends Controller
             Form_type::where('id', $ftid)->update([
                 "name" => $request->formTypeName,
                 "category" => $request->formCate,
-                "type_code" => $request->formTypeCode
+                "type_code" => $request->formTypeCode,
+                "form_group" => $request->formGroup,
             ]);
             return redirect()->back()->with(['success' => "แก้ไขประเภทแบบฟอร์มสำเร็จ"]);
         } catch (\Throwable $th) {
@@ -597,5 +605,64 @@ class FormController extends Controller
             //throw $th;
             return redirect()->back()->with(['error' => "ไม่สามารถลบการตรวจสอบและซ่อมบำรุงอุปกรณ์"]);
         }
+    }
+
+    public function createRepairHis() {
+        $cars = Car::where('owner_org', Auth()->user()->userDetail->org)->get();
+        return view('form.recording.formformat.TSM-V-002', compact('cars'));
+    }
+
+    public function storeRepairHis(Request $request) {
+        try {
+            $carInfo = Car::find($request->carId);
+            $tsmdata = [
+                "driver_name" => $request->driverName,
+                "car_id" => $request->carId,
+                "car_plate" => $carInfo->plate_num,
+                "car_type" => $request->carType,
+                "car_model" => $request->carModel,
+                "order_num" => $request->repairNum,
+                "repair_type" => "",
+                "mileage" => $request->mileage,
+                "create_by" => $request->user()->id,
+                "org" => $request->user()->userDetail->org,
+            ];
+            $formData = tsm_v_002_data::create($tsmdata);
+            $total_cost = 0;
+            foreach ($request->repairBy ?? [] as $index => $value) {
+                Repair_history_data::create([
+                    "order_num" => $formData->order_num,
+                    "repair_type" => $request->repairType[$index],
+                    "repair_by" => $request->repairBy[$index],
+                    "spare_part" => $request->repairPart[$index],
+                    "cost" => $request->repairCost[$index],
+                ]);
+                $total_cost += $request->repairCost[$index];
+            }
+            $formData->cost_amount = $total_cost;
+            $formData->save();
+            return redirect()->back()->with(['success' => "เพิ่มประวัติการบำรุงรักษาและซ่อมรถสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถเพิ่มประวัติการบำรุงรักษาและซ่อมรถ"]);
+        }
+    }
+
+    public function deleteRepairHis($fid) {
+        try {
+            $formData = tsm_v_002_data::findOrFail($fid);
+            Repair_history_data::where('order_num', $formData->order_num)->delete();
+            $formData->delete();
+            return redirect()->back()->with(['success' => "ลบประวัติการบำรุงรักษาและซ่อมรถสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถลบประวัติการบำรุงรักษาและซ่อมรถ"]);
+        }
+    }
+
+    public function detailRepairHis($fid) {
+        $formData = tsm_v_002_data::findOrFail($fid);
+        $historyData = Repair_history_data::where('order_num', $formData->order_num)->get();
+        return view('form.recording.detail.TSM-V-002', compact('formData', 'historyData'));
     }
 }

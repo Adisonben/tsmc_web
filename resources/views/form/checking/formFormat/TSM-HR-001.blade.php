@@ -88,7 +88,7 @@
                             </div>
                             <div>
                                 <button class="btn btn-success" type="submit">บันทึก</button>
-                                <button class="btn btn-secondary" type="submit">กลับ</button>
+                                <a href="{{ route('form.checking.type') }}" class="btn btn-secondary" >กลับ</a>
                             </div>
                         </form>
                     </div>

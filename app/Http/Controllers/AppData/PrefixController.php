@@ -33,6 +33,7 @@ class PrefixController extends Controller
         try {
             Prefix::create([
                 'name' => $request->prefixName,
+                'created_by' => $request->user()->id,
             ]);
             return redirect()->route('prefixes.index')->with(['success' => "เพิ่มคำนำหน้าสำเร็จ"]);
         } catch (\Throwable $th) {

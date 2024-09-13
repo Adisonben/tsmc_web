@@ -35,9 +35,14 @@
                                         <img src="/images/icons/tsmc_logo.png" class="object-fit-contain" width="40" alt="">
                                     @endif
                                 </div>
+                                @php
+                                    $createdDate = new Carbon\Carbon($post->updated_at);
+                                    $diffDay = $createdDate->diffInDays(Carbon\Carbon::now());
+                                    $diffDate = $createdDate->diffForHumans(Carbon\Carbon::now());
+                                @endphp
                                 <div class="px-2 rounded-2" style="background-color: rgba(255, 255, 255, .6)">
                                     <p class="mb-0 fw-bold fs-6">{{ optional($post->getUser->getPrefix)->name . optional($post->getUser)->fname }} {{ optional($post->getUser)->lname }}</p>
-                                    <p class="mb-0" style="font-size: .8rem">{{ optional($post->getUser->getPosition)->name ?? '-' }} | <i class="bi bi-clock"></i> {{ $post->updated_at }}</p>
+                                    <p class="mb-0" style="font-size: .8rem">{{ optional($post->getUser->getPosition)->name ?? '-' }} | <i class="bi bi-clock"></i> {{ $diffDay > 2 ? $createdDate->thaidate('j M Y') : $diffDate }}</p>
                                 </div>
                             </div>
                             <div {{ (Auth::user()->id == $post->created_by || Auth::user()->id == 1) ? '' : 'hidden' }}>

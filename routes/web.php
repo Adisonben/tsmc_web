@@ -4,6 +4,7 @@ use App\Http\Controllers\Account\UserController;
 use App\Http\Controllers\AppData\CarTypeController;
 use App\Http\Controllers\AppData\LicenseTypeController;
 use App\Http\Controllers\AppData\PrefixController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\Organization\CarController;
@@ -98,3 +99,18 @@ Route::get('/form/daily-work/delete/{fid}', [FormController::class, 'deleteDaily
 Route::post('/form/repair-emergency/store', [FormController::class, 'storeRepairEmerg'])->name('form.store.repair.emergency')->middleware('auth');
 Route::post('/form/repair-emergency/update/{fid}', [FormController::class, 'updateRepairEmerg'])->name('form.update.repair.emergency')->middleware('auth');
 Route::get('/form/repair-emergency/delete/{fid}', [FormController::class, 'deleteRepairEmerg'])->name('form.delete.repair.emergency')->middleware('auth');
+
+Route::get('/formtable/repair-history/create', [FormController::class, 'createRepairHis'])->name('form.create.repair.history')->middleware('auth');
+Route::get('/formtable/repair-history/delete/{fid}', [FormController::class, 'deleteRepairHis'])->name('form.delete.repair.history')->middleware('auth');
+Route::get('/formtable/repair-history/detail/{fid}', [FormController::class, 'detailRepairHis'])->name('form.detail.repair.history')->middleware('auth');
+Route::post('/formtable/repair-history/store', [FormController::class, 'storeRepairHis'])->name('form.store.repair.history')->middleware('auth');
+Route::get('/get-car-details/{carId}', [CarController::class, 'getCarDetail'])->middleware('auth');
+
+Route::get('/formtable/{formCode}/export', [ExportController::class, "exportData"])->name('form.export')->middleware('auth');
+Route::get('/formtable/TSM-AI-004/search', [ExportController::class, "searchPhoneForm"]);
+Route::get('/formtable/TSM-AI-005/search', [ExportController::class, "searchRepairEmerForm"]);
+Route::get('/formtable/TSM-RP-002/search', [ExportController::class, "searchDailyWork"]);
+
+Route::get('/formtable/TSM-RP-002/export/{fid}', [ExportController::class, "exportDailyWork"])->name('form.export.dairy.work');
+
+Route::get('/formtable/TSM-V-002/search', [ExportController::class, "searchRepairHistory"]);

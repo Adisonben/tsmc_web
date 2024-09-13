@@ -1,0 +1,121 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="">
+        <div class="row justify-content-center">
+            <div class="px-3 px-md-5">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-0 fs-4">ออกรายงาน หมายเลขโทรศัพท์ฉุกเฉิน</p>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        @if (session('success'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        @elseif (session('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="searchBox" placeholder="กรองข้อมูล">
+                            <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" onclick="window.print()">Print</button>
+                    </div>
+                </div>
+                <hr>
+                <p class="text-center">ตัวอย่างเอกสาร</p>
+                <hr>
+                <div class="d-md-flex justify-content-center overflow-x-auto">
+                    <div id="exportPaper">
+                        <p class="text-center fs-5 mb-0 fw-bold">{{ Auth()->user()->userDetail->getOrg->name }}</p>
+                        <p class="text-center fs-5 fw-bold">รายงานการบันทึก หมายเลขโทรศัพท์ แจ้งเหตุฉุกเฉิน</p>
+                        <div id="dataTable">
+                            <table class="table table-bordered m-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ลำดับ</th>
+                                        <th scope="col">ชื่อบุคคล</th>
+                                        <th scope="col">ตำแหน่ง</th>
+                                        <th scope="col">เบอร์สำนักงาน</th>
+                                        <th scope="col">เบอร์บ้าน</th>
+                                        <th scope="col">เบอร์มือถือ</th>
+                                        <th scope="col">วันที่บันทึก</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (count($phonenum_lists ?? []) > 0)
+                                        @foreach ($phonenum_lists as $index => $phonenum_list)
+                                            @php
+                                                $createdDate = new Carbon\Carbon($phonenum_list->updated_at);
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $phonenum_list->person_name }}</td>
+                                                <td>{{ $phonenum_list->position ?? '-' }}</td>
+                                                <td>{{ $phonenum_list->office_num ?? '-' }}</td>
+                                                <td>{{ $phonenum_list->home_num ?? '-' }}</td>
+                                                <td>{{ $phonenum_list->cellphone ?? '-' }}</td>
+                                                <td>{{ $createdDate->thaidate('j M Y') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="6"><div class="text-center">ไม่พบข้อมูล</div></td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-end" style="font-size: 10px">print on TSMC at {{ (new Carbon\Carbon())->format('d/m/Y G:i:s') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function() {
+            $('#searchBox').on('keyup', function() {
+                var queryText = $(this).val();
+                $.ajax({
+                    url:"/formtable/TSM-AI-004/search",
+                    type:"GET",
+                    data:{'search' : queryText},
+                    success: function(data){
+                        $('#dataTable').html(data);
+                    }
+                });
+            })
+        });
+    </script>
+    <style>
+        #exportPaper {
+            background-color: white;
+            padding: 1cm;
+            width: 210mm;
+        }
+
+        @media print {
+            body {
+                visibility: hidden;
+            }
+            #exportPaper {
+                visibility: visible;
+                position: absolute;
+                left: 0;
+                top: 0;
+                color: black;
+            }
+        }
+    </style>
+@endsection
