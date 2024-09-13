@@ -122,8 +122,8 @@
                                                     $dropDate = new Carbon\Carbon($dailywork->drop_date);
                                                     // dd($receiveDate->format('j M Y H:i:s'));
                                                 @endphp
-                                                <td>{{ $receiveDate->thaidate('j M Y \\เวลา H:i') }}</td>
-                                                <td>{{ $dropDate->thaidate('j M Y \\เวลา H:i') }}</td>
+                                                <td>{{ $dailywork->receive_date ? $receiveDate->thaidate('j M Y \\เวลา H:i') : '-' }}</td>
+                                                <td>{{ $dailywork->drop_date ? $dropDate->thaidate('j M Y \\เวลา H:i') : '-' }}</td>
                                                 <td>
                                                     @if ($dailywork->status)
                                                         <span class="badge text-bg-success">ดำเนินการสำเร็จ</span>
