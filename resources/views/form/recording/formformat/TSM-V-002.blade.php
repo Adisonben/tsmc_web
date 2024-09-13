@@ -89,7 +89,7 @@
                                 <button type="button" class="btn btn-primary" onclick="addGroupList(this)">เพิ่มรายการซ่อม</button>
                                 <button type="button" class="btn btn-danger" onclick="delGroupList()">ลบรายการซ่อม</button>
                                 <button class="btn btn-success" type="submit">บันทึก</button>
-                                <a href="{{ route('form.checking.type') }}" class="btn btn-secondary" >กลับ</a>
+                                <a href="/formtable/TSM-V-002" class="btn btn-secondary" >กลับ</a>
                             </div>
                         </form>
                     </div>
