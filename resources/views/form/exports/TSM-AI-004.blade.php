@@ -23,7 +23,7 @@
                         @endif
 
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="searchBox" placeholder="กรองข้อมูล">
+                            <input type="text" class="form-control" id="searchBox" placeholder="กรองข้อมูล (ชื่อ, ตำแหน่ง, เบอร์)">
                             <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
                         </div>
                     </div>
