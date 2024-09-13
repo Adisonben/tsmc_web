@@ -39,7 +39,7 @@
                     <td>{{ $createdDate->thaidate('j M Y') }}</td>
                     <td>{{ $repairHistorie->driver_name }}</td>
                     <td>{{ $repairHistorie->order_num }}</td>
-                    <td>{{ $repairHistorie->mileage }}</td>
+                    <td>{{ number_format($repairHistorie->mileage, 0, '.', ',') }}</td>
                     <td>
                         <ol class="list-group-numbered p-0 m-0">
                             @foreach ($repairHistorie->getRepairList ?? [] as $repairHis)
