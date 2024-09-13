@@ -18,7 +18,7 @@ class ExportController extends Controller
             return view('form.exports.TSM-AI-004', compact('phonenum_lists'));
         } elseif ($formCode == "TSM-AI-005") {
             // $formDatas = tsm_ai_005_data::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
-            return view('form.exports.TSM-AI-005', compact('formDatas'));
+            return view('form.exports.TSM-AI-005');
         } elseif ($formCode == "TSM-RP-002") {
             return view('form.exports.TSM-RP-002');
         } elseif ($formCode == "TSM-V-002") {
