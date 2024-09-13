@@ -43,7 +43,7 @@
                     <td>
                         <ol class="list-group-numbered p-0 m-0">
                             @foreach ($repairHistorie->getRepairList ?? [] as $repairHis)
-                                <li class="list-group-item">{{ $repairHis->repair_type }}/{{ $repairHis->repair_by }}/{{ $repairHis->spare_part }}/{{ $repairHis->cost . "บาท" }}</li>
+                                <li class="list-group-item">{{ $repairHis->repair_type }}/{{ $repairHis->repair_by }}/{{ $repairHis->spare_part }}/{{ number_format($repairHis->cost, 0, '.', ',') . "บาท" }}</li>
                             @endforeach
                         </ol>
                     </td>
