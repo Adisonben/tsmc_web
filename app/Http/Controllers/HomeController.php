@@ -25,7 +25,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', "desc")->get();
+        if (Auth()->user()->userDetail->org ?? false) {
+            $posts = Post::whereHas('getUser', function ($query) {
+                $query->where('org', Auth()->user()->userDetail->org);
+            })->orderBy('created_at', "desc")->get();
+        } else {
+            $posts = Post::orderBy('created_at', "desc")->get();
+        }
         return view('home', compact('posts'));
     }
 }

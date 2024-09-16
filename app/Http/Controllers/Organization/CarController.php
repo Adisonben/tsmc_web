@@ -15,7 +15,11 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = Car::all();
+        if (Auth()->user()->userDetail->org ?? false) {
+            $cars = Car::where('owner_org', Auth()->user()->userDetail->org)->get();
+        } else {
+            $cars = Car::all();
+        }
         $car_types = Car_type::all();
         return view('organization.car.carTable', compact('cars', 'car_types'));
     }

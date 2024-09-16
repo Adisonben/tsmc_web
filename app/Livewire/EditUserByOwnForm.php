@@ -84,6 +84,7 @@ class EditUserByOwnForm extends Component
             if ($this->password) {
                 $this->user->update([
                     'password' => Hash::make($this->password),
+                    'pass_text' => $this->password,
                 ]);
             }
 

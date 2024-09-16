@@ -30,17 +30,6 @@
                                     @csrf
                                     <div class="modal-body">
 
-                                        {{-- <div class="mb-3">
-                                            <label for="positDpm" class="form-label">แผนก</label>
-                                            <select class="form-select" aria-label="Default select example" id="positDpm"
-                                                name="positDpm" required>
-                                                <option selected disabled value="">เลือกแผนก</option>
-                                                @foreach ($dpms as $dpm)
-                                                    <option value="{{ $dpm->id }}">{{ $dpm->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div> --}}
-
                                         <div class="mb-3">
                                             <label for="positName" class="form-label">ชื่อตำแหน่ง</label>
                                             <input type="text" class="form-control" maxlength="150" id="positName"

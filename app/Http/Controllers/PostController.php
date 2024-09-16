@@ -27,10 +27,18 @@ class PostController extends Controller
      */
     public function create()
     {
+        if (Auth()->user()->userDetail->org ?? false) {
+            $dpms = Department::whereHas('getBrn', function ($query) {
+                $query->where('org_id', Auth()->user()->userDetail->org);
+            })->get();
+            $positions = Position::where('org', Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+            $user_list = User_detail::whereNot('fname', 'admin')->where('org', Auth()->user()->userDetail->org)->get();
+        } else {
+            $dpms = Department::all();
+            $positions = Position::all();
+            $user_list = User_detail::whereNot('fname', 'admin')->get();
+        }
         $post_perms = Post_permission::all();
-        $dpms = Department::all();
-        $positions = Position::all();
-        $user_list = User_detail::whereNot('fname', 'admin')->get();
         return view('post.createPostForm', compact('post_perms', 'dpms', 'positions', 'user_list'));
     }
 

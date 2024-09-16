@@ -288,7 +288,9 @@ class FormController extends Controller
 
     public function tableForm(Request $request, $formid) {
         $form = Form::where('form_id', $formid)->firstOrFail();
-        $form_responses = Form_response::where('form_id', $form->id)->whereNot('status', '2')->orderBy("created_at", "desc")->get();
+        $form_responses = Form_response::where('form_id', $form->id)->whereNot('status', '2')->whereHas('getForm', function ($query) {
+            $query->where('org', Auth()->user()->userDetail->org);
+        })->orderBy("created_at", "desc")->get();
         $formtype_check = optional($form->getType)->name ?? "";
         $formFormat = "";
         switch ($formtype_check) {
@@ -314,7 +316,7 @@ class FormController extends Controller
 
     public function tableNotHasForm($fcode) {
         if ($fcode == "TSM-AI-004") {
-            $phonenum_lists = Phone_number::orderBy("created_at", "desc")->get();
+            $phonenum_lists = Phone_number::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
             return view('form.table.formFormat.' . $fcode, compact('phonenum_lists'));
         } elseif ($fcode == "TSM-RP-002") {
             $dailyworks = tsm_rp_002_data::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
@@ -434,7 +436,9 @@ class FormController extends Controller
     }
 
     public function verifyFormTable() {
-        $form_responses = Form_response::where('status', "2")->get();
+        $form_responses = Form_response::whereHas('getForm', function ($query) {
+            $query->where('org', Auth()->user()->userDetail->org);
+        })->where('status', "2")->get();
         return view('form.approveTable', compact('form_responses'));
     }
 

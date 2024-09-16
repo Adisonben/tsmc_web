@@ -28,7 +28,9 @@
                                             @if (count($cate->getForms ?? []) > 0)
                                                 @foreach ($cate->getForms as $form)
                                                     {{-- <a href="">{{ $formType->name }}</a> --}}
-                                                    <li class="list-group-item"><a href="{{ route('form.checking', ['formid' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a></li>
+                                                    @if (Auth()->user()->userDetail->org == $form->org)
+                                                        <li class="list-group-item"><a href="{{ route('form.checking', ['formid' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a></li>
+                                                    @endif
                                                 @endforeach
                                             @endif
                                         </ol>
