@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LoginHistory;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,5 +34,21 @@ class HomeController extends Controller
             $posts = Post::orderBy('created_at', "desc")->get();
         }
         return view('home', compact('posts'));
+    }
+
+    public function storeHistory(Request $request) {
+        try {
+            if ($request->user()) {
+                $loginHistory = new LoginHistory;
+                $loginHistory->user_id = $request->user()->id;
+                $loginHistory->ip_address = $request->ip();
+                $loginHistory->agent = $request->userAgent();
+                $loginHistory->save();
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        } finally {
+            return redirect()->route('home');
+        }
     }
 }

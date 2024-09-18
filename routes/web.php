@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'storeHistory'])->middleware('auth');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 
 // App data
@@ -47,6 +47,7 @@ Route::get('/position-permission/update/{positId}/{permId}/{status}', [PositionC
 
 Route::resource('users', UserController::class)->middleware('auth');
 Route::get('/users/{user}/edit-my-profile', [UserController::class, 'editByOwn'])->name('users.editByOwn')->middleware('auth');
+Route::get('/user-list/export', [UserController::class, 'exportUsers'])->name('user.list.export')->middleware('auth');
 Route::post('/users/store-image', [UserController::class, 'storeImage'])->name('users.store.image')->middleware('auth');
 
 

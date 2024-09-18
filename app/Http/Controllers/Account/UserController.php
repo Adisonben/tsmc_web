@@ -145,4 +145,15 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function exportUsers() {
+        if (Auth()->user()->userDetail->org ?? false) {
+            $users = User::whereNot('username', 'tsmcadmin')->whereHas('userDetail', function ($query) {
+                $query->where('org', Auth()->user()->userDetail->org);
+            })->get();
+        } else {
+            $users = User::whereNot('username', 'tsmcadmin')->get();
+        }
+        return view('account.exportUsers', compact('users'));
+    }
 }

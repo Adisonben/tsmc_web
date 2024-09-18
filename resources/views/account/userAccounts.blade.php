@@ -8,7 +8,10 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('ผู้ใช้ทั้งหมด') }}</p>
-                            <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">สร้าง</a>
+                            <div>
+                                <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">สร้าง</a>
+                                <a href="{{ route('user.list.export') }}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
+                            </div>
                         </div>
                     </div>
 
