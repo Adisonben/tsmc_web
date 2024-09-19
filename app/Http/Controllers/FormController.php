@@ -17,6 +17,7 @@ use App\Models\Repair_history_data;
 use App\Models\tsm_ai_005_data;
 use App\Models\tsm_rp_002_data;
 use App\Models\tsm_v_002_data;
+use App\Models\User;
 use App\Models\User_detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,6 +63,7 @@ class FormController extends Controller
                 'has_approve' => $request->approveCheck ? true : false,
                 'org' => $request->user()->userDetail->org,
                 'form_id' => Str::uuid(),
+                'created_by' => $request->user()->id,
             ]);
 
             foreach ($checkData ?? [] as $group) {
@@ -178,8 +180,12 @@ class FormController extends Controller
     }
 
     public function showFormTable($formTypeName) {
+        // Get all user id that subordinate or same position of this auth user
+        $posit_to_query = [Auth()->user()->userDetail->getPosition->id, ...Auth()->user()->userDetail->getPosition->descendants()->pluck('id')];
+        $user_id_to_query = User_detail::where('org', Auth()->user()->userDetail->org)->whereIn('position', $posit_to_query)->pluck('user_id');
+
         $form_type = Form_type::where('name', $formTypeName)->firstOrFail();
-        $form_lists = Form::where('type', $form_type->id)->get();
+        $form_lists = Form::where('type', $form_type->id)->where('org', Auth()->user()->userDetail->org)->get();
         return view('form.manage.formTables', compact('form_type', 'form_lists'));
     }
 
@@ -287,10 +293,19 @@ class FormController extends Controller
     }
 
     public function tableForm(Request $request, $formid) {
-        $form = Form::where('form_id', $formid)->firstOrFail();
-        $form_responses = Form_response::where('form_id', $form->id)->whereNot('status', '2')->whereHas('getForm', function ($query) {
-            $query->where('org', Auth()->user()->userDetail->org);
-        })->orderBy("created_at", "desc")->get();
+        $form = Form::where('form_id', $formid)->firstOrFail(); // get form
+
+        // Get all user id that subordinate or same position of this auth user
+        $posit_to_query = [Auth()->user()->userDetail->getPosition->id, ...Auth()->user()->userDetail->getPosition->descendants()->pluck('id')];
+        $user_id_to_query = User_detail::where('org', Auth()->user()->userDetail->org)->whereIn('position', $posit_to_query)->pluck('user_id');
+
+        // query form response
+        $form_responses = Form_response::where('form_id', $form->id)
+            ->whereIn('user_id', $user_id_to_query)
+            ->whereNot('status', '2')
+            ->whereHas('getForm', function ($query) {
+                $query->where('org', Auth()->user()->userDetail->org);
+            })->orderBy("created_at", "desc")->get();
         $formtype_check = optional($form->getType)->name ?? "";
         $formFormat = "";
         switch ($formtype_check) {
@@ -315,17 +330,22 @@ class FormController extends Controller
     }
 
     public function tableNotHasForm($fcode) {
+        // Get all user id that subordinate or same position of this auth user
+        $posit_to_query = [Auth()->user()->userDetail->getPosition->id, ...Auth()->user()->userDetail->getPosition->descendants()->pluck('id')];
+        $user_id_to_query = User_detail::where('org', Auth()->user()->userDetail->org)->whereIn('position', $posit_to_query)->pluck('user_id');
+
+        // query record and return each form type table
         if ($fcode == "TSM-AI-004") {
-            $phonenum_lists = Phone_number::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
+            $phonenum_lists = Phone_number::where('org', Auth()->user()->userDetail->org)->whereIn('created_by', $user_id_to_query)->orderBy("created_at", "desc")->get();
             return view('form.table.formFormat.' . $fcode, compact('phonenum_lists'));
         } elseif ($fcode == "TSM-RP-002") {
-            $dailyworks = tsm_rp_002_data::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
+            $dailyworks = tsm_rp_002_data::where('org', Auth()->user()->userDetail->org)->whereIn('created_by', $user_id_to_query)->orderBy("created_at", "desc")->get();
             return view('form.table.formFormat.' . $fcode , compact('dailyworks'));
         } elseif ($fcode == "TSM-AI-005") {
-            $repairEmergs = tsm_ai_005_data::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
+            $repairEmergs = tsm_ai_005_data::where('org', Auth()->user()->userDetail->org)->whereIn('created_by', $user_id_to_query)->orderBy("created_at", "desc")->get();
             return view('form.table.formFormat.' . $fcode, compact('repairEmergs'));
         } elseif ($fcode == "TSM-V-002") {
-            $repairHistories = tsm_v_002_data::where('org', Auth()->user()->userDetail->org)->orderBy("created_at", "desc")->get();
+            $repairHistories = tsm_v_002_data::where('org', Auth()->user()->userDetail->org)->whereIn('create_by', $user_id_to_query)->orderBy("created_at", "desc")->get();
             return view('form.table.formFormat.' . $fcode, compact('repairHistories'));
         }
     }
@@ -436,7 +456,11 @@ class FormController extends Controller
     }
 
     public function verifyFormTable() {
-        $form_responses = Form_response::whereHas('getForm', function ($query) {
+        // Get all user id that subordinate or same position of this auth user
+        $posit_to_query = [Auth()->user()->userDetail->getPosition->id, ...Auth()->user()->userDetail->getPosition->descendants()->pluck('id')];
+        $user_id_to_query = User_detail::where('org', Auth()->user()->userDetail->org)->whereIn('position', $posit_to_query)->pluck('user_id');
+
+        $form_responses = Form_response::whereIn('user_id', $user_id_to_query)->whereHas('getForm', function ($query) {
             $query->where('org', Auth()->user()->userDetail->org);
         })->where('status', "2")->get();
         return view('form.approveTable', compact('form_responses'));

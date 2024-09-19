@@ -16,6 +16,12 @@ class Post extends Model
         'created_by'
     ];
 
+    public function permissions()
+    {
+        return $this->belongsToMany(Post_permission::class, 'post_has__permissions', 'post_id', 'permission_id')
+            ->withPivot('target');
+    }
+
     public function getUser()
     {
         return $this->belongsTo(User_detail::class, 'created_by', 'user_id');

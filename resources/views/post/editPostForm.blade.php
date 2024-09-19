@@ -61,6 +61,25 @@
 
                             </div>
 
+                            <div class="mb-3">
+                                <p class="mb-0">ไฟล์แนบ</p>
+                                <ol class="list-group-numbered">
+                                    @foreach ($postData->getMedias ?? [] as $media)
+                                        <li class="list-group-item">
+                                            <a href="">{{ $media->originalName }}</a>
+                                            <input type="hidden" value="{{ $media->id }}" name="oldMedia[]">
+                                            <button type="button" class="btn btn-sm delFile"><i class="bi bi-x-lg"></i></button>
+                                        </li>
+                                    @endforeach
+                                </ol>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="orgTheme" class="form-label">แนบไฟล์เพิ่มเติม</label>
+                                <input class="form-control filepond" type="file" id="docFileUpload" multiple
+                                    data-max-file-size="5MB">
+                            </div>
+
                             <button type="submit" class="btn btn-primary mb-3">โพสต์</button>
                         </form>
                     </div>
@@ -68,4 +87,12 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.delFile').click(function() {
+                $(this).closest('li').remove();
+            });
+        });
+    </script>
 @endsection

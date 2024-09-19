@@ -29,7 +29,24 @@ class HomeController extends Controller
         if (Auth()->user()->userDetail->org ?? false) {
             $posts = Post::whereHas('getUser', function ($query) {
                 $query->where('org', Auth()->user()->userDetail->org);
-            })->orderBy('created_at', "desc")->get();
+            })->where(function ($query) {
+                $query->orWhereHas('permissions', function ($query2) {
+                    $query2->where('name', "บุคคล")
+                          ->where('target', Auth()->user()->id);
+                })
+                ->orWhereHas('permissions', function ($query2) {
+                    $query2->where('name', "ตำแหน่ง")
+                          ->where('target', Auth()->user()->userDetail->position);
+                })
+                ->orWhereHas('permissions', function ($query2) {
+                    $query2->where('name', "ฝ่าย")
+                          ->where('target', Auth()->user()->userDetail->dpm);
+                })
+                ->orWhereHas('permissions', function ($query2) {
+                    $query2->where('name', "ทั้งหมด");
+                });
+            })->orWhere('created_by', Auth()->user()->id)
+            ->orderBy('created_at', "desc")->get();
         } else {
             $posts = Post::orderBy('created_at', "desc")->get();
         }

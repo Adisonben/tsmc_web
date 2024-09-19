@@ -22,7 +22,9 @@
                                         @if (count($cate->formTypes ?? []) > 0)
                                             @foreach ($cate->formTypes as $formType)
                                                 {{-- <a href="">{{ $formType->name }}</a> --}}
-                                                <a href="{{ route('forms.tables', ['formtype' => $formType->name]) }}" class="btn btn-primary mb-1">{{ $formType->name }}</a>
+                                                @if ($formType->form_group == "formCheck")
+                                                    <a href="{{ route('forms.tables', ['formtype' => $formType->name]) }}" class="btn btn-primary mb-1">{{ $formType->name }}</a>
+                                                @endif
                                             @endforeach
                                         @endif
                                     </div>
