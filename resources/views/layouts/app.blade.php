@@ -242,7 +242,7 @@
                 @yield('content')
             </main>
 
-            <footer class="position-fixed bottom-0 w-100 p-2" id="main-footer">
+            <footer class="mt-auto w-100 p-2" id="main-footer">
                 <div class="d-flex flex-wrap justify-content-around align-items-center">
                     <div>
                         <img src="/images/icons/tsmc_logo.png" width="40" alt="">
