@@ -24,10 +24,11 @@
         <!-- Sidebar -->
         <aside id="sidebar">
             <div class="h-100">
-                {{-- <div class="px-3 pt-2">
+                <div class="px-3 pt-2">
                     <img src="/images/icons/tsmc_logo.png" width="50" alt="">
                     <img src="/images/icons/iddrives_logo.png" width="50" alt="">
-                </div> --}}
+                    <img src="/images/icons/tz_logo.png" width="50" alt="">
+                </div>
                 <div class="sidebar-logo">
                     <a href="#">Welcome</a>
                 </div>
@@ -244,10 +245,10 @@
 
             <footer class="mt-auto w-100 p-2" id="main-footer">
                 <div class="d-flex flex-wrap justify-content-around align-items-center">
-                    <div>
+                    {{-- <div>
                         <img src="/images/icons/tsmc_logo.png" width="40" alt="">
                         <img src="/images/icons/iddrives_logo.png" width="40" alt="">
-                    </div>
+                    </div> --}}
                     <div>
                         Powered by <a href="https://iddrives.co.th/" target="_BLANK">Iddrives.Co.,Ltd.</a>
                     </div>

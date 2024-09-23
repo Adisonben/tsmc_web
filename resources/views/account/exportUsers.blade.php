@@ -5,8 +5,8 @@
             <div class="px-3 px-md-5">
                 <div class="d-md-flex justify-content-center overflow-x-auto">
                     <div id="exportPaper">
-                        <p class="text-center fs-5 mb-0 fw-bold">{{ Auth()->user()->userDetail->getOrg->name }}</p>
-                        <p class="text-center fs-5 fw-bold">รายงาน ทะเบียนบัญชีผู้ใช้ทั้งหมดในระบบ TSMC</p>
+                        {{-- <p class="text-center fs-5 mb-0 fw-bold">{{ Auth()->user()->userDetail->getOrg->name }}</p> --}}
+                        <p class="text-center fs-5 fw-bold">รายงาน ทะเบียนบัญชีผู้ใช้ในระบบ TSMC</p>
                         <div id="dataTable">
                             <table class="table">
                                 <thead>
