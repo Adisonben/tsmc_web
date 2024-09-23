@@ -17,6 +17,7 @@
                                         <th scope="col">Username</th>
                                         <th scope="col">Password</th>
                                         <th scope="col">ชื่อ</th>
+                                        <th scope="col">หน่วยงาน</th>
                                         <th scope="col">สาขา</th>
                                         <th scope="col">แผนก</th>
                                         <th scope="col">ตำแหน่ง</th>
@@ -29,6 +30,7 @@
                                             <td>{{ $user->username }}</td>
                                             <td>{{ $user->pass_text ?? '-' }}</td>
                                             <td>{{ $user->full_name }}</td>
+                                            <td>{{ optional($user->userDetail->getOrg)->name }}</td>
                                             <td>{{ optional($user->userDetail->getBrn)->name }}</td>
                                             <td>{{ optional($user->userDetail->getDpm)->name }}</td>
                                             <td>{{ optional($user->userDetail->getPosition)->name }}</td>
