@@ -53,7 +53,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="6"><div class="text-center">ไม่พบเอกสาร</div></td>
+                <td colspan="10"><div class="text-center">ไม่พบเอกสาร</div></td>
             </tr>
         @endif
     </tbody>
