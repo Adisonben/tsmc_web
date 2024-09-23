@@ -86,7 +86,6 @@
                                             {{-- @php
                                                 dd([Auth()->user()->userDetail->getPosition->id, ...$position->descendants()->pluck('id')]);
                                             @endphp --}}
-                                            {{ $position->descendants()->pluck('id') }}
                                             @if ($position->org ?? false || Auth()->user()->userDetail->fname === "admin")
                                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                                     data-bs-target="#updatePositModal{{ $index }}">
