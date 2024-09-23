@@ -10,9 +10,7 @@
                             <p class="mb-0 fs-4">{{ __('ผู้ใช้ทั้งหมด') }}</p>
                             <div>
                                 <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">สร้าง</a>
-                                @if (Auth()->user()->username == "tsmcadmin")
-                                    <a href="{{ route('user.list.export') }}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
-                                @endif
+                                <a href="{{ route('user.list.export') }}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
                             </div>
                         </div>
                     </div>
