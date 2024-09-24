@@ -18,15 +18,27 @@ class FormCategoriesSeeder extends Seeder
             [
                 'title' => 'การจัดการรถ',
                 'type' => [
-                    "แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ"
+                    [
+                        "name" => "แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ",
+                        "code" => "TSM-V-001"
+                    ]
                 ],
             ],
             [
                 'title' => 'การจัดการผู้ขับรถ',
                 'type' => [
-                    "แบบฟอร์มการสอบสัมภาษณ์พนักงานขับรถ",
-                    "แบบประเมินความสามารถ",
-                    "แบบฟอร์มการตรวจสุขภาพ"
+                    [
+                        "name" => "แบบฟอร์มการสอบสัมภาษณ์พนักงานขับรถ",
+                        "code" => "TSM-HR-003"
+                    ],
+                    [
+                        "name" => "แบบประเมินความสามารถ",
+                        "code" => "TSM-HR-002"
+                    ],
+                    [
+                        "name" => "แบบฟอร์มการตรวจสุขภาพ",
+                        "code" => "TSM-HR-001"
+                    ],
                 ],
             ],
             [
@@ -44,7 +56,10 @@ class FormCategoriesSeeder extends Seeder
             [
                 'title' => 'การวิเคราะห์และประเมินผล',
                 'type' => [
-                    "แบบฟอร์มบันทึกหมายเลขโทรศัพท์ฉุกเฉิน"
+                    [
+                        "name" => "บันทึกหมายเลขโทรศัพท์ฉุกเฉิน",
+                        "code" => "TSM-AI-004"
+                    ]
                 ],
             ],
         ];
@@ -56,8 +71,9 @@ class FormCategoriesSeeder extends Seeder
             if (count($formCate['type'] ?? []) > 0) {
                 foreach ($formCate['type'] as $type) {
                     Form_type::create([
-                        'name' => $type,
-                        'category' => $form_cate->id
+                        'name' => $type["name"],
+                        'category' => $form_cate->id,
+                        "type_code" => $type['code']
                     ]);
                 }
             }

@@ -24,7 +24,7 @@
 
                                 <div class="mb-3">
                                     <label for="formName" class="form-label">ชื่อแบบฟอร์ม</label>
-                                    <input type="text" class="form-control" maxlength="200" id="formName" name="formName" required value="แบบฟอร์มการสอบสัมภาษณ์พนักงานขับรถ"
+                                    <input type="text" class="form-control" maxlength="200" id="formName" name="formName" required value=""
                                         placeholder="กรอกชื่อแบบฟอร์ม">
                                 </div>
 
@@ -34,7 +34,7 @@
                                         <select class="form-select" aria-label="Default select example" name="formType" required>
                                             <option disabled>เลือกหมวดหมู่แบบฟอร์ม</option>
                                             @foreach ($form_types as $form_type)
-                                                <option value="{{ $form_type->id }}">{{ $form_type->name }}</option>
+                                                <option value="{{ $form_type->id }}">{{ $form_type->type_code ?? '' }} : {{ $form_type->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

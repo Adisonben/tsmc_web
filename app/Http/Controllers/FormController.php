@@ -12,8 +12,11 @@ use App\Models\Option_type;
 use App\Models\Phone_number;
 use App\Models\Quest_group;
 use App\Models\Question;
+use App\Models\tsm_ai_005_data;
+use App\Models\tsm_rp_002_data;
 use App\Models\User_detail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class FormController extends Controller
@@ -32,7 +35,8 @@ class FormController extends Controller
      */
     public function create()
     {
-        $form_types = Form_type::all();
+        $can_create_forms = ["TSM-V-001", "TSM-HR-003", "TSM-HR-002", "TSM-HR-001"];
+        $form_types = Form_type::whereIn("type_code", $can_create_forms)->get();
         $opt_types = Option_type::all();
         return view('form.manage.createForm', compact('form_types', 'opt_types'));
     }
@@ -305,9 +309,17 @@ class FormController extends Controller
         return view('form.table.formFormat.' . $formFormat, compact('form', 'form_responses'));
     }
 
-    public function tableNotHasForm() {
-        $phonenum_lists = Phone_number::all();
-        return view('form.table.phoneNumberTable', compact('phonenum_lists'));
+    public function tableNotHasForm($fcode) {
+        if ($fcode == "TSM-AI-004") {
+            $phonenum_lists = Phone_number::all();
+            return view('form.table.formFormat.' . $fcode, compact('phonenum_lists'));
+        } elseif ($fcode == "TSM-RP-002") {
+            $dailyworks = tsm_rp_002_data::where('org', Auth()->user()->userDetail->org)->get();
+            return view('form.table.formFormat.' . $fcode , compact('dailyworks'));
+        } elseif ($fcode == "TSM-AI-005") {
+            $repairEmergs = tsm_ai_005_data::where('org', Auth()->user()->userDetail->org)->get();
+            return view('form.table.formFormat.' . $fcode, compact('repairEmergs'));
+        }
     }
 
     public function formResDetail(Request $request, $formresid) {
@@ -432,6 +444,158 @@ class FormController extends Controller
             return response()->json([
                 'message' => $th->getMessage()
             ], 500);
+        }
+    }
+
+    public function formType() {
+        $form_cates = Form_category::all();
+        $form_types = Form_type::all();
+        return view('appData.formType.formTypeTable', compact('form_cates', 'form_types'));
+    }
+
+    public function formTypeStore(Request $request) {
+        try {
+            Form_type::create([
+                "name" => $request->formTypeName,
+                "category" => $request->formCate,
+                "type_code" => $request->formTypeCode
+            ]);
+            return redirect()->back()->with(['success' => "บันทึกประเภทแบบฟอร์มสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถบันทึกประเภทแบบฟอร์ม"]);
+        }
+    }
+
+    public function formTypeUpdate(Request $request, $ftid) {
+        try {
+            Form_type::where('id', $ftid)->update([
+                "name" => $request->formTypeName,
+                "category" => $request->formCate,
+                "type_code" => $request->formTypeCode
+            ]);
+            return redirect()->back()->with(['success' => "แก้ไขประเภทแบบฟอร์มสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถแก้ไขประเภทแบบฟอร์ม"]);
+        }
+    }
+
+    public function formTypeDelete($ftid) {
+        try {
+            Form_type::where('id', $ftid)->delete();
+            return redirect()->back()->with(['success' => "ลบประเภทแบบฟอร์มสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถลบประเภทแบบฟอร์ม"]);
+        }
+    }
+
+    public function storeDailyWork(Request $request) {
+        // dd($request->all());
+        try {
+            tsm_rp_002_data::create([
+                'work_num' => $request->workNum,
+                'vehicle_plate' => $request->vehPlate,
+                'employee_name' => $request->empName,
+                'assign_date' => $request->assignDate,
+                'customer_name' => $request->cusName,
+                'receive_place' => $request->recPlace,
+                'receive_date' => $request->recDate,
+                'drop_place' => $request->sendPlace,
+                'drop_date' => $request->sendDate,
+                'product_volume' => $request->prodVolume,
+                'status' => 0,
+                'created_by' => $request->user()->id,
+                'org' => $request->user()->userDetail->org,
+            ]);
+            return redirect()->back()->with(['success' => "เพิ่มการปฏิบัติงานประจำวันสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถเพิ่มการปฏิบัติงานประจำวัน"]);
+        }
+    }
+
+    public function updateDailyWork(Request $request, $formid) {
+        // dd($request->all(), $formid);
+        try {
+            tsm_rp_002_data::where('id', $formid)->update([
+                'work_num' => $request->workNum,
+                'vehicle_plate' => $request->vehPlate,
+                'employee_name' => $request->empName,
+                'assign_date' => $request->assignDate,
+                'customer_name' => $request->cusName,
+                'receive_place' => $request->recPlace,
+                'receive_date' => $request->recDate,
+                'drop_place' => $request->sendPlace,
+                'drop_date' => $request->sendDate,
+                'product_volume' => $request->prodVolume,
+                'status' => $request->checkFinish ? 1 : 0,
+            ]);
+            return redirect()->back()->with(['success' => "อัพเดทการปฏิบัติงานประจำวันสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถอัพเดทการปฏิบัติงานประจำวัน"]);
+        }
+    }
+    public function deleteDailyWork($formid) {
+        // dd($request->all(), $formid);
+        try {
+            tsm_rp_002_data::where('id', $formid)->delete();
+            return redirect()->back()->with(['success' => "ลบการปฏิบัติงานประจำวันสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถลบการปฏิบัติงานประจำวัน"]);
+        }
+    }
+
+    public function storeRepairEmerg(Request $request) {
+        try {
+            tsm_ai_005_data::create([
+                "driver_name" => $request->driverName,
+                "phone" => $request->driverPhone,
+                "car_plate" => $request->carPlate,
+                "repair_list" => $request->repairName,
+                "amount" => $request->amount,
+                "repair_type" => $request->repairType,
+                "repair_by" => $request->fixBy,
+                'status' => 0,
+                'created_by' => $request->user()->id,
+                'org' => $request->user()->userDetail->org,
+            ]);
+            return redirect()->back()->with(['success' => "เพิ่มการตรวจสอบและซ่อมบำรุงอุปกรณ์สำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถเพิ่มการตรวจสอบและซ่อมบำรุงอุปกรณ์"]);
+        }
+    }
+
+    public function updateRepairEmerg(Request $request, $formid) {
+        // dd($request->all(), $formid);
+        try {
+            tsm_ai_005_data::where('id', $formid)->update([
+                "driver_name" => $request->driverName,
+                "phone" => $request->driverPhone,
+                "car_plate" => $request->carPlate,
+                "repair_list" => $request->repairName,
+                "amount" => $request->amount,
+                "repair_type" => $request->repairType,
+                "repair_by" => $request->fixBy,
+            ]);
+            return redirect()->back()->with(['success' => "อัพเดทการตรวจสอบและซ่อมบำรุงอุปกรณ์สำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถอัพเดทการตรวจสอบและซ่อมบำรุงอุปกรณ์"]);
+        }
+    }
+    public function deleteRepairEmerg($formid) {
+        // dd($request->all(), $formid);
+        try {
+            tsm_ai_005_data::where('id', $formid)->delete();
+            return redirect()->back()->with(['success' => "ลบการตรวจสอบและซ่อมบำรุงอุปกรณ์สำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถลบการตรวจสอบและซ่อมบำรุงอุปกรณ์"]);
         }
     }
 }

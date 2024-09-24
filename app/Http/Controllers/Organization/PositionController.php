@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Organization;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Position;
+use App\Models\Position_has_permission;
+use App\Models\Position_permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PositionController extends Controller
 {
@@ -106,6 +109,78 @@ class PositionController extends Controller
             return response()->json([
                 'message' => $th->getMessage()
             ], 500);
+        }
+    }
+
+    public function managePermission() {
+        $positions = Position::all();
+        $posit_perms = Position_permission::all();
+        return view('organization.perm.managePerm', compact('positions', 'posit_perms'));
+    }
+
+    public function updatePermission($positId , $permId , $status) {
+        try {
+            $permExist = Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->exists();
+            $permNullExist = Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->exists();
+            if ($status == 'true') {
+                if (is_null(Auth()->user()->userDetail->org)) {
+                    if ($permNullExist) {
+                        Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->update([
+                            'status' => true
+                        ]);
+                    } else {
+                        Position_has_permission::create([
+                            'position_id' => $positId,
+                            'permission_id' => $permId,
+                            'user_id' => Auth()->user()->id,
+                            'org' => Auth()->user()->userDetail->org ?? null,
+                            'status' => true
+                        ]);
+                    }
+                } else {
+                    if ($permExist) {
+                        Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
+                            'status' => true
+                        ]);
+                    } else {
+                        Position_has_permission::create([
+                            'position_id' => $positId,
+                            'permission_id' => $permId,
+                            'user_id' => Auth()->user()->id,
+                            'org' => Auth()->user()->userDetail->org,
+                            'status' => true
+                        ]);
+                    }
+                }
+            } else {
+                if (is_null(Auth()->user()->userDetail->org)) {
+                    Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->update([
+                        'status' => false
+                    ]);
+                } else {
+                    if ($permExist) {
+                        Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
+                            'status' => false
+                        ]);
+                    } else {
+                        Position_has_permission::create([
+                            'position_id' => $positId,
+                            'permission_id' => $permId,
+                            'user_id' => Auth()->user()->id,
+                            'org' => Auth()->user()->userDetail->org,
+                            'status' => false
+                        ]);
+                    }
+                }
+            }
+
+            return response()->json([
+                'message' => 'Update perm : ' . $positId . $permId . $status . " : " . Auth()->user()->userDetail->fname
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 200);
         }
     }
 }

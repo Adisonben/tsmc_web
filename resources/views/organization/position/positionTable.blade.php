@@ -94,14 +94,17 @@
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $position->name }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#updatePositModal{{ $index }}">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn" {{ $position->created_by ? '' : 'disabled' }}
-                                                del-id="{{ $position->id }}" del-target="positions"
-                                                data-bs-toggle="tooltip" data-bs-title="ลบ"><i
-                                                    class="bi bi-trash"></i></button>
+                                            @if ($position->org ?? false || Auth()->user()->userDetail->fname === "admin")
+                                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#updatePositModal{{ $index }}">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-sm delete-data-btn" {{ $position->created_by ? '' : 'disabled' }}
+                                                    del-id="{{ $position->id }}" del-target="positions"
+                                                    data-bs-toggle="tooltip" data-bs-title="ลบ"><i
+                                                        class="bi bi-trash"></i>
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                     <!-- Update Modal -->
@@ -164,8 +167,8 @@
                         </table>
                     </div>
                 </div> {{-- End Department Card --}}
-                <div class="d-flex justify-content-center">
-                    <img src="/images/assets/position_diagram.png" alt="">
+                <div class="d-flex justify-content-center w-100">
+                    <img src="/images/assets/position_diagram.png" class="object-fit-contain mw-100" alt="">
                 </div>
             </div>
         </div>

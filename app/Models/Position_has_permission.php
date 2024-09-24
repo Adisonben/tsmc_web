@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post_has_Permission extends Model
+class Position_has_permission extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'post_id',
+        'position_id',
         'permission_id',
-        'target'
+        'user_id',
+        'org',
+        'status'
     ];
 }

@@ -1,25 +1,32 @@
 @extends('layouts.app')
-
+@push('scripts')
+    @vite(['resources/js/post.js'])
+@endpush
 @section('content')
 <div class="">
     <div class="row justify-content-center">
         <div class="px-3 px-md-5">
-            <div class="card rounded-5 mb-3">
-                <div class="card-body">
-                    <div class="d-flex gap-3">
-                        <div class="d-flex gap-2">
-                            <img src="/images/icons/tsmc_logo.png" width="40" alt="">
+            {{-- @php
+                dd((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org) ?? false));
+            @endphp --}}
+            @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org) ?? false) || (Auth::user()->userDetail->fname === "admin"))
+                <div class="card rounded-5 mb-3">
+                    <div class="card-body">
+                        <div class="d-flex gap-3">
+                            <div class="d-flex gap-2">
+                                <img src="/images/icons/tsmc_logo.png" width="40" alt="">
+                            </div>
+                            <a href="{{ route('posts.create') }}" class="w-100"><input type="text" class="form-control rounded-pill" style="cursor: pointer" id="exampleFormControlInput1" placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
                         </div>
-                        <a href="{{ route('posts.create') }}" class="w-100"><input type="text" class="form-control rounded-pill" style="cursor: pointer" id="exampleFormControlInput1" placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
                     </div>
                 </div>
-            </div>
+            @endif
 
             {{-- Post Card --}}
             @if ($posts)
                 @foreach ($posts as $post)
                     <div class="card rounded-5 mb-3">
-                        <div class="card-header" style="background-color: {{ $post->theme_color ?? '#F1F3F5' }}">
+                        <div class="card-header d-flex justify-content-between" style="background-color: {{ $post->theme_color ?? '#F1F3F5' }}">
                             <div class="d-flex gap-2">
                                 <div class="d-flex gap-2">
                                     @if (($post->getUser->icon ?? false) && file_exists(public_path('uploads/userImages/' . $post->getUser->icon)))
@@ -33,9 +40,22 @@
                                     <p class="mb-0" style="font-size: .8rem">{{ optional($post->getUser->getPosition)->name ?? '-' }} | <i class="bi bi-clock"></i> {{ $post->updated_at }}</p>
                                 </div>
                             </div>
+                            <div {{ (Auth::user()->id == $post->created_by || Auth::user()->id == 1) ? '' : 'hidden' }}>
+                                <a href="{{ route('posts.edit', ['post' => $post->post_id]) }}" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                                <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $post->id }}" del-target="posts" data-bs-toggle="tooltip" data-bs-title="ลบ">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
-                            {!! $post->content !!}
+                            <div class="mb-2">
+                                {!! $post->content !!}
+                            </div>
+                            <div>
+                                @foreach ($post->getMedias ?? [] as $media)
+                                    <a href="/{{ $media->folder }}/{{ $media->file_name }}" class="btn btn-sm btn-secondary" target="_BLANK">{{ $media->originalName }}</a>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="card-footer px-4">
                             @php

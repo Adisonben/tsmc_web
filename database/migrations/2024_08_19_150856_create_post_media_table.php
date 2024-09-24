@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('post_media', function (Blueprint $table) {
             $table->id();
-            $table->string('post_id');
+            $table->string('post_id')->nullable();
+            $table->string('folder');
             $table->string('file_name');
+            $table->text('originalName')->nullable();
             $table->string('type');
-            $table->string('created_by');
+            $table->string('size_kb')->nullable();
+            $table->string('extension')->nullable();
+            $table->string('created_by')->nullable();
             $table->timestamps();
         });
     }

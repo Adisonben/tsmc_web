@@ -3,7 +3,7 @@ import './prefix';
 import './organization';
 import './license_type';
 import './carType';
-import './post';
+// import './post';
 import './formscript';
 import './phonenum';
 
