@@ -35,8 +35,8 @@
                                 {{ session('success') }}
                             </div>
                         @endif
-                        <div class="row">
-                            <div class="col-sm-6 mb-3 ">
+                        <div class="d-flex flex-wrap">
+                            <div class="mb-3 flex-fill">
                                 <div class="d-flex justify-content-center">
                                     @if (($user->userDetail->icon ?? false) && file_exists(public_path('uploads/userImages/' . $user->userDetail->icon)))
                                         <img src="/uploads/userImages/{{ $user->userDetail->icon }}" class="object-fit-contain" width="150" alt="">
@@ -45,40 +45,43 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="row mb-3">
-                                    <div class="col-sm-2">Username</div>
-                                    <div class="col-sm-10">{{ $user->username }}</div>
+                            <div class="flex-fill">
+                                <div class="d-flex mb-3 gap-2 align-items-center">
+                                    <div class="text-nowrap fw-bold">Username</div>
+                                    <input type="" class="form-control" value="{{ $user->username }}" disabled>
+                                    {{-- <div class="">{{ $user->username }}</div> --}}
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-2">ชื่อ</div>
-                                    <div class="col-sm-10">
-                                        {{ optional($user->userDetail->getPrefix)->name . optional($user->userDetail)->fname }}
+                                <div class="d-flex gap-4">
+                                    <div class="d-flex mb-3 gap-2 align-items-center">
+                                        <div class="text-nowrap fw-bold">ชื่อ</div>
+                                        <div class="">
+                                            {{ optional($user->userDetail->getPrefix)->name . optional($user->userDetail)->fname }}
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-3 gap-2 align-items-center">
+                                        <div class="text-nowrap fw-bold">นามสกุล</div>
+                                        <div class="">{{ optional($user->userDetail)->lname }}</div>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-2">นามสกุล</div>
-                                    <div class="col-sm-10">{{ optional($user->userDetail)->lname }}</div>
+                                <div class="d-flex mb-3 gap-2 align-items-center">
+                                    <div class="text-nowrap fw-bold">หน่วยงาน</div>
+                                    <div class="">{!! optional($user->userDetail->getOrg)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-2">ตำแหน่ง</div>
-                                    <div class="col-sm-10">{!! optional($user->userDetail->getPosition)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
+                                <div class="d-flex mb-3 gap-2 align-items-center">
+                                    <div class="text-nowrap fw-bold">สาขา</div>
+                                    <div class="">{!! optional($user->userDetail->getBrn)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-2">ฝ่าย</div>
-                                    <div class="col-sm-10">{!! optional($user->userDetail->getDpm)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
+                                <div class="d-flex mb-3 gap-2 align-items-center">
+                                    <div class="text-nowrap fw-bold">ฝ่าย</div>
+                                    <div class="">{!! optional($user->userDetail->getDpm)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-2">สาขา</div>
-                                    <div class="col-sm-10">{!! optional($user->userDetail->getBrn)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
+                                <div class="d-flex mb-3 gap-2 align-items-center">
+                                    <div class="text-nowrap fw-bold">ตำแหน่ง</div>
+                                    <div class="">{!! optional($user->userDetail->getPosition)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-2">หน่วยงาน</div>
-                                    <div class="col-sm-10">{!! optional($user->userDetail->getOrg)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-2">ลายเซ็น</div>
-                                    <div class="col-sm-10">
+                                <div class="d-flex mb-3 gap-2 align-items-center">
+                                    <div class="text-nowrap fw-bold">ลายเซ็น</div>
+                                    <div class="">
                                         @if (($user->userDetail->sign ?? false) && file_exists(public_path('uploads/userImages/' . $user->userDetail->sign)))
                                             <img src="/uploads/userImages/{{ $user->userDetail->sign }}" class="object-fit-contain" width="50" alt="">
                                         @else

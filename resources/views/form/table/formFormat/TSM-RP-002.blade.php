@@ -8,10 +8,13 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('ทะเบียน') }} บันทึกการปฏิบัติงานประจำวัน</p>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#addDailyWork">
-                                เพิ่ม
-                            </button>
+                            <div>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addDailyWork">
+                                    เพิ่ม
+                                </button>
+                                <a href="{{ route('form.export', ['formCode' => "TSM-RP-002"]) }}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
+                            </div>
                         </div>
                         <!-- Modal -->
                         <div class="modal fade" id="addDailyWork" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -119,8 +122,8 @@
                                                     $dropDate = new Carbon\Carbon($dailywork->drop_date);
                                                     // dd($receiveDate->format('j M Y H:i:s'));
                                                 @endphp
-                                                <td>{{ $receiveDate->thaidate('j M Y \\เวลา H:i') }}</td>
-                                                <td>{{ $dropDate->thaidate('j M Y \\เวลา H:i') }}</td>
+                                                <td>{{ $dailywork->receive_date ? $receiveDate->thaidate('j M Y \\เวลา H:i') : '-' }}</td>
+                                                <td>{{ $dailywork->drop_date ? $dropDate->thaidate('j M Y \\เวลา H:i') : '-' }}</td>
                                                 <td>
                                                     @if ($dailywork->status)
                                                         <span class="badge text-bg-success">ดำเนินการสำเร็จ</span>
@@ -139,6 +142,8 @@
                                                     </button>
                                                     @if (!$dailywork->status)
                                                         <a href="{{ route('form.delete.dailywork', ['fid' => $dailywork->id]) }}" class="btn btn-danger btn-sm">ลบ</a>
+                                                    @else
+                                                        <a href="{{ route('form.export.dairy.work', ['fid' => $dailywork->id]) }}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
                                                     @endif
                                                 </td>
                                             </tr>

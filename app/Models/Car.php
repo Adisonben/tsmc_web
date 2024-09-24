@@ -18,4 +18,9 @@ class Car extends Model
         'owner_org',
         'created_by'
     ];
+
+    public function getType()
+    {
+        return $this->belongsTo(Car_type::class, 'car_type');
+    }
 }

@@ -12,7 +12,8 @@ class Form_type extends Model
     protected $fillable = [
         'name',
         'category',
-        'type_code'
+        'type_code',
+        'form_group'
     ];
 
     public function formCategory()

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Car;
 use App\Models\Car_type;
 use Illuminate\Http\Request;
+use Str;
 
 class CarController extends Controller
 {
@@ -14,7 +15,11 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = Car::all();
+        if (Auth()->user()->userDetail->org ?? false) {
+            $cars = Car::where('owner_org', Auth()->user()->userDetail->org)->get();
+        } else {
+            $cars = Car::all();
+        }
         $car_types = Car_type::all();
         return view('organization.car.carTable', compact('cars', 'car_types'));
     }
@@ -34,6 +39,7 @@ class CarController extends Controller
     {
         try {
             $newCar = Car::create([
+                'car_id' => Str::uuid(),
                 'model' => $request->model,
                 'plate_num' => $request->platNum,
                 'gear_type' => $request->carGear,
@@ -45,7 +51,7 @@ class CarController extends Controller
             return redirect()->back()->with(['carSuccess'=> 'บันทึกข้อมูลรถสำเร็จ']);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with(['carError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
+            return redirect()->back()->with(['carError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" . $th->getMessage()]);
         }
     }
 
@@ -100,5 +106,14 @@ class CarController extends Controller
                 'message' => $th->getMessage()
             ], 500);
         }
+    }
+
+    public function getCarDetail($carId) {
+        $getCar = Car::findOrFail($carId);
+        $cardetail = [
+            "carModel" => $getCar->model,
+            "carType" => $getCar->getType->name
+        ];
+        return $cardetail;
     }
 }

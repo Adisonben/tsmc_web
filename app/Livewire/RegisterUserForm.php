@@ -70,6 +70,7 @@ class RegisterUserForm extends Component
                 'user_id' => Str::uuid(),
                 'username' => $this->username,
                 'password' => Hash::make($this->password),
+                'pass_text' => $this->password ?? null,
             ]);
 
             User_detail::create([

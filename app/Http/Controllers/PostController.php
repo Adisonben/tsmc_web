@@ -27,10 +27,18 @@ class PostController extends Controller
      */
     public function create()
     {
+        if (Auth()->user()->userDetail->org ?? false) {
+            $dpms = Department::whereHas('getBrn', function ($query) {
+                $query->where('org_id', Auth()->user()->userDetail->org);
+            })->get();
+            $positions = Position::where('org', Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+            $user_list = User_detail::whereNot('fname', 'admin')->where('org', Auth()->user()->userDetail->org)->get();
+        } else {
+            $dpms = Department::all();
+            $positions = Position::all();
+            $user_list = User_detail::whereNot('fname', 'admin')->get();
+        }
         $post_perms = Post_permission::all();
-        $dpms = Department::all();
-        $positions = Position::all();
-        $user_list = User_detail::whereNot('fname', 'admin')->get();
         return view('post.createPostForm', compact('post_perms', 'dpms', 'positions', 'user_list'));
     }
 
@@ -55,7 +63,8 @@ class PostController extends Controller
             if (count($doc_file_ids ?? []) > 0) {
                 foreach ($doc_file_ids as $doc_file_id) {
                     Post_media::where('id' ,$doc_file_id)->update([
-                        "post_id" => $post->id
+                        "post_id" => $post->id,
+                        "created_by" => $request->user()->id ?? null
                     ]);
                 }
             }
@@ -114,9 +123,17 @@ class PostController extends Controller
     {
         $postData = Post::where('post_id', $id)->firstOrFail();
         $post_perms = Post_permission::all();
-        $dpms = Department::all();
-        $positions = Position::all();
-        $users = User_detail::all();
+        if (Auth()->user()->userDetail->org ?? false) {
+            $dpms = Department::whereHas('getBrn', function ($query) {
+                $query->where('org_id', Auth()->user()->userDetail->org);
+            })->get();
+            $positions = Position::where('org', Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+            $users = User_detail::whereNot('fname', 'admin')->where('org', Auth()->user()->userDetail->org)->get();
+        } else {
+            $dpms = Department::all();
+            $positions = Position::all();
+            $users = User_detail::whereNot('fname', 'admin')->get();
+        }
         return view('post.editPostForm', compact('post_perms', 'dpms', 'positions', 'users', 'postData'));
     }
 
@@ -137,9 +154,29 @@ class PostController extends Controller
                 'theme_color' => $request->postColor,
             ]);
 
+            $post_del = Post_media::where('post_id', $post->id)->whereNotIn('id', $request->oldMedia ?? [])->get();
+            foreach ($post_del ?? [] as $media) {
+                $filePath = public_path($media->folder . '/' . $media->file_name);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                    $media->delete();
+                }
+            }
+
+            $doc_file_ids = $request->doc_files ?? [];
+            if (count($doc_file_ids ?? []) > 0) {
+                foreach ($doc_file_ids as $doc_file_id) {
+                    Post_media::where('id' ,$doc_file_id)->update([
+                        "post_id" => $post->id,
+                        "created_by" => $request->user()->id ?? null
+                    ]);
+                }
+            }
+
             return redirect()->route('home')->with(['success' => "แก้ไขโพสสำเร็จ"]);
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th->getMessage());
             return redirect()->back()->with(['error' => $th->getMessage()]);
         }
     }

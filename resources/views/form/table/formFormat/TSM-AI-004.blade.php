@@ -8,8 +8,10 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('ทะเบียน') }} หมายเลขโทรศัพท์ฉุกเฉิน</p>
-                            <button class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#addPhoneNum">เพิ่ม</button>
+                            <div>
+                                <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addPhoneNum">เพิ่ม</button>
+                                <a href="{{ route('form.export', ['formCode' => "TSM-AI-004"]) }}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
+                            </div>
                         </div>
                     </div>
 

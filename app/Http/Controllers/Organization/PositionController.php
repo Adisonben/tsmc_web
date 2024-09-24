@@ -17,9 +17,12 @@ class PositionController extends Controller
      */
     public function index()
     {
-        $positions = Position::all();
-        $dpms = Department::all();
-        return view('organization.position.positionTable', compact('positions', 'dpms'));
+        if (Auth()->user()->userDetail->org ?? false) {
+            $positions = Position::where('org', Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+        } else {
+            $positions = Position::all();
+        }
+        return view('organization.position.positionTable', compact('positions'));
     }
 
     /**
@@ -113,7 +116,11 @@ class PositionController extends Controller
     }
 
     public function managePermission() {
-        $positions = Position::all();
+        if (Auth()->user()->userDetail->org ?? false) {
+            $positions = Position::where('org', Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+        } else {
+            $positions = Position::all();
+        }
         $posit_perms = Position_permission::all();
         return view('organization.perm.managePerm', compact('positions', 'posit_perms'));
     }

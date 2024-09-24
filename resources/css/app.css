@@ -20,7 +20,7 @@ body {
     background-color: var(--bg-color);
 }
 
-#main-nav {
+#main-nav, #main-footer {
     background-color: var(--main-color);
 }
 

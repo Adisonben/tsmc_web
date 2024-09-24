@@ -10,6 +10,7 @@ use App\Models\Prefix;
 use App\Models\User;
 use App\Models\User_detail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -18,7 +19,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::whereNot('username', 'tsmcadmin')->get();
+        if (Auth()->user()->userDetail->org ?? false) {
+            $users = User::whereNot('username', 'tsmcadmin')->whereHas('userDetail', function ($query) {
+                $query->where('org', Auth()->user()->userDetail->org);
+            })->get();
+        } else {
+            $users = User::whereNot('username', 'tsmcadmin')->get();
+        }
         return view('account.userAccounts', compact('users'));
     }
 
@@ -137,5 +144,16 @@ class UserController extends Controller
                 'error' => $th->getMessage()
             ], 500);
         }
+    }
+
+    public function exportUsers() {
+        if (Auth()->user()->userDetail->org ?? false) {
+            $users = User::whereNot('username', 'tsmcadmin')->whereHas('userDetail', function ($query) {
+                $query->where('org', Auth()->user()->userDetail->org);
+            })->get();
+        } else {
+            $users = User::whereNot('username', 'tsmcadmin')->get();
+        }
+        return view('account.exportUsers', compact('users'));
     }
 }

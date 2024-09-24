@@ -47,6 +47,15 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+                                            <div class="mb-3">
+                                                <label for="formGroup" class="form-label">กลุ่ม</label>
+                                                <select class="form-select" id="formGroup" name="formGroup"
+                                                    aria-label="Default select example" required>
+                                                    <option selected>เลือกกลุ่ม</option>
+                                                    <option value="formCheck">แบบฟอร์ม</option>
+                                                    <option value="formTable">ตาราง</option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -76,6 +85,7 @@
                                     <th scope="col">รหัส</th>
                                     <th scope="col">ชื่อประเภท</th>
                                     <th scope="col">หมวดหมู่</th>
+                                    <th scope="col">กลุ่ม</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -86,6 +96,7 @@
                                         <td>{{ $form_type->type_code ?? "-" }}</td>
                                         <td>{{ $form_type->name }}</td>
                                         <td>{{ optional($form_type->formCategory)->name }}</td>
+                                        <td>{{ $form_type->form_group ? ($form_type->form_group == "formCheck" ? "แบบฟอร์ม" : "ตาราง") : '-' }}</td>
                                         <td>
                                             {{-- <button class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
                                                 data-bs-title="แก้ไข" data-bs-toggle="modal"
@@ -133,6 +144,15 @@
                                                                 @foreach ($form_cates as $form_cate)
                                                                     <option value="{{ $form_cate->id }}" {{ $form_cate->id == $form_type->category ? "selected" : '' }}>{{ $form_cate->name }}</option>
                                                                 @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="formGroup" class="form-label">กลุ่ม</label>
+                                                            <select class="form-select" id="formGroup" name="formGroup"
+                                                                aria-label="Default select example" required>
+                                                                <option selected>เลือกกลุ่ม</option>
+                                                                <option value="formCheck" {{ $form_type->form_group == "forrmCheck" ? "selected" : '' }}>แบบฟอร์ม</option>
+                                                                <option value="formTable" {{ $form_type->form_group == "formTable" ? "selected" : '' }}>ตาราง</option>
                                                             </select>
                                                         </div>
                                                     </div>
