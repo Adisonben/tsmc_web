@@ -2,6 +2,7 @@
 tools:
 - Laravel >= 11.x.x
 - php >= 8.2.xx
+- Node >= 18.x.x
 - Mysql
  
 install project as :
@@ -34,3 +35,5 @@ in line 157 ( in function username()).
 
 [NestedsetDocument](https://github.com/lazychaser/laravel-nestedset)
 
+Command:
+- `php artisan app:resetUsersPassword` for reset users that username is "tsmc0....." password to "tsmc" + date of monday (like '23092024')
