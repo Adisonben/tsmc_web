@@ -39,7 +39,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div>
+                                    {{-- <div>
                                         <label class="form-label">ประเภทตัวเลือก</label>
                                         <select class="form-select" aria-label="Default select example" name="opt_type">
                                             <option selected disabled>เลือกประเภทตัวเลือก</option>
@@ -47,7 +47,7 @@
                                                 <option value="{{ $opt_type->id }}" {{ $opt_type->id == $sopt_type ? 'selected' : '' }}>{{ $opt_type->name }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div> --}}
                                     <div>
                                         <label class="form-label">คุณสมบัติฟอร์ม</label>
                                         <div class="d-flex gap-3">
@@ -83,23 +83,44 @@
                                     @foreach ($quest_groups ?? [] as $qgroup)
                                         <div class="card my-3 checkCard">
                                             <div class="card-body">
-                                                <input type="text" class="form-control mb-3 list-group-item groupName"
+                                                <input type="text" maxlength="200" class="form-control mb-3 groupName"
                                                     placeholder="ชื่อหมวดหมู่" value="{{ $qgroup->title }}">
                                                 <ol class="list-group-numbered">
                                                     @foreach ($qgroup->questions as $quest)
-                                                        <li class="list-group-item d-flex gap-3">
-                                                            <input type="text" class="form-control list-group-item groupSubText"
-                                                                placeholder="รายการตรวจประเมิน 1" value="{{ $quest->title }}">
-                                                            <a type="button" onclick="delGroupList(this)"><i
-                                                                    class="bi bi-x"></i></a>
+                                                        <li class="list-group-item gap-3 border checkLi p-2" style="background-color: rgb(240, 240, 240)">
+                                                            <div class="d-flex flex-fill mb-2 gap-2">
+                                                                <input type="text" maxlength="200" class="form-control groupSubText"
+                                                                    placeholder="รายการตรวจประเมิน 1" value="{{ $quest->title }}">
+                                                                <select class="form-select selectOptType" aria-label="Default select example" onchange="changeSelected(this)">
+                                                                    <option selected disabled>เลือกประเภทตัวเลือก</option>
+                                                                    @foreach ($opt_types as $opt_type)
+                                                                        <option value="{{ $opt_type->id }}" {{ $quest->option_type == $opt_type->id ? 'selected' : '' }}>{{ $opt_type->name }}</option>
+                                                                    @endforeach
+                                                                    <option value="text" {{ $quest->option_type == "text" ? 'selected' : '' }}>ข้อความ</option>
+                                                                    <option value="custom" {{ $quest->option_type == "custom" ? 'selected' : '' }}>หลายตัวเลือก</option>
+                                                                </select>
+                                                                <button type="button" class="btn btn-sm btn-danger" onclick="delGroupList(this)"><i class="bi bi-x"></i></button>
+                                                            </div>
+                                                            <div class="optionSection">
+                                                                <p class="mb-0">รายการตัวเลือก / คำตอบ</p>
+                                                                <div class="px-3">
+                                                                    <input type="text" maxlength="200" class="form-control mb-2" placeholder="ตัวอย่างช่องคำตอบ" aria-label="ตัวอย่างช่องคำตอบ" readonly style="display: {{ $quest->option_type == "text" ? 'blog' : 'none' }}">
+                                                                    <ol class="list-group-numbered optionContainer" style="display: {{ $quest->option_type == "custom" ? 'blog' : 'none' }}">
+                                                                        @if ($quest->option_type == "custom")
+                                                                            @foreach ($quest->options as $each_option)
+                                                                                <li class="list-group-item d-flex gap-2 mb-2 optionLi">
+                                                                                    <input type="text" maxlength="200" class="form-control optTitle" placeholder="กรอกตัวเลือก" value="{{ $each_option->opt_text }}">
+                                                                                    <input type="number" class="form-control optScore" placeholder="คะแนน(ไม่จำเป็น)" value="{{ $each_option->score }}">
+                                                                                    <button type="button" class="btn btn-sm btn-danger" onclick="delOptionBtn(this)"><i class="bi bi-x"></i></button>
+                                                                                </li>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </ol>
+                                                                    <button class="btn btn-success btn-sm text-nowrap" onClick="addOption(this)" type="button" style="display: {{ $quest->option_type == "custom" ? 'blog' : 'none' }}">เพิ่มตัวเลือก</button>
+                                                                </div>
+                                                            </div>
                                                         </li>
                                                     @endforeach
-                                                    {{-- <li class="list-group-item d-flex gap-3">
-                                                        <input type="text" class="form-control list-group-item groupSubText"
-                                                            placeholder="รายการตรวจประเมิน 1">
-                                                        <a type="button" onclick="delGroupList(this)"><i
-                                                                class="bi bi-x"></i></a>
-                                                    </li> --}}
                                                 </ol>
                                             </div>
                                             <div class="card-footer">
@@ -122,13 +143,35 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         function addGroupList(button) {
             const ol = button.closest('.card').querySelector('ol');
             const newListItem = document.createElement('li');
-            newListItem.classList.add('list-group-item', 'd-flex', 'gap-3');
-            newListItem.innerHTML =
-                `<input type="text" class="form-control list-group-item groupSubText" placeholder="ชื่อรายการตรวจประเมิน"><a type="button" onclick="delGroupList(this)"><i class="bi bi-x"></i></a>`;
+            newListItem.classList.add('list-group-item', 'gap-3', 'border', 'p-2', 'checkLi');
+            newListItem.innerHTML = `
+                <div class="d-flex flex-fill mb-2 gap-2">
+                    <input type="text" class="form-control groupSubText"
+                        placeholder="รายการตรวจประเมิน 1">
+                    <select class="form-select selectOptType" aria-label="Default select example" onchange="changeSelected(this)">
+                        <option selected disabled>เลือกประเภทตัวเลือก</option>
+                        @foreach ($opt_types as $opt_type)
+                            <option value="{{ $opt_type->id }}">{{ $opt_type->name }}</option>
+                        @endforeach
+                        <option value="text">ข้อความ</option>
+                        <option value="custom">หลายตัวเลือก</option>
+                    </select>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="delGroupList(this)"><i class="bi bi-x"></i></button>
+                </div>
+                <div class="optionSection">
+                    <p class="mb-0">รายการตัวเลือก / คำตอบ</p>
+                    <div class="px-3">
+                        <input type="text" class="form-control mb-2" placeholder="ตัวอย่างช่องคำตอบ" aria-label="ตัวอย่างช่องคำตอบ" readonly style="display: none">
+                        <ol class="list-group-numbered optionContainer" style="display: none"></ol>
+                        <button class="btn btn-success btn-sm text-nowrap" onClick="addOption(this)" type="button" style="display: none">เพิ่มตัวเลือก</button>
+                    </div>
+                </div>
+            `;
             ol.appendChild(newListItem);
         }
 
@@ -144,6 +187,41 @@
             listItems.forEach((item, index) => {
                 item.setAttribute('data-order', index + 1);
             });
+        }
+
+        function addOption(element){
+            console.log('addOptionBtn');
+            $(element).prev('ol.optionContainer').append(`
+                <li class="list-group-item d-flex gap-2 mb-2 optionLi">
+                    <input type="text" class="form-control optTitle" placeholder="กรอกตัวเลือก">
+                    <input type="number" class="form-control optScore" placeholder="คะแนน(ไม่จำเป็น)">
+                    <button type="button" class="btn btn-sm btn-danger" onclick="delOptionBtn(this)"><i class="bi bi-x"></i></button>
+                </li>
+            `);
+        }
+
+        function delOptionBtn(element) {
+            console.log("removeBtn");
+            const optionItem = element.closest('li');
+            optionItem.remove();
+        }
+
+        function changeSelected(element) {
+            const selected = $(element).val();
+            console.log("selectOptType ", selected)
+            if (selected == "custom") {
+                $(element).closest('div').next().children('div').children('ol').show();
+                $(element).closest('div').next().children('div').children('button').show();
+                $(element).closest('div').next().children('div').children('input').hide();
+            } else if (selected == "text"){
+                $(element).closest('div').next().children('div').children('ol').hide();
+                $(element).closest('div').next().children('div').children('button').hide();
+                $(element).closest('div').next().children('div').children('input').show();
+            } else {
+                $(element).closest('div').next().children('div').children('ol').hide();
+                $(element).closest('div').next().children('div').children('button').hide();
+                $(element).closest('div').next().children('div').children('input').hide();
+            }
         }
     </script>
     <style>

@@ -12,7 +12,8 @@ class Option extends Model
     protected $fillable = [
         'opt_text',
         'score',
-        'opt_type'
+        'opt_type',
+        'question_id'
     ];
 
     public function getOptionType()

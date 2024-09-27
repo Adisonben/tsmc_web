@@ -50,7 +50,6 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         try {
             $checkData = json_decode($request->input('checkData'), true); // [{"groupName":"awdada","groupSubText":["dawdawdawdawd"]}]
             $formType = Form_type::find($request->formType);
@@ -71,14 +70,23 @@ class FormController extends Controller
                     'form_id' => $newForm->id,
                     'title' => $group['groupName'],
                 ]);
-                if (count($group['groupSubText'] ?? []) > 0) {
-                    foreach ($group['groupSubText'] as $ques) {
-                        Question::create([
+                if (count($group['checkList'] ?? []) > 0) {
+                    foreach ($group['checkList'] as $ques) {
+                        $newQuestion = Question::create([
                             'form_id' => $newForm->id,
                             'group_id'=> $newGroup->id,
-                            'option_type' => $request->opt_type,
-                            'title' => $ques
+                            'option_type' => $ques['optType'],
+                            'title' => $ques['checktTitle']
                         ]);
+                        if ($ques['optType'] == "custom") {
+                            foreach ($ques['optionList'] ?? [] as $option) {
+                                Option::create([
+                                    'opt_text' => $option['optionText'],
+                                    'score' => $option['optionScore'] ?? 1,
+                                    'question_id' => $newQuestion->id
+                                ]);
+                            }
+                        }
                     }
                 }
             }
@@ -133,27 +141,41 @@ class FormController extends Controller
                 'has_approve' => $request->approveCheck ? true : false,
             ]);
 
-            Quest_group::where('form_id', $id)->delete();
-            Question::where('form_id', $id)->delete();
+            $quest_group_del_ids = Quest_group::where('form_id', $id)->pluck('id');
+            $quest_ids = Question::where('form_id', $id)->pluck('id');
 
             foreach ($checkData ?? [] as $group) {
                 $newGroup = Quest_group::create([
                     'form_id' => $updateForm->id,
                     'title' => $group['groupName'],
                 ]);
-                if (count($group['groupSubText'] ?? []) > 0) {
-                    foreach ($group['groupSubText'] as $ques) {
-                        Question::create([
+                if (count($group['checkList'] ?? []) > 0) {
+                    foreach ($group['checkList'] as $ques) {
+                        $newQuestion = Question::create([
                             'form_id' => $updateForm->id,
                             'group_id'=> $newGroup->id,
-                            'option_type' => $request->opt_type,
-                            'title' => $ques
+                            'option_type' => $ques['optType'],
+                            'title' => $ques['checktTitle']
                         ]);
+                        if ($ques['optType'] == "custom") {
+                            foreach ($ques['optionList'] ?? [] as $option) {
+                                Option::create([
+                                    'opt_text' => $option['optionText'],
+                                    'score' => $option['optionScore'] ?? 1,
+                                    'question_id' => $newQuestion->id
+                                ]);
+                            }
+                        }
                     }
                 }
             }
+
+            Quest_group::whereIn('id', $quest_group_del_ids)->delete();
+            Option::whereIn('question_id', $quest_ids)->delete();
+            Question::whereIn('id', $quest_ids)->delete();
+
             return response()->json([
-                'message' => 'Form has created successfully.'
+                'message' => 'Form has updated successfully.'
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

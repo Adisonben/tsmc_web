@@ -159,8 +159,8 @@ class PostController extends Controller
                 $filePath = public_path($media->folder . '/' . $media->file_name);
                 if (file_exists($filePath)) {
                     unlink($filePath);
-                    $media->delete();
                 }
+                $media->delete();
             }
 
             $doc_file_ids = $request->doc_files ?? [];

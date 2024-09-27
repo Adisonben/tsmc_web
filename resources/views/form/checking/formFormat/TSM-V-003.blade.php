@@ -64,16 +64,27 @@
                                     <tbody>
                                         @foreach ($quest_groups as $group)
                                             <tr><td colspan="4">{{ $group->title }}</td></tr>
-                                            @foreach ($group->questions as $index => $quest)
+                                            @foreach ($group->questions ?? [] as $index => $quest)
                                                 <tr>
                                                     <td><p class="mb-0 ps-4">{{ $index + 1 }}. {{ $quest->title }}</p></td>
                                                     <td>
-                                                        @foreach (optional($quest->getOption)->getOptionList ?? [] as $option)
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="questid_{{ $quest->id }}" id="optionCheckFor{{ $quest->id . $option->id }}" value="{{ $option->id }}" required>
-                                                                <label class="form-check-label" for="optionCheckFor{{ $quest->id . $option->id }}">{{ $option->opt_text }}</label>
-                                                            </div>
-                                                        @endforeach
+                                                        @if ($quest->option_type == "text")
+                                                            <input type="text" maxlength="200" name="questid_{{ $quest->id }}" class="form-control mb-2" placeholder="กรุณากรอกคำตอบ" required>
+                                                        @elseif ($quest->option_type == "custom")
+                                                            @foreach ($quest->options ?? [] as $option)
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="questid_{{ $quest->id }}" id="optionCheckFor{{ $quest->id . $option->id }}" value="{{ $option->id }}" required>
+                                                                    <label class="form-check-label" for="optionCheckFor{{ $quest->id . $option->id }}">{{ $option->opt_text }}</label>
+                                                                </div>
+                                                            @endforeach
+                                                        @else
+                                                            @foreach (optional($quest->getOption)->getOptionList ?? [] as $option)
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="questid_{{ $quest->id }}" id="optionCheckFor{{ $quest->id . $option->id }}" value="{{ $option->id }}" required>
+                                                                    <label class="form-check-label" for="optionCheckFor{{ $quest->id . $option->id }}">{{ $option->opt_text }}</label>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
                                                     </td>
                                                     @if ($formdata->has_comment ?? false)
                                                         <td><input class="form-control" type="text" name="comment_{{ $quest->id }}" maxlength="200"></td>

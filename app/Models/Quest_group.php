@@ -12,6 +12,8 @@ class Quest_group extends Model
     protected $fillable = [
         'form_id',
         'title',
+        'group_type',
+        'content'
     ];
 
     public function questions()

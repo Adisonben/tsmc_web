@@ -38,7 +38,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div>
+                                    {{-- <div>
                                         <label class="form-label">ประเภทตัวเลือก</label>
                                         <select class="form-select" aria-label="Default select example" name="opt_type">
                                             <option selected disabled>เลือกประเภทตัวเลือก</option>
@@ -46,7 +46,7 @@
                                                 <option value="{{ $opt_type->id }}">{{ $opt_type->name }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div> --}}
                                     <div>
                                         <label class="form-label">คุณสมบัติฟอร์ม</label>
                                         <div class="d-flex gap-3">
@@ -81,21 +81,10 @@
                                 <div id="groupCardContainer">
                                     {{-- <div class="card my-3 checkCard">
                                         <div class="card-body">
-                                            <input type="text" class="form-control mb-3 list-group-item groupName"
+                                            <input type="text" class="form-control mb-3 groupName"
                                                 placeholder="ชื่อหมวดหมู่">
+                                            <input type="hidden" class="form-control mb-3 groupType" value="check">
                                             <ol class="list-group-numbered">
-                                                <li class="list-group-item d-flex gap-3">
-                                                    <input type="text" class="form-control list-group-item groupSubText"
-                                                        placeholder="รายการตรวจประเมิน 1">
-                                                    <a type="button" onclick="delGroupList(this)"><i
-                                                            class="bi bi-x"></i></a>
-                                                </li>
-                                                <li class="list-group-item d-flex gap-3">
-                                                    <input type="text" class="form-control list-group-item groupSubText"
-                                                        placeholder="รายการตรวจประเมิน 1">
-                                                    <a type="button" onclick="delGroupList(this)"><i
-                                                            class="bi bi-x"></i></a>
-                                                </li>
                                             </ol>
                                         </div>
                                         <div class="card-footer">
@@ -109,6 +98,8 @@
 
                                 <button type="button" class="btn btn-success mb-3"
                                     id="addFormGroupBtn">เพิ่มหมวดหมู่</button>
+                                {{-- <button type="button" class="btn btn-info mb-3"
+                                    id="addImgGroupBtn">เพิ่มรูปภาพ</button> --}}
                                 <button type="submit" class="btn btn-primary mb-3">บันทึก</button>
                             </form>
                         </div>
@@ -117,13 +108,36 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
+
         function addGroupList(button) {
             const ol = button.closest('.card').querySelector('ol');
             const newListItem = document.createElement('li');
-            newListItem.classList.add('list-group-item', 'd-flex', 'gap-3');
-            newListItem.innerHTML =
-                `<input type="text" class="form-control list-group-item groupSubText" placeholder="ชื่อรายการตรวจประเมิน"><a type="button" onclick="delGroupList(this)"><i class="bi bi-x"></i></a>`;
+            newListItem.classList.add('list-group-item', 'gap-3', 'border', 'p-2', 'checkLi');
+            newListItem.innerHTML = `
+                <div class="d-flex flex-fill mb-2 gap-2">
+                    <input type="text" class="form-control groupSubText"
+                        placeholder="รายการตรวจประเมิน 1">
+                    <select class="form-select selectOptType" aria-label="Default select example" onchange="changeSelected(this)">
+                        <option selected disabled>เลือกประเภทตัวเลือก</option>
+                        @foreach ($opt_types as $opt_type)
+                            <option value="{{ $opt_type->id }}">{{ $opt_type->name }}</option>
+                        @endforeach
+                        <option value="text">ข้อความ</option>
+                        <option value="custom">หลายตัวเลือก</option>
+                    </select>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="delGroupList(this)"><i class="bi bi-x"></i></button>
+                </div>
+                <div class="optionSection">
+                    <p class="mb-0">รายการตัวเลือก / คำตอบ</p>
+                    <div class="px-3">
+                        <input type="text" class="form-control mb-2" placeholder="ตัวอย่างช่องคำตอบ" aria-label="ตัวอย่างช่องคำตอบ" readonly style="display: none">
+                        <ol class="list-group-numbered optionContainer" style="display: none"></ol>
+                        <button class="btn btn-success btn-sm text-nowrap" onClick="addOption(this)" type="button" style="display: none">เพิ่มตัวเลือก</button>
+                    </div>
+                </div>
+            `;
             ol.appendChild(newListItem);
         }
 
@@ -140,6 +154,69 @@
                 item.setAttribute('data-order', index + 1);
             });
         }
+        // $('.addOptionBtn').on('click', function() {
+        //     console.log('addOptionBtn');
+        //     $(this).prev('ol.optionContainer').append(`
+        //         <li class="list-group-item d-flex gap-2 mb-2">
+        //             <input type="text" class="form-control optTitle" placeholder="กรอกตัวเลือก">
+        //             <input type="text" class="form-control optScore" placeholder="คะแนน(ไม่จำเป็น)">
+        //             <button type="button" class="btn btn-sm btn-danger" onclick="delOptionBtn(this)"><i class="bi bi-x"></i></button>
+        //         </li>
+        //     `);
+        // });
+        function addOption(element){
+            console.log('addOptionBtn');
+            $(element).prev('ol.optionContainer').append(`
+                <li class="list-group-item d-flex gap-2 mb-2 optionLi">
+                    <input type="text" class="form-control optTitle" placeholder="กรอกตัวเลือก">
+                    <input type="number" class="form-control optScore" placeholder="คะแนน(ไม่จำเป็น)">
+                    <button type="button" class="btn btn-sm btn-danger" onclick="delOptionBtn(this)"><i class="bi bi-x"></i></button>
+                </li>
+            `);
+        }
+
+        function delOptionBtn(element) {
+            console.log("removeBtn");
+            const optionItem = element.closest('li');
+            optionItem.remove();
+        }
+
+        function changeSelected(element) {
+            const selected = $(element).val();
+            console.log("selectOptType ", selected)
+            if (selected == "custom") {
+                $(element).closest('div').next().children('div').children('ol').show();
+                $(element).closest('div').next().children('div').children('button').show();
+                $(element).closest('div').next().children('div').children('input').hide();
+            } else if (selected == "text"){
+                $(element).closest('div').next().children('div').children('ol').hide();
+                $(element).closest('div').next().children('div').children('button').hide();
+                $(element).closest('div').next().children('div').children('input').show();
+            } else {
+                $(element).closest('div').next().children('div').children('ol').hide();
+                $(element).closest('div').next().children('div').children('button').hide();
+                $(element).closest('div').next().children('div').children('input').hide();
+            }
+        }
+        // $(document).ready(function() {
+        //     $('.selectOptType').on('change', function () {
+        //         const selected = $(this).val();
+        //         console.log("selectOptType ", selected)
+        //         if (selected == "custom") {
+        //             $(this).closest('div').next().children('div').children('ol').show();
+        //             $(this).closest('div').next().children('div').children('button').show();
+        //             $(this).closest('div').next().children('div').children('input').hide();
+        //         } else if (selected == "text"){
+        //             $(this).closest('div').next().children('div').children('ol').hide();
+        //             $(this).closest('div').next().children('div').children('button').hide();
+        //             $(this).closest('div').next().children('div').children('input').show();
+        //         } else {
+        //             $(this).closest('div').next().children('div').children('ol').hide();
+        //             $(this).closest('div').next().children('div').children('button').hide();
+        //             $(this).closest('div').next().children('div').children('input').hide();
+        //         }
+        //     })
+        // });
     </script>
     <style>
         li {

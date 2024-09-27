@@ -16,4 +16,9 @@ class Form_answer extends Model
         'answer',
         'comment'
     ];
+
+    public function getAnswerOption()
+    {
+        return $this->belongsTo(Option::class, 'answer', 'id');
+    }
 }

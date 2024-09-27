@@ -17,7 +17,8 @@ class Form extends Model
         'has_score',
         'has_approve',
         'org',
-        'form_id'
+        'form_id',
+        'created_by'
     ];
 
     public function getType()
