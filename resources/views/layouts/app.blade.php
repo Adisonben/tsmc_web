@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" href="images/icons/tsmc_logo.png" type="image/icon type">
+    <link rel="icon" href="{{ asset('images/icons/tsmc_logo.png') }}" type="image/icon type">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
