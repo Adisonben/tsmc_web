@@ -71,7 +71,16 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($quest_groups as $group)
-                                            <tr><td colspan="4">{{ $group->title }}</td></tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div>{{ $group->title }}</div>
+                                                    @if ($group->group_type == "image")
+                                                        <div class="d-flex justify-content-center">
+                                                            <img class="image-preview" src="/uploads/formImage/{{ $group->content }}" alt="ภาพ" height="250">
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                            </tr>
                                             @foreach ($group->questions as $index => $quest)
                                                 <tr>
                                                     <td><p class="mb-0 ps-4">{{ $index + 1 }}. {{ $quest->title }}</p></td>

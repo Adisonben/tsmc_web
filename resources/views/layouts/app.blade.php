@@ -82,6 +82,9 @@
                                     <a href="{{ route('forms.create') }}" class="sidebar-link">สร้างแบบฟอร์ม</a>
                                 </li>
                                 <li class="sidebar-item">
+                                    <a href="{{ route('form.plan.create') }}" class="sidebar-link">สร้างแบบแผน</a>
+                                </li>
+                                <li class="sidebar-item">
                                     <a href="{{ route('forms.index') }}" class="sidebar-link">แบบฟอร์มทั้งหมด</a>
                                 </li>
                             </ul>

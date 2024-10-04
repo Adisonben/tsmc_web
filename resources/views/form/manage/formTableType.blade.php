@@ -20,12 +20,15 @@
                                     </div>
                                     <div class="card-body">
                                         @if (count($cate->formTypes ?? []) > 0)
-                                            @foreach ($cate->formTypes as $formType)
-                                                {{-- <a href="">{{ $formType->name }}</a> --}}
-                                                @if ($formType->form_group == "formCheck")
-                                                    <a href="{{ route('forms.tables', ['formtype' => $formType->name]) }}" class="btn btn-primary mb-1">{{ $formType->name }}</a>
-                                                @endif
-                                            @endforeach
+                                            <ol class="list-group-numbered">
+                                                @foreach ($cate->formTypes as $formType)
+                                                        @if ($formType->form_group == "formCheck" || $formType->form_group == "formPlan")
+                                                            <li class="list-group-item">
+                                                                <a href="{{ route('forms.tables', ['formtype' => $formType->name]) }}" class="mb-1">{{ $formType->name }}</a>
+                                                            </li>
+                                                        @endif
+                                                @endforeach
+                                            </ol>
                                         @endif
                                     </div>
                                 </div>

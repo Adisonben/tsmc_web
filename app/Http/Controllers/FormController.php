@@ -8,6 +8,9 @@ use App\Models\Form_answer;
 use App\Models\Form_category;
 use App\Models\Form_response;
 use App\Models\Form_type;
+use App\Models\FormColumn;
+use App\Models\FormList;
+use App\Models\FormListHasColumn;
 use App\Models\Option;
 use App\Models\Option_type;
 use App\Models\Phone_number;
@@ -52,6 +55,9 @@ class FormController extends Controller
     {
         try {
             $checkData = json_decode($request->input('checkData'), true); // [{"groupName":"awdada","groupSubText":["dawdawdawdawd"]}]
+            // foreach ($checkData ?? [] as $group) {
+            //     $fileNames[] = $request->hasFile('groupImage_' . $group['groupName']);
+            // }
             $formType = Form_type::find($request->formType);
             $newForm = Form::create([
                 'title' => $request->formName,
@@ -69,25 +75,40 @@ class FormController extends Controller
                 $newGroup = Quest_group::create([
                     'form_id' => $newForm->id,
                     'title' => $group['groupName'],
+                    'group_type' => $group['groupType'],
                 ]);
-                if (count($group['checkList'] ?? []) > 0) {
-                    foreach ($group['checkList'] as $ques) {
-                        $newQuestion = Question::create([
-                            'form_id' => $newForm->id,
-                            'group_id'=> $newGroup->id,
-                            'option_type' => $ques['optType'],
-                            'title' => $ques['checktTitle']
-                        ]);
-                        if ($ques['optType'] == "custom") {
-                            foreach ($ques['optionList'] ?? [] as $option) {
-                                Option::create([
-                                    'opt_text' => $option['optionText'],
-                                    'score' => $option['optionScore'] ?? 1,
-                                    'question_id' => $newQuestion->id
-                                ]);
+                if ($group['groupType'] == "image") {
+                    if ($request->hasFile('groupImage_' . $group['groupName'])) {
+                        $imgFile = $request->file('groupImage_' . $group['groupName']);
+                        $file_name = time() . '_' . md5(uniqid(rand(), true)) . '.' . $imgFile->getClientOriginalExtension();
+                        $folderPath = public_path('uploads/formImage');
+                        $imgFile->move($folderPath, $file_name);
+
+                        $newGroup->content = $file_name;
+                        $newGroup->save();
+                    }
+                } else if ($group['groupType'] == "check") {
+                    if (count($group['checkList'] ?? []) > 0) {
+                        foreach ($group['checkList'] as $ques) {
+                            $newQuestion = Question::create([
+                                'form_id' => $newForm->id,
+                                'group_id'=> $newGroup->id,
+                                'option_type' => $ques['optType'],
+                                'title' => $ques['checktTitle']
+                            ]);
+                            if ($ques['optType'] == "custom") {
+                                foreach ($ques['optionList'] ?? [] as $option) {
+                                    Option::create([
+                                        'opt_text' => $option['optionText'],
+                                        'score' => $option['optionScore'] ?? 1,
+                                        'question_id' => $newQuestion->id
+                                    ]);
+                                }
                             }
                         }
                     }
+                } else {
+
                 }
             }
             return response()->json([
@@ -118,9 +139,9 @@ class FormController extends Controller
         $form_edit = Form::where('form_id', $id)->first();
         $quest_groups = Quest_group::where('form_id', $form_edit->id)->get();
 
-        $question_one = Question::where('form_id', $form_edit->id)->first();
-        $sopt_type = $question_one->option_type;
-        return view('form.manage.editForm', compact('form_types', 'opt_types', 'form_edit', 'sopt_type', 'quest_groups'));
+        // $question_one = Question::where('form_id', $form_edit->id)->first();
+        // $sopt_type = $question_one->option_type;
+        return view('form.manage.editForm', compact('form_types', 'opt_types', 'form_edit', 'quest_groups'));
     }
 
     /**
@@ -148,29 +169,80 @@ class FormController extends Controller
                 $newGroup = Quest_group::create([
                     'form_id' => $updateForm->id,
                     'title' => $group['groupName'],
+                    'group_type' => $group['groupType'],
                 ]);
-                if (count($group['checkList'] ?? []) > 0) {
-                    foreach ($group['checkList'] as $ques) {
-                        $newQuestion = Question::create([
-                            'form_id' => $updateForm->id,
-                            'group_id'=> $newGroup->id,
-                            'option_type' => $ques['optType'],
-                            'title' => $ques['checktTitle']
-                        ]);
-                        if ($ques['optType'] == "custom") {
-                            foreach ($ques['optionList'] ?? [] as $option) {
-                                Option::create([
-                                    'opt_text' => $option['optionText'],
-                                    'score' => $option['optionScore'] ?? 1,
-                                    'question_id' => $newQuestion->id
-                                ]);
+                if ($group['groupType'] == "image") {
+                    if ($request->hasFile('groupImage_' . $group['groupName'])) {
+                        $imgFile = $request->file('groupImage_' . $group['groupName']);
+                        $file_name = time() . '_' . md5(uniqid(rand(), true)) . '.' . $imgFile->getClientOriginalExtension();
+                        $folderPath = public_path('uploads/formImage');
+                        $imgFile->move($folderPath, $file_name);
+
+                        $newGroup->content = $file_name;
+                        $newGroup->save();
+                    }
+                } else if ($group['groupType'] == "check") {
+                    if (count($group['checkList'] ?? []) > 0) {
+                        foreach ($group['checkList'] as $ques) {
+                            $newQuestion = Question::create([
+                                'form_id' => $updateForm->id,
+                                'group_id'=> $newGroup->id,
+                                'option_type' => $ques['optType'],
+                                'title' => $ques['checktTitle']
+                            ]);
+                            if ($ques['optType'] == "custom") {
+                                foreach ($ques['optionList'] ?? [] as $option) {
+                                    Option::create([
+                                        'opt_text' => $option['optionText'],
+                                        'score' => $option['optionScore'] ?? 1,
+                                        'question_id' => $newQuestion->id
+                                    ]);
+                                }
                             }
                         }
                     }
+                } else {
+
                 }
             }
 
-            Quest_group::whereIn('id', $quest_group_del_ids)->delete();
+            // foreach ($checkData ?? [] as $group) {
+            //     $newGroup = Quest_group::create([
+            //         'form_id' => $updateForm->id,
+            //         'title' => $group['groupName'],
+            //     ]);
+            //     if (count($group['checkList'] ?? []) > 0) {
+            //         foreach ($group['checkList'] as $ques) {
+            //             $newQuestion = Question::create([
+            //                 'form_id' => $updateForm->id,
+            //                 'group_id'=> $newGroup->id,
+            //                 'option_type' => $ques['optType'],
+            //                 'title' => $ques['checktTitle']
+            //             ]);
+            //             if ($ques['optType'] == "custom") {
+            //                 foreach ($ques['optionList'] ?? [] as $option) {
+            //                     Option::create([
+            //                         'opt_text' => $option['optionText'],
+            //                         'score' => $option['optionScore'] ?? 1,
+            //                         'question_id' => $newQuestion->id
+            //                     ]);
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+
+            $quest_groups = Quest_group::whereIn('id', $quest_group_del_ids)->get();
+            foreach ($quest_groups as $quest_group) {
+                if ($quest_group->group_type == "image") {
+                    $image_name = $quest_group->content;
+                    $filePath = public_path('uploads/formImage/' . $image_name);
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+                $quest_group->delete();
+            }
             Option::whereIn('question_id', $quest_ids)->delete();
             Question::whereIn('id', $quest_ids)->delete();
 
@@ -715,4 +787,78 @@ class FormController extends Controller
         $historyData = Repair_history_data::where('order_num', $formData->order_num)->get();
         return view('form.recording.detail.TSM-V-002', compact('formData', 'historyData'));
     }
+
+    public function createPlanForm() {
+        $form_types = Form_type::where("form_group", "formPlan")->get();
+        return view('form.manage.createPlanForm', compact('form_types'));
+    }
+    public function editPlanForm($formId) {
+        $form_types = Form_type::where("form_group", "formPlan")->get();
+        $form = Form::where('form_id', $formId)->firstOrFail();
+        return view('form.manage.editPlanForm', compact('form_types', 'form'));
+    }
+    public function createPlanList($pid) {
+        $formPlan = Form::findOrFail($pid);
+        return view('form.manage.createPlanList', compact('formPlan'));
+    }
+
+    public function storePlanForm(Request $request) {
+        // dd($request->all());
+        try {
+            $formType = Form_type::find($request->formType);
+            $newForm = Form::create([
+                'title' => $request->formName,
+                'category' => $formType->category,
+                'type' => $formType->id,
+                'has_comment' => false,
+                'has_score' => false,
+                'has_approve' => false,
+                'org' => $request->user()->userDetail->org,
+                'form_id' => Str::uuid(),
+                'created_by' => $request->user()->id,
+            ]);
+
+            foreach ($request->column ?? [] as $column) {
+                FormColumn::create([
+                    'title' => $column,
+                    'group_name' => $request->columnGroupName,
+                    'form_id' => $newForm->id
+                ]);
+            }
+
+            return redirect()->route('form.planlist.create', ['pid' => $newForm->id]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back();
+        }
+    }
+
+    public function storePlanList(Request $request) {
+        try {
+            $formPlan = Form::findOrFail($request->planId);
+            $listData = json_decode($request->planListData ?? '');
+            foreach ($listData ?? [] as $list) {
+                $formList = FormList::create([
+                    'title' => $list->title,
+                    'comment' => $list->comment,
+                    'form_id' => $formPlan->id
+                ]);
+                foreach ($list->columnCheck as $listCheck) {
+                    FormListHasColumn::create([
+                        'list_id' => $formList->id,
+                        'column_id' => $listCheck->columnId,
+                        'status' => $listCheck->isCheck
+                    ]);
+                }
+            }
+            return response()->json([
+                'message' => 'PlanList has created successfully.'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
 }

@@ -18,7 +18,7 @@
                                     {{ $error }}
                                 </div>
                             @endif --}}
-                            <form id="createCheckForm" method="post">
+                            <form id="createCheckForm" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <h5 class="text-center">ข้อมูลฟอร์ม</h5>
 
@@ -79,6 +79,19 @@
 
                                 <h5 class="text-center">รายการตรวจประเมิน</h5>
                                 <div id="groupCardContainer">
+                                    <div class="card my-3 checkCard">
+                                        {{-- <div class="card-body">
+                                            <div class="d-flex gap-2 flex-wrap flex-md-nowrap">
+                                                <input type="text" class="form-control mb-3 groupName" placeholder="ชื่อภาพ">
+                                                <input type="file" class="form-control mb-3 groupContent" onchange="addExImg(this)" placeholder="ภาพ" accept="image/*">
+                                            </div>
+                                            <input type="hidden" class="form-control mb-3 groupType" value="image">
+                                            <img class="image-preview" src="" alt="ตัวอย่างภาพ" height="250" style="display: none">
+                                        </div>
+                                        <div class="card-footer">
+                                            <button type="button" class="btn btn-sm btn-danger delete-card-btn">ลบหมวดหมู่</button>
+                                        </div> --}}
+                                    </div>
                                     {{-- <div class="card my-3 checkCard">
                                         <div class="card-body">
                                             <input type="text" class="form-control mb-3 groupName"
@@ -98,8 +111,8 @@
 
                                 <button type="button" class="btn btn-success mb-3"
                                     id="addFormGroupBtn">เพิ่มหมวดหมู่</button>
-                                {{-- <button type="button" class="btn btn-info mb-3"
-                                    id="addImgGroupBtn">เพิ่มรูปภาพ</button> --}}
+                                <button type="button" class="btn btn-info mb-3"
+                                    id="addImgGroupBtn">เพิ่มรูปภาพ</button>
                                 <button type="submit" class="btn btn-primary mb-3">บันทึก</button>
                             </form>
                         </div>
@@ -173,6 +186,18 @@
                     <button type="button" class="btn btn-sm btn-danger" onclick="delOptionBtn(this)"><i class="bi bi-x"></i></button>
                 </li>
             `);
+        }
+
+        function addExImg(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                var closestPreview = $(input).closest('.checkCard').find('.image-preview');
+                reader.onload = function(e) {
+                    closestPreview.attr('src', e.target.result);
+                    closestPreview.show();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         function delOptionBtn(element) {

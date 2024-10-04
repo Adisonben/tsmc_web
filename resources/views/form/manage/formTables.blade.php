@@ -37,9 +37,15 @@
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $form->title }}</td>
                                         <td>
-                                            <a href="{{ route('forms.edit', ['form' => $form->form_id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
+                                            @if ($form->getType->form_group == "formPlan")
+                                                <a href="{{ route('form.plan.edit', ['formId' => $form->form_id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                            @else
+                                                <a href="{{ route('forms.edit', ['form' => $form->form_id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                            @endif
                                             <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $form->id }}" del-target="form" data-bs-toggle="tooltip" data-bs-title="ลบ">
                                                 <i class="bi bi-trash"></i>
                                             </button>

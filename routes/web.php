@@ -64,6 +64,11 @@ Route::post('/posts/update/{post}', [PostController::class, 'update'])->name('po
 Route::delete('/posts/comment/{id}', [PostController::class, 'delComment'])->name('posts.comment.delete')->middleware('auth');
 
 Route::resource('forms', FormController::class)->middleware('auth');
+Route::get('/forms/plan/create', [FormController::class, 'createPlanForm'])->name('form.plan.create')->middleware('auth');
+Route::get('/forms/plan/{formId}/edit', [FormController::class, 'editPlanForm'])->name('form.plan.edit')->middleware('auth');
+Route::get('/forms/plan/{pid}/list/create', [FormController::class, 'createPlanList'])->name('form.planlist.create')->middleware('auth');
+Route::post('/forms/plan/list/store', [FormController::class, 'storePlanList'])->name('form.planlist.store')->middleware('auth');
+Route::post('/forms/plan/store', [FormController::class, 'storePlanForm'])->name('form.plan.store')->middleware('auth');
 Route::get('/forms/table/verify-form', [FormController::class, 'verifyFormTable'])->name('form.table.verify_form')->middleware('auth');
 Route::get('/forms/table/{formtype}', [FormController::class, 'showFormTable'])->name('forms.tables')->middleware('auth');
 Route::delete('/forms/table/form/{formid}', [FormController::class, 'destroy'])->name('forms.tables.delete')->middleware('auth');

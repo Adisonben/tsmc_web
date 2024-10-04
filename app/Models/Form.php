@@ -30,4 +30,9 @@ class Form extends Model
     {
         return $this->belongsTo(Form_category::class, 'category');
     }
+
+    public function getColumns()
+    {
+        return $this->hasMany(FormColumn::class, 'form_id', 'id');
+    }
 }

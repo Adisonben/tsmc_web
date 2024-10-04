@@ -54,6 +54,7 @@
                                                     <option selected>เลือกกลุ่ม</option>
                                                     <option value="formCheck">แบบฟอร์ม</option>
                                                     <option value="formTable">ตาราง</option>
+                                                    <option value="formPlan">แบบแผน</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -96,7 +97,17 @@
                                         <td>{{ $form_type->type_code ?? "-" }}</td>
                                         <td>{{ $form_type->name }}</td>
                                         <td>{{ optional($form_type->formCategory)->name }}</td>
-                                        <td>{{ $form_type->form_group ? ($form_type->form_group == "formCheck" ? "แบบฟอร์ม" : "ตาราง") : '-' }}</td>
+                                        <td>
+                                            @if ($form_type->form_group == "formCheck")
+                                                แบบฟอร์ม
+                                            @elseif ($form_type->form_group == "formTable")
+                                                ตาราง
+                                            @elseif ($form_type->form_group == "formPlan")
+                                                แบบแผน
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td>
                                             {{-- <button class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
                                                 data-bs-title="แก้ไข" data-bs-toggle="modal"
@@ -153,6 +164,7 @@
                                                                 <option selected>เลือกกลุ่ม</option>
                                                                 <option value="formCheck" {{ $form_type->form_group == "forrmCheck" ? "selected" : '' }}>แบบฟอร์ม</option>
                                                                 <option value="formTable" {{ $form_type->form_group == "formTable" ? "selected" : '' }}>ตาราง</option>
+                                                                <option value="formPlan" {{ $form_type->form_group == "formPlan" ? "selected" : '' }}>แบบแผน</option>
                                                             </select>
                                                         </div>
                                                     </div>

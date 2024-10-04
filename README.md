@@ -36,4 +36,4 @@ in line 157 ( in function username()).
 [NestedsetDocument](https://github.com/lazychaser/laravel-nestedset)
 
 Command:
-- `php artisan app:resetUsersPassword` for reset users that username is "tsmc0....." password to "tsmc" + date of monday (like '23092024')
+- `php artisan app:resetUsersPassword` for reset users's password that username is "tsmc0....." to "tsmc" + date of monday (like '23092024')

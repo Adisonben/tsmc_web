@@ -81,60 +81,78 @@
                                 <h5 class="text-center">รายการตรวจประเมิน</h5>
                                 <div id="groupCardContainer">
                                     @foreach ($quest_groups ?? [] as $qgroup)
-                                        <div class="card my-3 checkCard">
-                                            <div class="card-body">
-                                                <input type="text" maxlength="200" class="form-control mb-3 groupName"
-                                                    placeholder="ชื่อหมวดหมู่" value="{{ $qgroup->title }}">
-                                                <ol class="list-group-numbered">
-                                                    @foreach ($qgroup->questions as $quest)
-                                                        <li class="list-group-item gap-3 border checkLi p-2" style="background-color: rgb(240, 240, 240)">
-                                                            <div class="d-flex flex-fill mb-2 gap-2">
-                                                                <input type="text" maxlength="200" class="form-control groupSubText"
-                                                                    placeholder="รายการตรวจประเมิน 1" value="{{ $quest->title }}">
-                                                                <select class="form-select selectOptType" aria-label="Default select example" onchange="changeSelected(this)">
-                                                                    <option selected disabled>เลือกประเภทตัวเลือก</option>
-                                                                    @foreach ($opt_types as $opt_type)
-                                                                        <option value="{{ $opt_type->id }}" {{ $quest->option_type == $opt_type->id ? 'selected' : '' }}>{{ $opt_type->name }}</option>
-                                                                    @endforeach
-                                                                    <option value="text" {{ $quest->option_type == "text" ? 'selected' : '' }}>ข้อความ</option>
-                                                                    <option value="custom" {{ $quest->option_type == "custom" ? 'selected' : '' }}>หลายตัวเลือก</option>
-                                                                </select>
-                                                                <button type="button" class="btn btn-sm btn-danger" onclick="delGroupList(this)"><i class="bi bi-x"></i></button>
-                                                            </div>
-                                                            <div class="optionSection">
-                                                                <p class="mb-0">รายการตัวเลือก / คำตอบ</p>
-                                                                <div class="px-3">
-                                                                    <input type="text" maxlength="200" class="form-control mb-2" placeholder="ตัวอย่างช่องคำตอบ" aria-label="ตัวอย่างช่องคำตอบ" readonly style="display: {{ $quest->option_type == "text" ? 'blog' : 'none' }}">
-                                                                    <ol class="list-group-numbered optionContainer" style="display: {{ $quest->option_type == "custom" ? 'blog' : 'none' }}">
-                                                                        @if ($quest->option_type == "custom")
-                                                                            @foreach ($quest->options as $each_option)
-                                                                                <li class="list-group-item d-flex gap-2 mb-2 optionLi">
-                                                                                    <input type="text" maxlength="200" class="form-control optTitle" placeholder="กรอกตัวเลือก" value="{{ $each_option->opt_text }}">
-                                                                                    <input type="number" class="form-control optScore" placeholder="คะแนน(ไม่จำเป็น)" value="{{ $each_option->score }}">
-                                                                                    <button type="button" class="btn btn-sm btn-danger" onclick="delOptionBtn(this)"><i class="bi bi-x"></i></button>
-                                                                                </li>
-                                                                            @endforeach
-                                                                        @endif
-                                                                    </ol>
-                                                                    <button class="btn btn-success btn-sm text-nowrap" onClick="addOption(this)" type="button" style="display: {{ $quest->option_type == "custom" ? 'blog' : 'none' }}">เพิ่มตัวเลือก</button>
+                                        @if ($qgroup->group_type == "image")
+                                            <div class="card my-3 checkCard">
+                                                <div class="card-body">
+                                                    <div class="d-flex gap-2 flex-wrap flex-md-nowrap">
+                                                        <input type="text" class="form-control mb-3 groupName" placeholder="ชื่อภาพ" value="{{ $qgroup->title }}">
+                                                        <input type="file" class="form-control mb-3 groupContent" onchange="addExImg(this)" placeholder="ภาพ" accept="image/*">
+                                                    </div>
+                                                    <input type="hidden" class="form-control mb-3 groupType" value="image">
+                                                    <img class="image-preview" src="/uploads/formImage/{{ $qgroup->content }}" alt="ตัวอย่างภาพ" height="250" style="display: {{ $qgroup->content ? 'blog' : 'none' }}">
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button type="button" class="btn btn-sm btn-danger delete-card-btn">ลบหมวดหมู่</button>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="card my-3 checkCard">
+                                                <div class="card-body">
+                                                    <input type="text" maxlength="200" class="form-control mb-3 groupName"
+                                                        placeholder="ชื่อหมวดหมู่" value="{{ $qgroup->title }}">
+                                                    <ol class="list-group-numbered">
+                                                        @foreach ($qgroup->questions as $quest)
+                                                            <li class="list-group-item gap-3 border checkLi p-2" style="background-color: rgb(240, 240, 240)">
+                                                                <div class="d-flex flex-fill mb-2 gap-2">
+                                                                    <input type="text" maxlength="200" class="form-control groupSubText"
+                                                                        placeholder="รายการตรวจประเมิน 1" value="{{ $quest->title }}">
+                                                                    <select class="form-select selectOptType" aria-label="Default select example" onchange="changeSelected(this)">
+                                                                        <option selected disabled>เลือกประเภทตัวเลือก</option>
+                                                                        @foreach ($opt_types as $opt_type)
+                                                                            <option value="{{ $opt_type->id }}" {{ $quest->option_type == $opt_type->id ? 'selected' : '' }}>{{ $opt_type->name }}</option>
+                                                                        @endforeach
+                                                                        <option value="text" {{ $quest->option_type == "text" ? 'selected' : '' }}>ข้อความ</option>
+                                                                        <option value="custom" {{ $quest->option_type == "custom" ? 'selected' : '' }}>หลายตัวเลือก</option>
+                                                                    </select>
+                                                                    <button type="button" class="btn btn-sm btn-danger" onclick="delGroupList(this)"><i class="bi bi-x"></i></button>
                                                                 </div>
-                                                            </div>
-                                                        </li>
-                                                    @endforeach
-                                                </ol>
+                                                                <div class="optionSection">
+                                                                    <p class="mb-0">รายการตัวเลือก / คำตอบ</p>
+                                                                    <div class="px-3">
+                                                                        <input type="text" maxlength="200" class="form-control mb-2" placeholder="ตัวอย่างช่องคำตอบ" aria-label="ตัวอย่างช่องคำตอบ" readonly style="display: {{ $quest->option_type == "text" ? 'blog' : 'none' }}">
+                                                                        <ol class="list-group-numbered optionContainer" style="display: {{ $quest->option_type == "custom" ? 'blog' : 'none' }}">
+                                                                            @if ($quest->option_type == "custom")
+                                                                                @foreach ($quest->options as $each_option)
+                                                                                    <li class="list-group-item d-flex gap-2 mb-2 optionLi">
+                                                                                        <input type="text" maxlength="200" class="form-control optTitle" placeholder="กรอกตัวเลือก" value="{{ $each_option->opt_text }}">
+                                                                                        <input type="number" class="form-control optScore" placeholder="คะแนน(ไม่จำเป็น)" value="{{ $each_option->score }}">
+                                                                                        <button type="button" class="btn btn-sm btn-danger" onclick="delOptionBtn(this)"><i class="bi bi-x"></i></button>
+                                                                                    </li>
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </ol>
+                                                                        <button class="btn btn-success btn-sm text-nowrap" onClick="addOption(this)" type="button" style="display: {{ $quest->option_type == "custom" ? 'blog' : 'none' }}">เพิ่มตัวเลือก</button>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        @endforeach
+                                                    </ol>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button type="button" class="btn btn-sm btn-success"
+                                                        onclick="addGroupList(this)">เพิ่มรายการตรวจประเมิน</button>
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-danger delete-card-btn">ลบหมวดหมู่</button>
+                                                </div>
                                             </div>
-                                            <div class="card-footer">
-                                                <button type="button" class="btn btn-sm btn-success"
-                                                    onclick="addGroupList(this)">เพิ่มรายการตรวจประเมิน</button>
-                                                <button type="button"
-                                                    class="btn btn-sm btn-danger delete-card-btn">ลบหมวดหมู่</button>
-                                            </div>
-                                        </div>
+                                        @endif
                                     @endforeach
                                 </div>
 
                                 <button type="button" class="btn btn-success mb-3"
                                     id="addFormGroupBtn">เพิ่มหมวดหมู่</button>
+                                <button type="button" class="btn btn-info mb-3"
+                                    id="addImgGroupBtn">เพิ่มรูปภาพ</button>
                                 <button type="submit" class="btn btn-primary mb-3">บันทึก</button>
                             </form>
                         </div>
@@ -187,6 +205,18 @@
             listItems.forEach((item, index) => {
                 item.setAttribute('data-order', index + 1);
             });
+        }
+
+        function addExImg(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                var closestPreview = $(input).closest('.checkCard').find('.image-preview');
+                reader.onload = function(e) {
+                    closestPreview.attr('src', e.target.result);
+                    closestPreview.show();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         function addOption(element){
