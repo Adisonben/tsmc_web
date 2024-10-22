@@ -148,5 +148,7 @@
     </script>
 @endsection
 <style>
-
+    #homepage {
+        background-color: var(--main-color);
+    }
 </style>

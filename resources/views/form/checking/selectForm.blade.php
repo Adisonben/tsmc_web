@@ -27,8 +27,11 @@
                                         <ol class="list-group-numbered">
                                             @if (count($cate->getForms ?? []) > 0)
                                                 @foreach ($cate->getForms as $form)
+                                                    @php
+                                                        $posit_form = $position->hasFormType(optional($form->getType)->id, optional(Auth::user()->userDetail)->org) ?? $position->hasFormType(optional($form->getType)->id);
+                                                    @endphp
                                                     {{-- <a href="">{{ $formType->name }}</a> --}}
-                                                    @if (Auth()->user()->userDetail->org == $form->org)
+                                                    @if ((Auth()->user()->userDetail->org == $form->org) && (optional($form->getType)->form_group == "formCheck") && $posit_form?->pivot?->status)
                                                         <li class="list-group-item"><a href="{{ route('form.checking', ['formid' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a></li>
                                                     @endif
                                                 @endforeach
@@ -43,4 +46,9 @@
             </div>
         </div>
     </div>
+    <style>
+        #formCheckpage {
+            background-color: var(--main-color);
+        }
+    </style>
 @endsection

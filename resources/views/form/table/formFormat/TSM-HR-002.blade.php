@@ -77,4 +77,9 @@
             </div>
         </div>
     </div>
+    <style>
+        #formCheckTablePage {
+            background-color: var(--main-color);
+        }
+    </style>
 @endsection

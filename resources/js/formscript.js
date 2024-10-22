@@ -218,6 +218,58 @@ if (createPlanList) {
     });
 }
 
+const editPlanList = document.getElementById('editPlanList');
+if (editPlanList) {
+    editPlanList.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const cards = editPlanList.querySelectorAll('.card');
+        const formData = new FormData(editPlanList);
+        let planList = [];
+        cards.forEach((ccard) => {
+            const planListName = ccard.querySelector('.planListName');
+            const planListComment = ccard.querySelector('.planListComment');
+            const planColumnCheck = ccard.querySelectorAll('.form-check-input');
+            let columnCheck = [];
+            planColumnCheck.forEach((checkColumn) => {
+                columnCheck.push({
+                    columnId: checkColumn.value,
+                    isCheck: checkColumn.checked
+                });
+            })
+            planList.push({
+                title: planListName.value,
+                comment: planListComment.value,
+                columnCheck: columnCheck
+            });
+        });
+        formData.append('planListData', JSON.stringify(planList));
+        console.log(planList);
+        await axios.post('/forms/plan/list/update', formData)
+            .then(response => {
+                // Handle successful response
+                console.log('Response:', response.data);
+                // window.location.reload();
+                Swal.fire({
+                    title: "Success!",
+                    text: "Your form has been saved.",
+                    icon: "success",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Error:', error);
+                Swal.fire({
+                    title: "Sorry!",
+                    text: "Something went wrong!",
+                    icon: "error",
+                });
+            });
+    });
+}
 
 const updateCheckForm = document.getElementById('updateCheckForm');
 if (updateCheckForm) {

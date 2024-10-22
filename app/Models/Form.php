@@ -35,4 +35,16 @@ class Form extends Model
     {
         return $this->hasMany(FormColumn::class, 'form_id', 'id');
     }
+
+    public function getLists()
+    {
+        return $this->hasMany(FormList::class, 'form_id', 'id');
+    }
+
+    public function firstColumn($fid = null)
+    {
+        $query = $this->getColumns()->where('form_id', $fid);
+
+        return $query->first();
+    }
 }

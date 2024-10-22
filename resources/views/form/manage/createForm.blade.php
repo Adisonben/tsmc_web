@@ -248,5 +248,8 @@
             counter-increment: list-item;
             list-style: none;
         }
+        #formManagePage {
+            background-color: var(--main-color);
+        }
     </style>
 @endsection

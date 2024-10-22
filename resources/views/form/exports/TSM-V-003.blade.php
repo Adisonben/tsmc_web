@@ -103,7 +103,7 @@
             </form>
         </div>
         <footer class="text-center">
-            <p style="font-size: 10px">Printed on : TSMC Trainingzenter at {{ now() }}</p>
+            <p style="font-size: 10px">Printed on : TSMC at {{ now() }}</p>
         </footer>
     </div>
     <script>

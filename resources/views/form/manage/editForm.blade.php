@@ -100,6 +100,7 @@
                                                 <div class="card-body">
                                                     <input type="text" maxlength="200" class="form-control mb-3 groupName"
                                                         placeholder="ชื่อหมวดหมู่" value="{{ $qgroup->title }}">
+                                                    <input type="hidden" class="form-control mb-3 groupType" value="check">
                                                     <ol class="list-group-numbered">
                                                         @foreach ($qgroup->questions as $quest)
                                                             <li class="list-group-item gap-3 border checkLi p-2" style="background-color: rgb(240, 240, 240)">
@@ -258,6 +259,9 @@
         li {
             counter-increment: list-item;
             list-style: none;
+        }
+        #formManagePage {
+            background-color: var(--main-color);
         }
     </style>
 @endsection

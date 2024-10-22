@@ -13,11 +13,6 @@
 
                     <div class="card-body px-md-5">
                         <div>
-                            {{-- @if ($error)
-                                <div class="alert alert-danger" role="alert">
-                                    {{ $error }}
-                                </div>
-                            @endif --}}
                             <form id="createPlanList" method="post">
                                 @csrf
                                 <h5 class="text-center mb-4">ข้อมูลแผน</h5>
@@ -40,7 +35,7 @@
                                                 <input type="text" class="form-control planListComment" placeholder="หมายเหตุ">
                                             </div>
                                             <div class="mb-2">
-                                                <p class="mb-0">columnGroupName</p>
+                                                <p class="mb-0">{{ optional($formPlan->firstColumn($formPlan->id))->group_name }}</p>
                                                 @foreach ($formPlan->getColumns ?? [] as $index => $column)
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="checkbox" id="option{{ $index }}"
@@ -113,6 +108,9 @@
         li {
             counter-increment: list-item;
             list-style: none;
+        }
+        #formManagePage {
+            background-color: var(--main-color);
         }
     </style>
 @endsection

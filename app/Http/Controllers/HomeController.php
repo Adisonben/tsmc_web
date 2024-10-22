@@ -68,4 +68,9 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
     }
+
+    public function loginHistoryTable() {
+        $histories = LoginHistory::where('user_id', Auth()->user()->id)->orderBy('created_at', "desc")->paginate(10);
+        return view('loginHistory', compact('histories'));
+    }
 }

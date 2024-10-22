@@ -29,13 +29,23 @@
                                                 @if (count($cate->getForms ?? []) > 0)
                                                     @foreach ($cate->getForms as $form)
                                                         {{-- <a href="">{{ $formType->name }}</a> --}}
-                                                        @if (Auth()->user()->userDetail->org == $form->org)
+                                                        @php
+                                                            $posit_form = $position->hasFormType(optional($form->getType)->id, optional(Auth::user()->userDetail)->org) ?? $position->hasFormType(optional($form->getType)->id);
+                                                        @endphp
+                                                        @if ((Auth()->user()->userDetail->org == $form->org) && (optional($form->getType)->form_group == "formCheck") && $posit_form?->pivot?->status)
                                                             <li class="list-group-item"><a href="{{ route('form.table', ['formid' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a></li>
+                                                        @elseif (optional($form->getType)->form_group == "formPlan" && optional($form->getType)->type_code !== "TSM-HR-006" && $posit_form?->pivot?->status)
+                                                            <li class="list-group-item"><a href="{{ route('formplan.table', ['fid' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a></li>
+                                                        @elseif (optional($form->getType)->form_group == "formPlan" && optional($form->getType)->type_code == "TSM-HR-006" && $posit_form?->pivot?->status)
+                                                            <li class="list-group-item"><a href="{{ route('formplan.show', ['fid' => $form->id]) }}" class="mb-1">{{ $form->title }}</a></li>
                                                         @endif
                                                     @endforeach
                                                 @endif
                                                 @foreach ($cate->formTypes ?? [] as $ftype)
-                                                    @if ($ftype->form_group == "formTable")
+                                                    @php
+                                                        $posit_form = $position->hasFormType($ftype->id, optional(Auth::user()->userDetail)->org) ?? $position->hasFormType($ftype->id);
+                                                    @endphp
+                                                    @if ($ftype->form_group == "formTable" && $posit_form?->pivot?->status)
                                                         <li class="list-group-item"><a href="{{ route('formtype.table', ['fcode' => $ftype->type_code]) }}" class="mb-1">{{ $ftype->name }}</a></li>
                                                     @endif
                                                 @endforeach
@@ -50,4 +60,9 @@
             </div>
         </div>
     </div>
+    <style>
+        #formCheckTablePage {
+            background-color: var(--main-color);
+        }
+    </style>
 @endsection

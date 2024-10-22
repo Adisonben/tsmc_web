@@ -14,11 +14,12 @@ class Form_answer extends Model
         'resp_id',
         'quest_id',
         'answer',
-        'comment'
+        'comment',
+        'quest_group_id'
     ];
 
     public function getAnswerOption()
     {
-        return $this->belongsTo(Option::class, 'answer', 'id');
+        return $this->belongsTo(Option::class, 'answer', 'id')->withTrashed();
     }
 }

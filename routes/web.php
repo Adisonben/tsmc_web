@@ -22,6 +22,7 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'storeHistory'])->middleware('auth');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/login-history', [App\Http\Controllers\HomeController::class, 'loginHistoryTable'])->name('loginHistory')->middleware('auth');
 
 // App data
 Route::resource('prefixes', PrefixController::class)->middleware('auth');
@@ -42,7 +43,7 @@ Route::delete('/organizations/delete/department/{dpmId}', [OrgController::class,
 Route::resource('positions', PositionController::class)->middleware('auth')->middleware('auth');
 Route::post('/positions/update-data/{position}', [PositionController::class, 'update'])->name('positions.update.post')->middleware('auth');
 Route::get('/position-permission/manage', [PositionController::class, 'managePermission'])->name('posit.perm')->middleware('auth');
-Route::get('/position-permission/update/{positId}/{permId}/{status}', [PositionController::class, 'updatePermission'])->name('posit.perm.update')->middleware('auth');
+Route::get('/position-permission/update/{positId}/{permId}/{status}/{checkType}', [PositionController::class, 'updatePermission'])->name('posit.perm.update')->middleware('auth');
 
 
 Route::resource('users', UserController::class)->middleware('auth');
@@ -64,11 +65,21 @@ Route::post('/posts/update/{post}', [PostController::class, 'update'])->name('po
 Route::delete('/posts/comment/{id}', [PostController::class, 'delComment'])->name('posts.comment.delete')->middleware('auth');
 
 Route::resource('forms', FormController::class)->middleware('auth');
+
 Route::get('/forms/plan/create', [FormController::class, 'createPlanForm'])->name('form.plan.create')->middleware('auth');
 Route::get('/forms/plan/{formId}/edit', [FormController::class, 'editPlanForm'])->name('form.plan.edit')->middleware('auth');
 Route::get('/forms/plan/{pid}/list/create', [FormController::class, 'createPlanList'])->name('form.planlist.create')->middleware('auth');
+Route::get('/forms/plan/{pid}/list/edit', [FormController::class, 'editPlanList'])->name('form.planlist.edit')->middleware('auth');
+
+Route::get('/forms/plan/{pid}/list/create/each', [FormController::class, 'createEachPlanList'])->name('form.planlist.create')->middleware('auth');
 Route::post('/forms/plan/list/store', [FormController::class, 'storePlanList'])->name('form.planlist.store')->middleware('auth');
+Route::post('/forms/plan/list/update', [FormController::class, 'updatePlanList'])->name('form.planlist.update')->middleware('auth');
+Route::get('/forms/plan/list/{planListId}/update/{type}/{content}', [FormController::class, 'updateEachPlanList'])->middleware('auth');
+Route::get('/forms/plan/list/{planListId}/update/check-column/{columnId}/{status}', [FormController::class, 'updateCheckColumn'])->middleware('auth');
+Route::get('/forms/plan/list/delete/{listId}', [FormController::class, 'deletePlanList'])->name('form.planlist.delete')->middleware('auth');
 Route::post('/forms/plan/store', [FormController::class, 'storePlanForm'])->name('form.plan.store')->middleware('auth');
+Route::post('/forms/plan/update', [FormController::class, 'updatePlanForm'])->name('form.plan.update')->middleware('auth');
+
 Route::get('/forms/table/verify-form', [FormController::class, 'verifyFormTable'])->name('form.table.verify_form')->middleware('auth');
 Route::get('/forms/table/{formtype}', [FormController::class, 'showFormTable'])->name('forms.tables')->middleware('auth');
 Route::delete('/forms/table/form/{formid}', [FormController::class, 'destroy'])->name('forms.tables.delete')->middleware('auth');
@@ -82,9 +93,17 @@ Route::get('/form/table/{formid}', [FormController::class, 'tableForm'])->name('
 Route::get('/form/response/{formresid}/detail', [FormController::class, 'formResDetail'])->name('form.detail')->middleware('auth');
 Route::get('/form/report/{formresid}', [FormController::class, 'formReport'])->name('form.report')->middleware('auth');
 Route::get('/formtable/{fcode}', [FormController::class, 'tableNotHasForm'])->name('formtype.table')->middleware('auth');
+Route::get('/formplan/table/{fid}', [FormController::class, 'tablePlanForm'])->name('formplan.table')->middleware('auth');
 Route::post('/form/phone-number/store', [FormController::class, 'storePhonenum'])->name('form.store.phonenum')->middleware('auth');
 
 Route::get('/form/approve/{formresid}/{formresstatus}', [FormController::class, 'approveForm'])->name('form.approve')->middleware('auth');
+
+Route::post('/formplan/store', [FormController::class, 'formPlanStore'])->name('formplan.store')->middleware('auth');
+Route::post('/formplan/update', [FormController::class, 'formPlanUpdate'])->name('formplan.update')->middleware('auth');
+Route::get('/formplan/delete/{fpId}', [FormController::class, 'formPlanDelete'])->name('formplan.delete')->middleware('auth');
+Route::get('/formplan/detail/{fpId}', [FormController::class, 'formPlanDetail'])->name('formplan.detail')->middleware('auth');
+Route::get('/formplan/{fid}/show', [FormController::class, 'formPlanShow'])->name('formplan.show')->middleware('auth');
+Route::get('/formplan/checkplan', [FormController::class, 'formPlanCheck'])->name('formplan.check')->middleware('auth');
 
 Route::get('/form-types', [FormController::class, 'formType'])->name('form.types')->middleware('auth');
 Route::post('/form-types/store', [FormController::class, 'formTypeStore'])->name('form.types.store')->middleware('auth');

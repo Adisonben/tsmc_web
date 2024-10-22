@@ -24,6 +24,12 @@ class Position extends Model
             ->withPivot('user_id', 'org', 'status');
     }
 
+    public function formTypes()
+    {
+        return $this->belongsToMany(Form_type::class, 'position_has_forms', 'position_id', 'form_type_id')
+            ->withPivot('user_id', 'org', 'status');
+    }
+
     // Function to retrieve permission IDs
     public function getPermissionIds()
     {
@@ -40,6 +46,20 @@ class Position extends Model
             $query->where('position_has_permissions.org', $orgId);
         } else {
             $query->whereNull('position_has_permissions.org');
+        }
+
+        return $query->first();
+    }
+
+    public function hasFormType($formTypeId, $orgId = null)
+    {
+        $query = $this->formTypes()
+            ->where('form_type_id', $formTypeId);
+
+        if ($orgId !== null) {
+            $query->where('position_has_forms.org', $orgId);
+        } else {
+            $query->whereNull('position_has_forms.org');
         }
 
         return $query->first();

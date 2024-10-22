@@ -34,7 +34,7 @@
                 </div>
                 <!-- Sidebar Navigation -->
                 <ul class="sidebar-nav">
-                    <li class="sidebar-item">
+                    <li class="sidebar-item" id="homepage">
                         <a href="/home" class="sidebar-link">
                             <i class="bi bi-house"></i>
                             หน้าหลัก
@@ -44,7 +44,7 @@
                         dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
                     @endphp --}}
                     @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_check', optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || (Auth::user()->userDetail->fname === "admin"))
-                        <li class="sidebar-item">
+                        <li class="sidebar-item" id="formCheckpage">
                             <a href="{{ route('form.checking.type') }}" class="sidebar-link">
                                 <i class="bi bi-clipboard"></i>
                                 แบบฟอร์มเอกสาร
@@ -52,7 +52,7 @@
                         </li>
                     @endif
                     @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_access_table', optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || (Auth::user()->userDetail->fname === "admin"))
-                        <li class="sidebar-item">
+                        <li class="sidebar-item" id="formCheckTablePage">
                             <a href="{{ route('form.table.type') }}" class="sidebar-link">
                                 <i class="bi bi-table"></i>
                                 ทะเบียนเอกสาร
@@ -60,7 +60,7 @@
                         </li>
                     @endif
                     @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_approve_table', optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || (Auth::user()->userDetail->fname === "admin"))
-                        <li class="sidebar-item">
+                        <li class="sidebar-item" id="formInsTablePage">
                             <a href="{{ route('form.table.verify_form') }}" class="sidebar-link">
                                 <i class="bi bi-clipboard-check"></i>
                                 เอกสารรอตรวจสอบ
@@ -71,7 +71,7 @@
                         <li class="sidebar-header">
                             แบบฟอร์ม
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item" id="formManagePage">
                             <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#form"
                                 aria-expanded="false" aria-controls="org">
                                 <i class="bi bi-gear"></i>
@@ -93,14 +93,14 @@
                     <li class="sidebar-header">
                         ผู้ใช้
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item" id="profilePage">
                         <a href="{{ route('users.show', ['user' => Auth::user()->user_id]) }}" class="sidebar-link">
                             <i class="bi bi-person"></i>
                             บัญชีของฉัน
                         </a>
                     </li>
                     @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_manage_user', optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || (Auth::user()->userDetail->fname === "admin"))
-                        <li class="sidebar-item">
+                        <li class="sidebar-item" id="accountPage">
                             <a href="{{ route('users.index') }}" class="sidebar-link">
                                 <i class="bi bi-people"></i>
                                 บัญชีผู้ใช้ทั้งหมด
@@ -111,7 +111,7 @@
                         <li class="sidebar-header">
                             ข้อมูลระบบ
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item" id="orgDataPage">
                             <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#org"
                                 aria-expanded="false" aria-controls="org">
                                 <i class="bi bi-building"></i>
@@ -159,8 +159,8 @@
                     <li class="sidebar-header">
                         ทั่วไป
                     </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                    <li class="sidebar-item" id="loginHistoryPage">
+                        <a href="{{ route('loginHistory') }}" class="sidebar-link">
                             <i class="bi bi-clock-history"></i>
                             ประวัติการเข้าใช้ระบบ
                         </a>

@@ -109,4 +109,9 @@
             </div>
         </div>
     </div>
+    <style>
+        #formCheckpage {
+            background-color: var(--main-color);
+        }
+    </style>
 @endsection

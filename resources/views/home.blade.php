@@ -17,8 +17,18 @@
                         <div class="card-body">
                             <div class="d-flex gap-3">
                                 <div class="d-flex gap-2">
-                                    <img src="/images/icons/tsmc_logo.png" width="40" alt="">
+                                    @if ((Auth::user()->userDetail->icon ?? false) && file_exists(public_path('uploads/userImages/' . Auth::user()->userDetail->icon)))
+                                        <img src="/uploads/userImages/{{ Auth::user()->userDetail->icon }}"
+                                            class="object-fit-cover rounded-circle" width="40" height="40"
+                                            alt="">
+                                    @else
+                                        <img src="/images/icons/tsmc_logo.png" class="object-fit-contain" width="40"
+                                            alt="">
+                                    @endif
                                 </div>
+                                {{-- <div class="d-flex gap-2">
+                                    <img src="/images/icons/tsmc_logo.png" width="40" alt="">
+                                </div> --}}
                                 <a href="{{ route('posts.create') }}" class="w-100"><input type="text"
                                         class="form-control rounded-pill" style="cursor: pointer"
                                         id="exampleFormControlInput1" placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
@@ -121,7 +131,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="card-footer px-4">
+                            <div class="card-footer px-4 rounded-5 rounded-top-0">
                                 @php
                                     $comments = $post->comments;
                                 @endphp
@@ -195,6 +205,9 @@
         #document-frame {
           width: 100%;
           height: 60vh; /* Set height to 60% of viewport height */
+        }
+        #homepage {
+            background-color: var(--main-color);
         }
     </style>
 @endsection

@@ -47,45 +47,47 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($quest_groups as $group)
-                                        <tr>
-                                            <td colspan="4">
-                                                <div>{{ $group->title }}</div>
-                                                @if ($group->group_type == "image")
-                                                    <div class="d-flex justify-content-center">
-                                                        <img class="image-preview" src="/uploads/formImage/{{ $group->content }}" alt="ภาพ" height="150">
-                                                    </div>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @foreach ($group->questions as $index => $quest)
-                                            @php
-                                                $answer = App\Models\Form_answer::where('resp_id', $form_resp->id)->where('quest_id', $quest->id)->first(['answer', 'comment']);
-                                                // dd($form_resp->id, $quest->id, $answer->answer);
-                                            @endphp
+                                        @if ($group->getAnswers($form_resp->id))
                                             <tr>
-                                                <td>{{ $index + 1 }}. {{ $quest->title }}</td>
-                                                <td>
-                                                    @if ($quest->option_type == "text")
-                                                        <p class="mb-0">{{ $answer->answer }}</p>
-                                                    @elseif ($quest->option_type == "custom")
-                                                        @if ($answer->getAnswerOption ?? false)
-                                                            <p class="mb-0 {{ $answer->getAnswerOption->score ? 'text-success' : 'text-danger' }}">{{ $answer->getAnswerOption->opt_text }}</p>
-                                                        @endif
-                                                    @else
-                                                        @if ($answer->getAnswerOption ?? false)
-                                                            <p class="mb-0 {{ $answer->getAnswerOption->score ? 'text-success' : 'text-danger' }}">{{ $answer->getAnswerOption->opt_text }}</p>
-                                                        @endif
+                                                <td colspan="4">
+                                                    <div>{{ $group->title }}</div>
+                                                    @if ($group->group_type == "image")
+                                                        <div class="d-flex justify-content-center">
+                                                            <img class="image-preview" src="/uploads/formImage/{{ $group->content }}" alt="ภาพ" height="150">
+                                                        </div>
                                                     @endif
                                                 </td>
-                                                <td>{{ $answer->comment ?? '' }}</td>
-                                                {{-- <td></td> --}}
                                             </tr>
-                                        @endforeach
+                                            @foreach ($group->questions as $index => $quest)
+                                                @php
+                                                    $answer = App\Models\Form_answer::where('resp_id', $form_resp->id)->where('quest_id', $quest->id)->first(['answer', 'comment']);
+                                                    // dd($form_resp->id, $quest->id, $answer->answer);
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ $index + 1 }}. {{ $quest->title }}</td>
+                                                    <td>
+                                                        @if ($quest->option_type == "text")
+                                                            <p class="mb-0">{{ $answer->answer }}</p>
+                                                        @elseif ($quest->option_type == "custom")
+                                                            @if ($answer->getAnswerOption ?? false)
+                                                                <p class="mb-0 {{ $answer->getAnswerOption->score ? 'text-success' : 'text-danger' }}">{{ $answer->getAnswerOption->opt_text }}</p>
+                                                            @endif
+                                                        @else
+                                                            @if ($answer->getAnswerOption ?? false)
+                                                                <p class="mb-0 {{ $answer->getAnswerOption->score ? 'text-success' : 'text-danger' }}">{{ $answer->getAnswerOption->opt_text }}</p>
+                                                            @endif
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $answer->comment ?? '' }}</td>
+                                                    {{-- <td></td> --}}
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>
                             <footer class="text-end">
-                                <p style="font-size: 10px">Printed on : TSMC Trainingzenter at {{ (new Carbon\Carbon())->format('d/m/Y G:i:s') }}</p>
+                                <p style="font-size: 10px">Printed on : TSMC at {{ (new Carbon\Carbon())->format('d/m/Y G:i:s') }}</p>
                             </footer>
                         </div>
                     </form>

@@ -13,11 +13,11 @@
 
                     <div class="card-body px-md-5">
                         <div>
-                            {{-- @if ($error)
+                            @if (session('error'))
                                 <div class="alert alert-danger" role="alert">
-                                    {{ $error }}
+                                    {{ session('error') }}
                                 </div>
-                            @endif --}}
+                            @endif
                             <form action="{{ route('form.plan.store') }}" method="post">
                                 @csrf
                                 <h5 class="text-center">ข้อมูลแผน</h5>
@@ -117,6 +117,9 @@
         li {
             counter-increment: list-item;
             list-style: none;
+        }
+        #formManagePage {
+            background-color: var(--main-color);
         }
     </style>
 @endsection

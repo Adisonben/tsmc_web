@@ -13,15 +13,15 @@
 
                     <div class="card-body px-md-5">
                         <div>
-                            {{-- @if ($error)
+                            @if (session('error'))
                                 <div class="alert alert-danger" role="alert">
-                                    {{ $error }}
+                                    {{ session('error') }}
                                 </div>
-                            @endif --}}
-                            <form action="{{ route('form.plan.store') }}" method="post">
+                            @endif
+                            <form action="{{ route('form.plan.update') }}" method="post">
                                 @csrf
                                 <h5 class="text-center">ข้อมูลแผน</h5>
-
+                                <input type="hidden" name="planId" value="{{ $form->id }}">
                                 <div class="d-flex flex-wrap gap-3 mb-2">
                                     <div class="flex-fill">
                                         <label for="formName" class="form-label">ชื่อแบบแผน</label>
@@ -53,16 +53,18 @@
                                 <hr>
                                 <div class="flex-fill">
                                     <label for="formName" class="form-label">ชื่อหมวดหมู่คอลัมน์</label>
-                                    <input type="text" class="form-control" maxlength="200" id="formName" name="columnGroupName" required value=""
+                                    <input type="text" class="form-control" maxlength="200" id="formName" name="columnGroupName" required value="{{ optional($form->firstColumn($form->id))->group_name }}"
                                         placeholder="กรอกชื่อหมวดหมู่คอลัมน์">
                                 </div>
                                 <div>
                                     <p>รายการคอลัมน์</p>
                                     <ol class="list-group-numbered columnContainer">
-                                        <li class="list-group-item d-flex gap-2 mb-2">
-                                            <input type="text" class="form-control" name="column[]" placeholder="กรอกชื่อคอลัมน์" required>
-                                            <button type="button" class="btn btn-sm btn-danger" onclick="delColumnBtn(this)"><i class="bi bi-x"></i></button>
-                                        </li>
+                                        @foreach ($form->getColumns ?? [] as $column)
+                                            <li class="list-group-item d-flex gap-2 mb-2">
+                                                <input type="text" class="form-control" name="oldColumn{{ $column->id }}" placeholder="กรอกชื่อคอลัมน์" required value="{{ $column->title }}">
+                                                <button type="button" class="btn btn-sm btn-danger" onclick="delColumnBtn(this)"><i class="bi bi-x"></i></button>
+                                            </li>
+                                        @endforeach
                                     </ol>
                                 </div>
                                 <button type="button" class="btn btn-success mb-3" onclick="addColumn(this)">เพิ่มคอลัมน์</button>
@@ -117,6 +119,9 @@
         li {
             counter-increment: list-item;
             list-style: none;
+        }
+        #formManagePage {
+            background-color: var(--main-color);
         }
     </style>
 @endsection

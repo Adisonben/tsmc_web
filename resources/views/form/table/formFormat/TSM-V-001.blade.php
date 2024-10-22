@@ -22,9 +22,8 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">ผู้จัดทำ</th>
-                                        <th scope="col">ชื่อพนักงาน</th>
-                                        <th scope="col">ตำแหน่ง</th>
+                                        <th scope="col">พนักงานขับรถ</th>
+                                        <th scope="col">ทะเบียนรถ</th>
                                         <th scope="col">วันที่จัดทำ</th>
                                         <th scope="col">สถานะ</th>
                                         <th scope="col">Action</th>
@@ -39,8 +38,7 @@
                                             <tr>
                                                 <th scope="row">{{ $index + 1 }}</th>
                                                 <td>{{ optional($form_response->getUser)->full_name ?? '-' }}</td>
-                                                <td>{{ $header_data->name }}</td>
-                                                <td>{{ $header_data->posit }}</td>
+                                                <td>{{ $header_data->car_plate }}</td>
                                                 <td>{{ $form_response->updated_at }}</td>
                                                 <td>
                                                     @switch($form_response->status)
@@ -61,9 +59,6 @@
                                                     <a href="{{ route('form.detail', ['formresid' => $form_response->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด">
                                                         <i class="bi bi-card-list"></i>
                                                     </a>
-                                                    {{-- <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $user->id }}" del-target="users" data-bs-toggle="tooltip" data-bs-title="ลบ">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button> --}}
                                                 </td>
                                             </tr>
                                         @endforeach

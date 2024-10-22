@@ -11,9 +11,12 @@ use App\Models\Form_type;
 use App\Models\FormColumn;
 use App\Models\FormList;
 use App\Models\FormListHasColumn;
+use App\Models\FormPlan;
+use App\Models\FormPlanRecord;
 use App\Models\Option;
 use App\Models\Option_type;
 use App\Models\Phone_number;
+use App\Models\Position;
 use App\Models\Quest_group;
 use App\Models\Question;
 use App\Models\Repair_history_data;
@@ -164,7 +167,8 @@ class FormController extends Controller
 
             $quest_group_del_ids = Quest_group::where('form_id', $id)->pluck('id');
             $quest_ids = Question::where('form_id', $id)->pluck('id');
-
+            $quest_not_del_ids = [];
+            $option_not_del_ids = [];
             foreach ($checkData ?? [] as $group) {
                 $newGroup = Quest_group::create([
                     'form_id' => $updateForm->id,
@@ -184,19 +188,40 @@ class FormController extends Controller
                 } else if ($group['groupType'] == "check") {
                     if (count($group['checkList'] ?? []) > 0) {
                         foreach ($group['checkList'] as $ques) {
-                            $newQuestion = Question::create([
-                                'form_id' => $updateForm->id,
-                                'group_id'=> $newGroup->id,
-                                'option_type' => $ques['optType'],
-                                'title' => $ques['checktTitle']
-                            ]);
+                            $currectQuest = Question::where('title', $ques['checktTitle'])->where('form_id', $updateForm->id)->first();
+                            if ($currectQuest) {
+                                $currectQuest->update([
+                                    'form_id' => $updateForm->id,
+                                    'group_id'=> $newGroup->id,
+                                    'option_type' => $ques['optType'],
+                                    'title' => $ques['checktTitle']
+                                ]);
+                            } else {
+                                $currectQuest = Question::create([
+                                    'form_id' => $updateForm->id,
+                                    'group_id'=> $newGroup->id,
+                                    'option_type' => $ques['optType'],
+                                    'title' => $ques['checktTitle']
+                                ]);
+                            }
+                            $quest_not_del_ids[] = $currectQuest->id;
                             if ($ques['optType'] == "custom") {
                                 foreach ($ques['optionList'] ?? [] as $option) {
-                                    Option::create([
-                                        'opt_text' => $option['optionText'],
-                                        'score' => $option['optionScore'] ?? 1,
-                                        'question_id' => $newQuestion->id
-                                    ]);
+                                    $currentOption = Option::where('opt_text', $option['optionText'])->where('question_id', $currectQuest->id)->first();
+                                    if ($currentOption) {
+                                        $currentOption->update([
+                                            'opt_text' => $option['optionText'],
+                                            'score' => $option['optionScore'] ?? 1,
+                                            'question_id' => $currectQuest->id
+                                        ]);
+                                    } else {
+                                        $currentOption = Option::create([
+                                            'opt_text' => $option['optionText'],
+                                            'score' => $option['optionScore'] ?? 1,
+                                            'question_id' => $currectQuest->id
+                                        ]);
+                                    }
+                                    $option_not_del_ids[] = $currentOption->id;
                                 }
                             }
                         }
@@ -206,45 +231,19 @@ class FormController extends Controller
                 }
             }
 
-            // foreach ($checkData ?? [] as $group) {
-            //     $newGroup = Quest_group::create([
-            //         'form_id' => $updateForm->id,
-            //         'title' => $group['groupName'],
-            //     ]);
-            //     if (count($group['checkList'] ?? []) > 0) {
-            //         foreach ($group['checkList'] as $ques) {
-            //             $newQuestion = Question::create([
-            //                 'form_id' => $updateForm->id,
-            //                 'group_id'=> $newGroup->id,
-            //                 'option_type' => $ques['optType'],
-            //                 'title' => $ques['checktTitle']
-            //             ]);
-            //             if ($ques['optType'] == "custom") {
-            //                 foreach ($ques['optionList'] ?? [] as $option) {
-            //                     Option::create([
-            //                         'opt_text' => $option['optionText'],
-            //                         'score' => $option['optionScore'] ?? 1,
-            //                         'question_id' => $newQuestion->id
-            //                     ]);
-            //                 }
-            //             }
-            //         }
-            //     }
-            // }
-
             $quest_groups = Quest_group::whereIn('id', $quest_group_del_ids)->get();
             foreach ($quest_groups as $quest_group) {
-                if ($quest_group->group_type == "image") {
-                    $image_name = $quest_group->content;
-                    $filePath = public_path('uploads/formImage/' . $image_name);
-                    if (file_exists($filePath)) {
-                        unlink($filePath);
-                    }
-                }
+                // if ($quest_group->group_type == "image") {
+                //     $image_name = $quest_group->content;
+                //     $filePath = public_path('uploads/formImage/' . $image_name);
+                //     if (file_exists($filePath)) {
+                //         unlink($filePath);
+                //     }
+                // }
                 $quest_group->delete();
             }
-            Option::whereIn('question_id', $quest_ids)->delete();
-            Question::whereIn('id', $quest_ids)->delete();
+            Option::whereIn('question_id', $quest_ids)->whereNotIn('id', $option_not_del_ids)->delete();
+            Question::whereIn('id', $quest_ids)->whereNotIn('id', $quest_not_del_ids)->delete();
 
             return response()->json([
                 'message' => 'Form has updated successfully.'
@@ -263,6 +262,21 @@ class FormController extends Controller
     {
         try {
             Form::where('id', $id)->delete();
+            try {
+                $quest_groups = Quest_group::where('form_id', $id)->get();
+                foreach ($quest_groups as $quest_group) {
+                    if ($quest_group->group_type == "image") {
+                        $image_name = $quest_group->content;
+                        $filePath = public_path('uploads/formImage/' . $image_name);
+                        if (file_exists($filePath)) {
+                            unlink($filePath);
+                        }
+                    }
+                    $quest_group->delete();
+                }
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
             return response()->json([
                 'message' => 'Data deleted successfully : ' . $id
             ], 200);
@@ -285,7 +299,8 @@ class FormController extends Controller
 
     public function checkingType() {
         $form_cates = Form_category::with('formTypes')->get();
-        return view('form.checking.selectForm', compact('form_cates'));
+        $position = Position::find(Auth()->user()->userDetail->position);
+        return view('form.checking.selectForm', compact('form_cates', "position"));
     }
 
     public function checkingForm(Request $request, $formid) {
@@ -299,7 +314,7 @@ class FormController extends Controller
                 $formFormat = "TSM-HR-003";
                 break;
             case 'แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ':
-                $formFormat = "TSM-V-003";
+                $formFormat = "TSM-V-001";
                 break;
             case 'แบบประเมินความสามารถ':
                 $formFormat = "TSM-HR-002";
@@ -372,6 +387,7 @@ class FormController extends Controller
                         'quest_id' => $ques->id,
                         'answer' => $request->input("questid_" . $ques->id) ?? null,
                         'comment' => $request->input("comment_" . $ques->id) ?? null,
+                        'quest_group_id' => $ques->group_id ?? null
                     ]);
                 }
             }
@@ -383,7 +399,8 @@ class FormController extends Controller
 
     public function tableType() {
         $form_cates = Form_category::with('formTypes')->get();
-        return view('form.table.selectFormType', compact('form_cates'));
+        $position = Position::find(Auth()->user()->userDetail->position);
+        return view('form.table.selectFormType', compact('form_cates', 'position'));
     }
 
     public function tableForm(Request $request, $formid) {
@@ -407,7 +424,7 @@ class FormController extends Controller
                 $formFormat = "TSM-HR-003";
                 break;
             case 'แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ':
-                $formFormat = "TSM-V-003";
+                $formFormat = "TSM-V-001";
                 break;
             case 'แบบประเมินความสามารถ':
                 $formFormat = "TSM-HR-002";
@@ -441,14 +458,17 @@ class FormController extends Controller
         } elseif ($fcode == "TSM-V-002") {
             $repairHistories = tsm_v_002_data::where('org', Auth()->user()->userDetail->org)->whereIn('create_by', $user_id_to_query)->orderBy("created_at", "desc")->get();
             return view('form.table.formFormat.' . $fcode, compact('repairHistories'));
+        } else {
+            return view('errors.formTypeNotFound', compact('fcode'));
         }
     }
+
 
     public function formResDetail(Request $request, $formresid) {
         $form_resp = Form_response::find($formresid);
         $formdata = Form::where('id', $form_resp->form_id)->firstOrFail();
         $userDetail = User_detail::where('user_id', $request->user()->id)->firstOrFail();
-        $quest_groups = Quest_group::where('form_id', $formdata->id)->get();
+        $quest_groups = Quest_group::withTrashed()->where('form_id', $formdata->id)->get();
         $header_data = json_decode($form_resp->header_data ?? "");
         $formtype_check = optional($formdata->getType)->name ?? "";
         $formFormat = "";
@@ -457,7 +477,7 @@ class FormController extends Controller
                 $formFormat = "TSM-HR-003";
                 break;
             case 'แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ':
-                $formFormat = "TSM-V-003";
+                $formFormat = "TSM-V-001";
                 break;
             case 'แบบประเมินความสามารถ':
                 $formFormat = "TSM-HR-002";
@@ -486,7 +506,7 @@ class FormController extends Controller
                 $formFormat = "TSM-HR-003";
                 break;
             case 'แบบฟอร์มการตรวจสอบสภาพและความพร้อมของรถ':
-                $formFormat = "TSM-V-003";
+                $formFormat = "TSM-V-001";
                 break;
             case 'แบบประเมินความสามารถ':
                 $formFormat = "TSM-HR-002";
@@ -798,8 +818,12 @@ class FormController extends Controller
         return view('form.manage.editPlanForm', compact('form_types', 'form'));
     }
     public function createPlanList($pid) {
-        $formPlan = Form::findOrFail($pid);
+        $formPlan = Form::where('form_id', $pid)->firstOrFail();
         return view('form.manage.createPlanList', compact('formPlan'));
+    }
+    public function editPlanList($pid) {
+        $formPlan = Form::where('form_id', $pid)->firstOrFail();
+        return view('form.manage.editPlanList', compact('formPlan'));
     }
 
     public function storePlanForm(Request $request) {
@@ -826,13 +850,70 @@ class FormController extends Controller
                 ]);
             }
 
-            return redirect()->route('form.planlist.create', ['pid' => $newForm->id]);
+            return redirect()->route('form.planlist.create', ['pid' => $newForm->form_id]);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back();
+            return redirect()->back()->with(['error' => "ไม่สามารถดำเนินการต่อได้"]);
         }
     }
 
+    public function updatePlanForm(Request $request){
+        // dd($request->all());
+        try {
+            $form = Form::findOrFail( $request->planId);
+            $formType = Form_type::findOrFail($request->formType);
+            $form->update([
+                'title' => $request->formName,
+                'category' => $formType->category,
+                'type' => $formType->id,
+            ]);
+
+            $columns = FormColumn::where('form_id' , $form->id)->get();
+            foreach ($columns ?? [] as $oldColumn) {
+                if ($request->input('oldColumn' . $oldColumn->id)) {
+                    $oldColumn->update([
+                        'title' => $request->input('oldColumn' . $oldColumn->id),
+                        'group_name' => $request->columnGroupName,
+                        'form_id' => $form->id
+                    ]);
+                } else {
+                    $oldColumn->delete();
+                }
+            }
+
+            foreach ($request->column ?? [] as $column) {
+                FormColumn::create([
+                    'title' => $column,
+                    'group_name' => $request->columnGroupName,
+                    'form_id' => $form->id
+                ]);
+            }
+            return redirect()->route('form.planlist.edit', ['pid' => $form->form_id]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถดำเนินการต่อได้"]);
+        }
+    }
+
+    public function createEachPlanList($planListId) {
+        try {
+            $formList = FormList::create([
+                'title' => "ชื่อรายการ",
+                'form_id' => $planListId
+            ]);
+
+            return response()->json([
+                "message" => "Create plan list successfully",
+                "title" => $formList->title,
+                "planListId" => $formList->id
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                "message" => "Create plan list unsuccessfully"
+            ], 500);
+        }
+    }
     public function storePlanList(Request $request) {
         try {
             $formPlan = Form::findOrFail($request->planId);
@@ -860,5 +941,191 @@ class FormController extends Controller
             ], 500);
         }
     }
+    public function updatePlanList(Request $request) {
+        try {
+            $formPlan = Form::findOrFail($request->planId);
 
+            $formlist_del_ids = FormList::where('form_id', $formPlan->id)->pluck('id');
+            $formlist_not_del_ids = [];
+            $listData = json_decode($request->planListData ?? '');
+            foreach ($listData ?? [] as $list) {
+                $formList = FormList::where('form_id', $formPlan->id)->where('title', $list->title)->first();
+                if ($formList) {
+                    $formList->update([
+                        'title' => $list->title,
+                        'comment' => $list->comment,
+                        'form_id' => $formPlan->id
+                    ]);
+                } else {
+                    $formList = FormList::create([
+                        'title' => $list->title,
+                        'comment' => $list->comment,
+                        'form_id' => $formPlan->id
+                    ]);
+                }
+                $formlist_not_del_ids[] = $formList->id;
+                foreach ($list->columnCheck as $listCheck) {
+                    $list_has_column = FormListHasColumn::where('list_id', $formList->id)->where('column_id', $listCheck->columnId)->first();
+                    if ($list_has_column) {
+                        $list_has_column->update([
+                            'status' => $listCheck->isCheck
+                        ]);
+                    } else {
+                        FormListHasColumn::create([
+                            'list_id' => $formList->id,
+                            'column_id' => $listCheck->columnId,
+                            'status' => $listCheck->isCheck
+                        ]);
+                    }
+                }
+            }
+
+            $oldFormList = FormList::whereIn('id', $formlist_del_ids)->whereNotIn('id', $formlist_not_del_ids)->get();
+
+            return response()->json([
+                'message' => 'PlanList has updated successfully.'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateCheckColumn($planListId, $checkColumn, $status) {
+        try {
+            $list_has_column = FormListHasColumn::where('list_id', $planListId)->where('column_id', $checkColumn)->exists();
+            if ($list_has_column) {
+                FormListHasColumn::where('list_id', $planListId)->where('column_id', $checkColumn)->update([
+                    'status' => $status
+                ]);
+            } else {
+                FormListHasColumn::create([
+                    'list_id' => $planListId,
+                    'column_id' => $checkColumn,
+                    'status' => $status
+                ]);
+            }
+            return response()->json([
+                'message' => 'PlanList column has updated successfully.'
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => 'PlanList column has updated unsuccessfully.' . $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateEachPlanList($planListId , $updateType, $content) {
+        FormList::where('id', $planListId)->update([
+            $updateType => $content
+        ]);
+        return response()->json([
+            'message' => 'PlanList has updated successfully.'
+        ], 200);
+    }
+
+    public function deletePlanList($planListId) {
+        try {
+            FormList::where('id',$planListId)->delete();
+
+            return response()->json([
+                'message' => "Delete plan list successfully."
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'message' => "Delete plan list unsuccessfully." . $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function tablePlanForm($fid) {
+        try {
+            $mainForms = Form::where('form_id', $fid)->firstOrFail();
+            $planForms = FormPlan::where('form_id', $mainForms->id)->get();
+            $fcode = "";
+            return view('form.table.formFormat.TSM-V-003', compact('planForms', 'mainForms'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return view('errors.formTypeNotFound', compact('fcode'));
+        }
+    }
+
+    public function formPlanStore(Request $request) {
+        try {
+            FormPlan::create([
+                'header_data' => json_encode([
+                    'driverName' => $request->driverName,
+                    'carPlate' => $request->carPlate
+                ]),
+                'user_id' => $request->user()->id,
+                'form_id' => $request->formId,
+            ]);
+            return redirect()->back()->with(['success' => "ดำเนินการสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถดำเนินการได้"]);
+        }
+    }
+    public function formPlanUpdate(Request $request) {
+        try {
+            FormPlan::where('id', $request->formPlanId)->update([
+                'header_data' => json_encode([
+                    'driverName' => $request->driverName,
+                    'carPlate' => $request->carPlate
+                ]),
+            ]);
+            return redirect()->back()->with(['success' => "ดำเนินการสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถดำเนินการได้"]);
+        }
+    }
+
+    public function formPlanDelete($formPlanId) {
+        try {
+            FormPlan::where('id', $formPlanId)->delete();
+            return redirect()->back()->with(['success' => "ดำเนินการสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถดำเนินการได้"]);
+        }
+    }
+
+    public function formPlanDetail($fpId) {
+        $formPlan = FormPlan::findOrFail($fpId);
+        return view('form.table.formDetail.TSM-V-003', compact('formPlan'));
+    }
+
+    public function formPlanShow($fid) {
+        $form = Form::findOrFail($fid);
+        $formPlan = FormPlan::where('form_id', $form->id)->first();
+        if (!$formPlan) {
+            $formPlan = FormPlan::create([
+                "user_id" => Auth::user()->id,
+                "form_id" => $form->id
+            ]);
+        }
+        return view('form.table.formDetail.TSM-HR-006', compact('formPlan'));
+    }
+
+    public function formPlanCheck(Request $request) {
+        try {
+            $formplan = FormPlan::findOrFail($request->formplan_id);
+            FormPlanRecord::create([
+                "user_id" => $request->user()->id,
+                "form_id" => $formplan->form_id,
+                "form_column" => $request->column_id,
+                "form_list" => $request->list_id,
+                "times" => 0,
+                "form_plan_id" => $formplan->id
+            ]);
+            return redirect()->back()->with(['success' => "ดำเนินการสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with(['error' => "ไม่สามารถดำเนินการได้"]);
+        }
+    }
 }
