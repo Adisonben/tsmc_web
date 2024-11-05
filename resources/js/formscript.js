@@ -89,7 +89,7 @@ if (createCheckForm) {
         cards.forEach((ccard) => {
             const groupNameInput = ccard.querySelector('.groupName');
             const groupTypeInput = ccard.querySelector('.groupType');
-            if (groupTypeInput.value == "check") {
+            if (groupTypeInput.value && groupTypeInput.value == "check") {
                 const checkLis = ccard.querySelectorAll('.checkLi');
                 let checkDataList = [];
                 let content;
@@ -97,7 +97,7 @@ if (createCheckForm) {
                     const groupSubText = checkLi.querySelector('.groupSubText');
                     const optType = checkLi.querySelector('.selectOptType');
                     let getOptions = [];
-                    if (optType.value == "custom") {
+                    if (optType.value && optType.value == "custom") {
                         const optionContainer = checkLi.querySelector('.optionContainer');
                         const optionsCustom = optionContainer.querySelectorAll('.optionLi');
                         optionsCustom.forEach((option) => {
@@ -119,7 +119,7 @@ if (createCheckForm) {
                     groupType: groupTypeInput.value,
                     checkList: checkDataList,
                 };
-            } else if (groupTypeInput.value == "image") {
+            } else if (groupTypeInput.value && groupTypeInput.value == "image") {
                 const groupImgFile = ccard.querySelector('.groupContent').files[0];
                 // Check if a file was selected for the current card
                 if (!groupImgFile) {
