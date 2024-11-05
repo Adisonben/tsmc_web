@@ -933,7 +933,8 @@ class FormController extends Controller
                 }
             }
             return response()->json([
-                'message' => 'PlanList has created successfully.'
+                'message' => 'PlanList has created successfully.',
+                'formType' => optional($formPlan->getType)->name
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

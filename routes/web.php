@@ -71,7 +71,7 @@ Route::get('/forms/plan/{formId}/edit', [FormController::class, 'editPlanForm'])
 Route::get('/forms/plan/{pid}/list/create', [FormController::class, 'createPlanList'])->name('form.planlist.create')->middleware('auth');
 Route::get('/forms/plan/{pid}/list/edit', [FormController::class, 'editPlanList'])->name('form.planlist.edit')->middleware('auth');
 
-Route::get('/forms/plan/{pid}/list/create/each', [FormController::class, 'createEachPlanList'])->name('form.planlist.create')->middleware('auth');
+Route::get('/forms/plan/{pid}/list/create/each', [FormController::class, 'createEachPlanList'])->name('form.planlist.create.each')->middleware('auth');
 Route::post('/forms/plan/list/store', [FormController::class, 'storePlanList'])->name('form.planlist.store')->middleware('auth');
 Route::post('/forms/plan/list/update', [FormController::class, 'updatePlanList'])->name('form.planlist.update')->middleware('auth');
 Route::get('/forms/plan/list/{planListId}/update/{type}/{content}', [FormController::class, 'updateEachPlanList'])->middleware('auth');

@@ -203,7 +203,12 @@ if (createPlanList) {
                     icon: "success",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.reload();
+                        const currentDomain = window.location.origin;
+                        let newUrl = currentDomain + '/forms';
+                        // if (response.data['formType']) {
+                        //     newUrl = currentDomain + `/${response.data['formType']}`;
+                        // }
+                        window.location.href = newUrl;
                     }
                 });
             })
