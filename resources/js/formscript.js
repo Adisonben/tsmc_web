@@ -90,82 +90,79 @@ if (createCheckForm) {
         cards.forEach((ccard) => {
             const groupNameInput = ccard.querySelector('.groupName');
             const groupTypeInput = ccard.querySelector('.groupType');
-            console.log("groupTypeInput ", groupTypeInput)
             if (groupTypeInput && groupTypeInput.value == "check") {
-                console.log("Create check form debug.")
-                // const checkLis = ccard.querySelectorAll('.checkLi');
-                // let checkDataList = [];
-                // let content;
-                // checkLis.forEach((checkLi) => {
-                //     const groupSubText = checkLi.querySelector('.groupSubText');
-                //     const optType = checkLi.querySelector('.selectOptType');
-                //     let getOptions = [];
-                //     if (optType.value && optType.value == "custom") {
-                //         const optionContainer = checkLi.querySelector('.optionContainer');
-                //         const optionsCustom = optionContainer.querySelectorAll('.optionLi');
-                //         optionsCustom.forEach((option) => {
-                //             getOptions.push({
-                //                 optionText : option.querySelector('.optTitle').value,
-                //                 optionScore: option.querySelector('.optScore').value ? option.querySelector('.optScore').value : 1,
-                //             });
-                //         })
-                //     }
-                //     checkDataList.push({
-                //         checktTitle : groupSubText.value,
-                //         optType: optType.value,
-                //         optionList : getOptions
-                //     });
-                // })
+                const checkLis = ccard.querySelectorAll('.checkLi');
+                let checkDataList = [];
+                let content;
+                checkLis.forEach((checkLi) => {
+                    const groupSubText = checkLi.querySelector('.groupSubText');
+                    const optType = checkLi.querySelector('.selectOptType');
+                    let getOptions = [];
+                    if (optType.value && optType.value == "custom") {
+                        const optionContainer = checkLi.querySelector('.optionContainer');
+                        const optionsCustom = optionContainer.querySelectorAll('.optionLi');
+                        optionsCustom.forEach((option) => {
+                            getOptions.push({
+                                optionText : option.querySelector('.optTitle').value,
+                                optionScore: option.querySelector('.optScore').value ? option.querySelector('.optScore').value : 1,
+                            });
+                        })
+                    }
+                    checkDataList.push({
+                        checktTitle : groupSubText.value,
+                        optType: optType.value,
+                        optionList : getOptions
+                    });
+                })
 
-                // cardData = {
-                //     groupName: groupNameInput.value,
-                //     groupType: groupTypeInput.value,
-                //     checkList: checkDataList,
-                // };
+                cardData = {
+                    groupName: groupNameInput.value,
+                    groupType: groupTypeInput.value,
+                    checkList: checkDataList,
+                };
             } else if (groupTypeInput.value && groupTypeInput.value == "image") {
-                console.log("Create check form debug2.")
-                // const groupImgFile = ccard.querySelector('.groupContent').files[0];
-                // // Check if a file was selected for the current card
-                // if (!groupImgFile) {
-                //     console.log('Please select a file for card');
-                // } else {
-                //     console.log("file is ", groupImgFile)
-                // }
-                // cardData = {
-                //     groupName: groupNameInput.value,
-                //     groupType: groupTypeInput.value,
-                // };
-                // // Append the file with a unique name to avoid conflicts
-                // formData.append(`groupImage_${groupNameInput.value}`, groupImgFile)
+                const groupImgFile = ccard.querySelector('.groupContent').files[0];
+                // Check if a file was selected for the current card
+                if (!groupImgFile) {
+                    console.log('Please select a file for card');
+                } else {
+                    console.log("file is ", groupImgFile)
+                }
+                cardData = {
+                    groupName: groupNameInput.value,
+                    groupType: groupTypeInput.value,
+                };
+                // Append the file with a unique name to avoid conflicts
+                formData.append(`groupImage_${groupNameInput.value}`, groupImgFile)
             }
-            // cardDatalist.push(cardData);
+            cardDatalist.push(cardData);
         });
-        // formData.append('checkData', JSON.stringify(cardDatalist));
-        // console.log(cardDatalist, formData);
-        // await axios.post('/forms', formData , {headers: {'Content-Type': 'multipart/form-data'}})
-        //     .then(response => {
-        //         // Handle successful response
-        //         console.log('Response:', response.data);
-        //         // window.location.reload();
-        //         Swal.fire({
-        //             title: "Success!",
-        //             text: "Your form has been saved.",
-        //             icon: "success",
-        //         }).then((result) => {
-        //             if (result.isConfirmed) {
-        //                 window.location.reload();
-        //             }
-        //         });
-        //     })
-        //     .catch(error => {
-        //         // Handle error
-        //         console.error('Error:', error);
-        //         Swal.fire({
-        //             title: "Sorry!",
-        //             text: "Something went wrong!",
-        //             icon: "error",
-        //         });
-        //     });
+        formData.append('checkData', JSON.stringify(cardDatalist));
+        console.log(cardDatalist, formData);
+        await axios.post('/forms', formData , {headers: {'Content-Type': 'multipart/form-data'}})
+            .then(response => {
+                // Handle successful response
+                console.log('Response:', response.data);
+                // window.location.reload();
+                Swal.fire({
+                    title: "Success!",
+                    text: "Your form has been saved.",
+                    icon: "success",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Error:', error);
+                Swal.fire({
+                    title: "Sorry!",
+                    text: "Something went wrong!",
+                    icon: "error",
+                });
+            });
     });
 }
 
