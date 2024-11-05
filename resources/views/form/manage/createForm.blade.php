@@ -79,8 +79,8 @@
 
                                 <h5 class="text-center">รายการตรวจประเมิน</h5>
                                 <div id="groupCardContainer">
-                                    <div class="card my-3 checkCard">
-                                        {{-- <div class="card-body">
+                                    {{-- <div class="card my-3 checkCard">
+                                        <div class="card-body">
                                             <div class="d-flex gap-2 flex-wrap flex-md-nowrap">
                                                 <input type="text" class="form-control mb-3 groupName" placeholder="ชื่อภาพ">
                                                 <input type="file" class="form-control mb-3 groupContent" onchange="addExImg(this)" placeholder="ภาพ" accept="image/*">
@@ -90,8 +90,8 @@
                                         </div>
                                         <div class="card-footer">
                                             <button type="button" class="btn btn-sm btn-danger delete-card-btn">ลบหมวดหมู่</button>
-                                        </div> --}}
-                                    </div>
+                                        </div>
+                                    </div> --}}
                                     {{-- <div class="card my-3 checkCard">
                                         <div class="card-body">
                                             <input type="text" class="form-control mb-3 groupName"
