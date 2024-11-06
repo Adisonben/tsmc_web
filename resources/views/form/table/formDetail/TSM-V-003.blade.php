@@ -15,6 +15,7 @@
                     @php
                         $header = json_decode($formPlan->header_data);
                         $createdDate = new Carbon\Carbon($formPlan?->created_at);
+                        $currentDate = new Carbon\Carbon();
                         $form_columns = $formPlan?->getForm?->getColumns;
                         $form_lists = $formPlan?->getForm?->getLists;
                         $column_count = count($form_columns ?? []);
@@ -29,8 +30,7 @@
                             <p class="mb-0">ทะเบียนรถ : <span class="fw-bold"><u>{{ $header->carPlate }}</u></span></p>
                         </div>
                         <div class="">
-                            <p class="mb-0">วันที่ : <span class="fw-bold"><u>{{ $createdDate->thaidate('j M Y') }} ถึง -
-                                    </u></span></p>
+                            <p class="mb-0">วันที่ : <span class="fw-bold"><u>{{ $createdDate->thaidate('j M Y') }} ถึง {{ $currentDate->thaidate('j M Y') }}</u></span></p>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                                     <tr>
                                         <td>{{ $list->title }}</td>
                                         @foreach ($form_columns ?? [] as $form_column)
-                                            @if ($list->hasColumn($form_column->id))
+                                            @if ($list->hasColumn($form_column->id) && $list->hasColumn($form_column->id)->pivot->status)
                                                 @php
                                                     $listColumnRecord = $list->hasColumnRecord($form_column->id);
                                                 @endphp
