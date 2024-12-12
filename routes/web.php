@@ -12,11 +12,16 @@ use App\Http\Controllers\Organization\OrgController;
 use App\Http\Controllers\Organization\PositionController;
 use App\Http\Controllers\PostController;
 use App\Models\License_type;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/demo-login', function (Request $request) {
+    // dd($request->all());
+    $demoUsername = $request->user ?? '';
+    $demoPassword = $request->user ?? '';
+
+    return view('auth.demoLogin', compact('demoUsername', 'demoPassword'));
+});
 
 Auth::routes();
 

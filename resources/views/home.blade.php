@@ -26,9 +26,6 @@
                                             alt="">
                                     @endif
                                 </div>
-                                {{-- <div class="d-flex gap-2">
-                                    <img src="/images/icons/tsmc_logo.png" width="40" alt="">
-                                </div> --}}
                                 <a href="{{ route('posts.create') }}" class="w-100"><input type="text"
                                         class="form-control rounded-pill" style="cursor: pointer"
                                         id="exampleFormControlInput1" placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
@@ -108,24 +105,9 @@
                                 {{-- if Document --}}
                                 <div class="d-flex mt-2 gap-2">
                                     @foreach ($post->getMedias ?? [] as $media)
-                                        @if (in_array($media->extension, ['pdf', 'doc', 'excel']))
+                                        @if (in_array($media->extension, ['pdf', 'doc', 'excel']) && file_exists(public_path( $media->folder . "/" . $media->file_name)))
                                             <div>
                                                 <a href="/{{ $media->folder }}/{{ $media->file_name }}" class="btn btn-info btn-sm" target="_BLANK">{{ $media->originalName }}</a>
-                                                {{-- <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#showDocumentModal{{ $media->id }}">
-                                                    <i class="bi bi-file-earmark-pdf"></i> {{ $media->originalName }}
-                                                </button>
-                                                <div class="modal fade" id="showDocumentModal{{ $media->id }}"
-                                                    tabindex="-1"
-                                                    aria-labelledby="showDocumentModalLabel{{ $media->id }}"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                        <div class="modal-content">
-                                                            <iframe src="/{{ $media->folder }}/{{ $media->file_name }}"
-                                                                id="document-frame" frameborder="0"></iframe>
-                                                        </div>
-                                                    </div>
-                                                </div> --}}
                                             </div>
                                         @endif
                                     @endforeach
