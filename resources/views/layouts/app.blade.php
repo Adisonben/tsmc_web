@@ -193,12 +193,14 @@
                 </ul>
 
                 <div class="sidebar-footer">
-                    <a class="sidebar-footer" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">
-                        <i class="bi bi-box-arrow-left"></i>
-                        ออกจากระบบ
-                    </a>
+                    @if (Auth::user()->username !== 'tsmcpreview')
+                        <a class="sidebar-footer" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                            <i class="bi bi-box-arrow-left"></i>
+                            ออกจากระบบ
+                        </a>
+                    @endif
 
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
@@ -219,10 +221,8 @@
 
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal" hidden
-                        data-bs-target="#exampleModal" @if (Auth::user()->username !== "tsmcpreview")
-                            disabled
-                        @endif>
-                        Launch demo modal
+                        data-bs-target="#exampleModal" @if (Auth::user()->username !== 'tsmcpreview') disabled @endif>
+                        contact
                     </button>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -283,11 +283,13 @@
                                         {{ Auth::user()->full_name }}
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                        document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
+                                        @if (Auth::user()->username !== 'tsmcpreview')
+                                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }}
+                                            </a>
+                                        @endif
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
