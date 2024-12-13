@@ -230,12 +230,19 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">สนใจระบบ ติดต่อได้ที่</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">ติดต่อสอบถามได้ที่</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <div class="text-center">
+                                        <img src="/images/contact.jpg" class="w-50" alt="">
+                                    </div>
+                                    <div class="text-center my-2">
+                                        <h3>หรือ</h3>
+                                        <h2 class="mb-0"><i class="bi bi-telephone"></i> 099-295-2666</h2>
+                                        <h2>คุณพีช</h2>
+                                    </div>
                                 </div>
                             </div>
                         </div>
