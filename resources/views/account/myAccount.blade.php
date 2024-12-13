@@ -8,24 +8,26 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('บัญชีของฉัน') }}</p>
-                            <div>
-                                <a href="{{ route('users.editByOwn', ['user' => $user->user_id]) }}"
-                                    class="btn btn-primary btn-sm">แก้ไขข้อมูล</a>
+                            @if (Auth::user()->username !== "tsmcpreview")
+                                <div>
+                                    <a href="{{ route('users.editByOwn', ['user' => $user->user_id]) }}"
+                                        class="btn btn-primary btn-sm">แก้ไขข้อมูล</a>
 
-                                <input type="file" id="uploadProfileimg" accept="image/*" hidden
-                                    onchange="storeProfileimg(this)">
-                                <button class="btn btn-sm btn-info"
-                                    onclick="document.getElementById('uploadProfileimg').click()">
-                                    รูปโปรไฟล์ (ไม่เกิน 4 MB)
-                                </button>
+                                    <input type="file" id="uploadProfileimg" accept="image/*" hidden
+                                        onchange="storeProfileimg(this)">
+                                    <button class="btn btn-sm btn-info"
+                                        onclick="document.getElementById('uploadProfileimg').click()">
+                                        รูปโปรไฟล์ (ไม่เกิน 4 MB)
+                                    </button>
 
-                                <input type="file" id="uploadSignimg" accept="image/*" hidden
-                                    onchange="storeSignimg(this)">
-                                <button class="btn btn-sm btn-info"
-                                    onclick="document.getElementById('uploadSignimg').click()">
-                                    ลายเซ็น (ไม่เกิน 4 MB)
-                                </button>
-                            </div>
+                                    <input type="file" id="uploadSignimg" accept="image/*" hidden
+                                        onchange="storeSignimg(this)">
+                                    <button class="btn btn-sm btn-info"
+                                        onclick="document.getElementById('uploadSignimg').click()">
+                                        ลายเซ็น (ไม่เกิน 4 MB)
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
