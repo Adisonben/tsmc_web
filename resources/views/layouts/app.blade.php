@@ -283,13 +283,15 @@
                                         {{ Auth::user()->full_name }}
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        @if (Auth::user()->username !== 'tsmcpreview')
-                                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
                                                 {{ __('Logout') }}
-                                            </a>
-                                        @endif
+                                            </a><a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
