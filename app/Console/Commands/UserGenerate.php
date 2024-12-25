@@ -69,6 +69,9 @@ class UserGenerate extends Command
             } catch (\Throwable $th) {
                 //throw $th;
                 echo "Failed to create new organization...\n";
+                $newOrg?->delete();
+                $newBrn?->delete();
+                $newDpm?->delete();
                 break;
             }
 
@@ -95,6 +98,10 @@ class UserGenerate extends Command
             } catch (\Throwable $th) {
                 //throw $th;
                 echo "Failed to create new user...\n";
+                $newOrg?->delete();
+                $newBrn?->delete();
+                $newDpm?->delete();
+                $newUser?->delete();
                 break;
             }
         }
