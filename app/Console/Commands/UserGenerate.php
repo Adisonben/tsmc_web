@@ -69,6 +69,7 @@ class UserGenerate extends Command
             } catch (\Throwable $th) {
                 //throw $th;
                 echo "Failed to create new organization...\n";
+                break;
             }
 
             try {
@@ -94,6 +95,7 @@ class UserGenerate extends Command
             } catch (\Throwable $th) {
                 //throw $th;
                 echo "Failed to create new user...\n";
+                break;
             }
         }
     }
