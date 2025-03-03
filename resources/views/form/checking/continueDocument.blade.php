@@ -34,90 +34,120 @@
 
                             <div class="row mb-2">
                                 <template x-for="(field, index) in formFieldsAnswer" :key="field.id">
-                                    <div class="mb-2 align-items-center px-4 fs-6 d-flex"
-                                        :class="field.type === 'subform' ? 'col-12' : 'col-md-6 col-12'">
+                                    <div class="mb-2 align-items-center px-4 fs-6 {{ $is_show ? 'd-flex gap-2' : '' }}"
+                                        :class="field.type === 'subform' ? 'col-12' : 'col-md-6 col-12 eachCheckList'">
 
                                         <template x-if="field.type !== 'subform'">
-                                            <label class="col-form-label w-50 text-end" x-text="field.label"></label>
+                                            <label class="col-form-label text-end" x-text="field.label"></label>
                                         </template>
 
                                         <!-- Subform Header (Full Width) -->
                                         <template x-if="field.type === 'subform'">
-                                            <table class="table table-bordered my-4">
-                                                <thead class="text-center table-secondary">
-                                                    <tr>
-                                                        <th colspan="3" x-text="field.label"></th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>รายการ</th>
-                                                        <th>ผลการตรวจ</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <template x-for="(subfield, index) in field.subfields" :key="subfield.id">
+                                            @if ($is_show)
+                                                <table class="table table-bordered my-4">
+                                                    <thead class="text-center table-secondary">
                                                         <tr>
-                                                            <td x-text="subfield.label"></td>
-                                                            @if ($is_show)
-                                                                <td>
-                                                                    <div x-text="subfield.answer"></div>
-                                                                </td>
-                                                            @else
-                                                                <td>
-                                                                    <!-- Input Type: Text -->
-                                                                    <template x-if="subfield.type === 'text'">
-                                                                        <input type="text" class="form-control ms-2" x-model="subfield.answer" {{ $is_show ? 'disabled' : '' }}>
-                                                                    </template>
-
-                                                                    <!-- Input Type: Number -->
-                                                                    <template x-if="subfield.type === 'number'">
-                                                                        <input type="number" class="form-control ms-2" x-model="subfield.answer" {{ $is_show ? 'disabled' : '' }}>
-                                                                    </template>
-
-                                                                    <!-- Select Dropdown -->
-                                                                    <template x-if="subfield.type === 'select'">
-                                                                        <div class="d-flex gap-2">
-                                                                            <template x-for="option in subfield.options" :key="option.value">
-                                                                                <div class="w-100">
-                                                                                    <input type="radio" x-model="subfield.answer" class="btn-check" :value="option.value" :name="subfield.id" :id="index + option.value" autocomplete="off" :checked="option.value === subfield.answer">
-                                                                                    <label class="btn btn-outline-primary w-100" :for="index + option.value" x-text="option.value"></label>
-                                                                                </div>
-                                                                            </template>
-                                                                        </div>
-
-                                                                        {{-- <select class="form-control ms-2" x-model="subfield.answer">
-                                                                            <option value="" selected disabled>กรุณาเลือกคำตอบ</option>
-                                                                            <template x-for="option in subfield.options" :key="option.value">
-                                                                                <option :value="option.value" x-text="option.value"></option>
-                                                                            </template>
-                                                                        </select> --}}
-                                                                    </template>
-                                                                </td>
-                                                            @endif
+                                                            <th colspan="3" x-text="field.label"></th>
                                                         </tr>
+                                                        <tr>
+                                                            <th>รายการ</th>
+                                                            <th>ผลการตรวจ</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template x-for="(subfield, index) in field.subfields" :key="subfield.id">
+                                                            <tr>
+                                                                <td x-text="subfield.label"></td>
+                                                                @if ($is_show)
+                                                                    <td>
+                                                                        <div x-text="subfield.answer"></div>
+                                                                    </td>
+                                                                @else
+                                                                    <td>
+                                                                        <!-- Input Type: Text -->
+                                                                        <template x-if="subfield.type === 'text'">
+                                                                            <input type="text" class="form-control ms-2" x-model="subfield.answer" {{ $is_show ? 'disabled' : '' }}>
+                                                                        </template>
+
+                                                                        <!-- Input Type: Number -->
+                                                                        <template x-if="subfield.type === 'number'">
+                                                                            <input type="number" class="form-control ms-2" x-model="subfield.answer" {{ $is_show ? 'disabled' : '' }}>
+                                                                        </template>
+
+                                                                        <!-- Select Dropdown -->
+                                                                        <template x-if="subfield.type === 'select'">
+                                                                            <div class="d-flex gap-2">
+                                                                                <template x-for="option in subfield.options" :key="option.value">
+                                                                                    <div class="w-100">
+                                                                                        <input type="radio" x-model="subfield.answer" class="btn-check" :value="option.value" :name="subfield.id" :id="index + option.value" autocomplete="off" :checked="option.value === subfield.answer">
+                                                                                        <label class="btn btn-outline-primary w-100" :for="index + option.value" x-text="option.value"></label>
+                                                                                    </div>
+                                                                                </template>
+                                                                            </div>
+                                                                        </template>
+                                                                    </td>
+                                                                @endif
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            @else
+                                                <div class="fs-5 px-2 px-md-4 my-4 row border">
+                                                    <label class="col-form-label text-center" x-text="field.label"></label>
+                                                    <template x-for="(subfield) in field.subfields" :key="subfield.id">
+                                                        <div class="p-2 rounded-3 col-12 col-md-6 px-md-4">
+                                                            <div x-text="subfield.label"></div>
+
+                                                            <!-- Input Type: Text -->
+                                                            <template x-if="subfield.type === 'text'">
+                                                                <input type="text" class="form-control ms-2" x-model="subfield.answer" placeholder="กรอกข้อมูล">
+                                                            </template>
+
+                                                            <!-- Input Type: Number -->
+                                                            <template x-if="subfield.type === 'number'">
+                                                                <input type="number" class="form-control ms-2" x-model="subfield.answer" placeholder="กรอกข้อมูล">
+                                                            </template>
+
+                                                            <!-- Select Dropdown -->
+                                                            <template x-if="subfield.type === 'select'">
+                                                                <div class="d-flex gap-2">
+                                                                    <template x-for="option in subfield.options" :key="option.value">
+                                                                        <div class="w-100">
+                                                                            <input type="radio" x-model="subfield.answer" class="btn-check" :value="option.value" :name="subfield.id" :id="index + option.value" autocomplete="off" :checked="option.value === subfield.answer">
+                                                                            <label class="btn btn-outline-primary w-100" :for="index + option.value" x-text="option.value"></label>
+                                                                        </div>
+                                                                    </template>
+                                                                </div>
+                                                            </template>
+                                                        </div>
                                                     </template>
-                                                </tbody>
-                                            </table>
+                                                </div>
+                                            @endif
                                         </template>
 
-                                        <!-- Input Type: Text -->
-                                        <template x-if="field.type === 'text'">
-                                            <input type="text" class="form-control ms-2" x-model="field.answer" {{ $is_show ? 'disabled' : '' }}>
-                                        </template>
+                                        @if ($is_show)
+                                            <div x-text="field.answer" class="text-decoration-underline"></div>
+                                        @else
+                                            <!-- Input Type: Text -->
+                                            <template x-if="field.type === 'text'">
+                                                <input type="text" class="form-control ms-2" x-model="field.answer">
+                                            </template>
 
-                                        <!-- Input Type: Number -->
-                                        <template x-if="field.type === 'number'">
-                                            <input type="number" class="form-control ms-2" x-model="field.answer" {{ $is_show ? 'disabled' : '' }}>
-                                        </template>
+                                            <!-- Input Type: Number -->
+                                            <template x-if="field.type === 'number'">
+                                                <input type="number" class="form-control ms-2" x-model="field.answer" {{ $is_show ? 'disabled' : '' }}>
+                                            </template>
 
-                                        <!-- Select Dropdown -->
-                                        <template x-if="field.type === 'select'">
-                                            <select class="form-control ms-2" x-model="field.answer" {{ $is_show ? 'disabled' : '' }}>
-                                                <option value="" selected disabled>กรุณาเลือกคำตอบ</option>
-                                                <template x-for="option in field.options" :key="option.value">
-                                                    <option :value="option.value" x-text="option.value" :selected="option.value === field.answer"></option>
-                                                </template>
-                                            </select>
-                                        </template>
+                                            <!-- Select Dropdown -->
+                                            <template x-if="field.type === 'select'">
+                                                <select class="form-control ms-2" x-model="field.answer" {{ $is_show ? 'disabled' : '' }}>
+                                                    <option value="" selected disabled>กรุณาเลือกคำตอบ</option>
+                                                    <template x-for="option in field.options" :key="option.value">
+                                                        <option :value="option.value" x-text="option.value" :selected="option.value === field.answer"></option>
+                                                    </template>
+                                                </select>
+                                            </template>
+                                        @endif
                                     </div>
                                 </template>
                             </div>
@@ -249,6 +279,9 @@
                 left: 0;
                 top: 0;
                 color: black;
+            }
+            .eachCheckList {
+                width: 50%;
             }
         }
     </style>
