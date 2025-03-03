@@ -22,8 +22,8 @@
                             </div>
                         @endif
 
-                        <div class="row row-cols-1 row-cols-md-2 g-3">
-                            <div class="mb-3">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 mb-4">
+                            <div class="">
                                 <label for="cateSelect" class="form-label">หมวดหมู่</label>
                                 <select class="form-select" id="cateSelect" x-model="filter_form_cate" @change="fetchForms()">
                                     <option value="" selected disabled>เลือกหมวดหมู่</option>
@@ -32,13 +32,31 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-3">
+                            <div class="">
                                 <label for="formSelect" class="form-label">แบบฟอร์ม</label>
                                 <select class="form-select" id="formSelect" x-model="filter_form_id" @change="getFilteredForm()">
                                     <option selected value="" disabled>เลือกแบบฟอร์ม</option>
                                     <template x-for="form in form_datas" :key="form.id">
                                         <option x-text="form.title" :value="form.id"></option>
                                     </template>
+                                </select>
+                            </div>
+                            <div class="">
+                                <label for="vehicleSelect" class="form-label">ยานพาหนะ</label>
+                                <select class="form-select" id="vehicleSelect" x-model="filter_vehicle_id">
+                                    <option selected value="">ยานพาหนะทั้งหมด</option>
+                                    @foreach ($vehicles as $vehicle)
+                                        <option value="{{ $vehicle->id }}">{{ $vehicle->license_plate }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="">
+                                <label for="userSelect" class="form-label">พนักงาน</label>
+                                <select class="form-select" id="userSelect" x-model="filter_user_id">
+                                    <option selected value="" >พนักงานทั้งหมด</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->user_id }}">{{ $user->fname }} {{ $user->lname }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -196,6 +214,8 @@
 
                 filter_form_cate: '',
                 filter_form_id: '',
+                filter_vehicle_id: '',
+                filter_user_id: '',
                 filter_start_date: '',
                 filter_end_date: '',
 
@@ -241,6 +261,16 @@
                     {
                         label: 'ประเภทรถ',
                         name: 'type',
+                        is_checked: false,
+                    },
+                    {
+                        label: 'บริษัทประกันภัย',
+                        name: 'ins_company',
+                        is_checked: false,
+                    },
+                    {
+                        label: 'ประเภทประกันภัย',
+                        name: 'ins_type',
                         is_checked: false,
                     },
                 ],
@@ -320,6 +350,8 @@
                 fetchDocs() {
                     let params = new URLSearchParams({
                         form_id: this.filter_form_id,
+                        vehicle_id: this.filter_vehicle_id || '',
+                        user_id: this.filter_user_id || '',
                         start_date: this.filter_start_date || '',
                         end_date: this.filter_end_date || ''
                     });
@@ -370,6 +402,8 @@
                         form_id: this.filter_form_id,
                         start_date: this.filter_start_date,
                         end_date: this.filter_end_date,
+                        vehicle_id: this.filter_vehicle_id || '',
+                        user_id: this.filter_user_id || '',
                         default_fields: JSON.stringify(this.default_fields),
                         vehicle_fields: JSON.stringify(this.vehicle_fields),
                         user_fields: JSON.stringify(this.user_fields),

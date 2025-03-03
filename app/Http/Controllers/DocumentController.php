@@ -176,6 +176,8 @@ class DocumentController extends Controller
 
     public function filterDocument() {
         $form_cates = Form_category::all();
-        return view('exportDocument.filterData', compact('form_cates'));
+        $vehicles = Vehicle::where('org_id', Auth::user()->userDetail->org ?? '')->get(['id', 'license_plate', 'brand']);
+        $users = User_detail::where('org', Auth::user()->userDetail->org ?? '')->get(['user_id', 'fname', 'lname']);
+        return view('exportDocument.filterData', compact('form_cates', 'vehicles', 'users'));
     }
 }

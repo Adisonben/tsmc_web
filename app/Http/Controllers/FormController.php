@@ -6,6 +6,8 @@ use App\Models\FieldOption;
 use App\Models\Form;
 use App\Models\Form_category;
 use App\Models\FormField;
+use App\Models\Position;
+use App\Models\PositionHasForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -250,6 +252,31 @@ class FormController extends Controller
             return response()->json(['success'=> 'ลบแบบฟอร์มสำเร็จ']);
         } catch (\Throwable $th) {
             return response()->json(['error'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
+        }
+    }
+
+    public function formPerm(string $form_id)
+    {
+        $form_data = Form::where('form_id', $form_id)->firstOrFail();
+        $positions = Position::where('org', optional(Auth::user()->userDetail)->org ?? '')->get();
+        return view('form.formPermission', compact('form_data', 'positions'));
+    }
+
+    public function formSetPerm(Request $request)
+    {
+        try {
+            if ($request->is_checked) {
+                PositionHasForm::create([
+                    'position_id' => $request->position_id,
+                    'form_id' => $request->form_id,
+                ]);
+            } else {
+                PositionHasForm::where('position_id', $request->position_id)->where('form_id', $request->form_id)->delete();
+            }
+            return response()->json(['success' => 'บันทึกข้อมูลสำเร็จ'], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(['errors' => 'บันทึกข้อมูลไม่สำเร็จ'], 500);
         }
     }
 }

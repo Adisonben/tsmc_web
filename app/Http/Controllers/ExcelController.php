@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExcelController extends Controller
 {
-    private function fetchSubmissionData($formId, $startDate, $endDate)
+    private function fetchSubmissionData($formId, $startDate, $endDate, $vehicleId, $userId)
     {
         $query = FormSubmissions::where('form_id', $formId);
 
@@ -22,6 +22,14 @@ class ExcelController extends Controller
 
         if ($endDate) {
             $query->whereDate('created_at', '<=', $endDate);
+        }
+
+        if ($vehicleId) {
+            $query->where('vehicle_id', $vehicleId);
+        }
+
+        if ($userId) {
+            $query->where('user_id', $userId);
         }
 
         $submissions = $query->get();
@@ -97,6 +105,9 @@ class ExcelController extends Controller
             $subData['registration_province'] = $submission->getVehicle?->registration_province ?? '-';
             $subData['standard'] = $submission->getVehicle?->standard ?? '-';
             $subData['type'] = $submission->getVehicle?->type ?? '-';
+            $subData['ins_company'] = $submission->getVehicle?->ins_company ?? '-';
+            $subData['ins_type'] = $submission->getVehicle?->ins_type ?? '-';
+
             $subData['fname'] = ($submission->getUser?->userDetail->getPrefix->name ?? '') . ($submission->getUser?->userDetail->fname ?? '');
             $subData['lname'] = $submission->getUser?->userDetail->lname ?? '-';
             $subData['citizen_id'] = $submission->getUser?->userDetail->citizen_id ?? '-';
@@ -152,7 +163,7 @@ class ExcelController extends Controller
         $column_field_ids = $this->handleHeaderColumns($sheet, $concatHeaderFields, $formFields);
 
         // Fetch data from the database
-        $submissions = $this->fetchSubmissionData($request->form_id, $request->start_date, $request->end_date);
+        $submissions = $this->fetchSubmissionData($request->form_id, $request->start_date, $request->end_date, $request->vehicle_id, $request->user_id);
 
         //  ----------------- Set the data rows -----------------
         $this->handleDataRows($sheet, $submissions, $concatFields, $column_field_ids);

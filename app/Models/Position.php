@@ -76,4 +76,13 @@ class Position extends Model
         }
         return $perm?->pivot?->status;
     }
+
+    public function hasForm() {
+        return $this->hasMany(PositionHasForm::class, 'position_id');
+    }
+
+    public function hasThisForm($formId = null)
+    {
+        return $this->hasForm()->where('form_id', $formId)->exists();
+    }
 }

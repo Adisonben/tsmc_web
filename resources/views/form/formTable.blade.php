@@ -8,7 +8,10 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">ทะเบียนแบบฟอร์ม {{ $category_name }}</p>
-                            <a href="{{ route('form.create', ['form_category' => $category_name]) }}" class="btn btn-success btn-sm">สร้าง</a>
+                            <div>
+                                <a href="{{ route('form.create', ['form_category' => $category_name]) }}" class="btn btn-success btn-sm">สร้าง</a>
+                                <a href="{{ route('form.select-form-category') }}" class="btn btn-secondary btn-sm">กลับ</a>
+                            </div>
                         </div>
                     </div>
 
@@ -45,7 +48,9 @@
                                                 <a href="{{ route('form.edit', ['form_category' => $category_name, 'id' => $form->form_id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
-
+                                                <a href="{{ route('form.perm', ['form_id' => $form->form_id]) }}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-title="กำหนดสิทธิ์">
+                                                    <i class="bi bi-person-gear"></i>
+                                                </a>
                                                 <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $form->id }}" del-target="form" data-bs-toggle="tooltip" data-bs-title="ลบ">
                                                     <i class="bi bi-trash"></i>
                                                 </button>

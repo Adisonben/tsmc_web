@@ -8,6 +8,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('ทะเบียนเอกสาร') }} {{ $form_data->title }}</p>
+                            <a href="{{ route('document.table.selectform') }}" class="btn btn-secondary btn-sm">กลับ</a>
                         </div>
                     </div>
 
@@ -68,11 +69,6 @@
                                                     data-bs-target="#submissionhis{{ $index }}">
                                                     <i class="bi bi-clock-history"></i>
                                                 </button>
-                                                {{-- <button type="button" class="btn btn-danger btn-sm delete-data-btn"
-                                                    del-id="{{ $submission->id }}" del-target="submission"
-                                                    data-bs-toggle="tooltip" data-bs-title="ลบ">
-                                                    <i class="bi bi-trash"></i>
-                                                </button> --}}
                                             </td>
                                         </tr>
                                         <!-- Modal -->

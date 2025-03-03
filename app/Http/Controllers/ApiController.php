@@ -67,6 +67,14 @@ class ApiController extends Controller
             $query->whereDate('created_at', '<=', $request->end_date);
         }
 
+        if ($request->has('vehicle_id') && $request->vehicle_id) {
+            $query->where('vehicle_id', $request->vehicle_id);
+        }
+
+        if ($request->has('user_id') && $request->user_id) {
+            $query->where('user_id', $request->user_id);
+        }
+
         $querySubmissions = $query->get();
 
         $responseData = [];
@@ -83,6 +91,8 @@ class ApiController extends Controller
             $vehicleData['registration_province'] = $submission->getVehicle?->registration_province ?? '-';
             $vehicleData['standard'] = $submission->getVehicle?->standard ?? '-';
             $vehicleData['type'] = $submission->getVehicle?->type ?? '-';
+            $vehicleData['ins_company'] = $submission->getVehicle?->ins_company ?? '-';
+            $vehicleData['ins_type'] = $submission->getVehicle?->ins_type ?? '-';
 
             $userData = [];
             // $userData['name'] = $submission->getUser?->full_name ?? '';

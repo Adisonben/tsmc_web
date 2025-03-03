@@ -10,7 +10,7 @@
                         <form @submit.prevent="handleSubmit">
                             @csrf
 
-                            <div class="row row-cols-1 row-cols-md-2 mb-3">
+                            <div class="row row-cols-1 row-cols-md-2 mb-3 fs-5">
                                 @if ($form_data->select_vehicle)
                                     <div class="col">
                                         <div class="d-flex align-items-center">
@@ -50,89 +50,91 @@
 
                             <div class="row mb-3">
                                 <template x-for="(field) in formFieldsAnswer" :key="field.id">
-                                    <div class="mb-2 align-items-center px-4 fs-6 d-flex"
+                                    <div class="mb-2 align-items-center px-4 fs-5"
                                         :class="field.type === 'subform' ? 'col-12' : 'col-md-6 col-12'">
 
-                                        <template x-if="field.type !== 'subform'">
-                                            <label class="col-form-label w-50 text-end" x-text="field.label"></label>
-                                        </template>
+                                        <div>
+                                            <template x-if="field.type !== 'subform'">
+                                                <label class="col-form-label text-end" x-text="field.label"></label>
+                                            </template>
 
-                                        <!-- Subform Header (Full Width) -->
-                                        <template x-if="field.type === 'subform'">
-                                            <table class="table table-bordered my-4">
-                                                <thead class="text-center table-secondary">
-                                                    <tr>
-                                                        <th colspan="3" x-text="field.label"></th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>รายการ</th>
-                                                        <th>ผลการตรวจ</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <template x-for="(subfield) in field.subfields" :key="subfield.id">
+                                            <!-- Subform Header (Full Width) -->
+                                            <template x-if="field.type === 'subform'">
+                                                <table class="table table-bordered my-4">
+                                                    <thead class="text-center table-secondary">
                                                         <tr>
-                                                            <td x-text="subfield.label"></td>
-                                                            <td>
-                                                                <!-- Input Type: Text -->
-                                                                <template x-if="subfield.type === 'text'">
-                                                                    <input type="text" class="form-control ms-2" x-model="subfield.answer" placeholder="กรอกข้อมูล">
-                                                                </template>
-
-                                                                <!-- Input Type: Number -->
-                                                                <template x-if="subfield.type === 'number'">
-                                                                    <input type="number" class="form-control ms-2" x-model="subfield.answer" placeholder="กรอกข้อมูล">
-                                                                </template>
-
-                                                                <!-- Select Dropdown -->
-                                                                <template x-if="subfield.type === 'select'">
-                                                                    <div class="d-flex gap-2">
-                                                                        <template x-for="option in subfield.options" :key="option.value">
-                                                                            <div class="w-100">
-                                                                                <input type="radio" x-model="subfield.answer" class="btn-check" :value="option.value" :name="subfield.id" :id="subfield.id + option.value" autocomplete="off" checked>
-                                                                                <label class="btn btn-outline-primary w-100" :for="subfield.id + option.value" x-text="option.value"></label>
-                                                                            </div>
-                                                                        </template>
-                                                                    </div>
-
-                                                                    {{-- <select class="form-control ms-2" x-model="subfield.answer">
-                                                                        <option value="" selected disabled>กรุณาเลือกคำตอบ</option>
-                                                                        <template x-for="option in subfield.options" :key="option.value">
-                                                                            <option :value="option.value" x-text="option.value"></option>
-                                                                        </template>
-                                                                    </select> --}}
-                                                                </template>
-                                                            </td>
+                                                            <th colspan="3" x-text="field.label"></th>
                                                         </tr>
+                                                        <tr>
+                                                            <th>รายการ</th>
+                                                            <th>ผลการตรวจ</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template x-for="(subfield) in field.subfields" :key="subfield.id">
+                                                            <tr>
+                                                                <td x-text="subfield.label"></td>
+                                                                <td>
+                                                                    <!-- Input Type: Text -->
+                                                                    <template x-if="subfield.type === 'text'">
+                                                                        <input type="text" class="form-control ms-2" x-model="subfield.answer" placeholder="กรอกข้อมูล">
+                                                                    </template>
+
+                                                                    <!-- Input Type: Number -->
+                                                                    <template x-if="subfield.type === 'number'">
+                                                                        <input type="number" class="form-control ms-2" x-model="subfield.answer" placeholder="กรอกข้อมูล">
+                                                                    </template>
+
+                                                                    <!-- Select Dropdown -->
+                                                                    <template x-if="subfield.type === 'select'">
+                                                                        <div class="d-flex gap-2">
+                                                                            <template x-for="option in subfield.options" :key="option.value">
+                                                                                <div class="w-100">
+                                                                                    <input type="radio" x-model="subfield.answer" class="btn-check" :value="option.value" :name="subfield.id" :id="subfield.id + option.value" autocomplete="off" checked>
+                                                                                    <label class="btn btn-outline-primary w-100" :for="subfield.id + option.value" x-text="option.value"></label>
+                                                                                </div>
+                                                                            </template>
+                                                                        </div>
+
+                                                                        {{-- <select class="form-control ms-2" x-model="subfield.answer">
+                                                                            <option value="" selected disabled>กรุณาเลือกคำตอบ</option>
+                                                                            <template x-for="option in subfield.options" :key="option.value">
+                                                                                <option :value="option.value" x-text="option.value"></option>
+                                                                            </template>
+                                                                        </select> --}}
+                                                                    </template>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            </template>
+
+                                            <!-- Input Type: Text -->
+                                            <template x-if="field.type === 'text'">
+                                                <input type="text" class="form-control ms-2" x-model="field.answer" placeholder="กรอกข้อมูล">
+                                            </template>
+
+                                            <!-- Input Type: Date -->
+                                            <template x-if="field.type === 'date'">
+                                                <input type="date" class="form-control ms-2" x-model="field.answer" placeholder="เลือกวันที่">
+                                            </template>
+
+                                            <!-- Input Type: Number -->
+                                            <template x-if="field.type === 'number'">
+                                                <input type="number" class="form-control ms-2" x-model="field.answer" placeholder="กรอกข้อมูล">
+                                            </template>
+
+                                            <!-- Select Dropdown -->
+                                            <template x-if="field.type === 'select'">
+                                                <select class="form-control ms-2" x-model="field.answer">
+                                                    <option value="" selected disabled>กรุณาเลือกคำตอบ</option>
+                                                    <template x-for="option in field.options" :key="option.value">
+                                                        <option :value="option.value" x-text="option.value"></option>
                                                     </template>
-                                                </tbody>
-                                            </table>
-                                        </template>
-
-                                        <!-- Input Type: Text -->
-                                        <template x-if="field.type === 'text'">
-                                            <input type="text" class="form-control ms-2" x-model="field.answer" placeholder="กรอกข้อมูล">
-                                        </template>
-
-                                        <!-- Input Type: Date -->
-                                        <template x-if="field.type === 'date'">
-                                            <input type="date" class="form-control ms-2" x-model="field.answer" placeholder="เลือกวันที่">
-                                        </template>
-
-                                        <!-- Input Type: Number -->
-                                        <template x-if="field.type === 'number'">
-                                            <input type="number" class="form-control ms-2" x-model="field.answer" placeholder="กรอกข้อมูล">
-                                        </template>
-
-                                        <!-- Select Dropdown -->
-                                        <template x-if="field.type === 'select'">
-                                            <select class="form-control ms-2" x-model="field.answer">
-                                                <option value="" selected disabled>กรุณาเลือกคำตอบ</option>
-                                                <template x-for="option in field.options" :key="option.value">
-                                                    <option :value="option.value" x-text="option.value"></option>
-                                                </template>
-                                            </select>
-                                        </template>
+                                                </select>
+                                            </template>
+                                        </div>
                                     </div>
                                 </template>
                             </div>

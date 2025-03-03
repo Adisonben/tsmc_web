@@ -78,6 +78,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/forms/{form_category}/store', [FormController::class, 'store'])->name('form.store');
     Route::post('/forms/{form_category}/update/{form_id}', [FormController::class, 'update'])->name('form.update');
     Route::delete('/forms/{form_category}/form/{id}', [FormController::class, 'destroy'])->name('form.delete');
+    Route::get('/forms/{form_id}/permission', [FormController::class, 'formPerm'])->name('form.perm');
+    Route::get('/forms/set-permission', [FormController::class, 'formSetPerm'])->name('form.perm.set');
 
     Route::get('/document/fill-out/select-form', [DocumentController::class, 'selectForm'])->name('document.fill-out.selectform');
     Route::get('/document/{form_id}/fill-out', [DocumentController::class, 'fillOutForm'])->name('document.fill-out');

@@ -8,7 +8,10 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">ทะเบียนแบบฟอร์มย่อย</p>
-                            <a href="{{ route('form.create', ['form_category' => 'sub-form']) }}" class="btn btn-success btn-sm">สร้าง</a>
+                            <div>
+                                <a href="{{ route('form.create', ['form_category' => 'sub-form']) }}" class="btn btn-success btn-sm">สร้าง</a>
+                                <a href="{{ route('form.select-form-category') }}" class="btn btn-secondary btn-sm">กลับ</a>
+                            </div>
                         </div>
                     </div>
 

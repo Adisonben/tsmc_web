@@ -43,4 +43,13 @@ class Form extends Model
         }
         return [];
     }
+
+    public function hasPosition() {
+        return $this->hasMany(PositionHasForm::class, 'form_id');
+    }
+
+    public function hasThisPosition($positionId = null)
+    {
+        return $this->hasPosition()->where('position_id', $positionId)->exists();
+    }
 }

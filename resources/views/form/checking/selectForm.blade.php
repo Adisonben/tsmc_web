@@ -27,7 +27,9 @@
                                         <ol class="list-group-numbered">
                                             @if (count($cate->getForms ?? []) > 0)
                                                 @foreach ($cate->getForms ?? [] as $form)
-                                                    <li class="list-group-item"><a href="{{ route('document.fill-out', ['form_id' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a></li>
+                                                    @if ($form->hasThisPosition(Auth::user()->userDetail->position))
+                                                        <li class="list-group-item"><a href="{{ route('document.fill-out', ['form_id' => $form->form_id]) }}" class="mb-1">{{ $form->title }}</a></li>
+                                                    @endif
                                                 @endforeach
                                             @endif
                                         </ol>
