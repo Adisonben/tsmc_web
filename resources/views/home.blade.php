@@ -7,12 +7,12 @@
         <div class="row justify-content-center">
             <div class="px-3 px-md-5">
                 {{-- @php
-                dd((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org) ?? false));
+                dd((optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', Auth::user()->userDetail->org) ?? false));
             @endphp --}}
                 @if (
                     (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                         'can_post',
-                        optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->userDetail->fname === 'admin')
+                        optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
                     <div class="card rounded-5 mb-3">
                         <div class="card-body">
                             <div class="d-flex gap-3">

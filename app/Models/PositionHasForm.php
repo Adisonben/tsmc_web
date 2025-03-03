@@ -11,9 +11,6 @@ class PositionHasForm extends Model
 
     protected $fillable = [
         'position_id',
-        'form_type_id',
-        'user_id',
-        'org',
-        'status'
+        'form_id',
     ];
 }

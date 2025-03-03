@@ -53,6 +53,10 @@
                                     <input type="" class="form-control" value="{{ $user->username }}" disabled>
                                     {{-- <div class="">{{ $user->username }}</div> --}}
                                 </div>
+                                <div class="d-flex mb-3 gap-2 align-items-center">
+                                    <div class="text-nowrap fw-bold">หมายเลขประชาชน</div>
+                                    <div class="">{!! optional($user->userDetail)->citizen_id ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
+                                </div>
                                 <div class="d-flex gap-4">
                                     <div class="d-flex mb-3 gap-2 align-items-center">
                                         <div class="text-nowrap fw-bold">ชื่อ</div>

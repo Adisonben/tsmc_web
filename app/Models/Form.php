@@ -4,47 +4,43 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Form extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'form_id',
         'title',
         'category',
-        'type',
-        'has_comment',
-        'has_score',
+        'select_user',
+        'select_vehicle',
         'has_approve',
         'org',
-        'form_id',
-        'created_by'
+        'created_by',
+        'status',
+        'is_sub_form',
+        'is_default'
     ];
-
-    public function getType()
-    {
-        return $this->belongsTo(Form_type::class, 'type', 'id');
-    }
 
     public function formCategory()
     {
         return $this->belongsTo(Form_category::class, 'category');
     }
 
-    public function getColumns()
+    public function formFields()
     {
-        return $this->hasMany(FormColumn::class, 'form_id', 'id');
+        return $this->hasMany(FormField::class, 'form_id')->orderBy('order_number');
     }
 
-    public function getLists()
-    {
-        return $this->hasMany(FormList::class, 'form_id', 'id');
-    }
+    protected $appends = ['subformfields'];
 
-    public function firstColumn($fid = null)
+    public function getSubformfieldsAttribute()
     {
-        $query = $this->getColumns()->where('form_id', $fid);
-
-        return $query->first();
+        if ($this->is_sub_form) {
+            return FormField::where('form_id', $this->id)->get();
+        }
+        return [];
     }
 }

@@ -20,19 +20,23 @@ class PositionPermissionSeeder extends Seeder
             ],
             [
                 'name' => 'can_check',
-                'label' => 'กรอกแบบฟอร์ม',
+                'label' => 'เอกสาร',
             ],
             [
                 'name' => 'can_access_table',
                 'label' => 'ทะเบียนเอกสาร',
             ],
             [
-                'name' => 'can_approve_table',
-                'label' => 'ตรวจสอบเอกสาร',
-            ],
-            [
                 'name' => 'can_manage_form',
                 'label' => 'จัดการแบบฟอร์ม',
+            ],
+            [
+                'name' => 'can_assign_driver',
+                'label' => 'จัดการผู้ประจำรถ',
+            ],
+            [
+                'name' => 'can_export',
+                'label' => 'ออกรายงาน',
             ],
             [
                 'name' => 'can_manage_user',
@@ -41,6 +45,10 @@ class PositionPermissionSeeder extends Seeder
             [
                 'name' => 'can_manage_org',
                 'label' => 'จัดการข้อมูลองค์กร',
+            ],
+            [
+                'name' => 'can_see_all_docs',
+                'label' => 'มองเห็นเอกสารทั้งหมด',
             ],
         ];
         foreach ($post_perms as $perm) {

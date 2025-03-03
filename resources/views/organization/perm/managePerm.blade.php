@@ -38,23 +38,6 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                    <hr>
-                                    <p>แบบฟอร์ม</p>
-                                    <div class="d-flex flex-wrap gap-md-3 px-md-4">
-                                        @foreach ($formTypes as $formType)
-                                            <div class="form-check">
-                                                @php
-                                                    $posit_form = $posit->hasFormType($formType->id, optional(Auth::user()->userDetail)->org) ?? $posit->hasFormType($formType->id);
-                                                @endphp
-                                                <input class="form-check-input permCheck" type="checkbox" check-type = "form" posit-id="{{ $posit->id }}"
-                                                    value="{{ $formType->id }}" id="formtype{{ $formType->id }}{{ $posit->id }}"
-                                                    {{ $posit_form->pivot->status ?? false ? "checked" : '' }} >
-                                                <label class="form-check-label" for="formtype{{ $formType->id }}{{ $posit->id }}">
-                                                    {{ $formType->name }}
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                    </div>
                                 </div>
                                 <hr>
                             @endforeach

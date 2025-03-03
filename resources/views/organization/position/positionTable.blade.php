@@ -74,6 +74,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">ชื่อตำแหน่ง</th>
+                                    <th scope="col">อยู่ภายใต้ตำแหน่ง</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -82,11 +83,12 @@
                                     <tr>
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $position->name }}</td>
+                                        <td>{{ $position->parent ? $position->parent->name : '-' }}</td>
                                         <td>
                                             {{-- @php
                                                 dd([Auth()->user()->userDetail->getPosition->id, ...$position->descendants()->pluck('id')]);
                                             @endphp --}}
-                                            @if ($position->org ?? false || Auth()->user()->userDetail->fname === "admin")
+                                            @if ($position->org ?? false || Auth()->user()->username === "tsmcadmin")
                                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                                     data-bs-target="#updatePositModal{{ $index }}">
                                                     <i class="bi bi-pencil-square"></i>
@@ -159,9 +161,6 @@
                         </table>
                     </div>
                 </div> {{-- End Department Card --}}
-                <div class="d-flex justify-content-center w-100">
-                    <img src="/images/assets/position_diagram.png" class="object-fit-contain mw-100" alt="">
-                </div>
             </div>
         </div>
     </div>

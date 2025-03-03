@@ -22,6 +22,7 @@ class RegisterUserForm extends Component
     public $dpms;
     public $positions;
     public $error = null;
+    public $citizen_id;
 
     // submit data
     public $username;
@@ -54,7 +55,7 @@ class RegisterUserForm extends Component
     {
         try {
             $this->validate([
-                'username' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:users,username',
                 'password' => 'required|min:8',
                 'prefix_id' => 'required',
                 'fname' => 'required|string|max:255',
@@ -62,7 +63,19 @@ class RegisterUserForm extends Component
                 'org_id' => 'required',
                 'branch_id' => 'required',
                 'department_id' => 'required',
-                'position_id' => 'required',
+                'citizen_id' => 'max:255|nullable',
+            ], [
+                'username.required' => 'กรุณากรอกชื่อผู้ใช้',
+                'username.unique' => 'ชื่อผู้ใช้นี้มีอยู่แล้ว',
+                'password.required' => 'กรุณากรอกรหัสผ่าน',
+                'password.min' => 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร',
+                'prefix_id.required' => 'กรุณาเลือกคำนำหน้า',
+                'fname.required' => 'กรุณากรอกชื่อ',
+                'lname.required' => 'กรุณากรอกนามสกุล',
+                'org_id.required' => 'กรุณาเลือกหน่วยงาน',
+                'branch_id.required' => 'กรุณาเลือกสาขา',
+                'department_id.required' => 'กรุณาเลือกแผนก',
+                'citizen_id.required' => 'กรุณากรอกเลขบัตรประชาชน',
             ]);
 
             // Create the user
@@ -78,6 +91,7 @@ class RegisterUserForm extends Component
                 'prefix' => $this->prefix_id,
                 'fname' => $this->fname,
                 'lname' => $this->lname,
+                'citizen_id' => $this->citizen_id,
                 'org' => $this->org_id,
                 'brn' => $this->branch_id,
                 'dpm' => $this->department_id,

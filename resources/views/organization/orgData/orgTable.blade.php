@@ -8,7 +8,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('ข้อมูลองค์กร') }}</p>
-                            @if (Auth()->user()->userDetail->fname === "admin")
+                            @if (Auth()->user()->username === "tsmcadmin")
                                 <a href="/organizations/create" class="btn btn-success btn-sm">สร้าง</a>
                             @endif
                         </div>
@@ -44,7 +44,7 @@
                                         <td style="background-color: {{ $org->theme_color }}">{{ $org->theme_color }}</td>
                                         <td>
                                             <a href="{{ route('organizations.edit', ['organization' => $org->org_id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข"><i class="bi bi-pencil-square"></i></a>
-                                            @if (Auth()->user()->userDetail->fname === "admin")
+                                            @if (Auth()->user()->username === "tsmcadmin")
                                                 <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $org->id }}" del-target="organizations" data-bs-toggle="tooltip" data-bs-title="ลบ"><i class="bi bi-trash"></i></button>
                                             @endif
                                             <a href="{{ route('organizations.show', ['organization' => $org->org_id]) }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด"><i class="bi bi-list"></i></a>

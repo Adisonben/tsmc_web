@@ -16,7 +16,7 @@ class User_detail extends Model
         'lname',
         'icon',
         'sign',
-        'license',
+        'citizen_id',
         'dpm',
         'brn',
         'org',

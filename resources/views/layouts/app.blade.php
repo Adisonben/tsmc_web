@@ -15,6 +15,8 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    <script src="https://unpkg.com/alpinejs" defer></script>
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css'])
 
@@ -45,91 +47,81 @@
                     {{-- @php
                         dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
                     @endphp --}}
-                    @if (
-                        (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                            'can_check',
-                            optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || Auth::user()->userDetail->fname === 'admin')
+                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_check',
+                                Auth::user()->userDetail->org) ?? false) ||
+                            Auth::user()->username === 'tsmcadmin')
                         <li class="sidebar-item" id="formCheckpage">
-                            <a href="{{ route('form.checking.type') }}" class="sidebar-link">
+                            <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
                                 <i class="bi bi-clipboard"></i>
-                                แบบฟอร์มเอกสาร
+                                เอกสาร
                             </a>
                         </li>
                     @endif
-                    @if (
-                        (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                            'can_access_table',
-                            optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || Auth::user()->userDetail->fname === 'admin')
+                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_access_table',
+                                Auth::user()->userDetail->org) ?? false) ||
+                            Auth::user()->username === 'tsmcadmin')
                         <li class="sidebar-item" id="formCheckTablePage">
-                            <a href="{{ route('form.table.type') }}" class="sidebar-link">
+                            <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
                                 <i class="bi bi-table"></i>
                                 ทะเบียนเอกสาร
                             </a>
                         </li>
                     @endif
-                    @if (
-                        (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                            'can_approve_table',
-                            optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || Auth::user()->userDetail->fname === 'admin')
+                    {{-- @if ( !(optional(Auth::user()->userDetail->getPosition)->name) ||
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_approve_table',
+                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                            Auth::user()->username === 'tsmcadmin')
                         <li class="sidebar-item" id="formInsTablePage">
-                            <a href="{{ route('form.table.verify_form') }}" class="sidebar-link">
+                            <a href="" class="sidebar-link">
                                 <i class="bi bi-clipboard-check"></i>
                                 เอกสารรอตรวจสอบ
                             </a>
                         </li>
-                    @endif
-                    @if (
-                        (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                            'can_manage_form',
-                            optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || Auth::user()->userDetail->fname === 'admin')
+                    @endif --}}
+                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_manage_form',
+                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                            Auth::user()->username === 'tsmcadmin')
                         <li class="sidebar-header">
                             แบบฟอร์ม
                         </li>
                         <li class="sidebar-item" id="formManagePage">
-                            <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                data-bs-target="#form" aria-expanded="false" aria-controls="org">
+                            <a href="{{ route('form.select-form-category') }}" class="sidebar-link">
                                 <i class="bi bi-gear"></i>
                                 จัดการแบบฟอร์ม
                             </a>
-                            <ul id="form" class="sidebar-dropdown list-unstyled collapse"
-                                data-bs-parent="#sidebar">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('forms.create') }}" class="sidebar-link">สร้างแบบฟอร์ม</a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('form.plan.create') }}" class="sidebar-link">สร้างแบบแผน</a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('forms.index') }}" class="sidebar-link">แบบฟอร์มทั้งหมด</a>
-                                </li>
-                            </ul>
                         </li>
                     @endif
-                    <li class="sidebar-header">
-                        ผู้ใช้
-                    </li>
-                    <li class="sidebar-item" id="profilePage">
-                        <a href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}"
-                            class="sidebar-link">
-                            <i class="bi bi-person"></i>
-                            บัญชีของฉัน
-                        </a>
-                    </li>
-                    @if (
-                        (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                            'can_manage_user',
-                            optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || Auth::user()->userDetail->fname === 'admin')
-                        <li class="sidebar-item" id="accountPage">
-                            <a href="{{ route('users.index') }}" class="sidebar-link">
-                                <i class="bi bi-people"></i>
-                                บัญชีผู้ใช้ทั้งหมด
+                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_assign_driver',
+                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                            Auth::user()->username === 'tsmcadmin')
+                        <li class="sidebar-item" id="assignPage">
+                            <a href="{{ route('vehicle.assignment.table') }}" class="sidebar-link">
+                                <i class="bi bi-person-badge"></i>
+                                จัดการผู้ประจำรถ
                             </a>
                         </li>
                     @endif
-                    @if (
-                        (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                            'can_manage_org',
-                            optional(Auth::user()->userDetail)->org)->pivot->status ?? false) || Auth::user()->userDetail->fname === 'admin')
+                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_export',
+                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                            Auth::user()->username === 'tsmcadmin')
+                        <li class="sidebar-item" id="exportPage">
+                            <a href="{{ route('document.export.filter') }}" class="sidebar-link">
+                                <i class="bi bi-file-earmark-arrow-up"></i>
+                                ออกรายงาน
+                            </a>
+                        </li>
+                    @endif
+
+                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_manage_org',
+                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                            Auth::user()->username === 'tsmcadmin' || Auth::user()->userDetail->position === null)
                         <li class="sidebar-header">
                             ข้อมูลระบบ
                         </li>
@@ -145,7 +137,7 @@
                                     <a href="{{ route('organizations.index') }}" class="sidebar-link">ข้อมูลองค์กร</a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="{{ route('cars.index') }}" class="sidebar-link">ข้อมูลรถ</a>
+                                    <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
@@ -155,7 +147,7 @@
                                 </li>
                             </ul>
                         </li>
-                        @if (Auth::user()->userDetail->fname === 'admin')
+                        @if (Auth::user()->username === 'tsmcadmin')
                             <li class="sidebar-item">
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#sys" aria-expanded="false" aria-controls="sys">
@@ -167,20 +159,36 @@
                                     <li class="sidebar-item">
                                         <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
                                     </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('driver-license-types.index') }}"
-                                            class="sidebar-link">ประเภทใบขับขี่</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('car-types.index') }}" class="sidebar-link">ประเภทรถ</a>
-                                    </li>
-                                    <li class="sidebar-item">
+                                    {{-- <li class="sidebar-item">
                                         <a href="{{ route('form.types') }}" class="sidebar-link">ประเภทฟอร์ม</a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </li>
                         @endif
                     @endif
+
+                    <li class="sidebar-header">
+                        ผู้ใช้
+                    </li>
+                    <li class="sidebar-item" id="profilePage">
+                        <a href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}"
+                            class="sidebar-link">
+                            <i class="bi bi-person"></i>
+                            บัญชีของฉัน
+                        </a>
+                    </li>
+                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_manage_user',
+                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                            Auth::user()->username === 'tsmcadmin' || Auth::user()->userDetail->position === null)
+                        <li class="sidebar-item" id="accountPage">
+                            <a href="{{ route('users.index') }}" class="sidebar-link">
+                                <i class="bi bi-people"></i>
+                                บัญชีผู้ใช้ทั้งหมด
+                            </a>
+                        </li>
+                    @endif
+
                     <li class="sidebar-header">
                         ทั่วไป
                     </li>
@@ -193,14 +201,12 @@
                 </ul>
 
                 <div class="sidebar-footer">
-                    @if (Auth::user()->username !== 'tsmcpreview')
-                        <a class="sidebar-footer" href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
+                    <a class="sidebar-footer" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
-                            <i class="bi bi-box-arrow-left"></i>
-                            ออกจากระบบ
-                        </a>
-                    @endif
+                        <i class="bi bi-box-arrow-left"></i>
+                        ออกจากระบบ
+                    </a>
 
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
@@ -284,10 +290,10 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="{{ route('logout') }}"
-                                                onclick="event.preventDefault();
+                                            onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
-                                                {{ __('Logout') }}
-                                            </a>
+                                            {{ __('Logout') }}
+                                        </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
@@ -313,6 +319,9 @@
                     </div> --}}
                     <div>
                         Powered by <a href="https://iddrives.co.th/" target="_BLANK">Iddrives.Co.,Ltd.</a>
+                    </div>
+                    <div>
+                        version {{ config('app.version', '2.0') }}
                     </div>
                 </div>
             </footer>

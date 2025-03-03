@@ -10,7 +10,8 @@
                             <p class="mb-0 fs-4">{{ __('ผู้ใช้ทั้งหมด') }}</p>
                             <div>
                                 <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">สร้าง</a>
-                                <a href="{{ route('user.list.export') }}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
+                                <a href="{{ route('user.list.export') }}" class="btn btn-secondary btn-sm"
+                                    data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
                             </div>
                         </div>
                     </div>
@@ -36,25 +37,35 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $index => $user)
+                                    @if (count($users) == 0)
                                         <tr>
-                                            <th scope="row">{{ $index + 1 }}</th>
-                                            <td>{{ $user->username }}</td>
-                                            <td>{{ $user->full_name }}</td>
-                                            <td>{{ optional($user->userDetail->getOrg)->name }}</td>
-                                            <td>{{ optional($user->userDetail->getBrn)->name }}</td>
-                                            <td>{{ optional($user->userDetail->getDpm)->name }}</td>
-                                            <td>{{ optional($user->userDetail->getPosition)->name }}</td>
-                                            <td>
-                                                <a href="{{ route('users.edit', ['user' => $user->user_id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $user->id }}" del-target="users" data-bs-toggle="tooltip" data-bs-title="ลบ">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </td>
+                                            <td colspan="8" class="text-center">ไม่มีข้อมูล</td>
                                         </tr>
-                                    @endforeach
+                                    @else
+                                        @foreach ($users as $index => $user)
+                                            <tr>
+                                                <th scope="row">{{ $index + 1 }}</th>
+                                                <td>{{ $user->username }}</td>
+                                                <td>{{ $user->full_name }}</td>
+                                                <td>{{ optional($user->userDetail->getOrg)->name }}</td>
+                                                <td>{{ optional($user->userDetail->getBrn)->name }}</td>
+                                                <td>{{ optional($user->userDetail->getDpm)->name }}</td>
+                                                <td>{{ optional($user->userDetail->getPosition)->name ?? "-" }}</td>
+                                                <td>
+                                                    <a href="{{ route('users.edit', ['user' => $user->user_id]) }}"
+                                                        class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
+                                                        data-bs-title="แก้ไข">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-danger btn-sm delete-data-btn"
+                                                        del-id="{{ $user->id }}" del-target="users"
+                                                        data-bs-toggle="tooltip" data-bs-title="ลบ">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

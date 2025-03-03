@@ -24,12 +24,6 @@ class Position extends Model
             ->withPivot('user_id', 'org', 'status');
     }
 
-    public function formTypes()
-    {
-        return $this->belongsToMany(Form_type::class, 'position_has_forms', 'position_id', 'form_type_id')
-            ->withPivot('user_id', 'org', 'status');
-    }
-
     // Function to retrieve permission IDs
     public function getPermissionIds()
     {
@@ -80,6 +74,6 @@ class Position extends Model
         } else {
             $perm = $this->permissions()->where('perm_name', $permissionName)->whereNull('position_has_permissions.org')->first();
         }
-        return $perm;
+        return $perm?->pivot?->status;
     }
 }

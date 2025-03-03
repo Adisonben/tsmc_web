@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('lname');
             $table->string('icon')->nullable();
             $table->string('sign')->nullable();
-            $table->string('license')->nullable();
+            $table->string('citizen_id')->nullable();
             $table->string('dpm')->nullable();
             $table->string('brn')->nullable();
             $table->string('org')->nullable();

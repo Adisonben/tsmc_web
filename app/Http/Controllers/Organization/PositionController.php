@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
 use App\Models\Department;
-use App\Models\Form_type;
 use App\Models\Position;
 use App\Models\Position_has_permission;
 use App\Models\Position_permission;
@@ -124,8 +123,7 @@ class PositionController extends Controller
             $positions = Position::all();
         }
         $posit_perms = Position_permission::all();
-        $formTypes = Form_type::all();
-        return view('organization.perm.managePerm', compact('positions', 'posit_perms', 'formTypes'));
+        return view('organization.perm.managePerm', compact('positions', 'posit_perms'));
     }
 
     public function updatePermission($positId , $permId , $status, $checkType) {
@@ -185,59 +183,59 @@ class PositionController extends Controller
                     }
                 }
             } elseif ($checkType === "form") {
-                $permExist = PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->exists();
-                $permNullExist = PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->whereNull('org')->exists();
-                if ($status == 'true') {
-                    if (is_null(Auth()->user()->userDetail->org)) {
-                        if ($permNullExist) {
-                            PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->whereNull('org')->update([
-                                'status' => true
-                            ]);
-                        } else {
-                            PositionHasForm::create([
-                                'position_id' => $positId,
-                                'form_type_id' => $permId,
-                                'user_id' => Auth()->user()->id,
-                                'org' => Auth()->user()->userDetail->org ?? null,
-                                'status' => true
-                            ]);
-                        }
-                    } else {
-                        if ($permExist) {
-                            PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
-                                'status' => true
-                            ]);
-                        } else {
-                            PositionHasForm::create([
-                                'position_id' => $positId,
-                                'form_type_id' => $permId,
-                                'user_id' => Auth()->user()->id,
-                                'org' => Auth()->user()->userDetail->org,
-                                'status' => true
-                            ]);
-                        }
-                    }
-                } else {
-                    if (is_null(Auth()->user()->userDetail->org)) {
-                        PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->whereNull('org')->update([
-                            'status' => false
-                        ]);
-                    } else {
-                        if ($permExist) {
-                            PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
-                                'status' => false
-                            ]);
-                        } else {
-                            PositionHasForm::create([
-                                'position_id' => $positId,
-                                'form_type_id' => $permId,
-                                'user_id' => Auth()->user()->id,
-                                'org' => Auth()->user()->userDetail->org,
-                                'status' => false
-                            ]);
-                        }
-                    }
-                }
+                // $permExist = PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->exists();
+                // $permNullExist = PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->whereNull('org')->exists();
+                // if ($status == 'true') {
+                //     if (is_null(Auth()->user()->userDetail->org)) {
+                //         if ($permNullExist) {
+                //             PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->whereNull('org')->update([
+                //                 'status' => true
+                //             ]);
+                //         } else {
+                //             PositionHasForm::create([
+                //                 'position_id' => $positId,
+                //                 'form_type_id' => $permId,
+                //                 'user_id' => Auth()->user()->id,
+                //                 'org' => Auth()->user()->userDetail->org ?? null,
+                //                 'status' => true
+                //             ]);
+                //         }
+                //     } else {
+                //         if ($permExist) {
+                //             PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
+                //                 'status' => true
+                //             ]);
+                //         } else {
+                //             PositionHasForm::create([
+                //                 'position_id' => $positId,
+                //                 'form_type_id' => $permId,
+                //                 'user_id' => Auth()->user()->id,
+                //                 'org' => Auth()->user()->userDetail->org,
+                //                 'status' => true
+                //             ]);
+                //         }
+                //     }
+                // } else {
+                //     if (is_null(Auth()->user()->userDetail->org)) {
+                //         PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->whereNull('org')->update([
+                //             'status' => false
+                //         ]);
+                //     } else {
+                //         if ($permExist) {
+                //             PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
+                //                 'status' => false
+                //             ]);
+                //         } else {
+                //             PositionHasForm::create([
+                //                 'position_id' => $positId,
+                //                 'form_type_id' => $permId,
+                //                 'user_id' => Auth()->user()->id,
+                //                 'org' => Auth()->user()->userDetail->org,
+                //                 'status' => false
+                //             ]);
+                //         }
+                //     }
+                // }
             }
 
             return response()->json([

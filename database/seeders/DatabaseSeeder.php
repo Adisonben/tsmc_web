@@ -16,12 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PrefixSeeder::class,
             UserSeeder::class,
-            PositionSeeder::class,
-            CarTypeSeeder::class,
             FormCategoriesSeeder::class,
-            OptionSeeder::class,
             PostPermissionSeeder::class,
-            ReportStatusSeeder::class,
             PositionPermissionSeeder::class,
         ]);
     }

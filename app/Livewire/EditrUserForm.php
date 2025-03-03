@@ -10,6 +10,7 @@ use App\Models\Position;
 use App\Models\Prefix;
 use App\Models\User;
 use App\Models\User_detail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,7 @@ class EditrUserForm extends Component
     public $positions;
     public $error = null;
     public $user;
+    public $citizen_id;
 
     // submit data
     public $username;
@@ -41,8 +43,14 @@ class EditrUserForm extends Component
         $this->user = $user;
         $userDetail = $this->user->userDetail;
         $this->prefixes = Prefix::all();
-        $this->orgs = Organization::all();
-        $this->positions = Position::all();
+
+        if (Auth::user()->username === 'tsmcadmin') {
+            $this->orgs = Organization::all();
+            $this->positions = Position::all();
+        } else {
+            $this->orgs = Organization::where('id', Auth::user()->userDetail->org)->get();
+            $this->positions = Position::where('org', Auth::user()->userDetail->org)->get();
+        }
 
         // querry form select data
         $this->brns = Branch::where('org_id', $userDetail->org)->get();
@@ -57,6 +65,7 @@ class EditrUserForm extends Component
         $this->branch_id = $userDetail->brn;
         $this->department_id = $userDetail->dpm;
         $this->position_id = $userDetail->position;
+        $this->citizen_id = $userDetail->citizen_id;
     }
 
     public function selectedOrgId()
@@ -79,7 +88,7 @@ class EditrUserForm extends Component
                 'org_id' => 'required',
                 'branch_id' => 'required',
                 'department_id' => 'required',
-                'position_id' => 'required',
+                'citizen_id' => 'required|max:255',
             ]);
 
             if ($this->password) {
@@ -110,6 +119,7 @@ class EditrUserForm extends Component
                 'brn' => $this->branch_id,
                 'dpm' => $this->department_id,
                 'position' => $this->position_id,
+                'citizen_id' => $this->citizen_id,
             ]);
 
             // Redirect to a successful registration page
