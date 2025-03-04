@@ -13,7 +13,7 @@ class FormCategoriesSeeder extends Seeder
      */
     public function run(): void
     {
-        $formCates = [ 'การจัดการรถ', 'การจัดการผู้ขับรถ', 'การจัดการเดินรถ', 'การจัดการบรรทุกและโดยสาร', 'การวิเคราะห์และประเมินผล'];
+        $formCates = [ 'การจัดการรถ', 'การจัดการผู้ขับรถ', 'การจัดการเดินรถ', 'การจัดการบรรทุกและโดยสาร', 'การจัดการเหตุฉุกเฉิน'];
 
         foreach ($formCates as $formCate) {
             $form_cate = Form_category::create([

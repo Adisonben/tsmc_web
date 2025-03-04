@@ -45,7 +45,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if (!$form->is_default)
+                                                @if (!$form->is_default || Auth::user()->username === 'tsmcadmin')
                                                     <a href="{{ route('form.edit', ['form_category' => $category_name, 'id' => $form->form_id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="แก้ไข">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
