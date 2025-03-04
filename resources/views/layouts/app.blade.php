@@ -27,7 +27,7 @@
     <div class="wrapper">
         <!-- Sidebar -->
         <aside id="sidebar">
-            <div class="h-100">
+            <div class="sticky-top">
                 <div class="px-3 pt-2">
                     <img src="/images/icons/tsmc_logo.png" width="50" alt="">
                     <img src="/images/icons/iddrives_logo.png" width="50" alt="">
@@ -214,6 +214,7 @@
                 </div>
             </div>
         </aside>
+
         <div id="app" class="main">
             <nav id="main-nav" class="navbar navbar-expand-md navbar-light shadow-sm">
                 <div class="d-flex align-items-center justify-content-between w-100 mx-sm-4">

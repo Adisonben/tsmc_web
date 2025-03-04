@@ -167,7 +167,9 @@ class DocumentController extends Controller
         $query = FormSubmissions::where('form_id', $form_data->id);
 
         if (!optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_see_all_docs',Auth::user()->userDetail->org) ?? true) {
-            $query->where('submitted_by', Auth::user()->id)->orWhere('user_id', Auth::user()->id);
+            $query->where(function ($query) {
+                $query->where('submitted_by', Auth::user()->id)->orWhere('user_id', Auth::user()->id);
+            });
         }
 
         $submissions = $query->orderByDesc('created_at')->get();

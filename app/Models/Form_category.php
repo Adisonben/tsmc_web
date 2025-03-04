@@ -16,6 +16,8 @@ class Form_category extends Model
 
     public function getForms()
     {
-        return $this->hasMany(Form::class, 'category', 'id')->where('org', Auth::user()->userDetail->org ?? '');
+        return $this->hasMany(Form::class, 'category', 'id')->where(function ($query) {
+            $query->where('org', Auth::user()->userDetail->org ?? '')->orWhere('is_default', true);
+        });
     }
 }

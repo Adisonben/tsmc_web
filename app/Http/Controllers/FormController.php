@@ -33,11 +33,15 @@ class FormController extends Controller
     {
         try {
             if ($category_name === 'sub-form') {
-                $forms = Form::where('is_sub_form', true)->where('org', optional(Auth::user()->userDetail)->org ?? '')->get();
+                $forms = Form::where('is_sub_form', true)->where('org', optional(Auth::user()->userDetail)->org ?? '')->orWhere('created_by', Auth::user()->id)->get();
                 return view('form.sub-form.formTable', compact('forms'));
             } else {
                 $category = Form_category::where('name', $category_name)->firstOrFail();
-                $forms = Form::where('category', $category->id)->where('org', optional(Auth::user()->userDetail)->org ?? '')->get();
+                $forms = Form::where('category', $category->id)->where(function ($query) {
+                    $query->where('org', optional(Auth::user()->userDetail)->org ?? '')
+                    ->orWhere('created_by', Auth::user()->id)
+                    ->orWhere('is_default', true);
+                })->get();
                 return view('form.formTable', compact('forms', 'category_name'));
             }
         } catch (\Throwable $th) {
