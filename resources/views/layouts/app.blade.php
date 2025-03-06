@@ -29,12 +29,20 @@
         <aside id="sidebar">
             <div class="sticky-top">
                 <div class="px-3 pt-2">
+                    {{-- @php
+                    dd(Auth::user()->userDetail->getOrg);
+                    @endphp --}}
+                    <img src="/uploads/orglogoes/{{ Auth::user()->userDetail->getOrg->logo_img }}" width="50" alt="">
                     <img src="/images/icons/tsmc_logo.png" width="50" alt="">
-                    <img src="/images/icons/iddrives_logo.png" width="50" alt="">
+                    {{-- <img src="/images/icons/iddrives_logo.png" width="50" alt=""> --}}
                     <img src="/images/icons/tz_logo.png" width="50" alt="">
+                    <!-- Button for sidebar toggle -->
                 </div>
-                <div class="sidebar-logo">
-                    <a href="#">Welcome</a>
+                <div class="sidebar-logo d-flex justify-content-between">
+                    <a href="#">Welcome TSM</a>
+                    <div class="text-white fs-4" id="nav-toggle-btn2" style="cursor: pointer;">
+                        <i class="bi bi-list"></i>
+                    </div>
                 </div>
                 <!-- Sidebar Navigation -->
                 <ul class="sidebar-nav">
@@ -47,6 +55,17 @@
                     {{-- @php
                         dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
                     @endphp --}}
+                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_post',
+                                Auth::user()->userDetail->org) ?? false) ||
+                            Auth::user()->username === 'tsmcadmin')
+                        <li class="sidebar-item" id="postsPage">
+                            <a href="{{ route('posts.index') }}" class="sidebar-link">
+                                <i class="bi bi-clipboard"></i>
+                                โพส/ประกาศ
+                            </a>
+                        </li>
+                    @endif
                     @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'can_check',
                                 Auth::user()->userDetail->org) ?? false) ||

@@ -48,8 +48,10 @@ li {
 }
 
 #sidebar {
+    position: absolute;
     max-width: 264px;
     min-width: 264px;
+    height: 100%;
     transition: all 0.35s ease-in-out;
     box-shadow: 0 0 35px 0 rgba(49, 57, 66, 0.5);
     z-index: 1;
@@ -60,6 +62,14 @@ li {
 
 #sidebar.collapsed {
     margin-left: -264px;
+}
+
+.main.collapsed {
+    margin-left: 0;
+}
+
+.main-collapsed {
+    margin-left: 264px;
 }
 
 .main {

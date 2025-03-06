@@ -10,7 +10,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('แก้ไขโพสข้อความ / ประกาศ') }}</p>
-                            <a href="/home" class="btn btn-secondary btn-sm">ย้อนกลับ</a>
+                            <a href="{{ route('posts.index') }}" class="btn btn-secondary btn-sm">ย้อนกลับ</a>
                         </div>
                     </div>
 
@@ -96,7 +96,7 @@
         });
     </script>
     <style>
-        #homepage {
+        #postsPage {
             background-color: var(--main-color);
         }
     </style>
