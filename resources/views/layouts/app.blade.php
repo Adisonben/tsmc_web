@@ -32,7 +32,7 @@
                     {{-- @php
                     dd(Auth::user()->userDetail->getOrg);
                     @endphp --}}
-                    <img src="/uploads/orglogoes/{{ Auth::user()->userDetail->getOrg->logo_img }}" width="50" alt="">
+                    <img src="/uploads/orglogoes/{{ Auth::user()->userDetail->getOrg->logo_img ?? '' }}" width="50" alt="">
                     <img src="/images/icons/tsmc_logo.png" width="50" alt="">
                     {{-- <img src="/images/icons/iddrives_logo.png" width="50" alt=""> --}}
                     <img src="/images/icons/tz_logo.png" width="50" alt="">
