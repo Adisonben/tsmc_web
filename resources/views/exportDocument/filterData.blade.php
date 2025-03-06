@@ -318,10 +318,18 @@
                     //     this.enableVehicle_fields();
                     // }
                     this.form_fields = this.form_filtered_data.fields;
-                    const subfield = this.form_filtered_data.fields.find((field) => {
+                    // const subfield = this.form_filtered_data.fields.find((field) => {
+                    //     return field.type === 'subform';
+                    // });
+                    // this.form_subfields = subfield ? subfield.subformfields : [];
+                    const subfield2 = this.form_filtered_data.fields.filter((field) => {
                         return field.type === 'subform';
                     });
-                    this.form_subfields = subfield ? subfield.subformfields : [];
+                    const form_subfields2 = subfield2.map((field) => {
+                        return field.subformfields;
+                    });
+                    this.form_subfields = form_subfields2.map(obj => Object.values(obj)).flat();
+                    // console.log(this.form_subfields, form_subfields2.map(obj => Object.values(obj)).flat());
                     this.all_field_count = this.form_fields.length + this.form_subfields.length;
                 },
 
@@ -360,7 +368,7 @@
                         url: `/api/document/getDocs?${params.toString()}`,
                         type: 'GET',
                         success: (res) => {
-                            console.log(res)
+                            // console.log(res)
                             if (res.length == 0) {
                                 this.doc_datas = [];
                                 Swal.fire({
