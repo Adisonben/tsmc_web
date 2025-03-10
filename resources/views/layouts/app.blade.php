@@ -36,7 +36,7 @@
                     <img src="/images/icons/tsmc_logo.png" width="50" alt="">
                     {{-- <img src="/images/icons/iddrives_logo.png" width="50" alt=""> --}}
                     <img src="/images/icons/tz_logo.png" width="50" alt="">
-                    <img src="/images/icons/nt_logo.jpg" width="50" alt="">
+                    <img src="/images/icons/nt_logo.jpg" width="50" alt="" class="rounded-circle">
                     <!-- Button for sidebar toggle -->
                 </div>
                 <div class="sidebar-logo d-flex justify-content-between">
