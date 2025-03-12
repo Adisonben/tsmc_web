@@ -81,7 +81,7 @@
                     </div>
 
 
-                    <div class="card-body">
+                    <div class="card-body overflow-auto">
                         @if (session('vehicleSuccess'))
                             <div class="alert alert-success" role="alert">
                                 {{ session('vehicleSuccess') }}

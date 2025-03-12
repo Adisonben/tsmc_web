@@ -6,6 +6,7 @@ use App\Models\Form;
 use App\Models\FormSubmissions;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -14,7 +15,7 @@ class ExcelController extends Controller
 {
     private function fetchSubmissionData($formId, $startDate, $endDate, $vehicleId, $userId)
     {
-        $query = FormSubmissions::where('form_id', $formId);
+        $query = FormSubmissions::where('form_id', $formId)->where('org', Auth::user()->userDetail->org ?? '');
 
         if ($startDate) {
             $query->whereDate('created_at', '>=', $startDate);

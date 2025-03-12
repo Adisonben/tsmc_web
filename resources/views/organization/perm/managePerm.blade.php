@@ -22,7 +22,7 @@
                                 <div class="mb-3 p-2 rounded" style="background-color: rgb(230, 230, 230)">
                                     <p class="fw-bold fs-5">{{ $posit->name }}</p>
                                     <p>เมนูระบบ</p>
-                                    <div class="d-flex flex-wrap gap-md-3 px-md-4">
+                                    <div class="d-flex flex-wrap gap-md-3 gap-2 px-md-4">
                                         @foreach ($posit_perms as $perm)
                                             <div class="form-check">
                                                 @php

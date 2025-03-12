@@ -164,7 +164,7 @@ class DocumentController extends Controller
 
     public function showDocTable($form_id) {
         $form_data = Form::where('form_id', $form_id)->firstOrFail();
-        $query = FormSubmissions::where('form_id', $form_data->id);
+        $query = FormSubmissions::where('form_id', $form_data->id)->where('org', Auth::user()->userDetail->org ?? '');
 
         if (!optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_see_all_docs',Auth::user()->userDetail->org) ?? true) {
             $query->where(function ($query) {

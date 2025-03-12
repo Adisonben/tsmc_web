@@ -16,11 +16,11 @@
                     <div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1" x-model="selectUser" value="1" checked>
-                            <label class="form-check-label" for="inlineCheckbox1">เลือกผู้ใช้</label>
+                            <label class="form-check-label" for="inlineCheckbox1">มีการเลือกผู้ใช้</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="inlineCheckbox2" x-model="selectVehicle" value="1">
-                            <label class="form-check-label" for="inlineCheckbox2">เลือกยานพาหนะ</label>
+                            <label class="form-check-label" for="inlineCheckbox2">มีการเลือกยานพาหนะ</label>
                         </div>
                     </div>
                 </div>
