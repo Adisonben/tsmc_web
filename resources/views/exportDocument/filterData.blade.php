@@ -338,7 +338,7 @@
                         url: '/api/form/getFormByCate/' + this.filter_form_cate,
                         type: 'GET',
                         success: (res) => {
-                            console.log(res);
+                            // console.log(res);
                             if (res.length == 0) {
                                 this.form_datas = [];
                                 this.filter_form_id = '';
