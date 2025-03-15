@@ -22,6 +22,12 @@ Route::get('/demo-login', function (Request $request) {
     return view('auth.demoLogin', compact('demoUsername', 'demoPassword'));
 });
 
+Route::prefix('mockup')->group(function () {
+    Route::get('/page/{pageNum}', function ($pagenum) {
+        return view('mockup.page' . $pagenum);
+    });
+});
+
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
