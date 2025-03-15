@@ -13,9 +13,7 @@ class ApiController extends Controller
     public function getFormByCategory($category_id)
     {
         $forms = Form::where('category', $category_id)->where(function ($query) {
-            $query->where('org', optional(Auth::user()->userDetail)->org ?? '')
-            ->orWhere('created_by', Auth::user()->id)
-            ->orWhere('is_default', true);
+            $query->where('org', Auth::user()->userDetail->org ?? '')->orWhere('is_default', true);
         })->get(['id', 'title', 'select_user', 'select_vehicle']);
         $respFormData = [];
 
