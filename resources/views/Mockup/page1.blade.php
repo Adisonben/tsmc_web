@@ -591,20 +591,20 @@
             .bindPopup("Bangkok, Thailand")
             .openPopup();
 
-        function onLocationFound(e) {
-            var radius = e.accuracy;
+        // function onLocationFound(e) {
+        //     var radius = e.accuracy;
 
-            L.marker(e.latlng, { icon: truckIcon }).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
+        //     L.marker(e.latlng, { icon: truckIcon }).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-            L.circle(e.latlng, radius).addTo(map);
-        }
+        //     L.circle(e.latlng, radius).addTo(map);
+        // }
 
-        function onLocationError(e) {
-            alert(e.message);
-        }
+        // function onLocationError(e) {
+        //     alert(e.message);
+        // }
 
-        map.on('locationfound', onLocationFound);
-        map.on('locationerror', onLocationError);
+        // map.on('locationfound', onLocationFound);
+        // map.on('locationerror', onLocationError);
 
         // L.marker([13.7563, 100.5018], { icon: truckIcon }).addTo(map);
 
