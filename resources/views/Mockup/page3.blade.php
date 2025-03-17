@@ -1,508 +1,441 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สร้างงานใหม่ - Transport Safety Manager</title>
-    <style>
-        :root {
-            --primary: #1a73e8;
-            --primary-dark: #0d47a1;
-            --success: #34a853;
-            --warning: #fbbc05;
-            --danger: #ea4335;
-            --light-gray: #f5f5f5;
-            --gray: #757575;
-            --dark: #212121;
-            --white: #ffffff;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transport Safety Manager - สร้างงานใหม่</title>
+  <style>
+    :root {
+      --primary-color: #2563EB;
+      --secondary-color: #F3F4F6;
+      --success-color: #10B981;
+      --warning-color: #F59E0B;
+      --danger-color: #EF4444;
+      --text-color: #1F2937;
+      --light-text: #6B7280;
+      --border-color: #E5E7EB;
+    }
 
-        * {
-            box-sizing: border-box;
-            font-family: 'Sarabun', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+    body {
+      font-family: 'Sarabun', 'Noto Sans Thai', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #F9FAFB;
+      color: var(--text-color);
+    }
 
-        body {
-            background-color: #f8f9fa;
-            color: var(--dark);
-            line-height: 1.6;
-        }
+    header {
+      background-color: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: bold;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+    }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background-color: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
+    .form-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
 
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
-        .page-title {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
 
-        .card {
-            background-color: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            padding: 25px;
-            margin-bottom: 25px;
-        }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.25rem;
+      font-family: inherit;
+      font-size: 1rem;
+    }
 
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+    .search-select {
+      position: relative;
+    }
 
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-        }
+    .search-input {
+      padding-left: 2.5rem;
+    }
 
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--light-text);
+    }
 
-        .form-control:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
-        }
+    .status-indicator {
+      display: inline-block;
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
 
-        .search-wrapper {
-            position: relative;
-        }
+    .available {
+      background-color: var(--success-color);
+    }
 
-        .search-icon {
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            color: var(--gray);
-        }
+    .unavailable {
+      background-color: var(--danger-color);
+    }
 
-        .select-wrapper {
-            position: relative;
-        }
+    .checklist-builder {
+      border: 1px solid var(--border-color);
+      border-radius: 0.25rem;
+      padding: 1rem;
+    }
 
-        .select-wrapper:after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 5px solid var(--gray);
-            pointer-events: none;
-        }
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
 
-        select.form-control {
-            appearance: none;
-            padding-right: 30px;
-            background-color: white;
-        }
+    .checklist-item:last-child {
+      border-bottom: none;
+    }
 
-        .driver-list {
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
+    .checklist-item input[type="checkbox"] {
+      width: auto;
+      margin-right: 0.5rem;
+    }
 
-        .driver-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-        }
+    .add-item {
+      display: flex;
+      margin-top: 0.5rem;
+    }
 
-        .driver-item:last-child {
-            border-bottom: none;
-        }
+    .add-item button {
+      margin-left: 0.5rem;
+      white-space: nowrap;
+    }
 
-        .driver-item:hover {
-            background-color: var(--light-gray);
-        }
+    .priority-options {
+      display: flex;
+      gap: 1rem;
+    }
 
-        .driver-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background-color: #e0e0e0;
-            margin-right: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray);
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
+    .priority-option {
+      flex: 1;
+      text-align: center;
+      padding: 0.75rem;
+      border: 2px solid var(--border-color);
+      border-radius: 0.25rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
 
-        .driver-info {
-            flex: 1;
-        }
+    .priority-normal {
+      color: var(--success-color);
+    }
 
-        .driver-name {
-            font-weight: 600;
-        }
+    .priority-normal.active {
+      background-color: rgba(16, 185, 129, 0.1);
+      border-color: var(--success-color);
+    }
 
-        .driver-status {
-            font-size: 0.85rem;
-            padding: 2px 8px;
-            border-radius: 12px;
-            display: inline-block;
-        }
+    .priority-urgent {
+      color: var(--warning-color);
+    }
 
-        .status-available {
-            background-color: rgba(52, 168, 83, 0.1);
-            color: var(--success);
-        }
+    .priority-urgent.active {
+      background-color: rgba(245, 158, 11, 0.1);
+      border-color: var(--warning-color);
+    }
 
-        .status-busy {
-            background-color: rgba(251, 188, 5, 0.1);
-            color: var(--warning);
-        }
+    .priority-emergency {
+      color: var(--danger-color);
+    }
 
-        .checklist-builder {
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 15px;
-        }
+    .priority-emergency.active {
+      background-color: rgba(239, 68, 68, 0.1);
+      border-color: var(--danger-color);
+    }
 
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: var(--light-gray);
-            border-radius: 4px;
-        }
+    .datetime-group {
+      display: flex;
+      gap: 1rem;
+    }
 
-        .checklist-item input[type="checkbox"] {
-            margin-right: 10px;
-        }
+    .datetime-group .form-group {
+      flex: 1;
+      margin-bottom: 0;
+    }
 
-        .add-item-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--primary);
-            background: none;
-            border: none;
-            padding: 5px 0;
-            font-size: 0.9rem;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+    .btn {
+      display: inline-block;
+      font-weight: 600;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid transparent;
+      font-size: 1rem;
+      line-height: 1.5;
+      transition: all 0.15s ease-in-out;
+    }
 
-        .priority-options {
-            display: flex;
-            gap: 15px;
-        }
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
 
-        .priority-option {
-            flex: 1;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    .btn-primary:hover {
+      background-color: #1D4ED8;
+    }
 
-        .priority-normal {
-            border-color: var(--success);
-            color: var(--success);
-        }
+    .btn-outline {
+      background-color: transparent;
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
 
-        .priority-normal.active {
-            background-color: var(--success);
-            color: white;
-        }
+    .btn-outline:hover {
+      background-color: rgba(37, 99, 235, 0.1);
+    }
 
-        .priority-urgent {
-            border-color: var(--warning);
-            color: var(--warning);
-        }
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
 
-        .priority-urgent.active {
-            background-color: var(--warning);
-            color: white;
-        }
-
-        .priority-emergency {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
-
-        .priority-emergency.active {
-            background-color: var(--danger);
-            color: white;
-        }
-
-        .date-time-group {
-            display: flex;
-            gap: 15px;
-        }
-
-        .date-time-group .form-group {
-            flex: 1;
-        }
-
-        .btn {
-            display: inline-block;
-            font-weight: 600;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            user-select: none;
-            border: 1px solid transparent;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            border-radius: 6px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            color: white;
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            border-color: var(--primary-dark);
-        }
-
-        .btn-lg {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .full-width {
-            grid-column: 1 / -1;
-        }
-    </style>
+    .submit-btn {
+      padding: 0.75rem 2rem;
+      font-size: 1.125rem;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="logo">
-                <div class="logo-icon">TSM</div>
-                Transport Safety Manager
+  <header>
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 8v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8l2-4h12l2 4Z"></path>
+        <path d="M2 8h20"></path>
+        <path d="M12 13v7"></path>
+        <path d="M12 13H8"></path>
+        <path d="M12 13h4"></path>
+      </svg>
+      <span>Transport Safety Manager</span>
+    </div>
+    <div>
+      <span style="margin-right: 1rem;">สวัสดี, คุณวิทยา</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="form-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        สร้างงานใหม่
+      </div>
+
+      <form>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="vehicle">เลือกรถ</label>
+            <div class="search-select">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <select id="vehicle" class="search-input">
+                <option value="">- เลือกรถที่พร้อมใช้งาน -</option>
+                <option value="1">TH-1234 - รถบรรทุก 6 ล้อ (พร้อมใช้งาน)</option>
+                <option value="2">TH-5678 - รถบรรทุก 10 ล้อ (พร้อมใช้งาน)</option>
+                <option value="3">TH-9012 - รถตู้ (พร้อมใช้งาน)</option>
+                <option value="4">TH-3456 - รถกระบะ (พร้อมใช้งาน)</option>
+              </select>
             </div>
-            <div class="user-info">
-                <span>ยินดีต้อนรับ, ผู้ดูแลระบบ</span>
-                <div class="user-avatar">A</div>
+          </div>
+
+          <div class="form-group">
+            <label for="driver">มอบหมายพนักงานขับรถ</label>
+            <div class="search-select">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <select id="driver" class="search-input">
+                <option value="">- เลือกพนักงานขับรถ -</option>
+                <option value="1"><span class="status-indicator available"></span>สมชาย ใจดี (ว่าง)</option>
+                <option value="2"><span class="status-indicator available"></span>วิชัย รักดี (ว่าง)</option>
+                <option value="3"><span class="status-indicator unavailable"></span>สมศักดิ์ มีทรัพย์ (ไม่ว่าง)</option>
+                <option value="4"><span class="status-indicator available"></span>อภิชาติ สุขใจ (ว่าง)</option>
+              </select>
             </div>
+          </div>
         </div>
 
-        <h1 class="page-title">สร้างงานใหม่</h1>
-
-        <form>
-            <div class="card">
-                <div class="form-grid">
-                    <!-- เลือกรถ -->
-                    <div class="form-group">
-                        <label class="form-label">เลือกรถ</label>
-                        <div class="select-wrapper">
-                            <select class="form-control">
-                                <option value="" disabled selected>เลือกรถที่พร้อมใช้งาน</option>
-                                <option value="1">รถตู้ Toyota - ทะเบียน กข-1234 (พร้อมใช้งาน)</option>
-                                <option value="2">รถบัส Hino - ทะเบียน งจ-5678 (พร้อมใช้งาน)</option>
-                                <option value="3">รถเก๋ง Honda - ทะเบียน ฉช-9012 (พร้อมใช้งาน)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- มอบหมายพนักงานขับรถ -->
-                    <div class="form-group">
-                        <label class="form-label">มอบหมายพนักงานขับรถ</label>
-                        <div class="search-wrapper">
-                            <input type="text" class="form-control" placeholder="ค้นหาพนักงานขับรถ">
-                            <span class="search-icon">🔍</span>
-                        </div>
-                        <div class="driver-list">
-                            <div class="driver-item">
-                                <div class="driver-avatar">สม</div>
-                                <div class="driver-info">
-                                    <div class="driver-name">สมชาย ใจดี</div>
-                                    <div class="driver-status status-available">พร้อมทำงาน</div>
-                                </div>
-                            </div>
-                            <div class="driver-item">
-                                <div class="driver-avatar">วิ</div>
-                                <div class="driver-info">
-                                    <div class="driver-name">วิชัย รักงาน</div>
-                                    <div class="driver-status status-available">พร้อมทำงาน</div>
-                                </div>
-                            </div>
-                            <div class="driver-item">
-                                <div class="driver-avatar">มา</div>
-                                <div class="driver-info">
-                                    <div class="driver-name">มานะ ตั้งใจ</div>
-                                    <div class="driver-status status-busy">กำลังปฏิบัติงาน</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- เครื่องมือสร้างเช็คลิสต์ -->
-                    <div class="form-group full-width">
-                        <label class="form-label">เช็คลิสต์งาน</label>
-                        <div class="checklist-builder">
-                            <div class="checklist-item">
-                                <input type="checkbox" checked>
-                                <span>ตรวจสอบน้ำมันและของเหลวในรถ</span>
-                            </div>
-                            <div class="checklist-item">
-                                <input type="checkbox" checked>
-                                <span>ตรวจสอบลมยางและความพร้อมของล้อ</span>
-                            </div>
-                            <div class="checklist-item">
-                                <input type="checkbox" checked>
-                                <span>ตรวจสอบไฟและระบบส่องสว่าง</span>
-                            </div>
-                            <div class="checklist-item">
-                                <input type="checkbox" checked>
-                                <span>ทำ Roll Call ก่อนออกเดินทาง</span>
-                            </div>
-                            <div class="checklist-item">
-                                <input type="checkbox" checked>
-                                <span>รายงานสถานะทุก 1 ชั่วโมงระหว่างเดินทาง</span>
-                            </div>
-                            <button type="button" class="add-item-btn">+ เพิ่มรายการใหม่</button>
-                        </div>
-                    </div>
-
-                    <!-- การตั้งค่าความสำคัญ -->
-                    <div class="form-group">
-                        <label class="form-label">ระดับความสำคัญ</label>
-                        <div class="priority-options">
-                            <div class="priority-option priority-normal active">
-                                ปกติ
-                            </div>
-                            <div class="priority-option priority-urgent">
-                                ด่วน
-                            </div>
-                            <div class="priority-option priority-emergency">
-                                ฉุกเฉิน
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- การกำหนดเวลา -->
-                    <div class="form-group">
-                        <label class="form-label">กำหนดเวลาส่งงาน</label>
-                        <div class="date-time-group">
-                            <div class="form-group">
-                                <input type="date" class="form-control" value="2025-03-16">
-                            </div>
-                            <div class="form-group">
-                                <input type="time" class="form-control" value="09:00">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">ระยะเวลาดำเนินการโดยประมาณ</label>
-                            <select class="form-control">
-                                <option value="1">1 ชั่วโมง</option>
-                                <option value="2" selected>2 ชั่วโมง</option>
-                                <option value="3">3 ชั่วโมง</option>
-                                <option value="4">4 ชั่วโมง</option>
-                                <option value="8">8 ชั่วโมง</option>
-                                <option value="12">12 ชั่วโมง</option>
-                                <option value="24">1 วัน</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- คำอธิบายงาน -->
-                    <div class="form-group full-width">
-                        <label class="form-label">คำอธิบายงาน</label>
-                        <textarea class="form-control" rows="4" placeholder="กรอกรายละเอียดหรือคำแนะนำเพิ่มเติมเกี่ยวกับงานนี้"></textarea>
-                    </div>
-                </div>
+        <div class="form-group">
+          <label>เช็คลิสต์</label>
+          <div class="checklist-builder">
+            <div class="checklist-item">
+              <input type="checkbox" id="check1" checked>
+              <label for="check1">ตรวจสอบระดับน้ำมันเชื้อเพลิง</label>
+            </div>
+            <div class="checklist-item">
+              <input type="checkbox" id="check2" checked>
+              <label for="check2">ตรวจสอบสภาพยาง</label>
+            </div>
+            <div class="checklist-item">
+              <input type="checkbox" id="check3" checked>
+              <label for="check3">ตรวจสอบระบบไฟสัญญาณ</label>
+            </div>
+            <div class="checklist-item">
+              <input type="checkbox" id="check4" checked>
+              <label for="check4">ถ่ายรูปสภาพรถก่อนเริ่มงาน</label>
+            </div>
+            <div class="checklist-item">
+              <input type="checkbox" id="check5" checked>
+              <label for="check5">Roll Call ทุก 2 ชั่วโมง</label>
+            </div>
+            <div class="checklist-item">
+              <input type="checkbox" id="check6" checked>
+              <label for="check6">รายงานสภาพถนนและสภาพอากาศ</label>
             </div>
 
-            <!-- ปุ่มส่ง -->
-            <div class="text-right">
-                <button type="submit" class="btn btn-primary btn-lg">สร้างงานใหม่</button>
+            <div class="add-item">
+              <input type="text" placeholder="เพิ่มรายการตรวจสอบ...">
+              <button type="button" class="btn btn-outline">เพิ่ม</button>
             </div>
-        </form>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>ความสำคัญ</label>
+          <div class="priority-options">
+            <div class="priority-option priority-normal active">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                <path d="m9 12 2 2 4-4"></path>
+              </svg>
+              ปกติ
+            </div>
+            <div class="priority-option priority-urgent">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              ด่วน
+            </div>
+            <div class="priority-option priority-emergency">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              ฉุกเฉิน
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>กำหนดเวลาส่งงาน</label>
+          <div class="datetime-group">
+            <div class="form-group">
+              <label for="start-date">วันที่เริ่มต้น</label>
+              <input type="date" id="start-date">
+            </div>
+            <div class="form-group">
+              <label for="start-time">เวลาเริ่มต้น</label>
+              <input type="time" id="start-time">
+            </div>
+          </div>
+          <div class="datetime-group" style="margin-top: 1rem;">
+            <div class="form-group">
+              <label for="end-date">วันที่สิ้นสุด</label>
+              <input type="date" id="end-date">
+            </div>
+            <div class="form-group">
+              <label for="end-time">เวลาสิ้นสุด (โดยประมาณ)</label>
+              <input type="time" id="end-time">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">คำอธิบายงาน</label>
+          <textarea id="description" rows="4" placeholder="ระบุรายละเอียดและคำแนะนำเพิ่มเติมสำหรับพนักงานขับรถ..."></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-outline">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary submit-btn">สร้างงาน</button>
+        </div>
+      </form>
     </div>
+  </div>
 </body>
 </html>
