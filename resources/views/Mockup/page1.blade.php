@@ -586,6 +586,11 @@
             iconSize: [30, 30]
         });
 
+        // Add a marker
+        L.marker([13.7563, 100.5018], { icon: truckIcon }).addTo(map)
+            .bindPopup("Bangkok, Thailand")
+            .openPopup();
+
         function onLocationFound(e) {
             var radius = e.accuracy;
 
