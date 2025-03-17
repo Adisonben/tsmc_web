@@ -24,7 +24,7 @@ Route::get('/demo-login', function (Request $request) {
 
 Route::prefix('mockup')->group(function () {
     Route::get('/page/{pageNum}', function ($pagenum) {
-        return view('mockup.page' . $pagenum);
+        return view('Mockup.page' . $pagenum);
     });
 });
 
