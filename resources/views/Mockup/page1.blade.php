@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transport Safety Manager - Dashboard</title>
+
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         :root {
             --primary: #3366cc;
@@ -348,6 +354,8 @@
         .alert-actions {
             margin-left: 10px;
         }
+
+        #map { height: 500px; width: 100%; }
     </style>
 </head>
 <body>
@@ -441,7 +449,9 @@
                     <span>แผนที่แสดงตำแหน่งยานพาหนะ</span>
                     <span class="view-all">ขยาย</span>
                 </div>
-                <div class="map-container"></div>
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
             </div>
 
             <!-- Tasks Lists -->
@@ -554,5 +564,46 @@
             </div>
         </div>
     </div>
+
+    <!-- Leaflet.js JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Initialize the map and set its view
+        const map = L.map('map').setView([13.7563, 100.5018], 10); // Bangkok, Thailand
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        map.locate({setView: true, maxZoom: 16});
+
+        var truckIcon = L.divIcon({
+            html: '<i class="fas fa-truck" style="font-size:24px; color:blue;"></i>',
+            className: 'custom-div-icon',
+            iconSize: [30, 30]
+        });
+
+        function onLocationFound(e) {
+            var radius = e.accuracy;
+
+            L.marker(e.latlng, { icon: truckIcon }).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+            L.circle(e.latlng, radius).addTo(map);
+        }
+
+        function onLocationError(e) {
+            alert(e.message);
+        }
+
+        map.on('locationfound', onLocationFound);
+        map.on('locationerror', onLocationError);
+
+        // L.marker([13.7563, 100.5018], { icon: truckIcon }).addTo(map);
+
+
+    </script>
 </body>
 </html>
