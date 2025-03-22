@@ -247,29 +247,101 @@
                     </a>
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal" hidden
-                        data-bs-target="#exampleModal" @if (Auth::user()->username !== 'tsmcpreview') disabled @endif>
-                        contact
-                    </button>
+                    @if (Auth::user()->userDetail->getOrg->expire_at ?? false)
+                        @php
+                            $expire_date = new Carbon\Carbon(Auth::user()->userDetail->getOrg->expire_at);
+                            $diffDay = $expire_date->diff(Carbon\Carbon::now());
+                        @endphp
+                        @if ($diffDay->invert === 1)
+                            <button type="button" class="btn btn-primary">
+                                <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
+                            </button>
+                        @else
+                            <button type="button" class="btn btn-danger">
+                                <i class="bi bi-clock"></i> หมดอายุ
+                            </button>
+                            <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal" hidden
+                                data-bs-target="#exampleModal">
+                                contact
+                            </button>
+                        @endif
+                    @endif
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
+                        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                {{-- <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="exampleModalLabel">ติดต่อสอบถามได้ที่</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
+                                </div> --}}
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                      <i class="bi bi-info-circle-fill me-2"></i>
+                                      การใช้งานของคุณหมดอายุแล้ว
+                                    </h5>
+                                  </div>
                                 <div class="modal-body">
-                                    <div class="text-center">
+                                    {{-- <div class="text-center">
                                         <img src="/images/contact.jpg" class="w-50" alt="">
                                     </div>
                                     <div class="text-center my-2">
                                         <h3>หรือ</h3>
                                         <h2 class="mb-0"><i class="bi bi-telephone"></i> 099-295-2666</h2>
                                         <h2>คุณพีช</h2>
+                                    </div> --}}
+                                    <div class="alert alert-info" role="alert">
+                                        <p class="mb-0">
+                                          ระยะเวลาการใช้งานระบบ Transport Safety Manager (TSM) ของคุณได้สิ้นสุดลงแล้ว
+                                          กรุณาติดต่อเจ้าหน้าที่ของเราเพื่อใช้งานต่อไป
+                                        </p>
                                     </div>
+
+                                    {{-- <div class="benefits-list mb-4">
+                                        <h6 class="fw-bold">ประโยชน์ที่คุณจะได้รับเมื่อต่ออายุ:</h6>
+                                        <ul class="mb-0">
+                                          <li>เข้าถึงข้อมูลและรายงานได้อย่างต่อเนื่อง</li>
+                                          <li>ใช้งานฟีเจอร์ใหม่ล่าสุดที่เราอัปเดตเป็นประจำ</li>
+                                          <li>รับการสนับสนุนทางเทคนิคจากทีมผู้เชี่ยวชาญ</li>
+                                        </ul>
+                                      </div> --}}
+
+                                      {{-- <div class="contact-info mb-4">
+                                        <h5 class="fw-bold mb-3">ติดต่อเพื่อต่ออายุได้ง่ายๆ</h5>
+                                        <div class="row">
+                                          <div class="col-md-6 mb-3 mb-md-0">
+                                            <p class="fw-bold mb-1">
+                                              <i class="bi bi-telephone-fill me-2"></i>โทรศัพท์:
+                                            </p>
+                                            <p class="mb-1">02-xxx-xxxx</p>
+                                            <p class="mb-0">06x-xxx-xxxx</p>
+                                          </div>
+                                          <div class="col-md-6">
+                                            <p class="fw-bold mb-1">
+                                              <i class="bi bi-envelope-fill me-2"></i>อีเมล:
+                                            </p>
+                                            <p class="mb-0">support@tsm.co.th</p>
+                                          </div>
+                                        </div>
+                                      </div> --}}
+                                      <div class="text-center mb-3">
+                                        <h5 class="fw-bold mb-3">ติดต่อเพื่อต่ออายุได้ง่ายๆ</h5>
+                                        <div class="qr-code mb-2">
+                                          <img src="/images/contact.jpg" width="120" alt="QR Code สำหรับต่ออายุการใช้งาน" class="img-fluid" />
+                                        </div>
+                                        <p class="text-muted">สแกน QR Code เพื่อติดต่อสอบถามและต่ออายุการใช้งาน</p>
+                                      </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-secondary" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                        <i class="bi bi-box-arrow-left"></i>
+                                        ออกจากระบบ
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -349,6 +421,7 @@
         </div>
     </div>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modalBtn = document.getElementById('modalBtn');

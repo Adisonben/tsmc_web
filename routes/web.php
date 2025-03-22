@@ -22,11 +22,17 @@ Route::get('/demo-login', function (Request $request) {
     return view('auth.demoLogin', compact('demoUsername', 'demoPassword'));
 });
 
+Route::get('/terms', function () {
+    return view('terms');
+})->name('terms');
+
 Route::prefix('mockup')->group(function () {
     Route::get('/page/{pageNum}', function ($pagenum) {
         return view('Mockup.page' . $pagenum);
     });
 });
+
+Route::post('/register-new-user', [App\Http\Controllers\HomeController::class, 'registerNewUser'])->name('register.new.user')->withoutMiddleware(['auth']);
 
 Auth::routes();
 

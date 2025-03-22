@@ -9,7 +9,7 @@
             </div>
             <p class="text-center text-wrap fs-4 fw-bold">Transport <span style="color: orange">Safety</span> Manager <br> Communication</p>
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header text-center fs-5 fw-bold">กรุณาเข้าสู่ระบบ</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -43,12 +43,18 @@
                             </div>
                         </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+                        <div class="d-flex flex-column justify-content-center align-items-center gap-2 mb-0">
+                            <button type="submit" class="btn btn-primary">
+                                {{ __('Login') }}
+                            </button>
+                            <div class="d-flex gap-2">
+                                <p class="mb-0">หรือ</p>
+                                <a href="{{ route('register') }}">ลงทะเบียน</a>
+                                <p class="mb-0">เพื่อเข้าใช้งานระบบ</p>
                             </div>
+                            {{-- <button type="button" class="btn btn-secondary" onclick="window.location='{{ route('register') }}'">
+                                {{ __('Register') }}
+                            </button> --}}
                         </div>
                     </form>
                 </div>
