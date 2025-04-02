@@ -48,8 +48,9 @@ class EditrUserForm extends Component
             $this->orgs = Organization::all();
             $this->positions = Position::all();
         } else {
-            $this->orgs = Organization::where('id', Auth::user()->userDetail->org)->get();
-            $this->positions = Position::where('org', Auth::user()->userDetail->org)->get();
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+            $this->orgs = Organization::where('id', $org_id)->get();
+            $this->positions = Position::where('org', $org_id)->get();
         }
 
         // querry form select data
@@ -85,11 +86,16 @@ class EditrUserForm extends Component
                 'prefix_id' => 'required',
                 'fname' => 'required|string|max:255',
                 'lname' => 'required|string|max:255',
-                'org_id' => 'required',
-                'branch_id' => 'required',
-                'department_id' => 'required',
-                'citizen_id' => 'required|max:255',
             ]);
+
+            if (!$this->user->is_tsm) {
+                $this->validate([
+                    'org_id' => 'required',
+                    'branch_id' => 'required',
+                    'department_id' => 'required',
+                    'citizen_id' => 'required|max:255',
+                ]);
+            }
 
             if ($this->password) {
                 $this->validate([
@@ -115,12 +121,17 @@ class EditrUserForm extends Component
                 'prefix' => $this->prefix_id,
                 'fname' => $this->fname,
                 'lname' => $this->lname,
-                'org' => $this->org_id,
-                'brn' => $this->branch_id,
-                'dpm' => $this->department_id,
-                'position' => $this->position_id,
                 'citizen_id' => $this->citizen_id,
             ]);
+
+            if (!$this->user->is_tsm) {
+                User_detail::where('user_id', $this->user->id)->update([
+                    'org' => $this->org_id,
+                    'brn' => $this->branch_id,
+                    'dpm' => $this->department_id,
+                    'position' => $this->position_id,
+                ]);
+            }
 
             // Redirect to a successful registration page
             $this->error = null;

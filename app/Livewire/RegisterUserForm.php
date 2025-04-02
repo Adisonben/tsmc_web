@@ -38,8 +38,15 @@ class RegisterUserForm extends Component
     public function mount()
     {
         $this->prefixes = Prefix::all();
-        $this->orgs = Organization::all();
-        $this->positions = Position::all();
+        if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
+            $this->orgs = Organization::where('id', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org)->get();
+            // $this->brns = Branch::where('org_id', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org)->get();
+            // $this->dpms = Department::where('brn_id', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org)->get();
+            $this->positions = Position::where('org', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+        } else {
+            $this->orgs = Organization::all();
+            $this->positions = Position::all();
+        }
     }
 
     public function selectedOrgId()
