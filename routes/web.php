@@ -11,6 +11,7 @@ use App\Http\Controllers\Organization\OrgController;
 use App\Http\Controllers\Organization\PositionController;
 use App\Http\Controllers\Organization\VehicleController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TSMUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,11 +33,23 @@ Route::prefix('mockup')->group(function () {
     });
 });
 
+// Route::get('tsm/login', [TSMUserController::class, 'showLogin'])->name('tsm.login')->withoutMiddleware(['auth']);
+Route::get('tsm/register', [TSMUserController::class, 'register'])->name('tsm.register')->withoutMiddleware(['auth']);
+Route::post('tsm/store-user', [TSMUserController::class, 'store'])->name('tsm.register.new.user')->withoutMiddleware(['auth']);
+// Route::post('tsm/login-user', [TSMUserController::class, 'login'])->name('tsm.login.user')->withoutMiddleware(['auth']);
+
 Route::post('/register-new-user', [App\Http\Controllers\HomeController::class, 'registerNewUser'])->name('register.new.user')->withoutMiddleware(['auth']);
 
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
+    Route::resource('tsms', TSMUserController::class);
+    // Route::post('/tsm/logout', [TSMUserController::class, 'logout'])->name('tsm.logout');
+    Route::get('/tsm/manage-org', [TSMUserController::class, 'manageOrg'])->name('tsm.manage-org');
+    Route::post('/tsm-{user_id}/org/store', [TSMUserController::class, 'storeOrg'])->name('tsm.org.store');
+    Route::post('/tsm/org-{org_id}/update', [TSMUserController::class, 'updateOrg'])->name('tsm.org.update');
+    Route::get('/tsm/connect-org-{org_id}', [TSMUserController::class, 'connectOrg'])->name('tsm.org.connect');
+
     Route::get('/', [App\Http\Controllers\HomeController::class, 'storeHistory']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/login-history', [App\Http\Controllers\HomeController::class, 'loginHistoryTable'])->name('loginHistory');

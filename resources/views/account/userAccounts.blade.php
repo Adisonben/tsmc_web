@@ -47,10 +47,15 @@
                                                 <th scope="row">{{ $index + 1 }}</th>
                                                 <td>{{ $user->username }}</td>
                                                 <td>{{ $user->full_name }}</td>
-                                                <td>{{ optional($user->userDetail->getOrg)->name }}</td>
-                                                <td>{{ optional($user->userDetail->getBrn)->name }}</td>
-                                                <td>{{ optional($user->userDetail->getDpm)->name }}</td>
-                                                <td>{{ optional($user->userDetail->getPosition)->name ?? "-" }}</td>
+                                                @if ($user->is_tsm)
+                                                    <td colspan="4" class="text-center table-info"> เจ้าหน้าที่ TSM</td>
+                                                @else
+                                                    <td>{{ optional($user->userDetail->getOrg)->name }}</td>
+                                                    <td>{{ optional($user->userDetail->getBrn)->name }}</td>
+                                                    <td>{{ optional($user->userDetail->getDpm)->name }}</td>
+                                                    <td>{{ optional($user->userDetail->getPosition)->name ?? "-" }}</td>
+                                                @endif
+
                                                 <td>
                                                     <a href="{{ route('users.edit', ['user' => $user->user_id]) }}"
                                                         class="btn btn-primary btn-sm" data-bs-toggle="tooltip"

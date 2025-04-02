@@ -14,14 +14,24 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    protected $org_id;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->org_id = session('key') ?? null;
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (Auth()->user()->userDetail->org ?? false) {
+        if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
             $users = User::whereNot('username', 'tsmcadmin')->whereHas('userDetail', function ($query) {
-                $query->where('org', Auth()->user()->userDetail->org);
+                $query->where('org', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org);
             })->get();
         } else {
             $users = User::whereNot('username', 'tsmcadmin')->get();
@@ -147,9 +157,9 @@ class UserController extends Controller
     }
 
     public function exportUsers() {
-        if (Auth()->user()->userDetail->org ?? false) {
+        if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
             $users = User::whereNot('username', 'tsmcadmin')->whereHas('userDetail', function ($query) {
-                $query->where('org', Auth()->user()->userDetail->org);
+                $query->where('org', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org);
             })->get();
         } else {
             $users = User::whereNot('username', 'tsmcadmin')->get();

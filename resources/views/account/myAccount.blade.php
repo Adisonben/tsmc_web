@@ -8,7 +8,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('บัญชีของฉัน') }}</p>
-                            @if (Auth::user()->username !== "tsmcpreview")
+                            @if (Auth::user()->username !== 'tsmcpreview')
                                 <div>
                                     <a href="{{ route('users.editByOwn', ['user' => $user->user_id]) }}"
                                         class="btn btn-primary btn-sm">แก้ไขข้อมูล</a>
@@ -41,9 +41,11 @@
                             <div class="mb-3 flex-fill">
                                 <div class="d-flex justify-content-center">
                                     @if (($user->userDetail->icon ?? false) && file_exists(public_path('uploads/userImages/' . $user->userDetail->icon)))
-                                        <img src="/uploads/userImages/{{ $user->userDetail->icon }}" class="object-fit-contain" width="150" alt="">
+                                        <img src="/uploads/userImages/{{ $user->userDetail->icon }}"
+                                            class="object-fit-contain" width="150" alt="">
                                     @else
-                                        <img src="/images/icons/tsmc_logo.png" class="object-fit-contain" width="150" alt="">
+                                        <img src="/images/icons/tsmc_logo.png" class="object-fit-contain" width="150"
+                                            alt="">
                                     @endif
                                 </div>
                             </div>
@@ -69,27 +71,30 @@
                                         <div class="">{{ optional($user->userDetail)->lname }}</div>
                                     </div>
                                 </div>
-                                <div class="d-flex mb-3 gap-2 align-items-center">
-                                    <div class="text-nowrap fw-bold">หน่วยงาน</div>
-                                    <div class="">{!! optional($user->userDetail->getOrg)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
-                                </div>
-                                <div class="d-flex mb-3 gap-2 align-items-center">
-                                    <div class="text-nowrap fw-bold">สาขา</div>
-                                    <div class="">{!! optional($user->userDetail->getBrn)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
-                                </div>
-                                <div class="d-flex mb-3 gap-2 align-items-center">
-                                    <div class="text-nowrap fw-bold">ฝ่าย</div>
-                                    <div class="">{!! optional($user->userDetail->getDpm)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
-                                </div>
-                                <div class="d-flex mb-3 gap-2 align-items-center">
-                                    <div class="text-nowrap fw-bold">ตำแหน่ง</div>
-                                    <div class="">{!! optional($user->userDetail->getPosition)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
-                                </div>
+                                @if (!$user->is_tsm)
+                                    <div class="d-flex mb-3 gap-2 align-items-center">
+                                        <div class="text-nowrap fw-bold">หน่วยงาน</div>
+                                        <div class="">{!! optional($user->userDetail->getOrg)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
+                                    </div>
+                                    <div class="d-flex mb-3 gap-2 align-items-center">
+                                        <div class="text-nowrap fw-bold">สาขา</div>
+                                        <div class="">{!! optional($user->userDetail->getBrn)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
+                                    </div>
+                                    <div class="d-flex mb-3 gap-2 align-items-center">
+                                        <div class="text-nowrap fw-bold">ฝ่าย</div>
+                                        <div class="">{!! optional($user->userDetail->getDpm)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
+                                    </div>
+                                    <div class="d-flex mb-3 gap-2 align-items-center">
+                                        <div class="text-nowrap fw-bold">ตำแหน่ง</div>
+                                        <div class="">{!! optional($user->userDetail->getPosition)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
+                                    </div>
+                                @endif
                                 <div class="d-flex mb-3 gap-2 align-items-center">
                                     <div class="text-nowrap fw-bold">ลายเซ็น</div>
                                     <div class="">
                                         @if (($user->userDetail->sign ?? false) && file_exists(public_path('uploads/userImages/' . $user->userDetail->sign)))
-                                            <img src="/uploads/userImages/{{ $user->userDetail->sign }}" class="object-fit-contain" width="50" alt="">
+                                            <img src="/uploads/userImages/{{ $user->userDetail->sign }}"
+                                                class="object-fit-contain" width="50" alt="">
                                         @else
                                             {!! optional($user->userDetail)->sign ?? '<span class="text-warning">-ไม่พบ-</span>' !!}
                                         @endif
@@ -140,27 +145,27 @@
         function storeImage(formData) {
             // Send the form data to the controller using AJAX
             fetch('/users/store-image', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Handle successful upload
-                    console.log('File uploaded successfully', data);
-                    // Optionally, update the UI to show the uploaded image
-                    window.location.reload()
-                } else {
-                    // Handle upload failure
-                    console.error('Error uploading file');
-                    alert('Error uploading file. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                alert('An error occurred. Please try again.');  
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Handle successful upload
+                        console.log('File uploaded successfully', data);
+                        // Optionally, update the UI to show the uploaded image
+                        window.location.reload()
+                    } else {
+                        // Handle upload failure
+                        console.error('Error uploading file');
+                        alert('Error uploading file. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('An error occurred. Please try again.');
 
-            });
+                });
         }
     </script>
     <style>

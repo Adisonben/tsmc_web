@@ -23,7 +23,7 @@
 
                             <div class="mb-3">
                                 <label for="prefixName" class="form-label">ชื่อคำนำหน้า</label>
-                                <input type="text" maxlength="50" class="form-control" id="prefixName" value="{{ $prefix->name }}" name="prefixName" placeholder="กรุณากรอกคำนำหน้าที่ต้องการเพิ่ม" required>
+                                <input type="text" maxlength="50" class="form-control" id="prefixName" value="{{ $prefix->name }}" name="prefixName" placeholder="กรุณากรอกคำนำหน้า" required>
                             </div>
 
                             <button type="submit" class="btn btn-primary mb-3">บันทึก</button>

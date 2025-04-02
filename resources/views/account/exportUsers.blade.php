@@ -31,10 +31,14 @@
                                             <td>{{ $user->username }}</td>
                                             <td>{{ $user->pass_text ?? '-' }}</td>
                                             <td>{{ $user->full_name }}</td>
-                                            <td>{{ optional($user->userDetail->getOrg)->name }}</td>
-                                            <td>{{ optional($user->userDetail->getBrn)->name }}</td>
-                                            <td>{{ optional($user->userDetail->getDpm)->name }}</td>
-                                            <td>{{ optional($user->userDetail->getPosition)->name }}</td>
+                                            @if ($user->is_tsm)
+                                                <td colspan="4" class="text-center"> เจ้าหน้าที่ TSM</td>
+                                            @else
+                                                <td>{{ optional($user->userDetail->getOrg)->name }}</td>
+                                                <td>{{ optional($user->userDetail->getBrn)->name }}</td>
+                                                <td>{{ optional($user->userDetail->getDpm)->name }}</td>
+                                                <td>{{ optional($user->userDetail->getPosition)->name }}</td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

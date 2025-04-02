@@ -26,7 +26,7 @@
                                         @foreach ($posit_perms as $perm)
                                             <div class="form-check">
                                                 @php
-                                                    $posit_perm = $posit->hasPermission($perm->id, optional(Auth::user()->userDetail)->org) ?? $posit->hasPermission($perm->id);
+                                                    $posit_perm = $posit->hasPermission($perm->id, (Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org)) ?? $posit->hasPermission($perm->id);
                                                 @endphp
                                                 <input class="form-check-input permCheck" type="checkbox" check-type = "perm"
                                                     posit-id="{{ $posit->id }}" value="{{ $perm->id }}" id="perm{{ $perm->id }}{{ $posit->id }}"

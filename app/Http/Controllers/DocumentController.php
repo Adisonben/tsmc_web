@@ -164,12 +164,16 @@ class DocumentController extends Controller
 
     public function showDocTable($form_id) {
         $form_data = Form::where('form_id', $form_id)->firstOrFail();
-        $query = FormSubmissions::where('form_id', $form_data->id)->where('org', Auth::user()->userDetail->org ?? '');
 
-        if (!optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_see_all_docs',Auth::user()->userDetail->org) ?? true) {
-            $query->where(function ($query) {
-                $query->where('submitted_by', Auth::user()->id)->orWhere('user_id', Auth::user()->id);
-            });
+        if (Auth()->user()->is_tsm) {
+            $query = FormSubmissions::where('form_id', $form_data->id)->where('org', session('connected_org') ?? '');
+        } else {
+            $query = FormSubmissions::where('form_id', $form_data->id)->where('org', Auth::user()->userDetail->org ?? '');
+            if (!optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_see_all_docs',Auth::user()->userDetail->org) ?? true) {
+                $query->where(function ($query) {
+                    $query->where('submitted_by', Auth::user()->id)->orWhere('user_id', Auth::user()->id);
+                });
+            }
         }
 
         $submissions = $query->orderByDesc('created_at')->get();
@@ -178,8 +182,15 @@ class DocumentController extends Controller
 
     public function filterDocument() {
         $form_cates = Form_category::all();
-        $vehicles = Vehicle::where('org_id', Auth::user()->userDetail->org ?? '')->get(['id', 'license_plate', 'brand']);
-        $users = User_detail::where('org', Auth::user()->userDetail->org ?? '')->get(['user_id', 'fname', 'lname']);
+
+        if (Auth()->user()->is_tsm) {
+            $vehicles = Vehicle::where('org_id', session('connected_org') ?? '')->get(['id', 'license_plate', 'brand']);
+            $users = User_detail::where('org', session('connected_org') ?? '')->get(['user_id', 'fname', 'lname']);
+        } else {
+            $vehicles = Vehicle::where('org_id', Auth::user()->userDetail->org ?? '')->get(['id', 'license_plate', 'brand']);
+            $users = User_detail::where('org', Auth::user()->userDetail->org ?? '')->get(['user_id', 'fname', 'lname']);
+        }
+
         return view('exportDocument.filterData', compact('form_cates', 'vehicles', 'users'));
     }
 }

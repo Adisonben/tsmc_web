@@ -48,7 +48,7 @@
                                 {{ __('Login') }}
                             </button>
                             <div class="d-flex gap-2 flex-wrap">
-                                <p class="mb-0">หากยังไม่มีบัญชี กรุณา</p>
+                                <p class="mb-0">{{ __('messages.please_register') }}</p>
                                 <a href="{{ route('register') }}">ลงทะเบียนบัญชีองค์กร</a>
                                 <p class="mb-0">หรือ</p>
                                 <a href="{{ route('tsm.register') }}">ลงทะเบียนบัญชี TSM</a>

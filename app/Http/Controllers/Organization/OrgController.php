@@ -17,10 +17,11 @@ class OrgController extends Controller
      */
     public function index()
     {
-        if (is_null(Auth()->user()->userDetail->org)) {
+        if (is_null(Auth()->user()->userDetail->org) && !Auth()->user()->is_tsm) {
             $orgs = Organization::all();
         } else {
-            $orgs = Organization::where('id', Auth()->user()->userDetail->org)->get();
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+            $orgs = Organization::where('id', $org_id)->get();
         }
         return view('organization.orgData.orgTable', compact('orgs'));
     }
@@ -39,7 +40,7 @@ class OrgController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'orgLogo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2 megabytes (MB)
+            'orgLogo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2 megabytes (MB)
         ], [
             'orgLogo.max' => 'โลโก้หน่วยงานต้องมีขนาดไม่เกิน 2 MB',
         ]);

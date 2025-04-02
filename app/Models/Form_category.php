@@ -17,7 +17,12 @@ class Form_category extends Model
     public function getForms()
     {
         return $this->hasMany(Form::class, 'category', 'id')->where(function ($query) {
-            $query->where('org', Auth::user()->userDetail->org ?? '')->orWhere('is_default', true);
+            if (Auth()->user()->is_tsm) {
+                $query->where('org', session('connected_org') ?? '')->orWhere('is_default', true);
+            } else {
+                $query->where('org', Auth::user()->userDetail->org ?? '')->orWhere('is_default', true);
+            }
+
         });
     }
 }

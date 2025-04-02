@@ -18,7 +18,8 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        $vehicles = Vehicle::where('org_id', Auth::user()->userDetail->org ?? '')->get();
+        $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+        $vehicles = Vehicle::where('org_id', $org_id ?? '')->get();
         return view('organization.vehicle.vehicleTable', compact('vehicles'));
     }
 
@@ -37,7 +38,7 @@ class VehicleController extends Controller
     {
         $vehicle_data = $request->validated();
         try {
-            $vehicle_data['org_id'] = $request->user()->userDetail->org;
+            $vehicle_data['org_id'] = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
             Vehicle::create($vehicle_data);
             return redirect()->back()->with(['vehicleSuccess'=> 'บันทึกข้อมูลรถสำเร็จ']);
         } catch (\Throwable $th) {
@@ -66,7 +67,6 @@ class VehicleController extends Controller
      */
     public function update(StoreVehicleRequest $request, string $id)
     {
-        dd("update");
         try {
             $vehicle = Vehicle::findOrFail($id);
             $vehicle->update($request->validated());
@@ -103,8 +103,9 @@ class VehicleController extends Controller
     }
 
     public function showVehicleAssignmentTable() {
-        $users = User_detail::where('org', Auth::user()->userDetail->org)->get(['user_id', 'fname', 'lname', 'prefix']);
-        $vehicles = Vehicle::where('org_id', Auth::user()->userDetail->org)->orderByDesc('created_at')->get(['id', 'license_plate', 'brand']);
+        $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+        $users = User_detail::where('org', $org_id ?? '')->get(['user_id', 'fname', 'lname', 'prefix']);
+        $vehicles = Vehicle::where('org_id', $org_id ?? '')->orderByDesc('created_at')->get(['id', 'license_plate', 'brand']);
         return view('vehicleAssignment.asssignTable', compact('users', 'vehicles'));
     }
 

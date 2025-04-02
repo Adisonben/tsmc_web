@@ -32,7 +32,8 @@
                     {{-- @php
                     dd(Auth::user()->userDetail->getOrg);
                     @endphp --}}
-                    <img src="/uploads/orglogoes/{{ Auth::user()->userDetail->getOrg->logo_img ?? '' }}" width="50" alt="">
+                    <img src="/uploads/orglogoes/{{ Auth::user()->userDetail->getOrg->logo_img ?? '' }}" width="50"
+                        alt="">
                     <img src="/images/icons/tsmc_logo.png" width="50" alt="">
                     {{-- <img src="/images/icons/iddrives_logo.png" width="50" alt=""> --}}
                     <img src="/images/icons/tz_logo.png" width="50" alt="">
@@ -40,185 +41,287 @@
                     <!-- Button for sidebar toggle -->
                 </div>
                 <div class="sidebar-logo d-flex justify-content-between">
-                    <a href="#">Welcome TSM</a>
+                    <a href="#">Welcome</a>
                     <div class="text-white fs-4" id="nav-toggle-btn2" style="cursor: pointer;">
                         <i class="bi bi-list"></i>
                     </div>
                 </div>
                 <!-- Sidebar Navigation -->
-                <ul class="sidebar-nav">
-                    <li class="sidebar-item" id="homepage">
-                        <a href="/home" class="sidebar-link">
-                            <i class="bi bi-house"></i>
-                            หน้าหลัก
-                        </a>
-                    </li>
-                    {{-- @php
-                        dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
-                    @endphp --}}
-                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_post',
-                                Auth::user()->userDetail->org) ?? false) ||
-                            Auth::user()->username === 'tsmcadmin')
-                        <li class="sidebar-item" id="postsPage">
-                            <a href="{{ route('posts.index') }}" class="sidebar-link">
-                                <i class="bi bi-clipboard"></i>
-                                โพส/ประกาศ
+                @if (Auth::user()->is_tsm)
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-item" id="homepage">
+                            <a href="/home" class="sidebar-link">
+                                <i class="bi bi-house"></i>
+                                หน้าหลัก
                             </a>
                         </li>
-                    @endif
-                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_check',
-                                Auth::user()->userDetail->org) ?? false) ||
-                            Auth::user()->username === 'tsmcadmin')
-                        <li class="sidebar-item" id="formCheckpage">
-                            <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
-                                <i class="bi bi-clipboard"></i>
-                                เอกสาร
-                            </a>
-                        </li>
-                    @endif
-                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_access_table',
-                                Auth::user()->userDetail->org) ?? false) ||
-                            Auth::user()->username === 'tsmcadmin')
-                        <li class="sidebar-item" id="formCheckTablePage">
-                            <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
-                                <i class="bi bi-table"></i>
-                                ทะเบียนเอกสาร
-                            </a>
-                        </li>
-                    @endif
-                    {{-- @if ( !(optional(Auth::user()->userDetail->getPosition)->name) ||
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_approve_table',
-                                optional(Auth::user()->userDetail)->org) ?? false) ||
-                            Auth::user()->username === 'tsmcadmin')
-                        <li class="sidebar-item" id="formInsTablePage">
-                            <a href="" class="sidebar-link">
-                                <i class="bi bi-clipboard-check"></i>
-                                เอกสารรอตรวจสอบ
-                            </a>
-                        </li>
-                    @endif --}}
-                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_manage_form',
-                                optional(Auth::user()->userDetail)->org) ?? false) ||
-                            Auth::user()->username === 'tsmcadmin')
-                        <li class="sidebar-header">
-                            แบบฟอร์ม
-                        </li>
-                        <li class="sidebar-item" id="formManagePage">
-                            <a href="{{ route('form.select-form-category') }}" class="sidebar-link">
-                                <i class="bi bi-gear"></i>
-                                จัดการแบบฟอร์ม
-                            </a>
-                        </li>
-                    @endif
-                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_assign_driver',
-                                optional(Auth::user()->userDetail)->org) ?? false) ||
-                            Auth::user()->username === 'tsmcadmin')
-                        <li class="sidebar-item" id="assignPage">
-                            <a href="{{ route('vehicle.assignment.table') }}" class="sidebar-link">
-                                <i class="bi bi-person-badge"></i>
-                                จัดการผู้ประจำรถ
-                            </a>
-                        </li>
-                    @endif
-                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_export',
-                                optional(Auth::user()->userDetail)->org) ?? false) ||
-                            Auth::user()->username === 'tsmcadmin')
-                        <li class="sidebar-item" id="exportPage">
-                            <a href="{{ route('document.export.filter') }}" class="sidebar-link">
-                                <i class="bi bi-file-earmark-arrow-up"></i>
-                                ออกรายงาน
-                            </a>
-                        </li>
-                    @endif
-
-                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_manage_org',
-                                optional(Auth::user()->userDetail)->org) ?? false) ||
-                            Auth::user()->username === 'tsmcadmin' || Auth::user()->userDetail->position === null)
-                        <li class="sidebar-header">
-                            ข้อมูลระบบ
-                        </li>
-                        <li class="sidebar-item" id="orgDataPage">
-                            <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                data-bs-target="#org" aria-expanded="false" aria-controls="org">
-                                <i class="bi bi-building"></i>
-                                องค์กร
-                            </a>
-                            <ul id="org" class="sidebar-dropdown list-unstyled collapse"
-                                data-bs-parent="#sidebar">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('organizations.index') }}" class="sidebar-link">ข้อมูลองค์กร</a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('posit.perm') }}" class="sidebar-link">การอนุญาต</a>
-                                </li>
-                            </ul>
-                        </li>
-                        @if (Auth::user()->username === 'tsmcadmin')
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#sys" aria-expanded="false" aria-controls="sys">
-                                    <i class="bi bi-database-gear"></i>
-                                    ระบบ
+                        {{-- @php
+                            dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
+                        @endphp --}}
+                        @if (session('connected_org'))
+                            <li class="sidebar-item" id="formCheckTablePage">
+                                <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
+                                    <i class="bi bi-table"></i>
+                                    ทะเบียนเอกสาร
                                 </a>
-                                <ul id="sys" class="sidebar-dropdown list-unstyled collapse"
+                            </li>
+                            <li class="sidebar-header">
+                                แบบฟอร์ม
+                            </li>
+                            <li class="sidebar-item" id="formManagePage">
+                                <a href="{{ route('form.select-form-category') }}" class="sidebar-link">
+                                    <i class="bi bi-gear"></i>
+                                    จัดการแบบฟอร์ม
+                                </a>
+                            </li>
+                            <li class="sidebar-item" id="assignPage">
+                                <a href="{{ route('vehicle.assignment.table') }}" class="sidebar-link">
+                                    <i class="bi bi-person-badge"></i>
+                                    จัดการผู้ประจำรถ
+                                </a>
+                            </li>
+                            <li class="sidebar-item" id="exportPage">
+                                <a href="{{ route('document.export.filter') }}" class="sidebar-link">
+                                    <i class="bi bi-file-earmark-arrow-up"></i>
+                                    ออกรายงาน
+                                </a>
+                            </li>
+
+                            <li class="sidebar-header">
+                                ข้อมูลระบบ
+                            </li>
+                            <li class="sidebar-item" id="orgDataPage">
+                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#org" aria-expanded="false" aria-controls="org">
+                                    <i class="bi bi-building"></i>
+                                    องค์กร
+                                </a>
+                                <ul id="org" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#sidebar">
                                     <li class="sidebar-item">
-                                        <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
+                                        <a href="{{ route('organizations.index') }}"
+                                            class="sidebar-link">ข้อมูลองค์กร</a>
                                     </li>
-                                    {{-- <li class="sidebar-item">
-                                        <a href="{{ route('form.types') }}" class="sidebar-link">ประเภทฟอร์ม</a>
-                                    </li> --}}
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('posit.perm') }}" class="sidebar-link">การอนุญาต</a>
+                                    </li>
                                 </ul>
                             </li>
+                            <li class="sidebar-item" id="accountPage">
+                                <a href="{{ route('users.index') }}" class="sidebar-link">
+                                    <i class="bi bi-people"></i>
+                                    บัญชีผู้ใช้ทั้งหมด
+                                </a>
+                            </li>
                         @endif
-                    @endif
 
-                    <li class="sidebar-header">
-                        ผู้ใช้
-                    </li>
-                    <li class="sidebar-item" id="profilePage">
-                        <a href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}"
-                            class="sidebar-link">
-                            <i class="bi bi-person"></i>
-                            บัญชีของฉัน
-                        </a>
-                    </li>
-                    @if ((optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_manage_user',
-                                optional(Auth::user()->userDetail)->org) ?? false) ||
-                            Auth::user()->username === 'tsmcadmin' || Auth::user()->userDetail->position === null)
-                        <li class="sidebar-item" id="accountPage">
-                            <a href="{{ route('users.index') }}" class="sidebar-link">
-                                <i class="bi bi-people"></i>
-                                บัญชีผู้ใช้ทั้งหมด
+                        <li class="sidebar-header">
+                            ทั่วไป
+                        </li>
+                        <li class="sidebar-item" id="loginHistoryPage">
+                            <a href="{{ route('loginHistory') }}" class="sidebar-link">
+                                <i class="bi bi-clock-history"></i>
+                                ประวัติการเข้าใช้ระบบ
                             </a>
                         </li>
-                    @endif
 
-                    <li class="sidebar-header">
-                        ทั่วไป
-                    </li>
-                    <li class="sidebar-item" id="loginHistoryPage">
-                        <a href="{{ route('loginHistory') }}" class="sidebar-link">
-                            <i class="bi bi-clock-history"></i>
-                            ประวัติการเข้าใช้ระบบ
-                        </a>
-                    </li>
-                </ul>
+                        <li class="sidebar-header">
+                            สำหรับ TSM
+                        </li>
+                        <li class="sidebar-item" id="profilePage">
+                            <a href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}"
+                                class="sidebar-link">
+                                <i class="bi bi-person"></i>
+                                บัญชีของฉัน
+                            </a>
+                        </li>
+                        <li class="sidebar-item" id="MyOrgListPage">
+                            <a href="{{ route('tsm.manage-org') }}" class="sidebar-link">
+                                <i class="bi bi-building"></i>
+                                จัดการองค์กรที่รับผิดชอบ
+                            </a>
+                        </li>
+                    </ul>
+                @else
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-item" id="homepage">
+                            <a href="/home" class="sidebar-link">
+                                <i class="bi bi-house"></i>
+                                หน้าหลัก
+                            </a>
+                        </li>
+                        {{-- @php
+                            dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
+                        @endphp --}}
+                        @if (
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', Auth::user()->userDetail->org) ??
+                                false) || Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-item" id="postsPage">
+                                <a href="{{ route('posts.index') }}" class="sidebar-link">
+                                    <i class="bi bi-clipboard"></i>
+                                    โพส/ประกาศ
+                                </a>
+                            </li>
+                        @endif
+                        @if (
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_check', Auth::user()->userDetail->org) ??
+                                false) || Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-item" id="formCheckpage">
+                                <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
+                                    <i class="bi bi-clipboard"></i>
+                                    เอกสาร
+                                </a>
+                            </li>
+                        @endif
+                        @if (
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_access_table',
+                                Auth::user()->userDetail->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-item" id="formCheckTablePage">
+                                <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
+                                    <i class="bi bi-table"></i>
+                                    ทะเบียนเอกสาร
+                                </a>
+                            </li>
+                        @endif
+                        {{-- @if (!optional(Auth::user()->userDetail->getPosition)->name || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_approve_table', optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-item" id="formInsTablePage">
+                                <a href="" class="sidebar-link">
+                                    <i class="bi bi-clipboard-check"></i>
+                                    เอกสารรอตรวจสอบ
+                                </a>
+                            </li>
+                        @endif --}}
+                        @if (
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_manage_form',
+                                optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-header">
+                                แบบฟอร์ม
+                            </li>
+                            <li class="sidebar-item" id="formManagePage">
+                                <a href="{{ route('form.select-form-category') }}" class="sidebar-link">
+                                    <i class="bi bi-gear"></i>
+                                    จัดการแบบฟอร์ม
+                                </a>
+                            </li>
+                        @endif
+                        @if (
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_assign_driver',
+                                optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-item" id="assignPage">
+                                <a href="{{ route('vehicle.assignment.table') }}" class="sidebar-link">
+                                    <i class="bi bi-person-badge"></i>
+                                    จัดการผู้ประจำรถ
+                                </a>
+                            </li>
+                        @endif
+                        @if (
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_export',
+                                optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-item" id="exportPage">
+                                <a href="{{ route('document.export.filter') }}" class="sidebar-link">
+                                    <i class="bi bi-file-earmark-arrow-up"></i>
+                                    ออกรายงาน
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_manage_org',
+                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                                Auth::user()->username === 'tsmcadmin' ||
+                                Auth::user()->userDetail->position === null)
+                            <li class="sidebar-header">
+                                ข้อมูลระบบ
+                            </li>
+                            <li class="sidebar-item" id="orgDataPage">
+                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#org" aria-expanded="false" aria-controls="org">
+                                    <i class="bi bi-building"></i>
+                                    องค์กร
+                                </a>
+                                <ul id="org" class="sidebar-dropdown list-unstyled collapse"
+                                    data-bs-parent="#sidebar">
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('organizations.index') }}"
+                                            class="sidebar-link">ข้อมูลองค์กร</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('posit.perm') }}" class="sidebar-link">การอนุญาต</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @if (Auth::user()->username === 'tsmcadmin')
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                                        data-bs-target="#sys" aria-expanded="false" aria-controls="sys">
+                                        <i class="bi bi-database-gear"></i>
+                                        ระบบ
+                                    </a>
+                                    <ul id="sys" class="sidebar-dropdown list-unstyled collapse"
+                                        data-bs-parent="#sidebar">
+                                        <li class="sidebar-item">
+                                            <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
+                                        </li>
+                                        {{-- <li class="sidebar-item">
+                                            <a href="{{ route('form.types') }}" class="sidebar-link">ประเภทฟอร์ม</a>
+                                        </li> --}}
+                                    </ul>
+                                </li>
+                            @endif
+                        @endif
+
+                        <li class="sidebar-header">
+                            ผู้ใช้
+                        </li>
+                        <li class="sidebar-item" id="profilePage">
+                            <a href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}"
+                                class="sidebar-link">
+                                <i class="bi bi-person"></i>
+                                บัญชีของฉัน
+                            </a>
+                        </li>
+                        @if (
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'can_manage_user',
+                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                                Auth::user()->username === 'tsmcadmin' ||
+                                Auth::user()->userDetail->position === null)
+                            <li class="sidebar-item" id="accountPage">
+                                <a href="{{ route('users.index') }}" class="sidebar-link">
+                                    <i class="bi bi-people"></i>
+                                    บัญชีผู้ใช้ทั้งหมด
+                                </a>
+                            </li>
+                        @endif
+
+                        <li class="sidebar-header">
+                            ทั่วไป
+                        </li>
+                        <li class="sidebar-item" id="loginHistoryPage">
+                            <a href="{{ route('loginHistory') }}" class="sidebar-link">
+                                <i class="bi bi-clock-history"></i>
+                                ประวัติการเข้าใช้ระบบ
+                            </a>
+                        </li>
+                    </ul>
+                @endif
 
                 <div class="sidebar-footer">
                     <a class="sidebar-footer" href="{{ route('logout') }}"
@@ -247,26 +350,116 @@
                     </a>
 
                     <!-- Button trigger modal -->
-                    @if (Auth::user()->userDetail->getOrg->expire_at ?? false)
-                        @php
-                            $expire_date = new Carbon\Carbon(Auth::user()->userDetail->getOrg->expire_at);
-                            $diffDay = $expire_date->diff(Carbon\Carbon::now());
-                        @endphp
-                        @if ($diffDay->invert === 1)
-                            <button type="button" class="btn btn-primary">
-                                <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
-                            </button>
-                        @else
-                            <button type="button" class="btn btn-danger">
-                                <i class="bi bi-clock"></i> หมดอายุ
-                            </button>
-                            <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal" hidden
-                                data-bs-target="#exampleModal">
-                                contact
-                            </button>
+                    @if (Auth::user()->is_tsm)
+                        @if (Auth::user()->expire_at ?? false)
+                            @php
+                                $expire_date = new Carbon\Carbon(Auth::user()->expire_at);
+                                $diffDay = $expire_date->diff(Carbon\Carbon::now());
+                            @endphp
+                            @if ($diffDay->invert === 1 && $diffDay->d > 10)
+                                <button type="button" class="btn btn-primary">
+                                    <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
+                                </button>
+                            @elseif ($diffDay->invert === 1 && $diffDay->d <= 10)
+                                <button type="button" class="btn btn-warning border-danger" data-bs-toggle="modal"
+                                    data-bs-target="#warningModal">
+                                    <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
+                                </button>
+                                @if (!session('is_modal_active'))
+                                    <button type="button" class="btn btn-primary" id="modalBtn"
+                                        data-bs-toggle="modal" hidden data-bs-target="#warningModal">
+                                        contact
+                                    </button>
+                                @endif
+                            @else
+                                <button type="button" class="btn btn-danger">
+                                    <i class="bi bi-clock"></i> หมดอายุ
+                                </button>
+                                <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal"
+                                    hidden data-bs-target="#exampleModal">
+                                    contact
+                                </button>
+                            @endif
+                        @endif
+                    @else
+                        @if (Auth::user()->userDetail->getOrg->expire_at ?? false)
+                            @php
+                                $expire_date = new Carbon\Carbon(Auth::user()->userDetail->getOrg->expire_at);
+                                $diffDay = $expire_date->diff(Carbon\Carbon::now());
+                            @endphp
+                            @if ($diffDay->invert === 1 && $diffDay->d > 10)
+                                <button type="button" class="btn btn-primary">
+                                    <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
+                                </button>
+                            @elseif ($diffDay->invert === 1 && $diffDay->d <= 10)
+                                <button type="button" class="btn btn-warning border-danger" data-bs-toggle="modal"
+                                    data-bs-target="#warningModal">
+                                    <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
+                                </button>
+                                @if (!session('is_modal_active'))
+                                    <button type="button" class="btn btn-primary" id="modalBtn"
+                                        data-bs-toggle="modal" hidden data-bs-target="#warningModal">
+                                        contact
+                                    </button>
+                                @endif
+                            @else
+                                <button type="button" class="btn btn-danger">
+                                    <i class="bi bi-clock"></i> หมดอายุ
+                                </button>
+                                <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal"
+                                    hidden data-bs-target="#exampleModal">
+                                    contact
+                                </button>
+                            @endif
                         @endif
                     @endif
-                    <!-- Modal -->
+
+                    <!-- Warning Modal -->
+                    <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel"
+                        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                {{-- <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="warningModalLabel">ติดต่อสอบถามได้ที่</h1>
+                                </div> --}}
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="bi bi-info-circle-fill me-2"></i>
+                                        การใช้งานของคุณใกล้หมดอายุแล้ว
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-info" role="alert">
+                                        <p class="mb-0">
+                                            ระยะเวลาการใช้งานระบบ Transport Safety Manager (TSM) ของคุณใกล้สิ้นสุดลงแล้ว
+                                            กรุณาติดต่อเจ้าหน้าที่ของเราเพื่อใช้งานต่อไป
+                                        </p>
+                                    </div>
+
+                                    <div class="text-center mb-3">
+                                        <h5 class="fw-bold mb-3">ติดต่อเพื่อต่ออายุได้ง่ายๆ</h5>
+                                        <div class="qr-code mb-2">
+                                            <img src="/images/contact.jpg" width="120"
+                                                alt="QR Code สำหรับต่ออายุการใช้งาน" class="img-fluid" />
+                                        </div>
+                                        <p class="text-muted">สแกน QR Code เพื่อติดต่อสอบถามและต่ออายุการใช้งาน</p>
+                                    </div>
+
+                                    @php
+                                        session()->put('is_modal_active', true);
+                                    @endphp
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expire Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                         <div class="modal-dialog">
@@ -276,60 +469,26 @@
                                 </div> --}}
                                 <div class="modal-header">
                                     <h5 class="modal-title">
-                                      <i class="bi bi-info-circle-fill me-2"></i>
-                                      การใช้งานของคุณหมดอายุแล้ว
+                                        <i class="bi bi-info-circle-fill me-2"></i>
+                                        การใช้งานของคุณหมดอายุแล้ว
                                     </h5>
-                                  </div>
+                                </div>
                                 <div class="modal-body">
-                                    {{-- <div class="text-center">
-                                        <img src="/images/contact.jpg" class="w-50" alt="">
-                                    </div>
-                                    <div class="text-center my-2">
-                                        <h3>หรือ</h3>
-                                        <h2 class="mb-0"><i class="bi bi-telephone"></i> 099-295-2666</h2>
-                                        <h2>คุณพีช</h2>
-                                    </div> --}}
                                     <div class="alert alert-info" role="alert">
                                         <p class="mb-0">
-                                          ระยะเวลาการใช้งานระบบ Transport Safety Manager (TSM) ของคุณได้สิ้นสุดลงแล้ว
-                                          กรุณาติดต่อเจ้าหน้าที่ของเราเพื่อใช้งานต่อไป
+                                            ระยะเวลาการใช้งานระบบ Transport Safety Manager (TSM) ของคุณได้สิ้นสุดลงแล้ว
+                                            กรุณาติดต่อเจ้าหน้าที่ของเราเพื่อใช้งานต่อไป
                                         </p>
                                     </div>
 
-                                    {{-- <div class="benefits-list mb-4">
-                                        <h6 class="fw-bold">ประโยชน์ที่คุณจะได้รับเมื่อต่ออายุ:</h6>
-                                        <ul class="mb-0">
-                                          <li>เข้าถึงข้อมูลและรายงานได้อย่างต่อเนื่อง</li>
-                                          <li>ใช้งานฟีเจอร์ใหม่ล่าสุดที่เราอัปเดตเป็นประจำ</li>
-                                          <li>รับการสนับสนุนทางเทคนิคจากทีมผู้เชี่ยวชาญ</li>
-                                        </ul>
-                                      </div> --}}
-
-                                      {{-- <div class="contact-info mb-4">
-                                        <h5 class="fw-bold mb-3">ติดต่อเพื่อต่ออายุได้ง่ายๆ</h5>
-                                        <div class="row">
-                                          <div class="col-md-6 mb-3 mb-md-0">
-                                            <p class="fw-bold mb-1">
-                                              <i class="bi bi-telephone-fill me-2"></i>โทรศัพท์:
-                                            </p>
-                                            <p class="mb-1">02-xxx-xxxx</p>
-                                            <p class="mb-0">06x-xxx-xxxx</p>
-                                          </div>
-                                          <div class="col-md-6">
-                                            <p class="fw-bold mb-1">
-                                              <i class="bi bi-envelope-fill me-2"></i>อีเมล:
-                                            </p>
-                                            <p class="mb-0">support@tsm.co.th</p>
-                                          </div>
-                                        </div>
-                                      </div> --}}
-                                      <div class="text-center mb-3">
+                                    <div class="text-center mb-3">
                                         <h5 class="fw-bold mb-3">ติดต่อเพื่อต่ออายุได้ง่ายๆ</h5>
                                         <div class="qr-code mb-2">
-                                          <img src="/images/contact.jpg" width="120" alt="QR Code สำหรับต่ออายุการใช้งาน" class="img-fluid" />
+                                            <img src="/images/contact.jpg" width="120"
+                                                alt="QR Code สำหรับต่ออายุการใช้งาน" class="img-fluid" />
                                         </div>
                                         <p class="text-muted">สแกน QR Code เพื่อติดต่อสอบถามและต่ออายุการใช้งาน</p>
-                                      </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <a class="btn btn-secondary" href="{{ route('logout') }}"
@@ -339,16 +498,14 @@
                                         ออกจากระบบ
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        class="d-none">
                                         @csrf
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                        <span class="navbar-toggler-icon"></span>
-                    </button> --}}
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->

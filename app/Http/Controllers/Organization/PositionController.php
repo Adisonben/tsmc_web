@@ -18,8 +18,9 @@ class PositionController extends Controller
      */
     public function index()
     {
-        if (Auth()->user()->userDetail->org ?? false) {
-            $positions = Position::where('org', Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+        if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+            $positions = Position::where('org', $org_id)->orWhereNull('org')->get();
         } else {
             $positions = Position::all();
         }
@@ -40,10 +41,11 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         try {
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
             $newPosition = Position::create([
                 'name' => $request->positName,
                 'created_by' => $request->user()->id,
-                'org' => $request->user()->userDetail->org ?? null,
+                'org' => $org_id,
             ]);
             if ($request->parent && $request->parent !== '-') {
                 $parent = Position::find($request->parent);
@@ -117,8 +119,9 @@ class PositionController extends Controller
     }
 
     public function managePermission() {
-        if (Auth()->user()->userDetail->org ?? false) {
-            $positions = Position::where('org', Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+        if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+            $positions = Position::where('org', $org_id)->orWhereNull('org')->get();
         } else {
             $positions = Position::all();
         }
@@ -128,11 +131,12 @@ class PositionController extends Controller
 
     public function updatePermission($positId , $permId , $status, $checkType) {
         try {
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org ?? null;
             if ($checkType === "perm") {
-                $permExist = Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->exists();
+                $permExist = Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', $org_id)->exists();
                 $permNullExist = Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->exists();
                 if ($status == 'true') {
-                    if (is_null(Auth()->user()->userDetail->org)) {
+                    if (is_null(Auth()->user()->userDetail->org) && !Auth()->user()->is_tsm) {
                         if ($permNullExist) {
                             Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->update([
                                 'status' => true
@@ -142,13 +146,13 @@ class PositionController extends Controller
                                 'position_id' => $positId,
                                 'permission_id' => $permId,
                                 'user_id' => Auth()->user()->id,
-                                'org' => Auth()->user()->userDetail->org ?? null,
+                                'org' => $org_id ?? null,
                                 'status' => true
                             ]);
                         }
                     } else {
                         if ($permExist) {
-                            Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
+                            Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', $org_id)->update([
                                 'status' => true
                             ]);
                         } else {
@@ -156,19 +160,19 @@ class PositionController extends Controller
                                 'position_id' => $positId,
                                 'permission_id' => $permId,
                                 'user_id' => Auth()->user()->id,
-                                'org' => Auth()->user()->userDetail->org,
+                                'org' => $org_id,
                                 'status' => true
                             ]);
                         }
                     }
                 } else {
-                    if (is_null(Auth()->user()->userDetail->org)) {
+                    if (is_null(Auth()->user()->userDetail->org)  && !Auth()->user()->is_tsm) {
                         Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->update([
                             'status' => false
                         ]);
                     } else {
                         if ($permExist) {
-                            Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
+                            Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', $org_id)->update([
                                 'status' => false
                             ]);
                         } else {
@@ -176,7 +180,7 @@ class PositionController extends Controller
                                 'position_id' => $positId,
                                 'permission_id' => $permId,
                                 'user_id' => Auth()->user()->id,
-                                'org' => Auth()->user()->userDetail->org,
+                                'org' => $org_id,
                                 'status' => false
                             ]);
                         }

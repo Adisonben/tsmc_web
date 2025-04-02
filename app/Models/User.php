@@ -23,7 +23,9 @@ class User extends Authenticatable
         'email',
         'username',
         'password',
-        'pass_text'
+        'pass_text',
+        'is_tsm',
+        'expire_at',
     ];
 
     /**

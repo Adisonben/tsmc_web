@@ -34,15 +34,27 @@ class FormController extends Controller
         try {
             if ($category_name === 'sub-form') {
                 $forms = Form::where('is_sub_form', true)->where(function ($query) {
-                    $query->where('org', optional(Auth::user()->userDetail)->org ?? '')->orWhere('created_by', Auth::user()->id);
+                    if (Auth()->user()->is_tsm) {
+                        $query->where('org', session('connected_org') ?? '')->orWhere('created_by', Auth::user()->id);
+                    } else {
+                        $query->where('org', optional(Auth::user()->userDetail)->org ?? '')->orWhere('created_by', Auth::user()->id);
+                    }
+
                 })->get();
                 return view('form.sub-form.formTable', compact('forms'));
             } else {
                 $category = Form_category::where('name', $category_name)->firstOrFail();
                 $forms = Form::where('category', $category->id)->where(function ($query) {
-                    $query->where('org', optional(Auth::user()->userDetail)->org ?? '')
-                    ->orWhere('created_by', Auth::user()->id)
-                    ->orWhere('is_default', true);
+                    if (Auth()->user()->is_tsm) {
+                        $query->where('org', session('connected_org') ?? '')
+                        ->orWhere('created_by', Auth::user()->id)
+                        ->orWhere('is_default', true);
+                    } else {
+                        $query->where('org', optional(Auth::user()->userDetail)->org ?? '')
+                        ->orWhere('created_by', Auth::user()->id)
+                        ->orWhere('is_default', true);
+                    }
+
                 })->get();
                 return view('form.formTable', compact('forms', 'category_name'));
             }
@@ -58,7 +70,11 @@ class FormController extends Controller
     public function create($form_category)
     {
         $sub_forms = Form::where('is_sub_form', true)->where(function ($query) {
-            $query->where('org', optional(Auth::user()->userDetail)->org ?? '')->orWhere('is_default', true);
+            if (Auth()->user()->is_tsm) {
+                $query->where('org', session('connected_org') ?? '')->orWhere('is_default', true);
+            } else {
+                $query->where('org', optional(Auth::user()->userDetail)->org ?? '')->orWhere('is_default', true);
+            }
         })->get(['id', 'title']);
         if ($form_category === 'sub-form') {
             return view('form.sub-form.createForm');
@@ -98,13 +114,14 @@ class FormController extends Controller
 
         try {
             $form_category_target = Form_category::where('name', $form_category)->first();
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
             $newForm = Form::create([
                 'form_id' => Str::uuid(),
                 'title' => $request->title,
                 'category' => $form_category_target?->id,
                 'select_user' => $request->select_user,
                 'select_vehicle' => $request->select_vehicle,
-                'org' => $request->user()->userDetail->org,
+                'org' => $org_id,
                 'created_by' => $request->user()->id,
                 'is_sub_form' => $request->is_sub_form,
                 'is_default' => $request->user()->username === 'tsmcadmin' ? true : false,
@@ -264,7 +281,8 @@ class FormController extends Controller
     public function formPerm(string $form_id)
     {
         $form_data = Form::where('form_id', $form_id)->firstOrFail();
-        $positions = Position::where('org', optional(Auth::user()->userDetail)->org ?? '')->get();
+        $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+        $positions = Position::where('org', $org_id ?? '')->get();
         return view('form.formPermission', compact('form_data', 'positions'));
     }
 

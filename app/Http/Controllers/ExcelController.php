@@ -15,7 +15,8 @@ class ExcelController extends Controller
 {
     private function fetchSubmissionData($formId, $startDate, $endDate, $vehicleId, $userId)
     {
-        $query = FormSubmissions::where('form_id', $formId)->where('org', Auth::user()->userDetail->org ?? '');
+        $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+        $query = FormSubmissions::where('form_id', $formId)->where('org', $org_id ?? '');
 
         if ($startDate) {
             $query->whereDate('created_at', '>=', $startDate);

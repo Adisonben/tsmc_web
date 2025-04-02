@@ -10,14 +10,14 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="username" class="form-label">ชื่อผู้ใช้</label>
-                <input type="text" maxlength="150" class="form-control" id="username" name="username" wire:model="username"
-                    placeholder="กรุณากรอกชื่อผู้ใช้" required>
+                <input type="text" maxlength="150" class="form-control" id="username" name="username"
+                    wire:model="username" placeholder="กรุณากรอกชื่อผู้ใช้" required>
             </div>
 
             <div class="col-md-6">
                 <label for="password" class="form-label">รหัสผ่าน (หากไม่กรอก จะใช้รหัสผ่านเดิม)</label>
-                <input type="text" maxlength="20" minlength="8" class="form-control" id="password" name="password" wire:model="password"
-                    placeholder="กรุณากรอกรหัสผ่าน">
+                <input type="text" maxlength="20" minlength="8" class="form-control" id="password" name="password"
+                    wire:model="password" placeholder="กรุณากรอกรหัสผ่าน">
                 <div id="passwordHelpBlock" class="form-text">
                     รหัสผ่านต้องมีความยาว 8-20 ตัวอักษร ประกอบด้วยตัวอักษรและตัวเลข
                     และห้ามมีช่องว่าง หรืออักขระพิเศษ
@@ -30,7 +30,8 @@
         <div class="row g-3 mb-3">
             <div class="col-md-6">
                 <label for="citizen_id" class="form-label">หมายเลขประชาชน</label>
-                <input type="text" class="form-control" maxlength="150" id="citizen_id" wire:model="citizen_id" required placeholder="กรุณากรอกหมายเลขประชาชน">
+                <input type="text" class="form-control" maxlength="150" id="citizen_id" wire:model="citizen_id"
+                    required placeholder="กรุณากรอกหมายเลขประชาชน">
             </div>
             <div class="col-md-6">
                 <label for="prefix_id" class="form-label">คำนำหน้า</label>
@@ -45,56 +46,59 @@
             </div>
             <div class="col-md-6">
                 <label for="fname" class="form-label">ชื่อ</label>
-                <input type="text" class="form-control" maxlength="150" wire:model="fname" id="fname" required placeholder="กรุณากรอกชื่อ {{ $prefix_id }}">
+                <input type="text" class="form-control" maxlength="150" wire:model="fname" id="fname" required
+                    placeholder="กรุณากรอกชื่อ {{ $prefix_id }}">
             </div>
             <div class="col-md-6">
                 <label for="lname" class="form-label">นามสกุล</label>
-                <input type="text" class="form-control" maxlength="150" id="lname" wire:model="lname" required placeholder="กรุณากรอกนามสกุล">
+                <input type="text" class="form-control" maxlength="150" id="lname" wire:model="lname" required
+                    placeholder="กรุณากรอกนามสกุล">
             </div>
+            @if (!$user->is_tsm)
+                <div class="col-md-4">
+                    <label for="userOrg" class="form-label">หน่วยงาน</label>
+                    <select id="userOrg" class="form-select" wire:model="org_id" disabled>
+                        <option selected>เลือกหน่วยงาน</option>
+                        @foreach ($orgs as $org)
+                            <option value="{{ $org->id }}">{{ $org->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="userBrn" class="form-label">สาขา</label>
+                    <select id="userBrn" class="form-select" wire:model="branch_id" disabled>
+                        <option selected>เลือกสาขา</option>
+                        @if ($brns)
+                            @foreach ($brns as $brn)
+                                <option value="{{ $brn->id }}">{{ $brn->name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="userDpm" class="form-label">ฝ่าย</label>
+                    <select id="userDpm" class="form-select" wire:model="department_id" disabled>
+                        <option selected>เลือกฝ่าย</option>
+                        @if ($dpms)
+                            @foreach ($dpms as $dpm)
+                                <option value="{{ $dpm->id }}">{{ $dpm->name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
 
-            <div class="col-md-4">
-                <label for="userOrg" class="form-label">หน่วยงาน</label>
-                <select id="userOrg" class="form-select" wire:model="org_id" disabled>
-                    <option selected>เลือกหน่วยงาน</option>
-                    @foreach ($orgs as $org)
-                        <option value="{{ $org->id }}">{{ $org->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="userBrn" class="form-label">สาขา</label>
-                <select id="userBrn" class="form-select" wire:model="branch_id" disabled>
-                    <option selected>เลือกสาขา</option>
-                    @if ($brns)
-                        @foreach ($brns as $brn)
-                            <option value="{{ $brn->id }}">{{ $brn->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="userDpm" class="form-label">ฝ่าย</label>
-                <select id="userDpm" class="form-select" wire:model="department_id" disabled>
-                    <option selected>เลือกฝ่าย</option>
-                    @if ($dpms)
-                        @foreach ($dpms as $dpm)
-                            <option value="{{ $dpm->id }}">{{ $dpm->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-            </div>
-
-            <div class="col-md-12">
-                <label for="userPosit" class="form-label">ตำแหน่ง</label>
-                <select id="userPosit" class="form-select" wire:model="position_id" disabled>
-                    <option selected>เลือกตำแหน่ง</option>
-                    @if ($positions)
-                        @foreach ($positions as $position)
-                            <option value="{{ $position->id }}">{{ $position->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-            </div>
+                <div class="col-md-12">
+                    <label for="userPosit" class="form-label">ตำแหน่ง</label>
+                    <select id="userPosit" class="form-select" wire:model="position_id" disabled>
+                        <option selected>เลือกตำแหน่ง</option>
+                        @if ($positions)
+                            @foreach ($positions as $position)
+                                <option value="{{ $position->id }}">{{ $position->name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+            @endif
         </div>
 
         <button type="submit" class="btn btn-primary mb-3">บันทึก</button>

@@ -13,9 +13,15 @@ class ApiController extends Controller
     public function getFormByCategory($category_id)
     {
         $forms = Form::where('category', $category_id)->where(function ($query) {
-            $query->where('org', optional(Auth::user()->userDetail)->org ?? '')
-            ->orWhere('created_by', Auth::user()->id)
-            ->orWhere('is_default', true);
+            if (Auth::user()->is_tsm) {
+                $query->where('org', session('connected_org') ?? '')
+                ->orWhere('created_by', Auth::user()->id)
+                ->orWhere('is_default', true);
+            }else {
+                $query->where('org', optional(Auth::user()->userDetail)->org ?? '')
+                ->orWhere('created_by', Auth::user()->id)
+                ->orWhere('is_default', true);
+            }
         })->get(['id', 'title', 'select_user', 'select_vehicle']);
         $respFormData = [];
 
@@ -61,7 +67,7 @@ class ApiController extends Controller
 
     public function getDocs(Request $request)
     {
-        $query = FormSubmissions::where('form_id', $request->form_id)->where('org', Auth::user()->userDetail->org ?? '');
+        $query = FormSubmissions::where('form_id', $request->form_id)->where('org', (Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org) ?? '');
 
         if ($request->has('start_date') && $request->start_date) {
             $query->whereDate('created_at', '>=', $request->start_date);

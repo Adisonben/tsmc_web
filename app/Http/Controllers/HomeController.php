@@ -10,6 +10,7 @@ use App\Models\Position;
 use App\Models\Position_has_permission;
 use App\Models\Position_permission;
 use App\Models\Post;
+use App\Models\Tsm_has_Org;
 use App\Models\User;
 use App\Models\User_detail;
 use Illuminate\Http\Request;
@@ -36,31 +37,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Auth()->user()->userDetail->org ?? false) {
-            $posts = Post::whereHas('getUser', function ($query) {
-                $query->where('org', Auth()->user()->userDetail->org);
-            })->where(function ($query) {
-                $query->orWhereHas('permissions', function ($query2) {
-                    $query2->where('name', "บุคคล")
-                          ->where('target', Auth()->user()->id);
-                })
-                ->orWhereHas('permissions', function ($query2) {
-                    $query2->where('name', "ตำแหน่ง")
-                          ->where('target', Auth()->user()->userDetail->position);
-                })
-                ->orWhereHas('permissions', function ($query2) {
-                    $query2->where('name', "ฝ่าย")
-                          ->where('target', Auth()->user()->userDetail->dpm);
-                })
-                ->orWhereHas('permissions', function ($query2) {
-                    $query2->where('name', "ทั้งหมด");
-                });
-            })->orWhere('created_by', Auth()->user()->id)
-            ->orderBy('created_at', "desc")->get();
+        if (Auth::user()->is_tsm) {
+            $tsm_has_orgs = Tsm_has_Org::where('tsm_id', Auth::user()->id)->get();
+            return view('tsm.home', compact('tsm_has_orgs'));
         } else {
-            $posts = Post::orderBy('created_at', "desc")->get();
+            return view('home');
         }
-        return view('home', compact('posts'));
     }
 
     public function storeHistory(Request $request) {
