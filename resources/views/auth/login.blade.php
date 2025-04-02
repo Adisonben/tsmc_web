@@ -9,7 +9,7 @@
             </div>
             <p class="text-center text-wrap fs-4 fw-bold">Transport <span style="color: orange">Safety</span> Manager <br> Communication</p>
             <div class="card">
-                <div class="card-header text-center fs-5 fw-bold">กรุณาเข้าสู่ระบบ</div>
+                <div class="card-header text-center fs-5 fw-bold">{{ __('messages.please_login') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -47,9 +47,11 @@
                             <button type="submit" class="btn btn-primary">
                                 {{ __('Login') }}
                             </button>
-                            <div class="d-flex gap-2">
+                            <div class="d-flex gap-2 flex-wrap">
+                                <p class="mb-0">หากยังไม่มีบัญชี กรุณา</p>
+                                <a href="{{ route('register') }}">ลงทะเบียนบัญชีองค์กร</a>
                                 <p class="mb-0">หรือ</p>
-                                <a href="{{ route('register') }}">ลงทะเบียน</a>
+                                <a href="{{ route('tsm.register') }}">ลงทะเบียนบัญชี TSM</a>
                                 <p class="mb-0">เพื่อเข้าใช้งานระบบ</p>
                             </div>
                             {{-- <button type="button" class="btn btn-secondary" onclick="window.location='{{ route('register') }}'">
