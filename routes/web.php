@@ -14,21 +14,15 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\TSMUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 Route::get('/demo-login', function (Request $request) {
     // dd($request->all());
     $demoUsername = $request->user ?? '';
     $demoPassword = $request->user ?? '';
-
-    return view('auth.demoLogin', compact('demoUsername', 'demoPassword'));
-});
-
-Route::get('/test-spreadsheet', function () {
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->setCellValue('A1', 'Hello World!');
-    return 'Spreadsheet created!';
+    return view('auth.demoLogin', compact('demoUsername', 'demoPassword'));
 });
 
 Route::get('/terms', function () {
