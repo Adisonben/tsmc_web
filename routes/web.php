@@ -14,21 +14,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\TSMUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 Route::get('/terms', function () {
-    $spreadsheet = new Spreadsheet();
-    if ($spreadsheet) {
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'Hello World!');
-        $writer = new Xlsx($spreadsheet);
-        $filename = "TSMC_" . date('dmY_His') . '.xlsx';
-        dd('spreadsheet found');
-    }
-    else {
-        dd('spreadsheet not found');
-    }
     return view('terms');
 })->name('terms');
 
