@@ -29,7 +29,7 @@ Route::get('/terms', function () {
     else {
         dd('spreadsheet not found');
     }
-    return view('terms');
+    // return view('terms');
 })->name('terms');
 
 // Route::get('tsm/login', [TSMUserController::class, 'showLogin'])->name('tsm.login')->withoutMiddleware(['auth']);
