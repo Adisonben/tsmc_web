@@ -77,7 +77,6 @@ class TSMUserController extends Controller
             return redirect()->route('home');
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
         }
     }

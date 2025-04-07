@@ -37,10 +37,6 @@ Route::post('/register-new-user', [App\Http\Controllers\HomeController::class, '
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-    // phpinfo
-    Route::get('/phpinfo', function () {
-        phpinfo();
-    });
     Route::resource('tsms', TSMUserController::class);
     // Route::post('/tsm/logout', [TSMUserController::class, 'logout'])->name('tsm.logout');
     Route::get('/tsm/manage-org', [TSMUserController::class, 'manageOrg'])->name('tsm.manage-org');
