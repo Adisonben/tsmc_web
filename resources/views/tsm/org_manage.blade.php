@@ -10,9 +10,11 @@
                             <p class="mb-0 fs-4">{{ __('ข้อมูลองค์กรที่รับผิดชอบ') }}</p>
                             {{-- <a href="/organizations/create" class="btn btn-success btn-sm">สร้าง</a> --}}
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createOrg">
-                                เพิ่ม
-                            </button>
+                            @if (count($tsm_has_orgs ?? []) < 5)
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createOrg">
+                                    เพิ่ม
+                                </button>
+                            @endif
 
                             <!-- Modal -->
                             <div class="modal fade" id="createOrg" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -110,7 +112,7 @@
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
                                             <button type="button" class="btn btn-danger btn-sm delete-data-btn"
-                                                del-id="{{ optional($tsm_has_org->getOrg)->id }}" del-target="organizations"
+                                                del-id="{{ optional($tsm_has_org->getOrg)->id }}" del-target="tsm/org"
                                                 data-bs-toggle="tooltip" data-bs-title="ลบ"><i
                                                     class="bi bi-trash"></i></button>
                                         </td>

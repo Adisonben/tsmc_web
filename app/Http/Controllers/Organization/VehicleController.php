@@ -10,6 +10,7 @@ use App\Models\Vehicle;
 use App\Models\VehicleAssignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class VehicleController extends Controller
 {
@@ -126,6 +127,46 @@ class VehicleController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with(['vehicleError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
+        }
+    }
+
+    public function importVehicles(Request $request) {
+        $request->validate([
+            'vehicle_datas' => 'required',
+            'vehicle_datas.*.license_plate' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'vehicle_datas.*.brand' => 'required|string|max:255',
+            'vehicle_datas.*.type' => 'nullable|string|max:255',
+            'vehicle_datas.*.standard' => 'nullable|string|max:255',
+            'vehicle_datas.*.ins_company' => 'nullable|string|max:255',
+            'vehicle_datas.*.ins_type' => 'nullable|string|max:255',
+            'vehicle_datas.*.license_category' => 'nullable|string|max:255',
+            'vehicle_datas.*.registration_province' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+            $vehicle_datas = json_decode($request['vehicle_datas'], true);
+            if (count($vehicle_datas) > 0) {
+                foreach ($vehicle_datas as $key => $vehicle_data) {
+                    $vehicle = Vehicle::where('license_plate', $vehicle_data['license_plate'])->where('org_id', $org_id);
+                    if ($vehicle->withTrashed()->exists()) {
+                        if ($vehicle->onlyTrashed()->exists()) {
+                            $vehicle->onlyTrashed()->restore();
+                        }
+                        $vehicle->update($vehicle_data);
+                    } else {
+                        $vehicle_data['org_id'] = $org_id;
+                        Vehicle::create($vehicle_data);
+                    }
+                }
+            }
+            return response()->json(['success'=> 'บันทึกข้อมูลรถสำเร็จ']);
+        } catch (\Throwable $th) {
+            return response()->json(['error'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง " . $th->getMessage()]);
         }
     }
 }

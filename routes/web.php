@@ -27,12 +27,6 @@ Route::get('/terms', function () {
     return view('terms');
 })->name('terms');
 
-Route::prefix('mockup')->group(function () {
-    Route::get('/page/{pageNum}', function ($pagenum) {
-        return view('Mockup.page' . $pagenum);
-    });
-});
-
 // Route::get('tsm/login', [TSMUserController::class, 'showLogin'])->name('tsm.login')->withoutMiddleware(['auth']);
 Route::get('tsm/register', [TSMUserController::class, 'register'])->name('tsm.register')->withoutMiddleware(['auth']);
 Route::post('tsm/store-user', [TSMUserController::class, 'store'])->name('tsm.register.new.user')->withoutMiddleware(['auth']);
@@ -43,11 +37,16 @@ Route::post('/register-new-user', [App\Http\Controllers\HomeController::class, '
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
+    // phpinfo
+    Route::get('/phpinfo', function () {
+        phpinfo();
+    });
     Route::resource('tsms', TSMUserController::class);
     // Route::post('/tsm/logout', [TSMUserController::class, 'logout'])->name('tsm.logout');
     Route::get('/tsm/manage-org', [TSMUserController::class, 'manageOrg'])->name('tsm.manage-org');
     Route::post('/tsm-{user_id}/org/store', [TSMUserController::class, 'storeOrg'])->name('tsm.org.store');
     Route::post('/tsm/org-{org_id}/update', [TSMUserController::class, 'updateOrg'])->name('tsm.org.update');
+    Route::delete('/tsm/org/{org_id}', [TSMUserController::class, 'destroyOrg'])->name('tsm.org.delete');
     Route::get('/tsm/connect-org-{org_id}', [TSMUserController::class, 'connectOrg'])->name('tsm.org.connect');
 
     Route::get('/', [App\Http\Controllers\HomeController::class, 'storeHistory']);
@@ -87,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('vehicle/update/{id}', [VehicleController::class, 'updateData'])->name('vehicle.update');
     Route::get('/vehicle-assignment/table', [VehicleController::class, 'showVehicleAssignmentTable'])->name('vehicle.assignment.table');
     Route::post('/vehicle-assignment/store/{vehicle_id}', [VehicleController::class, 'storeVehicleAssignment'])->name('vehicles.assignment.store');
+    Route::post('/vehicles/import', [VehicleController::class, 'importVehicles'])->name('vehicles.import');
     // Route::post('/cars/update-data/{car}', [CarController::class, 'update'])->name('cars.update.post');
 
 

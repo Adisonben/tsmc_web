@@ -98,36 +98,73 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body">
-                                    <div class="border-l-4 border-blue-500 p-4 mb-4 rounded" style="background-color: rgb(160, 255, 255)">
-                                        <div>
-                                            <h5 class="flex items-center text-blue-800 mb-2">
-                                                <i class="bi bi-exclamation-circle"></i>
-                                                คำแนะนำการนำเข้าข้อมูล
-                                            </h5>
-                                            <p class="text-blue-700 mb-2">กรุณาจัดทำข้อมูลให้ตรงตาม template ที่กำหนด
+                                <form enctype="multipart/form-data" id="importForm">
+                                    <div class="modal-body">
+                                        <div class="border-l-4 border-blue-500 p-2 mb-2 rounded" style="background-color: rgb(160, 255, 255)">
+                                            <div class="accordion" id="accordionExample">
+                                                <div class="accordion-item">
+                                                  <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        <i class="bi bi-exclamation-circle"></i> &nbsp; คำแนะนำการนำเข้าข้อมูล
+                                                    </button>
+                                                  </h2>
+                                                  <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <div class="m-0">
+                                                            <p class="mb-0">- ข้อมูลจะต้องอยู่ในรูปแบบไฟล์ Excel (.xlsx หรือ .xls)</p>
+                                                            <p class="mb-0">- ข้อมูลจะต้องมีหัวตารางตรงตาม template</p>
+                                                            <p class="mb-0">- ห้ามลบหรือเพิ่มคอลัมน์ในไฟล์ template</p>
+                                                            <p class="mb-0">- ห้ามมีช่องว่างในข้อมูลที่จำเป็นต้องกรอก</p>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                            {{-- <div>
+                                                <h5 class="flex items-center text-blue-800 mb-2">
+                                                    <i class="bi bi-exclamation-circle"></i>
+                                                    คำแนะนำการนำเข้าข้อมูล
+                                                </h5>
+                                                <p class="text-blue-700 mb-2">กรุณาจัดทำข้อมูลให้ตรงตาม template ที่กำหนด
+                                                    เพื่อป้องกันความผิดพลาดในการนำเข้าข้อมูล</p>
+                                                <ul>
+                                                    <li>- ข้อมูลจะต้องอยู่ในรูปแบบไฟล์ Excel (.xlsx หรือ .xls)</li>
+                                                    <li>- ข้อมูลจะต้องมีหัวตารางตรงตาม template</li>
+                                                    <li>- ห้ามลบหรือเพิ่มคอลัมน์ในไฟล์ template</li>
+                                                    <li>- ห้ามมีช่องว่างในข้อมูลที่จำเป็นต้องกรอก</li>
+                                                </ul>
+                                            </div> --}}
+                                            <p class="text-blue-700 mt-2 px-2">กรุณาจัดทำข้อมูลให้ตรงตาม template ที่กำหนด
                                                 เพื่อป้องกันความผิดพลาดในการนำเข้าข้อมูล</p>
-                                            <ul>
-                                                <li>- ข้อมูลจะต้องอยู่ในรูปแบบไฟล์ Excel (.xlsx หรือ .xls)</li>
-                                                <li>- ข้อมูลจะต้องมีหัวตารางตรงตาม template</li>
-                                                <li>- ห้ามลบหรือเพิ่มคอลัมน์ในไฟล์ template</li>
-                                                <li>- ห้ามมีช่องว่างในข้อมูลที่จำเป็นต้องกรอก</li>
-                                            </ul>
+                                            <hr>
+                                            <div class="d-flex flex-column justify-content-center align-items-center">
+                                                <p class="mb-0">ดาวน์โหลด Template สำหรับกรอกข้อมูล</p>
+                                                <a href="/templates/tsmc_vehicle_template.xlsx" class="btn btn-primary btn-sm text-white px-4 py-2 rounded inline-flex items-center">
+                                                    <i class="bi bi-file-earmark-spreadsheet"></i>
+                                                    ดาวน์โหลด Excel Template
+                                                </a>
+                                            </div>
                                         </div>
-                                        <hr>
-                                        <div class="d-flex flex-column justify-content-center align-items-center">
-                                            <p class="mb-0">ดาวน์โหลด Template สำหรับกรอกข้อมูล</p>
-                                            <a href="#" class="btn btn-primary text-white px-4 py-2 rounded inline-flex items-center">
-                                                <i class="bi bi-file-earmark-spreadsheet"></i>
-                                                ดาวน์โหลด Excel Template
-                                            </a>
+
+                                        {{-- Section อัพโหลดไฟล์ --}}
+                                        <div class="mb-3">
+                                            <label for="importFile" class="form-label">อัพโหลดไฟล์ Excel</label>
+                                            <input class="form-control" type="file" id="importFile" accept=".xlsx, .xls" required>
+                                            <div class="form-text text-danger" id="alert_text"></div>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0">ข้อมูลรถที่พบ <span id="vehicle_count">0</span> คัน</p>
+                                            <div class="d-flex gap-2 flex-wrap">
+                                                <p class="mb-0">นำเข้าข้อมูลสำเร็จ <span class="text-success" id="successCount">0</span> คัน</p>
+                                                <p class="mb-0">นำเข้าข้อมูลล้มเหลว <span class="text-danger" id="failCount">0</span> คัน</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                                    <button type="button" class="btn btn-primary">บันทึก</button>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="closeBtn" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                                        <button type="submit" id="submitBtn" class="btn btn-primary">บันทึก</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -284,4 +321,139 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script>
+        let uploaded_data = [];
+        document.getElementById('importFile').addEventListener('change', function (event) {
+            document.getElementById('alert_text').textContent = '';
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                    // Validate columns length = 9
+                    if (jsonData[0].length !== 9) {
+                        document.getElementById('alert_text').textContent = 'คอลัมน์ไม่ถูกต้อง';
+                        return;
+                    }
+
+                    jsonData.shift(); // Remove header row
+
+                    // Validate required rows
+                    if (jsonData.length < 1) {
+                        document.getElementById('alert_text').textContent = 'ไม่มีข้อมูลในไฟล์';
+                        return;
+                    }
+
+                    // Display the number of vehicles found
+                    const vehicleCount = jsonData.length; // Exclude header row
+                    document.getElementById('vehicle_count').textContent = vehicleCount;
+                    uploaded_data = jsonData.map(row => ({
+                        license_category: row[1] || '-',
+                        license_plate: row[2] || '-',
+                        registration_province: row[3] || '-',
+                        brand: row[4] || '-',
+                        standard: row[5] || '-',
+                        type: row[6] || '-',
+                        ins_company: row[7] || '-',
+                        ins_type: row[8] || '-',
+                    }));
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        });
+
+        function chunkArray(array, chunkSize) {
+            const chunks = [];
+            for (let i = 0; i < array.length; i += chunkSize) {
+                chunks.push(array.slice(i, i + chunkSize));
+            }
+            return chunks;
+        }
+
+        function updateImportStatus(successCount, failCount) {
+            document.getElementById('successCount').textContent = successCount;
+            document.getElementById('failCount').textContent = failCount;
+        }
+
+        function uploadingBtnStatus(status) {
+            if (status) {
+                document.getElementById('submitBtn').setAttribute('disabled', 'disabled');
+                document.getElementById('closeBtn').setAttribute('disabled', 'disabled');
+                document.getElementById('submitBtn').innerHTML = `
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span role="status">กำลังนำเข้า...</span>
+                `;
+            } else {
+                document.getElementById('submitBtn').removeAttribute('disabled');
+                document.getElementById('closeBtn').removeAttribute('disabled');
+                document.getElementById('submitBtn').innerHTML = 'บันทึก';
+            }
+        }
+
+        document.getElementById('importForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let successCount = 0;
+            let failCount = 0;
+
+
+            if (uploaded_data.length === 0) {
+                return;
+            }
+
+            const chunks = chunkArray(uploaded_data, 100);
+
+            try {
+                uploadingBtnStatus(true);
+                chunks.forEach((chunk, index) => {
+                    const chunkSize = chunk.length;
+                    var formData = new FormData();
+                    formData.append('vehicle_datas', JSON.stringify(chunk));
+                    fetch('/vehicles/import', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        if (data.success) {
+                            successCount += chunkSize;
+                            updateImportStatus(successCount, failCount);
+                        } else {
+                            failCount += chunkSize;
+                            updateImportStatus(successCount, failCount);
+                        }
+                    })
+                    .catch(error => {
+                        console.log('Error:', error);
+                        console.log(`Failed to import chunk ${index} count : ${failCount}`);
+                        failCount += chunkSize;
+                        updateImportStatus(successCount, failCount);
+                        // if (index === chunks.length - 1) {
+                        //     alert(`นำเข้าข้อมูลสำเร็จ: ${successCount} รายการ, ล้มเหลว: ${failCount} รายการ`);
+                        //     location.reload();
+                        // }
+                    });
+                })
+            } catch (error) {
+                console.error('Error:', error);
+                failCount += uploaded_data.length;
+                updateImportStatus(successCount, failCount);
+            } finally {
+                uploadingBtnStatus(false);
+                document.getElementById('importFile').value = '';
+                successCount = 0;
+                failCount = 0;
+            }
+        });
+    </script>
 @endsection

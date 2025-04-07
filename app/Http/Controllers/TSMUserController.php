@@ -240,4 +240,20 @@ class TSMUserController extends Controller
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
         }
     }
+
+    public function destroyOrg(string $org_id)
+    {
+        try {
+            if (Tsm_has_Org::where('org_id', $org_id)->where('tsm_id', Auth()->user()->id)->exists()) {
+                Tsm_has_Org::where('org_id', $org_id)->where('tsm_id', Auth()->user()->id)->delete();
+                Organization::where('id', $org_id)->delete();
+            }
+            return response()->json([
+                'message' => 'ลบข้อมูลเรียบร้อย'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง'
+            ], 500);}
+    }
 }
