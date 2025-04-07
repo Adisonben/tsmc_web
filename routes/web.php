@@ -15,9 +15,27 @@ use App\Http\Controllers\TSMUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 Route::get('/terms', function () {
     $spreadsheet = new Spreadsheet();
+    if ($spreadsheet) {
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Hello World!');
+        $writer = new Xlsx($spreadsheet);
+        $filename = "TSMC_" . date('dmY_His') . '.xlsx';
+        return response()->stream(
+            function () use ($writer) {
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment;filename="' . $filename . '"',
+                'Cache-Control' => 'max-age=0',
+            ]
+        );
+    }
     return view('terms');
 })->name('terms');
 
