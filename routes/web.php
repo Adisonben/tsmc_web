@@ -24,17 +24,10 @@ Route::get('/terms', function () {
         $sheet->setCellValue('A1', 'Hello World!');
         $writer = new Xlsx($spreadsheet);
         $filename = "TSMC_" . date('dmY_His') . '.xlsx';
-        return response()->stream(
-            function () use ($writer) {
-                $writer->save('php://output');
-            },
-            200,
-            [
-                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => 'attachment;filename="' . $filename . '"',
-                'Cache-Control' => 'max-age=0',
-            ]
-        );
+        dd('spreadsheet found');
+    }
+    else {
+        dd('spreadsheet not found');
     }
     return view('terms');
 })->name('terms');
