@@ -38,44 +38,44 @@
                                         <div class="mb-3">
                                             <label for="license_category" class="form-label">หมวดทะเบียนรถ</label>
                                             <input type="text" class="form-control" maxlength="150" id="license_category"
-                                                name="license_category" placeholder="เช่น กก, 10-99" required>
+                                                name="license_category" value="{{ old('license_category') }}" placeholder="เช่น กก, 10-99" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="license_plate" class="form-label">หมายเลขทะเบียนรถ</label>
                                             <input type="text" class="form-control" maxlength="150" id="license_plate"
-                                                name="license_plate" placeholder="เช่น กข-1111, 98-9559" required>
+                                                name="license_plate" value="{{ old('license_plate') }}" placeholder="เช่น กข-1111, 98-9559" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="registration_province"
                                                 class="form-label">จังหวัดที่จดทะเบียนรถ</label>
                                             <input type="text" class="form-control" maxlength="150"
                                                 id="registration_province" name="registration_province"
-                                                placeholder="กรุณากรอก จังหวัดที่จดทะเบียนรถ" required>
+                                                placeholder="กรุณากรอก จังหวัดที่จดทะเบียนรถ" value="{{ old('registration_province') }}" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="brand" class="form-label">ยี่ห้อรถ</label>
-                                            <input type="text" class="form-control" maxlength="150" id="brand"
+                                            <input type="text" class="form-control" value="{{ old('brand') }}" maxlength="150" id="brand"
                                                 name="brand" placeholder="เช่น Benz, ISUZU" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="standard" class="form-label">ลักษณะ/มาตรฐาน (หากไม่มีกรอก -)</label>
                                             <input type="text" class="form-control" maxlength="150" id="standard"
-                                                name="standard" placeholder="เช่น 2ข, 3ก" required>
+                                                name="standard" value="{{ old('standard') }}" placeholder="เช่น 2ข, 3ก" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="type" class="form-label">ประเภทรถ</label>
                                             <input type="text" class="form-control" maxlength="150" id="type"
-                                                name="type" placeholder="เช่น รถ 6 ล้อ, รถบรรทุกวัสดุอันตราย" required>
+                                                name="type" value="{{ old(key: 'type') }}" placeholder="เช่น รถ 6 ล้อ, รถบรรทุกวัสดุอันตราย" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="ins_company" class="form-label">บริษัทประกันภัย</label>
                                             <input type="text" class="form-control" maxlength="150" id="ins_company"
-                                                name="ins_company" placeholder="กรุณากรอก บริษัทประกันภัย รถ" required>
+                                                name="ins_company" value="{{ old('ins_company') }}" placeholder="กรุณากรอก บริษัทประกันภัย รถ" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="ins_type" class="form-label">ประเภทประกันภัย</label>
                                             <input type="text" class="form-control" maxlength="150" id="ins_type"
-                                                name="ins_type" placeholder="เช่น ชั้น1" required>
+                                                name="ins_type" value="{{ old('ins_type') }}" placeholder="เช่น ชั้น1" required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
