@@ -40,4 +40,36 @@ class StoreVehicleRequest extends FormRequest
             'ins_type' => 'nullable|string|max:255',
         ];
     }
+
+        /**
+         * Get custom error messages for validation rules.
+         *
+         * @return array<string, string>
+         */
+        public function messages(): array
+        {
+            return [
+                'license_plate.required' => 'จำเป็นต้องกรอกหมายเลขทะเบียนรถ',
+                'license_plate.unique' => 'หมายเลขทะเบียนรถนี้มีอยู่ในระบบแล้ว',
+                'brand.required' => 'จำเป็นต้องกรอกยี่ห้อรถ',
+                'brand.max' => 'ยี่ห้อรถยาวเกินไป',
+                'model.max' => 'รุ่นรถยาวเกินไป',
+                'type.max' => 'ประเภทยาวเกินไป',
+                'standard.max' => 'มาตรฐานยาวเกินไป',
+                'ins_company.max' => 'บริษัทประกันภัยยาวเกินไป',
+                'ins_type.max' => 'ประเภทประกันภัยยาวเกินไป',
+                'license_category.max' => 'ประเภทใบอนุญาตขับขี่ยาวเกินไป',
+                'registration_province.max' => 'จังหวัดที่จดทะเบียนยาวเกินไป',
+                'license_plate.max' => 'หมายเลขทะเบียนรถยาวเกินไป',
+                'license_category.string' => 'ประเภทใบอนุญาตขับขี่ต้องเป็นตัวอักษร',
+                'license_plate.string' => 'หมายเลขทะเบียนรถต้องเป็นตัวอักษร',
+                'registration_province.string' => 'จังหวัดที่จดทะเบียนต้องเป็นตัวอักษร',
+                'brand.string' => 'ยี่ห้อรถต้องเป็นตัวอักษร',
+                'model.string' => 'รุ่นรถต้องเป็นตัวอักษร',
+                'type.string' => 'ประเภทต้องเป็นตัวอักษร',
+                'standard.string' => 'มาตรฐานต้องเป็นตัวอักษร',
+                'ins_company.string' => 'บริษัทประกันภัยต้องเป็นตัวอักษร',
+                'ins_type.string' => 'ประเภทประกันภัยต้องเป็นตัวอักษร',
+            ];
+        }
 }

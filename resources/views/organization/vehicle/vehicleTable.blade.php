@@ -173,11 +173,15 @@
                     <div class="card-body overflow-auto">
                         @if (session('vehicleSuccess'))
                             <div class="alert alert-success" role="alert">
-                                {{ session('vehicleSuccess') }}
+                                {{ session('success') }}
                             </div>
                         @elseif (session('vehicleError'))
                             <div class="alert alert-danger" role="alert">
-                                {{ session('vehicleError') }}
+                                {{ session('error') }}
+                            </div>
+                        @elseif ($errors->any())
+                            <div class="alert alert-danger" role="alert">
+                                {{ $errors->first() }}
                             </div>
                         @endif
 
