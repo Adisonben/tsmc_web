@@ -444,7 +444,7 @@
                 navigator.geolocation.getCurrentPosition(async (position) => {
                     const lat = position.coords.latitude.toFixed(6);
                     const lon = position.coords.longitude.toFixed(6);
-                    const radius = position.coords.accuracy;
+                    const radius = position.coords.accuracy.toFixed(0);
                     const url =
                         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`;
 
