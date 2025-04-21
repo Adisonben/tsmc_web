@@ -119,7 +119,8 @@
                         </div> --}}
 
                             <div class="mt-4">
-                                <h6 class="mb-3">ตำแหน่งปัจจุบัน</h6>
+                                <h6 class="mb-0 fw-bold">ตำแหน่งปัจจุบัน</h6>
+                                <p class="p-0 mb-2" style="font-size: smaller">*กรุณาใช้อุปกรณ์ที่รองรับ GPS เช่น โทรศัพท์มือถือ เพื่อความแม่นยำในการระบุตำแหน่ง</p>
                                 <div class="weather-box" id="weather-box">
                                     <p>กดปุ่มเพื่อโหลดข้อมูล</p>
                                 </div>
