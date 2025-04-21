@@ -48,85 +48,87 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-center">
-                <!-- การ์ดบันทึกเวลาทำงาน -->
-                <div class="card shadow-sm rounded-4" style="width: 600px;">
-                    <div class="card-header bg-white">
-                        <h5 class="card-title mb-0">บันทึกเวลาทำงาน</h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- แสดงตัวนับเวลา -->
-                        <div class="bg-light rounded p-3 mb-2 text-center">
-                            <p class="timer mb-1" id="timer">
-                                <span id="timer-text" class="timer-inactive">00:00:00:00</span>
-                            </p>
-                            <div class="timer-label text-secondary small">
-                                <span>วัน</span>
-                                <span>ชั่วโมง</span>
-                                <span>นาที</span>
-                                <span>วินาที</span>
-                            </div>
+            {{-- บันทึกเวลาทำงาน --}}
+            @if (
+                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_record_work', Auth::user()->userDetail->org) ??
+                    false) || Auth::user()->username === 'tsmcadmin')
+                <div class="d-flex justify-content-center">
+                    <!-- การ์ดบันทึกเวลาทำงาน -->
+                    <div class="card shadow-sm rounded-4" style="width: 600px;">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title mb-0">บันทึกเวลาทำงาน</h5>
                         </div>
+                        <div class="card-body">
+                            <!-- แสดงตัวนับเวลา -->
+                            <div class="bg-light rounded p-3 mb-2 text-center">
+                                <p class="timer mb-1" id="timer">
+                                    <span id="timer-text" class="timer-inactive">00:00:00:00</span>
+                                </p>
+                                <div class="timer-label text-secondary small">
+                                    <span>วัน</span>
+                                    <span>ชั่วโมง</span>
+                                    <span>นาที</span>
+                                    <span>วินาที</span>
+                                </div>
+                            </div>
 
-                        <!-- ปุ่มควบคุมการทำงาน -->
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <button id="start-button"
-                                    class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
-                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                                    </svg>
-                                    เริ่มงาน
-                                </button>
+                            <!-- ปุ่มควบคุมการทำงาน -->
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <button id="start-button"
+                                        class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                                        </svg>
+                                        เริ่มงาน
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button id="checkin-button"
+                                        class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
+                                        disabled>
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path d="M20 6L9 17l-5-5"></path>
+                                        </svg>
+                                        เช็คอิน
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button id="stop-button"
+                                        class="btn btn-danger w-100 d-flex align-items-center justify-content-center gap-2"
+                                        disabled>
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <rect x="9" y="9" width="6" height="6"></rect>
+                                        </svg>
+                                        จบงาน
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <button id="checkin-button"
-                                    class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
-                                    disabled>
-                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M20 6L9 17l-5-5"></path>
-                                    </svg>
-                                    เช็คอิน
-                                </button>
-                            </div>
-                            <div class="col-md-4">
-                                <button id="stop-button"
-                                    class="btn btn-danger w-100 d-flex align-items-center justify-content-center gap-2"
-                                    disabled>
-                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <rect x="9" y="9" width="6" height="6"></rect>
-                                    </svg>
-                                    หยุดงาน
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- บันทึกกิจกรรม -->
-                        {{-- <div class="mt-4">
+                            <!-- บันทึกกิจกรรม -->
+                            {{-- <div class="mt-4">
                             <h6 class="mb-3">บันทึกกิจกรรมวันนี้</h6>
                             <div class="activity-log" id="log-container">
                                 <!-- กิจกรรมจะถูกเพิ่มที่นี่ด้วย JavaScript -->
                             </div>
                         </div> --}}
 
-                        <div class="mt-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="mb-3">เช็คสภาพอากาศ ณ ตำแหน่งปัจจุบัน</h6>
-                                <button class="btn btn-primary btn-sm" onclick="getWeatherAndMap()">ดูสภาพอากาศ</button>
+                            <div class="mt-4">
+                                <h6 class="mb-3">ตำแหน่งปัจจุบัน</h6>
+                                <div class="weather-box" id="weather-box">
+                                    <p>กดปุ่มเพื่อโหลดข้อมูล</p>
+                                </div>
+                                <div id="map" style="height: 250px; min-width: 180px;"></div>
                             </div>
-                            <div class="weather-box" id="weather-box">
-                                <p>กดปุ่มเพื่อโหลดข้อมูล</p>
-                            </div>
-                            <div id="map" style="min-height: 180px; min-width: 180px;"></div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
             <div class="d-flex align-items-center my-4">
                 <div class="flex-grow-1 border-top border-dark"></div>
@@ -317,40 +319,90 @@
         }
 
         // เพิ่มการบันทึกใหม่
-        function addLogEntry(action) {
-            const timeString = getCurrentTimeString();
+        async function addLogEntry(action) {
+            const actionMapping = {
+                start: 'เริ่มงาน',
+                checkin: 'เช็คอิน',
+                stop: 'จบงาน'
+            };
 
-            const logEntry = document.createElement('div');
-            logEntry.className = 'border-bottom py-2 d-flex justify-content-between';
+            var fetchStatus = false;
 
-            let actionText = '';
-            switch (action) {
-                case 'start':
-                    actionText = 'เริ่มงาน';
-                    break;
-                case 'checkin':
-                    actionText = 'เช็คอิน';
-                    break;
-                case 'stop':
-                    actionText = 'หยุดงาน';
-                    break;
-            }
+            // ส่งข้อมูลไปยังเซิร์ฟเวอร์
+            await fetch('/work-record/store', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        action: action,
+                        work_id: null,
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // console.log('Log saved: ', data);
+                    if (data.status === 'error') {
+                        throw new Error(data.message);
+                    }
+                    startTime = data.date ? new Date(data.date) : null;
+                    fetchStatus = true;
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        title: `บันทึกการ ${actionMapping[action]} เรียบร้อย`,
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                })
+                .catch(error => {
+                    // console.error('Error saving.');
+                    fetchStatus = false;
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "error",
+                        title: "เกิดข้อผิดพลาด",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                });
 
-            logEntry.innerHTML = `
-            <span class="fw-medium">${actionText}</span>
-            <span class="text-secondary">${timeString}</span>
-          `;
-
-            logContainer.prepend(logEntry);
+            return fetchStatus;
         }
 
         // เริ่มงาน
-        startButton.addEventListener('click', () => {
+        startButton.addEventListener('click', async () => {
+            const addLogStatus = await addLogEntry('start');
+            console.log('addLogStatus:', addLogStatus);
+            if (!addLogStatus) {
+                return;
+            }
+
             isWorking = true;
-            startTime = new Date();
+            // startTime = new Date();
+            console.log('startTime:', startTime);
             startButton.disabled = true;
             checkinButton.disabled = false;
             stopButton.disabled = false;
+
 
             // เริ่มการนับเวลา
             timerText.classList.remove('timer-inactive');
@@ -358,7 +410,6 @@
             timerInterval = setInterval(updateTimer, 1000);
             updateTimer(); // เรียกครั้งแรกทันที
 
-            addLogEntry('start');
         });
 
         // เช็คอิน
@@ -391,8 +442,9 @@
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
-                    const lat = position.coords.latitude.toFixed(4);
-                    const lon = position.coords.longitude.toFixed(4);
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lon = position.coords.longitude.toFixed(6);
+                    const radius = position.coords.accuracy;
                     const url =
                         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`;
 
@@ -404,15 +456,14 @@
                             text: "ไม่ทราบสภาพอากาศ",
                             icon: "❓"
                         };
-
-                        box.innerHTML = `
-                        <div class="icon">${desc.icon}</div>
-                        <div class="desc">${desc.text}</div>
-                        <div class="data">🌡️ อุณหภูมิ: ${weather.temperature}°C</div>
-                        <div class="data">💨 ลม: ${weather.windspeed} km/h</div>
-                        <div class="data">🕒 เวลา: ${weather.time}</div>
-                        <div class="data">📍 พิกัด: ${lat}, ${lon}</div>
-                    `;
+                        box.innerHTML = ``;
+                        // box.innerHTML = `
+                    //     <div class="desc"><span class="icon">${desc.icon}</span> ${desc.text}</div>
+                    //     <div class="data">🌡️ อุณหภูมิ: ${weather.temperature}°C</div>
+                    //     <div class="data">💨 ลม: ${weather.windspeed} km/h</div>
+                    //     <div class="data">🕒 เวลา: ${weather.time}</div>
+                    //     <div class="data">📍 พิกัด: ${lat}, ${lon}</div>
+                    // `;
 
                         // Initialize or update map
                         if (!map) {
@@ -421,7 +472,21 @@
                                 attribution: '&copy; OpenStreetMap contributors'
                             }).addTo(map);
                             marker = L.marker([lat, lon]).addTo(map)
-                                .bindPopup(`${desc.icon} ${desc.text}`).openPopup();
+                                .bindPopup(`
+                                    <div class="desc"><span class="icon">${desc.icon}</span> ${desc.text}</div>
+                                    <div class="data">🌡️ อุณหภูมิ: ${weather.temperature}°C</div>
+                                    <div class="data">💨 ลม: ${weather.windspeed} km/h</div>
+                                    <div class="data">🕒 เวลา: ${weather.time}</div>
+                                    <div class="data">📍 พิกัด: ${lat}, ${lon}</div>
+                                    <div class="data">📍 รัศมี: ${radius} m</div>
+                                `).openPopup();
+                            // Add a radius circle to the map
+                            L.circle([lat, lon], {
+                                color: '#add8e6',
+                                fillColor: '#add8e6',
+                                fillOpacity: 0.5,
+                                radius: radius
+                            }).addTo(map);
                         } else {
                             map.setView([lat, lon], 13);
                             marker.setLatLng([lat, lon])
@@ -435,11 +500,18 @@
 
                 }, () => {
                     box.innerHTML = "❌ ไม่สามารถเข้าถึงตำแหน่งของคุณได้";
+                }, {
+                    enableHighAccuracy: true,
+                    maximumAge: 0,
+                    timeout: 5000
                 });
             } else {
                 box.innerHTML = "❌ เบราว์เซอร์ไม่รองรับ Geolocation";
             }
         }
+
+        // ✅ เรียกเมื่อโหลดหน้า
+        window.onload = getWeatherAndMap;
     </script>
 
     <style>

@@ -11,7 +11,9 @@ use App\Http\Controllers\Organization\OrgController;
 use App\Http\Controllers\Organization\PositionController;
 use App\Http\Controllers\Organization\VehicleController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RenewalCodeController;
 use App\Http\Controllers\TSMUserController;
+use App\Http\Controllers\WorkRecordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +45,10 @@ Route::middleware(['auth'])->group(function () {
 
     // App data
     Route::resource('prefixes', PrefixController::class);
+    Route::get('/renewal-codes', [RenewalCodeController::class, 'index'])->name('renewal_codes.index');
+    Route::post('/renewal-code/store', [RenewalCodeController::class, 'store'])->name('renewal_codes.store');
+    Route::post('/renewal-code/user/redeem', [RenewalCodeController::class, 'userRedeem'])->name('renewal_codes.user.redeem');
+    Route::post('/renewal-code/org/redeem', [RenewalCodeController::class, 'orgRedeem'])->name('renewal_codes.org.redeem');
 
 
     Route::resource('organizations', OrgController::class);
@@ -115,4 +121,7 @@ Route::middleware(['auth'])->group(function () {
     // upload file route
     Route::post('/posts/file-upload', [FileUploadController::class, 'filepondUpload']);
     Route::delete('/filepond/delete', [FileUploadController::class, 'filepondDelete']);
+
+    // Work Records
+    Route::post('/work-record/store', [WorkRecordController::class, 'store'])->name('work-records.store');
 });
