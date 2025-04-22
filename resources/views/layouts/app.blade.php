@@ -532,6 +532,28 @@
                                         </div>
                                         <p class="text-muted">สแกน QR Code เพื่อติดต่อสอบถามและต่ออายุการใช้งาน</p>
                                     </div>
+
+                                    <div>
+                                        @if (Auth::user()->is_tsm)
+                                            <form action="{{ route('renewal_codes.user.redeem') }}" method="post">
+                                                @csrf
+                                                <label for="code" class="form-label">หรือกรอก Code เพื่อต่ออายุการใช้งาน</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="code" id="code" placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit" id="button-addon2">ต่ออายุ</button>
+                                                </div>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('renewal_codes.org.redeem') }}" method="post">
+                                                @csrf
+                                                <label for="code" class="form-label">หรือกรอก Code เพื่อต่ออายุการใช้งาน</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="code" id="code" placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit" id="button-addon2">ต่ออายุ</button>
+                                                </div>
+                                            </form>
+                                        @endif
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <a class="btn btn-secondary" href="{{ route('logout') }}"
