@@ -17,6 +17,10 @@
 
     <script src="https://unpkg.com/alpinejs" defer></script>
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css'])
 
@@ -279,6 +283,9 @@
                                         <li class="sidebar-item">
                                             <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
                                         </li>
+                                        <li class="sidebar-item">
+                                            <a href="{{ route('renewal_codes.index') }}" class="sidebar-link">รหัสต่ออายุ</a>
+                                        </li>
                                         {{-- <li class="sidebar-item">
                                             <a href="{{ route('form.types') }}" class="sidebar-link">ประเภทฟอร์ม</a>
                                         </li> --}}
@@ -354,16 +361,16 @@
                         @if (Auth::user()->expire_at ?? false)
                             @php
                                 $expire_date = new Carbon\Carbon(Auth::user()->expire_at);
-                                $diffDay = $expire_date->diff(Carbon\Carbon::now());
+                                $diffDay = (int) ceil(Carbon\Carbon::now()->diffInDays($expire_date));
                             @endphp
-                            @if ($diffDay->invert === 1 && $diffDay->d > 10)
+                            @if ($diffDay > 10)
                                 <button type="button" class="btn btn-primary">
-                                    <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
+                                    <i class="bi bi-clock"></i> {{ $diffDay }} วัน
                                 </button>
-                            @elseif ($diffDay->invert === 1 && $diffDay->d <= 10)
+                            @elseif ($diffDay <= 10 && $diffDay > 0)
                                 <button type="button" class="btn btn-warning border-danger" data-bs-toggle="modal"
                                     data-bs-target="#warningModal">
-                                    <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
+                                    <i class="bi bi-clock"></i> {{ $diffDay }} วัน
                                 </button>
                                 @if (!session('is_modal_active'))
                                     <button type="button" class="btn btn-primary" id="modalBtn"
@@ -385,16 +392,16 @@
                         @if (Auth::user()->userDetail->getOrg->expire_at ?? false)
                             @php
                                 $expire_date = new Carbon\Carbon(Auth::user()->userDetail->getOrg->expire_at);
-                                $diffDay = $expire_date->diff(Carbon\Carbon::now());
+                                $diffDay = (int) ceil(Carbon\Carbon::now()->diffInDays($expire_date));
                             @endphp
-                            @if ($diffDay->invert === 1 && $diffDay->d > 10)
+                            @if ($diffDay > 10)
                                 <button type="button" class="btn btn-primary">
-                                    <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
+                                    <i class="bi bi-clock"></i> {{ $diffDay }} วัน
                                 </button>
-                            @elseif ($diffDay->invert === 1 && $diffDay->d <= 10)
+                            @elseif ($diffDay <= 10 && $diffDay > 0)
                                 <button type="button" class="btn btn-warning border-danger" data-bs-toggle="modal"
                                     data-bs-target="#warningModal">
-                                    <i class="bi bi-clock"></i> {{ $diffDay->d }} วัน
+                                    <i class="bi bi-clock"></i> {{ $diffDay }} วัน
                                 </button>
                                 @if (!session('is_modal_active'))
                                     <button type="button" class="btn btn-primary" id="modalBtn"
@@ -412,6 +419,20 @@
                                 </button>
                             @endif
                         @endif
+                    @endif
+
+                    @if (session('redeemSuccess'))
+                        <div class="alert alert-success m-0 p-2 ms-2" role="alert">
+                            {{ session('redeemSuccess') }}
+                        </div>
+                    @elseif (session('redeemError'))
+                        <div class="alert alert-danger m-0 p-2 ms-2" role="alert">
+                            {{ session('redeemError') }}
+                        </div>
+                    @elseif ($errors->any())
+                        <div class="alert alert-danger m-0 p-2 ms-2" role="alert">
+                            {{ $errors->first() }}
+                        </div>
                     @endif
 
                     <!-- Warning Modal -->
@@ -438,13 +459,35 @@
                                         </p>
                                     </div>
 
-                                    <div class="text-center mb-3">
+                                    <div class="text-center mb-2">
                                         <h5 class="fw-bold mb-3">ติดต่อเพื่อต่ออายุได้ง่ายๆ</h5>
                                         <div class="qr-code mb-2">
                                             <img src="/images/contact.jpg" width="120"
                                                 alt="QR Code สำหรับต่ออายุการใช้งาน" class="img-fluid" />
                                         </div>
                                         <p class="text-muted">สแกน QR Code เพื่อติดต่อสอบถามและต่ออายุการใช้งาน</p>
+                                    </div>
+
+                                    <div>
+                                        @if (Auth::user()->is_tsm)
+                                            <form action="{{ route('renewal_codes.user.redeem') }}" method="post">
+                                                @csrf
+                                                <label for="code" class="form-label">หรือกรอก Code เพื่อต่ออายุการใช้งาน</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="code" id="code" placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit" id="button-addon2">ต่ออายุ</button>
+                                                </div>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('renewal_codes.org.redeem') }}" method="post">
+                                                @csrf
+                                                <label for="code" class="form-label">หรือกรอก Code เพื่อต่ออายุการใช้งาน</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="code" id="code" placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit" id="button-addon2">ต่ออายุ</button>
+                                                </div>
+                                            </form>
+                                        @endif
                                     </div>
 
                                     @php
@@ -578,7 +621,9 @@
         </div>
     </div>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modalBtn = document.getElementById('modalBtn');
