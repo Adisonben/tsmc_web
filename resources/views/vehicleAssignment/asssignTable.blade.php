@@ -58,7 +58,7 @@
                                                     -ไม่พบข้อมูลการมอบหมาย-</td>
                                             @endif
                                             <td>
-                                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#assignCarModal{{ $index }}" {{ session('org_status') == 2 ? 'disabled' : '' }}>
+                                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#assignCarModal{{ $index }}">
                                                     <i class="bi bi-person-plus"></i>
                                                 </button>
                                             </td>
