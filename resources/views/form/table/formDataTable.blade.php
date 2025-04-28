@@ -57,10 +57,12 @@
                                             <td>{{ $updatedDate->thaidate('j M Y') }}</td>
                                             <td>{{ $is_success ? "สำเร็จ" : "ยังไม่สำเร็จ" }} ( {{ $fill_values - $null_values  }}/{{ $fill_values }} )</td>
                                             <td>
-                                                <a href="{{ route('document.submission.edit', ['submission_id' => $submission->submission_id ]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
-                                                    data-bs-title="ทำแบบฟอร์ม">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
+                                                @if (!$is_success)
+                                                    <a href="{{ route('document.submission.edit', ['submission_id' => $submission->submission_id ]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
+                                                        data-bs-title="ทำแบบฟอร์ม">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                @endif
                                                 <a href="{{ route('document.submission.show', ['submission_id' => $submission->submission_id ]) }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip"
                                                     data-bs-title="รายละเอียด">
                                                     <i class="bi bi-list-check"></i>
