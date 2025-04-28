@@ -157,7 +157,7 @@
                         @if ($is_show)
                             <button class="btn btn-success" type="button" onclick="window.print()">Print</button>
                         @else
-                            <button class="btn btn-success" type="submit">บันทึก</button>
+                            <button class="btn btn-success" type="submit" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
                         @endif
                         <a href="{{ route('document.table', ['form_id' => $form_data->form_id]) }}" class="btn btn-secondary">กลับ</a>
                     </div>
