@@ -11,7 +11,8 @@
                             {{-- <a href="/organizations/create" class="btn btn-success btn-sm">สร้าง</a> --}}
                             <!-- Button trigger modal -->
                             @if (count($tsm_has_orgs ?? []) < 5)
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createOrg">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#createOrg">
                                     เพิ่ม
                                 </button>
                             @endif
@@ -94,74 +95,84 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($tsm_has_orgs as $index => $tsm_has_org)
-                                    <tr>
-                                        <th scope="row">{{ $index + 1 }}</th>
-                                        <td>
-                                            @if (optional($tsm_has_org->getOrg)->logo_img ?? false)
-                                                <img src="/uploads/orglogoes/{{ optional($tsm_has_org->getOrg)->logo_img }}"
-                                                    width="35" alt="">
+                                @if ($tsm_has_orgs && count($tsm_has_orgs ?? []) > 0)
+                                    @foreach ($tsm_has_orgs as $index => $tsm_has_org)
+                                        <tr>
+                                            <th scope="row">{{ $index + 1 }}</th>
+                                            <td>
+                                                @if (optional($tsm_has_org->getOrg)->logo_img ?? false)
+                                                    <img src="/uploads/orglogoes/{{ optional($tsm_has_org->getOrg)->logo_img }}"
+                                                        width="35" alt="">
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>{{ optional($tsm_has_org->getOrg)->name }}</td>
+                                            @if (optional($tsm_has_org->getOrg)->status == 2)
+                                                <td class="table-info text-center">ข้อมูลตัวอย่าง</td>
                                             @else
-                                                -
+                                                <td>
+                                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#updateOrg{{ $index }}">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-sm delete-data-btn"
+                                                        del-id="{{ optional($tsm_has_org->getOrg)->id }}" del-target="tsm/org"
+                                                        data-bs-toggle="tooltip" data-bs-title="ลบ"><i
+                                                            class="bi bi-trash"></i></button>
+                                                </td>
                                             @endif
-                                        </td>
-                                        <td>{{ optional($tsm_has_org->getOrg)->name }}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#updateOrg{{ $index }}">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm delete-data-btn"
-                                                del-id="{{ optional($tsm_has_org->getOrg)->id }}" del-target="tsm/org"
-                                                data-bs-toggle="tooltip" data-bs-title="ลบ"><i
-                                                    class="bi bi-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="updateOrg{{ $index }}" data-bs-backdrop="static"
-                                        data-bs-keyboard="false" tabindex="-1"
-                                        aria-labelledby="updateOrgLabel{{ $index }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="updateOrgLabel{{ $index }}">
-                                                        แก้ไของค์กร
-                                                    </h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
+                                        </tr>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="updateOrg{{ $index }}" data-bs-backdrop="static"
+                                            data-bs-keyboard="false" tabindex="-1"
+                                            aria-labelledby="updateOrgLabel{{ $index }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="updateOrgLabel{{ $index }}">
+                                                            แก้ไของค์กร
+                                                        </h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form
+                                                        action="{{ route('tsm.org.update', ['org_id' => $tsm_has_org?->getOrg?->id]) }}"
+                                                        method="post" enctype="multipart/form-data">
+                                                        <div class="modal-body">
+                                                            @csrf
+
+                                                            <div class="mb-3">
+                                                                <label for="orgName" class="form-label">ชื่อหน่วยงาน</label>
+                                                                <input type="text" maxlength="150" class="form-control"
+                                                                    id="orgName" name="orgName"
+                                                                    value="{{ $tsm_has_org?->getOrg?->name }}"
+                                                                    placeholder="กรุณากรอกชื่อหน่วยงาน" required>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="orgLogo" class="form-label">โลโก้หน่วยงาน
+                                                                    (ขนาดไม่เกิน 2 MB)
+                                                                </label>
+                                                                <input class="form-control" type="file" id="orgLogo"
+                                                                    name="orgLogo">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">ปิด</button>
+                                                            <button type="submit" class="btn btn-primary">บันทึก</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <form
-                                                    action="{{ route('tsm.org.update', ['org_id' => $tsm_has_org?->getOrg?->id]) }}"
-                                                    method="post" enctype="multipart/form-data">
-                                                    <div class="modal-body">
-                                                        @csrf
-
-                                                        <div class="mb-3">
-                                                            <label for="orgName" class="form-label">ชื่อหน่วยงาน</label>
-                                                            <input type="text" maxlength="150" class="form-control"
-                                                                id="orgName" name="orgName"
-                                                                value="{{ $tsm_has_org?->getOrg?->name }}"
-                                                                placeholder="กรุณากรอกชื่อหน่วยงาน" required>
-                                                        </div>
-
-                                                        <div class="mb-3">
-                                                            <label for="orgLogo" class="form-label">โลโก้หน่วยงาน
-                                                                (ขนาดไม่เกิน 2 MB)
-                                                            </label>
-                                                            <input class="form-control" type="file" id="orgLogo"
-                                                                name="orgLogo">
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">ปิด</button>
-                                                        <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                    </div>
-                                                </form>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="6" class="text-center">ไม่พบข้อมูล</td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>

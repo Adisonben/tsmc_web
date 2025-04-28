@@ -30,12 +30,15 @@
             {{-- Card --}}
             <div class="d-flex flex-wrap justify-content-center mb-5 gap-2 gap-md-4 w-75 mx-auto">
                 @foreach ($tsm_has_orgs as $tsm_has_org)
-                    <div class="card py-2" style="width: 18rem; {{ session('connected_org') == $tsm_has_org->org_id ? 'background-color: rgb(118, 255, 118);' : '' }}">
+                    <div class="card py-2"
+                        style="width: 18rem; {{ session('connected_org') == $tsm_has_org->org_id ? 'background-color: rgb(118, 255, 118);' : '' }}">
                         <div class="d-flex justify-content-center">
                             @if (optional($tsm_has_org->getOrg)->logo_img)
-                                <img src="/uploads/orglogoes/{{ optional($tsm_has_org->getOrg)->logo_img }}" height="100" class="card-img-top object-fit-contain" alt="org logo">
+                                <img src="/uploads/orglogoes/{{ optional($tsm_has_org->getOrg)->logo_img }}" height="100"
+                                    class="card-img-top object-fit-contain" alt="org logo">
                             @else
-                                <img src="/images/icons/tsmc_logo.png" height="100" class="card-img-top object-fit-contain" alt="org logo">
+                                <img src="/images/icons/tsmc_logo.png" height="100"
+                                    class="card-img-top object-fit-contain" alt="org logo">
                             @endif
                         </div>
                         <div class="card-body d-flex flex-column align-items-center">
@@ -43,19 +46,45 @@
                             @if (session('connected_org') == $tsm_has_org->org_id)
                                 <button class="btn btn-success w-100" disabled>เชื่อมต่อแล้ว</button>
                             @else
-                                <a href="{{ route('tsm.org.connect', ['org_id' => $tsm_has_org->org_id]) }}" class="btn btn-primary w-100">เชื่อมต่อ</a>
+                                <a href="{{ route('tsm.org.connect', ['org_id' => $tsm_has_org->org_id]) }}"
+                                    class="btn btn-primary w-100">เชื่อมต่อ</a>
                             @endif
                         </div>
                     </div>
                 @endforeach
+                @if ($default_org ?? false)
+                    <div class="card py-2"
+                        style="width: 18rem; {{ session('connected_org') == $default_org->id ? 'background-color: rgb(65, 249, 255);' : 'background-color: rgb(182, 182, 182);' }}">
+                        <div class="d-flex justify-content-center">
+                            @if ($default_org->logo_img)
+                                <img src="/uploads/orglogoes/{{ $default_org->logo_img }}" height="100"
+                                    class="card-img-top object-fit-contain" alt="org logo">
+                            @else
+                                <img src="/images/icons/tsmc_logo.png" height="100"
+                                    class="card-img-top object-fit-contain" alt="org logo">
+                            @endif
+                        </div>
+                        <div class="card-body d-flex flex-column align-items-center">
+                            <h5 class="card-title">{{ $default_org->name }} (ตัวอย่าง)</h5>
+                            @if (session('connected_org') == $default_org->id)
+                                <button class="btn btn-success w-100" disabled>เชื่อมต่อแล้ว</button>
+                            @else
+                                <a href="{{ route('tsm.org.connect', ['org_id' => $default_org->id]) }}"
+                                    class="btn btn-primary w-100">เชื่อมต่อ</a>
+                            @endif
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
     <style>
         #document-frame {
-          width: 100%;
-          height: 60vh; /* Set height to 60% of viewport height */
+            width: 100%;
+            height: 60vh;
+            /* Set height to 60% of viewport height */
         }
+
         #homepage {
             background-color: var(--main-color);
         }

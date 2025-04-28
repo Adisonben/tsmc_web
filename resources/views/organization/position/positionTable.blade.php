@@ -50,7 +50,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">ปิด</button>
-                                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                                        <button type="submit" class="btn btn-primary" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
                                     </div>
                                 </form>
                             </div>
@@ -95,8 +95,8 @@
                                                 </button>
                                                 <button type="button" class="btn btn-danger btn-sm delete-data-btn" {{ $position->created_by ? '' : 'disabled' }}
                                                     del-id="{{ $position->id }}" del-target="positions"
-                                                    data-bs-toggle="tooltip" data-bs-title="ลบ"><i
-                                                        class="bi bi-trash"></i>
+                                                    data-bs-toggle="tooltip" data-bs-title="ลบ" {{ session('org_status') == 2 ? 'disabled' : '' }}>
+                                                    <i class="bi bi-trash"></i>
                                                 </button>
                                             @endif
                                         </td>
@@ -150,7 +150,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                             data-bs-dismiss="modal">ปิด</button>
-                                                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                                                        <button type="submit" class="btn btn-primary" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
                                                     </div>
                                                 </form>
                                             </div>

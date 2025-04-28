@@ -124,4 +124,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Work Records
     Route::post('/work-record/store', [WorkRecordController::class, 'store'])->name('work-records.store');
+    Route::get('/work-records/table', [WorkRecordController::class, 'showWorkRecordTable'])->name('work-records.table');
+    Route::get('/work-records/geolocation-map/{workId}', [WorkRecordController::class, 'showGeoMap'])->name('work-records.geomap');
 });

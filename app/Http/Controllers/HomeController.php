@@ -13,6 +13,7 @@ use App\Models\Post;
 use App\Models\Tsm_has_Org;
 use App\Models\User;
 use App\Models\User_detail;
+use App\Models\WorkRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -39,9 +40,11 @@ class HomeController extends Controller
     {
         if (Auth::user()->is_tsm) {
             $tsm_has_orgs = Tsm_has_Org::where('tsm_id', Auth::user()->id)->get();
-            return view('tsm.home', compact('tsm_has_orgs'));
+            $default_org = Organization::where('status', 2)->first();
+            return view('tsm.home', compact('tsm_has_orgs', 'default_org'));
         } else {
-            return view('home');
+            $work_record = WorkRecord::where('user_id', Auth::user()->id)->whereNull('end_at')->orderBy('created_at', 'desc')->first();
+            return view('home', compact('work_record'));
         }
     }
 

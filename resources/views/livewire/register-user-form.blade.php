@@ -99,6 +99,6 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mb-3">บันทึก</button>
+        <button type="submit" class="btn btn-primary mb-3" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
     </form>
 </div>

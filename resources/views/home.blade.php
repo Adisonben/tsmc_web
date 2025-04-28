@@ -124,7 +124,7 @@
                                 <div class="weather-box" id="weather-box">
                                     <p>กดปุ่มเพื่อโหลดข้อมูล</p>
                                 </div>
-                                <div id="map" style="height: 250px; min-width: 180px;"></div>
+                                <div id="map" style="height: 300px; min-width: 180px;"></div>
                             </div>
                         </div>
                     </div>
@@ -209,6 +209,15 @@
         let startTime = null;
         let timerInterval = null;
         let isWorking = false;
+        var working_id = null;
+
+        var latitude = null;
+        var longitude = null;
+        var radius = null;
+        var weathercode = null;
+        var temperature = null;
+        var windspeed = null;
+        var recordtime = null;
 
         const weatherDescriptions = {
             0: {
@@ -285,6 +294,16 @@
             }
         };
 
+        document.addEventListener('DOMContentLoaded', function () {
+            const workRecord = @json($work_record ?? []);
+            if (workRecord && workRecord.id) {
+                startTime = workRecord.start_at ? new Date(workRecord.start_at) : null;
+                working_id = workRecord.id;
+                startWork();
+            }
+            // Put any script here that should run when this view is loaded
+        });
+
         // ปุ่มควบคุม
         const startButton = document.getElementById('start-button');
         const checkinButton = document.getElementById('checkin-button');
@@ -338,7 +357,14 @@
                     },
                     body: JSON.stringify({
                         action: action,
-                        work_id: null,
+                        work_id: working_id,
+                        latitude: latitude,
+                        longitude: longitude,
+                        radius: radius,
+                        weathercode: weathercode,
+                        temperature: temperature,
+                        windspeed: windspeed,
+                        recordtime: recordtime,
                     })
                 })
                 .then(response => {
@@ -354,6 +380,8 @@
                     }
                     startTime = data.date ? new Date(data.date) : null;
                     fetchStatus = true;
+                    working_id = data.work_id;
+
                     Swal.fire({
                         toast: true,
                         position: "top-end",
@@ -369,7 +397,7 @@
                     });
                 })
                 .catch(error => {
-                    // console.error('Error saving.');
+                    // console.error('Error saving.', error);
                     fetchStatus = false;
                     Swal.fire({
                         toast: true,
@@ -390,18 +418,14 @@
         }
 
         // เริ่มงาน
-        startButton.addEventListener('click', async () => {
-            const addLogStatus = await addLogEntry('start');
-            console.log('addLogStatus:', addLogStatus);
-            if (!addLogStatus) {
-                return;
-            }
-
+        function startWork() {
             isWorking = true;
             // startTime = new Date();
             console.log('startTime:', startTime);
             startButton.disabled = true;
-            checkinButton.disabled = false;
+            if (latitude && longitude) {
+                checkinButton.disabled = false;
+            }
             stopButton.disabled = false;
 
 
@@ -410,16 +434,25 @@
             if (timerInterval) clearInterval(timerInterval);
             timerInterval = setInterval(updateTimer, 1000);
             updateTimer(); // เรียกครั้งแรกทันที
+        }
 
+        startButton.addEventListener('click', async () => {
+            const addLogStatus = await addLogEntry('start');
+            console.log('addLogStatus:', addLogStatus);
+            if (!addLogStatus) {
+                return;
+            }
+            startWork();
         });
 
         // เช็คอิน
-        checkinButton.addEventListener('click', () => {
-            addLogEntry('checkin');
+        checkinButton.addEventListener('click', async () => {
+            const addLogStatus = await addLogEntry('checkin');
+            console.log('addLogStatus:', addLogStatus);
         });
 
         // หยุดงาน
-        stopButton.addEventListener('click', () => {
+        function endWork() {
             isWorking = false;
             startButton.disabled = false;
             checkinButton.disabled = true;
@@ -430,8 +463,15 @@
                 clearInterval(timerInterval);
                 timerInterval = null;
             }
+        }
 
-            addLogEntry('stop');
+        stopButton.addEventListener('click', async () => {
+            const addLogStatus = await addLogEntry('stop');
+            console.log('addLogStatus:', addLogStatus);
+            if (!addLogStatus) {
+                return;
+            }
+            endWork();
         });
 
         // ฟังก์ชันสำหรับการดึงข้อมูลสภาพอากาศ
@@ -443,16 +483,22 @@
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
-                    const lat = position.coords.latitude.toFixed(6);
-                    const lon = position.coords.longitude.toFixed(6);
-                    const radius = position.coords.accuracy.toFixed(0);
+                    latitude = position.coords.latitude.toFixed(6);
+                    longitude = position.coords.longitude.toFixed(6);
+                    radius = position.coords.accuracy.toFixed(0);
                     const url =
-                        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`;
+                        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`;
 
                     try {
                         const res = await fetch(url);
                         const data = await res.json();
                         const weather = data.current_weather;
+
+                        weathercode = weather.weathercode;
+                        temperature = weather.temperature;
+                        windspeed = weather.windspeed;
+                        recordtime = weather.time;
+
                         const desc = weatherDescriptions[weather.weathercode] || {
                             text: "ไม่ทราบสภาพอากาศ",
                             icon: "❓"
@@ -468,29 +514,29 @@
 
                         // Initialize or update map
                         if (!map) {
-                            map = L.map('map').setView([lat, lon], 13);
+                            map = L.map('map').setView([latitude, longitude], 14);
                             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                 attribution: '&copy; OpenStreetMap contributors'
                             }).addTo(map);
-                            marker = L.marker([lat, lon]).addTo(map)
+                            marker = L.marker([latitude, longitude]).addTo(map)
                                 .bindPopup(`
                                     <div class="desc"><span class="icon">${desc.icon}</span> ${desc.text}</div>
                                     <div class="data">🌡️ อุณหภูมิ: ${weather.temperature}°C</div>
                                     <div class="data">💨 ลม: ${weather.windspeed} km/h</div>
                                     <div class="data">🕒 เวลา: ${weather.time}</div>
-                                    <div class="data">📍 พิกัด: ${lat}, ${lon}</div>
+                                    <div class="data">📍 พิกัด: ${latitude}, ${longitude}</div>
                                     <div class="data">📍 รัศมี: ${radius} m</div>
                                 `).openPopup();
                             // Add a radius circle to the map
-                            L.circle([lat, lon], {
+                            L.circle([latitude, longitude], {
                                 color: '#add8e6',
                                 fillColor: '#add8e6',
                                 fillOpacity: 0.5,
                                 radius: radius
                             }).addTo(map);
                         } else {
-                            map.setView([lat, lon], 13);
-                            marker.setLatLng([lat, lon])
+                            map.setView([latitude, longitude], 13);
+                            marker.setLatLng([latitude, longitude])
                                 .setPopupContent(`${desc.icon} ${desc.text}`).openPopup();
                         }
 

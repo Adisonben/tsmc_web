@@ -17,11 +17,13 @@ class TSMUserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // public function index()
-    // {
-    //     $tsm_has_orgs = Tsm_has_Org::where('tsm_id', Auth::user()->id)->get();
-    //     return view('tsm.home', compact('tsm_has_orgs'));
-    // }
+    public function index()
+    {
+        if (Auth::user()->username === 'tsmcadmin') {
+            $tsmUsers = User::whereNot('username', 'tsmcadmin')->where('is_tsm', true)->paginate(20);
+        }
+        return view('account.tsmAccountTable', compact('tsmUsers'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -232,7 +234,9 @@ class TSMUserController extends Controller
     public function connectOrg(string $org_id)
     {
         try {
-            Session::put('connected_org', $org_id);
+            $org = Organization::findOrFail($org_id);
+            Session::put('connected_org', $org->id);
+            Session::put('org_status', $org->status);
             return redirect()->back()->with('success', 'เชื่อมต่อกับองค์กรเรียบร้อย');
         } catch (\Throwable $th) {
             //throw $th;
@@ -245,7 +249,9 @@ class TSMUserController extends Controller
         try {
             if (Tsm_has_Org::where('org_id', $org_id)->where('tsm_id', Auth()->user()->id)->exists()) {
                 Tsm_has_Org::where('org_id', $org_id)->where('tsm_id', Auth()->user()->id)->delete();
-                Organization::where('id', $org_id)->delete();
+                Organization::where('id', $org_id)->update([
+                    'status' => 0,
+                ]);
             }
             return response()->json([
                 'message' => 'ลบข้อมูลเรียบร้อย'

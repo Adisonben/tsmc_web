@@ -25,7 +25,7 @@
                                     <input class="form-check-input positionCheck" type="checkbox"
                                         posit-id="{{ $position->id }}" value="{{ $form_data->id }}" id="position{{ $position->id }}"
                                         {{ $position->hasThisForm($form_data->id) ? "checked" : '' }}
-                                        >
+                                        {{session('org_status') == 2 ? 'disabled' : ''}}>
                                     <label class="form-check-label" for="position{{ $position->id }}">
                                         {{ $position->name }}
                                     </label>

@@ -27,7 +27,7 @@
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('สาขา') }}</p>
                             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#createBrnModal">
+                                data-bs-target="#createBrnModal" {{ session('org_status') == 2 ? 'disabled' : '' }}>
                                 เพิ่ม
                             </button>
                         </div>
@@ -89,11 +89,11 @@
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $brn->name }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" {{ session('org_status') == 2 ? 'disabled' : '' }}
                                                 data-bs-target="#updateBrnModal{{ $index }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
-                                            <button type="button" class="btn btn-danger btn-sm delete-orgdata-btn"
+                                            <button type="button" class="btn btn-danger btn-sm delete-orgdata-btn" {{ session('org_status') == 2 ? 'disabled' : '' }}
                                                 del-id="{{ $brn->id }}" del-target="branch"
                                                 ><i
                                                     class="bi bi-trash"></i></button>
@@ -139,7 +139,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('ฝ่าย') }}</p>
-                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" {{ session('org_status') == 2 ? 'disabled' : '' }}
                                 data-bs-target="#updateDpmModal">
                                 เพิ่ม
                             </button>
@@ -209,11 +209,11 @@
                                         <td>{{ $dpm->name }}</td>
                                         <td>{{ optional($dpm->getBrn)->name }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" {{ session('org_status') == 2 ? 'disabled' : '' }}
                                                 data-bs-target="#updateDpmModal{{ $index }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
-                                            <button type="button" class="btn btn-danger btn-sm delete-orgdata-btn"
+                                            <button type="button" class="btn btn-danger btn-sm delete-orgdata-btn" {{ session('org_status') == 2 ? 'disabled' : '' }}
                                                 del-id="{{ $dpm->id }}" del-target="department"
                                                 ><i
                                                     class="bi bi-trash"></i></button>

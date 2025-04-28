@@ -18,8 +18,7 @@
     <script src="https://unpkg.com/alpinejs" defer></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css'])
@@ -112,9 +111,11 @@
                                     <li class="sidebar-item">
                                         <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
                                     </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('posit.perm') }}" class="sidebar-link">การอนุญาต</a>
-                                    </li>
+                                    @if (session('org_status') !== 2)
+                                        <li class="sidebar-item">
+                                            <a href="{{ route('posit.perm') }}" class="sidebar-link">การอนุญาต</a>
+                                        </li>
+                                    @endif
                                 </ul>
                             </li>
                             <li class="sidebar-item" id="accountPage">
@@ -165,7 +166,7 @@
                         @endphp --}}
                         @if (
                             (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', Auth::user()->userDetail->org) ??
-                                false) || Auth::user()->username === 'tsmcadmin')
+                                false))
                             <li class="sidebar-item" id="postsPage">
                                 <a href="{{ route('posts.index') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
@@ -175,7 +176,7 @@
                         @endif
                         @if (
                             (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_check', Auth::user()->userDetail->org) ??
-                                false) || Auth::user()->username === 'tsmcadmin')
+                                false))
                             <li class="sidebar-item" id="formCheckpage">
                                 <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
@@ -186,11 +187,22 @@
                         @if (
                             (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'can_access_table',
-                                Auth::user()->userDetail->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                                Auth::user()->userDetail->org) ?? false))
                             <li class="sidebar-item" id="formCheckTablePage">
                                 <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>
                                     ทะเบียนเอกสาร
+                                </a>
+                            </li>
+                        @endif
+                        @if (
+                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                'work_record_table',
+                                Auth::user()->userDetail->org) ?? false))
+                            <li class="sidebar-item" id="workRecordTablePage">
+                                <a href="{{ route('work-records.table') }}" class="sidebar-link">
+                                    <i class="bi bi-table"></i>
+                                    ทะเบียนเวลาทำงาน
                                 </a>
                             </li>
                         @endif
@@ -219,7 +231,7 @@
                         @if (
                             (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'can_assign_driver',
-                                optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                                optional(Auth::user()->userDetail)->org) ?? false))
                             <li class="sidebar-item" id="assignPage">
                                 <a href="{{ route('vehicle.assignment.table') }}" class="sidebar-link">
                                     <i class="bi bi-person-badge"></i>
@@ -230,7 +242,7 @@
                         @if (
                             (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'can_export',
-                                optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                                optional(Auth::user()->userDetail)->org) ?? false))
                             <li class="sidebar-item" id="exportPage">
                                 <a href="{{ route('document.export.filter') }}" class="sidebar-link">
                                     <i class="bi bi-file-earmark-arrow-up"></i>
@@ -284,7 +296,8 @@
                                             <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
                                         </li>
                                         <li class="sidebar-item">
-                                            <a href="{{ route('renewal_codes.index') }}" class="sidebar-link">รหัสต่ออายุ</a>
+                                            <a href="{{ route('renewal_codes.index') }}"
+                                                class="sidebar-link">รหัสต่ออายุ</a>
                                         </li>
                                         {{-- <li class="sidebar-item">
                                             <a href="{{ route('form.types') }}" class="sidebar-link">ประเภทฟอร์ม</a>
@@ -317,6 +330,14 @@
                                 </a>
                             </li>
                         @endif
+                        @if (Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-item" id="accountTSMPage">
+                                <a href="{{ route('tsms.index') }}" class="sidebar-link">
+                                    <i class="bi bi-people"></i>
+                                    บัญชีผู้ใช้ TSM ทั้งหมด
+                                </a>
+                            </li>
+                        @endif
 
                         <li class="sidebar-header">
                             ทั่วไป
@@ -330,7 +351,7 @@
                     </ul>
                 @endif
 
-                <div class="sidebar-footer">
+                {{-- <div class="sidebar-footer">
                     <a class="sidebar-footer" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
@@ -341,7 +362,7 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
-                </div>
+                </div> --}}
             </div>
         </aside>
 
@@ -434,7 +455,6 @@
                             {{ $errors->first() }}
                         </div>
                     @endif
-
                     <!-- Warning Modal -->
                     <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel"
                         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -472,19 +492,25 @@
                                         @if (Auth::user()->is_tsm)
                                             <form action="{{ route('renewal_codes.user.redeem') }}" method="post">
                                                 @csrf
-                                                <label for="code" class="form-label">หรือกรอก Code เพื่อต่ออายุการใช้งาน</label>
+                                                <label for="code" class="form-label">หรือกรอก Code
+                                                    เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="code" id="code" placeholder="กรอก code" required>
-                                                    <button class="btn btn-primary" type="submit" id="button-addon2">ต่ออายุ</button>
+                                                    <input type="text" class="form-control" name="code"
+                                                        id="code" placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit"
+                                                        id="button-addon2">ต่ออายุ</button>
                                                 </div>
                                             </form>
                                         @else
                                             <form action="{{ route('renewal_codes.org.redeem') }}" method="post">
                                                 @csrf
-                                                <label for="code" class="form-label">หรือกรอก Code เพื่อต่ออายุการใช้งาน</label>
+                                                <label for="code" class="form-label">หรือกรอก Code
+                                                    เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="code" id="code" placeholder="กรอก code" required>
-                                                    <button class="btn btn-primary" type="submit" id="button-addon2">ต่ออายุ</button>
+                                                    <input type="text" class="form-control" name="code"
+                                                        id="code" placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit"
+                                                        id="button-addon2">ต่ออายุ</button>
                                                 </div>
                                             </form>
                                         @endif
@@ -537,19 +563,25 @@
                                         @if (Auth::user()->is_tsm)
                                             <form action="{{ route('renewal_codes.user.redeem') }}" method="post">
                                                 @csrf
-                                                <label for="code" class="form-label">หรือกรอก Code เพื่อต่ออายุการใช้งาน</label>
+                                                <label for="code" class="form-label">หรือกรอก Code
+                                                    เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="code" id="code" placeholder="กรอก code" required>
-                                                    <button class="btn btn-primary" type="submit" id="button-addon2">ต่ออายุ</button>
+                                                    <input type="text" class="form-control" name="code"
+                                                        id="code" placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit"
+                                                        id="button-addon2">ต่ออายุ</button>
                                                 </div>
                                             </form>
                                         @else
                                             <form action="{{ route('renewal_codes.org.redeem') }}" method="post">
                                                 @csrf
-                                                <label for="code" class="form-label">หรือกรอก Code เพื่อต่ออายุการใช้งาน</label>
+                                                <label for="code" class="form-label">หรือกรอก Code
+                                                    เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="code" id="code" placeholder="กรอก code" required>
-                                                    <button class="btn btn-primary" type="submit" id="button-addon2">ต่ออายุ</button>
+                                                    <input type="text" class="form-control" name="code"
+                                                        id="code" placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit"
+                                                        id="button-addon2">ต่ออายุ</button>
                                                 </div>
                                             </form>
                                         @endif
@@ -607,7 +639,7 @@
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
+                                            {{ __('ออกจากระบบ') }}
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -642,14 +674,69 @@
             </footer>
         </div>
     </div>
+
+    {{-- Org status close modal --}}
+    @if (!Auth::user()->is_tsm && !Auth::user()->username === 'tsmcadmin')
+        <button type="button" class="btn btn-primary" id="orgStatusBtn" data-bs-toggle="modal" hidden
+            data-bs-target="#closeOrgModal" {{ Auth::user()->userDetail->getOrg->status == 0 ? '' : 'disabled' }}>
+            statusalert
+        </button>
+    @endif
+    <div class="modal fade" id="closeOrgModal" tabindex="-1" aria-labelledby="closeOrgModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {{-- <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="closeOrgModalLabel">ติดต่อสอบถามได้ที่</h1>
+                                </div> --}}
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        หน่วยงานของคุณถูกปิดการใช้งาน
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning" role="alert">
+                        <p class="mb-0">
+                            หน่วยงานของคุณถูกปิดการใช้งานแล้ว กรุณาติดต่อเจ้าหน้าที่ของเราเพื่อใช้งานต่อไป
+                        </p>
+                    </div>
+
+                    <div class="text-center mb-3">
+                        <h5 class="fw-bold mb-3">ติดต่อเพื่อต่ออายุได้ง่ายๆ</h5>
+                        <div class="qr-code mb-2">
+                            <img src="/images/contact.jpg" width="120" alt="QR Code สำหรับต่ออายุการใช้งาน"
+                                class="img-fluid" />
+                        </div>
+                        <p class="text-muted">สแกน QR Code เพื่อติดต่อสอบถามและต่ออายุการใช้งาน</p>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <a class="btn btn-secondary" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                        <i class="bi bi-box-arrow-left"></i>
+                        ออกจากระบบ
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modalBtn = document.getElementById('modalBtn');
             modalBtn.click();
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const orgStatusBtn = document.getElementById('orgStatusBtn');
+            orgStatusBtn.click();
         });
     </script>
 </body>

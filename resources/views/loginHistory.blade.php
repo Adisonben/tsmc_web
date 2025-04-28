@@ -23,18 +23,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($histories as $index => $history)
-                                    @php
-                                        $createdDate = new Carbon\Carbon($history->created_at);
-                                    @endphp
+                                @if ($histories && $histories->count() > 0)
+
+                                    @foreach ($histories as $index => $history)
+                                        @php
+                                            $createdDate = new Carbon\Carbon($history->created_at);
+                                        @endphp
+                                        <tr>
+                                            <td>{{ (($histories->currentPage()-1) * 10) + ($index+1) }}</td>
+                                            <td>{{ $history->getUser->full_name }}</td>
+                                            <td>{{ $createdDate->thaidate('j F Y \\เวลา H:i:s') }}</td>
+                                            <td>{{ $history->ip_address }}</td>
+                                            <td>{{ $history->agent }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td>{{ (($histories->currentPage()-1) * 10) + ($index+1) }}</td>
-                                        <td>{{ $history->getUser->full_name }}</td>
-                                        <td>{{ $createdDate->thaidate('j F Y \\เวลา H:i:s') }}</td>
-                                        <td>{{ $history->ip_address }}</td>
-                                        <td>{{ $history->agent }}</td>
+                                        <td colspan="6" class="text-center">ไม่พบข้อมูล</td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                         {{ $histories->links() }}

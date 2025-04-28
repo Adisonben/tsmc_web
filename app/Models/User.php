@@ -70,4 +70,8 @@ class User extends Authenticatable
     {
         return $this->userDetail ? $this->userDetail->getOrg?->name : '';
     }
+
+    public function getTSMOrg() {
+        return $this->hasMany(Tsm_has_Org::class, 'tsm_id', 'id');
+    }
 }

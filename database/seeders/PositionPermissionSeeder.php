@@ -50,6 +50,14 @@ class PositionPermissionSeeder extends Seeder
                 'name' => 'can_see_all_docs',
                 'label' => 'มองเห็นเอกสารทั้งหมด',
             ],
+            [
+                'name' => 'can_record_work',
+                'label' => 'บันทึกเวลาทำงาน',
+            ],
+            [
+                'name' => 'work_record_table',
+                'label' => 'ทะเบียนบันทึกเวลาทำงาน',
+            ],
         ];
         foreach ($post_perms as $perm) {
             Position_permission::create([

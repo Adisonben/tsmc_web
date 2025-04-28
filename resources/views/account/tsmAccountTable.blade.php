@@ -7,13 +7,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('ผู้ใช้ทั้งหมด') }}</p>
+                            <p class="mb-0 fs-4">{{ __('ผู้ใช้ TSM ทั้งหมด') }}</p>
                             <div>
-                                <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">สร้าง</a>
-                                @if (session('org_status') !== 2)
-                                    <a href="{{ route('user.list.export') }}" class="btn btn-secondary btn-sm"
-                                        data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
-                                @endif
+                                <a href="{{ route('user.list.export') }}" class="btn btn-secondary btn-sm"
+                                    data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
                             </div>
                         </div>
                     </div>
@@ -31,32 +28,24 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Username</th>
                                         <th scope="col">ชื่อ</th>
+                                        <th scope="col">วันที่ลงทะเบียน</th>
                                         <th scope="col">หน่วยงาน</th>
-                                        <th scope="col">สาขา</th>
-                                        <th scope="col">แผนก</th>
-                                        <th scope="col">ตำแหน่ง</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (count($users) == 0)
+                                    @if (count($tsmUsers) == 0)
                                         <tr>
                                             <td colspan="8" class="text-center">ไม่มีข้อมูล</td>
                                         </tr>
                                     @else
-                                        @foreach ($users as $index => $user)
+                                        @foreach ($tsmUsers as $index => $user)
                                             <tr>
                                                 <th scope="row">{{ $index + 1 }}</th>
                                                 <td>{{ $user->username }}</td>
                                                 <td>{{ $user->full_name }}</td>
-                                                @if ($user->is_tsm)
-                                                    <td colspan="4" class="text-center table-info"> เจ้าหน้าที่ TSM</td>
-                                                @else
-                                                    <td>{{ optional($user->userDetail->getOrg)->name }}</td>
-                                                    <td>{{ optional($user->userDetail->getBrn)->name }}</td>
-                                                    <td>{{ optional($user->userDetail->getDpm)->name }}</td>
-                                                    <td>{{ optional($user->userDetail->getPosition)->name ?? "-" }}</td>
-                                                @endif
+                                                <td>{{ \Carbon\Carbon::parse($user->created_at)->thaidate('j M Y') }}</td>
+                                                <td>{{ count($user->getTSMOrg ?? []) }}</td>
 
                                                 <td>
                                                     <a href="{{ route('users.edit', ['user' => $user->user_id]) }}"
@@ -64,7 +53,7 @@
                                                         data-bs-title="แก้ไข">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
-                                                    <button type="button" class="btn btn-danger btn-sm delete-data-btn" {{ session('org_status') == 2 ? 'disabled' : '' }}
+                                                    <button type="button" class="btn btn-danger btn-sm delete-data-btn"
                                                         del-id="{{ $user->id }}" del-target="users"
                                                         data-bs-toggle="tooltip" data-bs-title="ลบ">
                                                         <i class="bi bi-trash"></i>
@@ -75,6 +64,7 @@
                                     @endif
                                 </tbody>
                             </table>
+                            {{ $tsmUsers->links() }}
                         </div>
                     </div>
                 </div>
@@ -82,7 +72,7 @@
         </div>
     </div>
     <style>
-        #accountPage {
+        #accountTSMPage {
             background-color: var(--main-color);
         }
     </style>

@@ -123,7 +123,7 @@
                 </button>
 
                 {{-- Submit Button --}}
-                <button type="submit" class="btn btn-success p-2 d-flex align-items-center justify-content-center">
+                <button type="submit" class="btn btn-success p-2 d-flex align-items-center justify-content-center" {{ session('org_status') == 2 ? 'disabled' : '' }}>
                     <i class="bi bi-floppy me-1"></i> บันทึกฟอร์ม
                 </button>
             </div>

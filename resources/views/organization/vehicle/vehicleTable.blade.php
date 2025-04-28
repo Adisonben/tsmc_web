@@ -38,50 +38,103 @@
                                         <div class="mb-3">
                                             <label for="license_category" class="form-label">หมวดทะเบียนรถ</label>
                                             <input type="text" class="form-control" maxlength="150" id="license_category"
-                                                name="license_category" value="{{ old('license_category') }}" placeholder="เช่น กก, 10-99" required>
+                                                name="license_category" value="{{ old('license_category') }}"
+                                                placeholder="เช่น กก, 10-99" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="license_plate" class="form-label">หมายเลขทะเบียนรถ</label>
                                             <input type="text" class="form-control" maxlength="150" id="license_plate"
-                                                name="license_plate" value="{{ old('license_plate') }}" placeholder="เช่น กข-1111, 98-9559" required>
+                                                name="license_plate" value="{{ old('license_plate') }}"
+                                                placeholder="เช่น กข-1111, 98-9559" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="registration_province"
                                                 class="form-label">จังหวัดที่จดทะเบียนรถ</label>
                                             <input type="text" class="form-control" maxlength="150"
                                                 id="registration_province" name="registration_province"
-                                                placeholder="กรุณากรอก จังหวัดที่จดทะเบียนรถ" value="{{ old('registration_province') }}" required>
+                                                placeholder="กรุณากรอก จังหวัดที่จดทะเบียนรถ"
+                                                value="{{ old('registration_province') }}" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="brand" class="form-label">ยี่ห้อรถ</label>
-                                            <input type="text" class="form-control" value="{{ old('brand') }}" maxlength="150" id="brand"
-                                                name="brand" placeholder="เช่น Benz, ISUZU" required>
+                                            <input type="text" class="form-control" value="{{ old('brand') }}"
+                                                maxlength="150" id="brand" name="brand" placeholder="เช่น Benz, ISUZU"
+                                                required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="standard" class="form-label">ลักษณะ/มาตรฐาน (หากไม่มีกรอก -)</label>
-                                            <input type="text" class="form-control" maxlength="150" id="standard"
-                                                name="standard" value="{{ old('standard') }}" placeholder="เช่น 2ข, 3ก" required>
+                                            <label for="standard" class="form-label">ลักษณะ/มาตรฐาน</label>
+                                            <select class="form-select" id="standard" name="standard" required>
+                                                <option value="" disabled selected>กรุณาเลือก</option>
+                                                <option value="รถกระบะบรรทุก"
+                                                    {{ old('standard') == 'รถกระบะบรรทุก' ? 'selected' : '' }}>รถกระบะบรรทุก
+                                                </option>
+                                                <option value="รถตู้บรรทุก"
+                                                    {{ old('standard') == 'รถตู้บรรทุก' ? 'selected' : '' }}>รถตู้บรรทุก
+                                                </option>
+                                                <option value="รถบรรทุกของเหลว"
+                                                    {{ old('standard') == 'รถบรรทุกของเหลว' ? 'selected' : '' }}>
+                                                    รถบรรทุกของเหลว</option>
+                                                <option value="รถบรรทุกวัสดุอันตราย"
+                                                    {{ old('standard') == 'รถบรรทุกวัสดุอันตราย' ? 'selected' : '' }}>
+                                                    รถบรรทุกวัสดุอันตราย</option>
+                                                <option value="รถบรรทุกเฉพาะกิจ"
+                                                    {{ old('standard') == 'รถบรรทุกเฉพาะกิจ' ? 'selected' : '' }}>
+                                                    รถบรรทุกเฉพาะกิจ</option>
+                                                <option value="รถพ่วง" {{ old('standard') == 'รถพ่วง' ? 'selected' : '' }}>
+                                                    รถพ่วง</option>
+                                                <option value="รถกึ่งพ่วง"
+                                                    {{ old('standard') == 'รถกึ่งพ่วง' ? 'selected' : '' }}>รถกึ่งพ่วง
+                                                </option>
+                                                <option value="รถกึ่งพ่วงบรรทุกวัสดุยาว"
+                                                    {{ old('standard') == 'รถกึ่งพ่วงบรรทุกวัสดุยาว' ? 'selected' : '' }}>
+                                                    รถกึ่งพ่วงบรรทุกวัสดุยาว</option>
+                                                <option value="รถลากจูง"
+                                                    {{ old('standard') == 'รถลากจูง' ? 'selected' : '' }}>รถลากจูง</option>
+                                                <option value="รถปรับอากาศพิเศษ"
+                                                    {{ old('standard') == 'รถปรับอากาศพิเศษ' ? 'selected' : '' }}>
+                                                    รถปรับอากาศพิเศษ</option>
+                                                <option value="รถปรับอากาศ"
+                                                    {{ old('standard') == 'รถปรับอากาศ' ? 'selected' : '' }}>รถปรับอากาศ
+                                                </option>
+                                                <option value="รถที่ไม่มีเครื่องปรับอากาศ"
+                                                    {{ old('standard') == 'รถที่ไม่มีเครื่องปรับอากาศ' ? 'selected' : '' }}>
+                                                    รถที่ไม่มีเครื่องปรับอากาศ</option>
+                                                <option value="รถสองชั้น"
+                                                    {{ old('standard') == 'รถสองชั้น' ? 'selected' : '' }}>รถสองชั้น
+                                                </option>
+                                                <option value="รถพ่วง" {{ old('standard') == 'รถพ่วง' ? 'selected' : '' }}>
+                                                    รถพ่วง</option>
+                                                <option value="รถกึ่งพ่วง"
+                                                    {{ old('standard') == 'รถกึ่งพ่วง' ? 'selected' : '' }}>รถกึ่งพ่วง
+                                                </option>
+                                                <option value="รถโดยสารเฉพาะกิจ"
+                                                    {{ old('standard') == 'รถโดยสารเฉพาะกิจ' ? 'selected' : '' }}>
+                                                    รถโดยสารเฉพาะกิจ</option>
+                                            </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="type" class="form-label">ประเภทรถ</label>
                                             <input type="text" class="form-control" maxlength="150" id="type"
-                                                name="type" value="{{ old(key: 'type') }}" placeholder="เช่น รถ 6 ล้อ, รถบรรทุกวัสดุอันตราย" required>
+                                                name="type" value="{{ old(key: 'type') }}"
+                                                placeholder="เช่น รถ 6 ล้อ, รถบรรทุกวัสดุอันตราย" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="ins_company" class="form-label">บริษัทประกันภัย</label>
                                             <input type="text" class="form-control" maxlength="150" id="ins_company"
-                                                name="ins_company" value="{{ old('ins_company') }}" placeholder="กรุณากรอก บริษัทประกันภัย รถ" required>
+                                                name="ins_company" value="{{ old('ins_company') }}"
+                                                placeholder="กรุณากรอก บริษัทประกันภัย รถ" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="ins_type" class="form-label">ประเภทประกันภัย</label>
                                             <input type="text" class="form-control" maxlength="150" id="ins_type"
-                                                name="ins_type" value="{{ old('ins_type') }}" placeholder="เช่น ชั้น1" required>
+                                                name="ins_type" value="{{ old('ins_type') }}" placeholder="เช่น ชั้น1"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">ปิด</button>
-                                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                                        <button type="submit" class="btn btn-primary" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
                                     </div>
                                 </form>
                             </div>
@@ -100,24 +153,33 @@
                                 </div>
                                 <form enctype="multipart/form-data" id="importForm">
                                     <div class="modal-body">
-                                        <div class="border-l-4 border-blue-500 p-2 mb-2 rounded" style="background-color: rgb(160, 255, 255)">
+                                        <div class="border-l-4 border-blue-500 p-2 mb-2 rounded"
+                                            style="background-color: rgb(160, 255, 255)">
                                             <div class="accordion" id="accordionExample">
                                                 <div class="accordion-item">
-                                                  <h2 class="accordion-header">
-                                                    <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                        <i class="bi bi-exclamation-circle"></i> &nbsp; คำแนะนำการนำเข้าข้อมูล
-                                                    </button>
-                                                  </h2>
-                                                  <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                    <div class="accordion-body">
-                                                        <div class="m-0">
-                                                            <p class="mb-0">- ข้อมูลจะต้องอยู่ในรูปแบบไฟล์ Excel (.xlsx หรือ .xls)</p>
-                                                            <p class="mb-0">- ข้อมูลจะต้องมีหัวตารางตรงตาม template</p>
-                                                            <p class="mb-0">- ห้ามลบหรือเพิ่มคอลัมน์ในไฟล์ template</p>
-                                                            <p class="mb-0">- ห้ามมีช่องว่างในข้อมูลที่จำเป็นต้องกรอก</p>
+                                                    <h2 class="accordion-header">
+                                                        <button class="accordion-button collapsed p-2" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                            aria-expanded="true" aria-controls="collapseOne">
+                                                            <i class="bi bi-exclamation-circle"></i> &nbsp;
+                                                            คำแนะนำการนำเข้าข้อมูล
+                                                        </button>
+                                                    </h2>
+                                                    <div id="collapseOne" class="accordion-collapse collapse"
+                                                        data-bs-parent="#accordionExample">
+                                                        <div class="accordion-body">
+                                                            <div class="m-0">
+                                                                <p class="mb-0">- ข้อมูลจะต้องอยู่ในรูปแบบไฟล์ Excel
+                                                                    (.xlsx หรือ .xls)</p>
+                                                                <p class="mb-0">- ข้อมูลจะต้องมีหัวตารางตรงตาม template
+                                                                </p>
+                                                                <p class="mb-0">- ห้ามลบหรือเพิ่มคอลัมน์ในไฟล์ template
+                                                                </p>
+                                                                <p class="mb-0">- ห้ามมีช่องว่างในข้อมูลที่จำเป็นต้องกรอก
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                  </div>
                                                 </div>
                                             </div>
                                             {{-- <div>
@@ -139,7 +201,8 @@
                                             <hr>
                                             <div class="d-flex flex-column justify-content-center align-items-center">
                                                 <p class="mb-0">ดาวน์โหลด Template สำหรับกรอกข้อมูล</p>
-                                                <a href="/templates/tsmc_vehicle_template.xlsx" class="btn btn-primary btn-sm text-white px-4 py-2 rounded inline-flex items-center">
+                                                <a href="/templates/tsmc_vehicle_template.xlsx"
+                                                    class="btn btn-primary btn-sm text-white px-4 py-2 rounded inline-flex items-center">
                                                     <i class="bi bi-file-earmark-spreadsheet"></i>
                                                     ดาวน์โหลด Excel Template
                                                 </a>
@@ -149,20 +212,24 @@
                                         {{-- Section อัพโหลดไฟล์ --}}
                                         <div class="mb-3">
                                             <label for="importFile" class="form-label">อัพโหลดไฟล์ Excel</label>
-                                            <input class="form-control" type="file" id="importFile" accept=".xlsx, .xls" required>
+                                            <input class="form-control" type="file" id="importFile"
+                                                accept=".xlsx, .xls" required>
                                             <div class="form-text text-danger" id="alert_text"></div>
                                         </div>
                                         <div>
                                             <p class="mb-0">ข้อมูลรถที่พบ <span id="vehicle_count">0</span> คัน</p>
                                             <div class="d-flex gap-2 flex-wrap">
-                                                <p class="mb-0">นำเข้าข้อมูลสำเร็จ <span class="text-success" id="successCount">0</span> คัน</p>
-                                                <p class="mb-0">นำเข้าข้อมูลล้มเหลว <span class="text-danger" id="failCount">0</span> คัน</p>
+                                                <p class="mb-0">นำเข้าข้อมูลสำเร็จ <span class="text-success"
+                                                        id="successCount">0</span> คัน</p>
+                                                <p class="mb-0">นำเข้าข้อมูลล้มเหลว <span class="text-danger"
+                                                        id="failCount">0</span> คัน</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" id="closeBtn" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                                        <button type="submit" id="submitBtn" class="btn btn-primary">บันทึก</button>
+                                        <button type="button" id="closeBtn" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">ปิด</button>
+                                        <button type="submit" id="submitBtn" class="btn btn-primary" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
                                     </div>
                                 </form>
                             </div>
@@ -217,7 +284,7 @@
                                                     data-bs-target="#updateCarModal{{ $index }}">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-danger btn-sm delete-data-btn"
+                                                <button type="button" class="btn btn-danger btn-sm delete-data-btn" {{ session('org_status') == 2 ? 'disabled' : '' }}
                                                     del-id="{{ $vehicle->id }}" del-target="vehicles"
                                                     data-bs-toggle="tooltip" data-bs-title="ลบ"><i
                                                         class="bi bi-trash"></i>
@@ -278,10 +345,63 @@
                                                             <div class="mb-3">
                                                                 <label for="standard"
                                                                     class="form-label">ลักษณะ/มาตรฐาน</label>
-                                                                <input type="text" class="form-control"
+                                                                {{-- <input type="text" class="form-control"
                                                                     value="{{ $vehicle->standard }}" maxlength="150"
                                                                     id="standard" name="standard"
-                                                                    placeholder="กรุณากรอก ลักษณะ/มาตรฐาน รถ" required>
+                                                                    placeholder="กรุณากรอก ลักษณะ/มาตรฐาน รถ" required> --}}
+                                                                <select class="form-select" id="standard"
+                                                                    name="standard" required>
+                                                                    <option value="" disabled selected>กรุณาเลือก
+                                                                    </option>
+                                                                    <option value="รถกระบะบรรทุก"
+                                                                        {{ $vehicle->standard == 'รถกระบะบรรทุก' ? 'selected' : '' }}>
+                                                                        รถกระบะบรรทุก</option>
+                                                                    <option value="รถตู้บรรทุก"
+                                                                        {{ $vehicle->standard == 'รถตู้บรรทุก' ? 'selected' : '' }}>
+                                                                        รถตู้บรรทุก</option>
+                                                                    <option value="รถบรรทุกของเหลว"
+                                                                        {{ $vehicle->standard == 'รถบรรทุกของเหลว' ? 'selected' : '' }}>
+                                                                        รถบรรทุกของเหลว</option>
+                                                                    <option value="รถบรรทุกวัสดุอันตราย"
+                                                                        {{ $vehicle->standard == 'รถบรรทุกวัสดุอันตราย' ? 'selected' : '' }}>
+                                                                        รถบรรทุกวัสดุอันตราย</option>
+                                                                    <option value="รถบรรทุกเฉพาะกิจ"
+                                                                        {{ $vehicle->standard == 'รถบรรทุกเฉพาะกิจ' ? 'selected' : '' }}>
+                                                                        รถบรรทุกเฉพาะกิจ</option>
+                                                                    <option value="รถพ่วง"
+                                                                        {{ $vehicle->standard == 'รถพ่วง' ? 'selected' : '' }}>
+                                                                        รถพ่วง</option>
+                                                                    <option value="รถกึ่งพ่วง"
+                                                                        {{ $vehicle->standard == 'รถกึ่งพ่วง' ? 'selected' : '' }}>
+                                                                        รถกึ่งพ่วง</option>
+                                                                    <option value="รถกึ่งพ่วงบรรทุกวัสดุยาว"
+                                                                        {{ $vehicle->standard == 'รถกึ่งพ่วงบรรทุกวัสดุยาว' ? 'selected' : '' }}>
+                                                                        รถกึ่งพ่วงบรรทุกวัสดุยาว</option>
+                                                                    <option value="รถลากจูง"
+                                                                        {{ $vehicle->standard == 'รถลากจูง' ? 'selected' : '' }}>
+                                                                        รถลากจูง</option>
+                                                                    <option value="รถปรับอากาศพิเศษ"
+                                                                        {{ $vehicle->standard == 'รถปรับอากาศพิเศษ' ? 'selected' : '' }}>
+                                                                        รถปรับอากาศพิเศษ</option>
+                                                                    <option value="รถปรับอากาศ"
+                                                                        {{ $vehicle->standard == 'รถปรับอากาศ' ? 'selected' : '' }}>
+                                                                        รถปรับอากาศ</option>
+                                                                    <option value="รถที่ไม่มีเครื่องปรับอากาศ"
+                                                                        {{ $vehicle->standard == 'รถที่ไม่มีเครื่องปรับอากาศ' ? 'selected' : '' }}>
+                                                                        รถที่ไม่มีเครื่องปรับอากาศ</option>
+                                                                    <option value="รถสองชั้น"
+                                                                        {{ $vehicle->standard == 'รถสองชั้น' ? 'selected' : '' }}>
+                                                                        รถสองชั้น</option>
+                                                                    <option value="รถพ่วง"
+                                                                        {{ $vehicle->standard == 'รถพ่วง' ? 'selected' : '' }}>
+                                                                        รถพ่วง</option>
+                                                                    <option value="รถกึ่งพ่วง"
+                                                                        {{ $vehicle->standard == 'รถกึ่งพ่วง' ? 'selected' : '' }}>
+                                                                        รถกึ่งพ่วง</option>
+                                                                    <option value="รถโดยสารเฉพาะกิจ"
+                                                                        {{ $vehicle->standard == 'รถโดยสารเฉพาะกิจ' ? 'selected' : '' }}>
+                                                                        รถโดยสารเฉพาะกิจ</option>
+                                                                </select>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="type" class="form-label">ประเภทรถ</label>
@@ -310,7 +430,7 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">ปิด</button>
-                                                            <button type="submit" class="btn btn-primary">บันทึก</button>
+                                                            <button type="submit" class="btn btn-primary" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -328,17 +448,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script>
         let uploaded_data = [];
-        document.getElementById('importFile').addEventListener('change', function (event) {
+        document.getElementById('importFile').addEventListener('change', function(event) {
             document.getElementById('alert_text').textContent = '';
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
+                    const workbook = XLSX.read(data, {
+                        type: 'array'
+                    });
                     const firstSheetName = workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[firstSheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+                        header: 1
+                    });
 
                     // Validate columns length = 9
                     if (jsonData[0].length !== 9) {
@@ -420,33 +544,34 @@
                     var formData = new FormData();
                     formData.append('vehicle_datas', JSON.stringify(chunk));
                     fetch('/vehicles/import', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Success:', data);
-                        if (data.success) {
-                            successCount += chunkSize;
-                            updateImportStatus(successCount, failCount);
-                        } else {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .getAttribute('content')
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                            if (data.success) {
+                                successCount += chunkSize;
+                                updateImportStatus(successCount, failCount);
+                            } else {
+                                failCount += chunkSize;
+                                updateImportStatus(successCount, failCount);
+                            }
+                        })
+                        .catch(error => {
+                            console.log('Error:', error);
+                            console.log(`Failed to import chunk ${index} count : ${failCount}`);
                             failCount += chunkSize;
                             updateImportStatus(successCount, failCount);
-                        }
-                    })
-                    .catch(error => {
-                        console.log('Error:', error);
-                        console.log(`Failed to import chunk ${index} count : ${failCount}`);
-                        failCount += chunkSize;
-                        updateImportStatus(successCount, failCount);
-                        // if (index === chunks.length - 1) {
-                        //     alert(`นำเข้าข้อมูลสำเร็จ: ${successCount} รายการ, ล้มเหลว: ${failCount} รายการ`);
-                        //     location.reload();
-                        // }
-                    });
+                            // if (index === chunks.length - 1) {
+                            //     alert(`นำเข้าข้อมูลสำเร็จ: ${successCount} รายการ, ล้มเหลว: ${failCount} รายการ`);
+                            //     location.reload();
+                            // }
+                        });
                 })
             } catch (error) {
                 console.error('Error:', error);
