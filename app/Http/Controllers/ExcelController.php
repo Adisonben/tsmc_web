@@ -43,83 +43,99 @@ class ExcelController extends Controller
         return $submissions;
     }
 
-    private function handleHeaderColumns($sheet, $concatHeaderFields, $formFields)
+    public function setHeaderCellStyle($sheet, $headerRange)
     {
-        $startHeaderRow = 3;
-        $secondHeaderRow = $startHeaderRow + 1;
-
-        $column_field_ids = [];
-        // Set the header row
-        $column = 'A'; // Start from column A
-        $sheet->setCellValue($column . $startHeaderRow, 'ลำดับ'); // First column (Index)
-        $sheet->mergeCells("{$column}{$startHeaderRow}:{$column}{$secondHeaderRow}");
-        $column++;
-        // $concatFields = array_merge($defaultFields, $vehicleFields, $userFields);
-        // foreach ($concatFields as $field) {
-        //     $sheet->setCellValue($column . '1', $field['label']); // Format the header (optional)
-        //     $column++;
-        // }
-        $headerColumns = [];
-        foreach ($concatHeaderFields as $fieldGroup) {
-            foreach ($fieldGroup as $field) {
-                if ($field['is_checked']) {
-                    $sheet->setCellValue($column . $startHeaderRow, $field['label']);
-                    $sheet->mergeCells("{$column}{$startHeaderRow}:{$column}{$secondHeaderRow}"); // Merge two rows for single fields
-                    $column++;
-                }
-            }
-        }
-        // Handle Form Fields (with Subfields)
-        foreach ($formFields as $field) {
-            if ($field['type'] === 'subform' && !empty($field['subformfields'])) {
-                $subfieldCount = count($field['subformfields']);
-                $sheet->setCellValue($column . $startHeaderRow, $field['label']);
-                $sheet->mergeCells("{$column}{$startHeaderRow}:" . chr(ord($column) + $subfieldCount - 1) . $startHeaderRow);
-                $headerColumns[] = [$column, $subfieldCount]; // Store column range
-                $column = chr(ord($column) + $subfieldCount);
-                foreach ($field['subformfields'] as $subfield) {
-                    $column_field_ids[] = $subfield['id'];
-                }
-            } else {
-                $sheet->setCellValue($column . $startHeaderRow, $field['label']);
-                $sheet->mergeCells("{$column}{$startHeaderRow}:{$column}{$secondHeaderRow}"); // Merge if no subfields
-                $column_field_ids[] = $field['id'];
-                $column++;
-            }
-        }
-
-        $num_subform = 0;
-        foreach ($formFields as $field) {
-            if ($field['type'] === 'subform' && !empty($field['subformfields'])) {
-                $sub_column = $headerColumns[$num_subform][0];
-                foreach ($field['subformfields'] as $subfield) {
-                    $sheet->setCellValue($sub_column . $secondHeaderRow, $subfield['label']);
-                    $sub_column++;
-                }
-                $num_subform++;
-            }
-        }
-
-        // 1. Define border style
-        $borderStyle = [
+        $sheet->getStyle($headerRange)->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => Border::BORDER_THIN,
                     'color' => ['argb' => '000000'],
                 ],
             ],
-        ];
-
-        // 2. Determine range (e.g., A3 to lastColumn4)
-        $lastColumn = chr(ord($column) - 1); // $column was already incremented
-        $headerRange = "A{$startHeaderRow}:{$lastColumn}{$secondHeaderRow}";
-
-        // 3. Apply style
-        $sheet->getStyle($headerRange)->applyFromArray($borderStyle);
+        ]);
         $sheet->getStyle($headerRange)->getFont()->setBold(true)->setSize(12);
         $sheet->getStyle($headerRange)->getFill()->setFillType(Fill::FILL_SOLID);
         $sheet->getStyle($headerRange)->getFill()->getStartColor()->setARGB('cccccc'); // light gray
+    }
 
+    private function getExcelColumnName($index)
+    {
+        $columnName = '';
+        while ($index >= 0) {
+            $columnName = chr($index % 26 + 65) . $columnName;
+            $index = intval($index / 26) - 1;
+        }
+        return $columnName;
+    }
+
+
+    private function handleHeaderColumns($sheet, $concatHeaderFields, $formFields)
+    {
+        $startHeaderRow = 3;
+        $secondHeaderRow = $startHeaderRow + 1;
+
+        $columnIndex = 0;
+        $column_field_ids = [];
+
+        $sheet->setCellValue($this->getExcelColumnName($columnIndex) . $startHeaderRow, 'ลำดับ');
+        $sheet->mergeCells($this->getExcelColumnName($columnIndex) . $startHeaderRow . ':' . $this->getExcelColumnName($columnIndex) . $secondHeaderRow);
+        $this->setHeaderCellStyle($sheet, $this->getExcelColumnName($columnIndex) . $startHeaderRow . ':' . $this->getExcelColumnName($columnIndex) . $secondHeaderRow);
+        $columnIndex++;
+
+        // concatHeaderFields
+        foreach ($concatHeaderFields as $fieldGroup) {
+            foreach ($fieldGroup as $field) {
+                if ($field['is_checked']) {
+                    $colName = $this->getExcelColumnName($columnIndex);
+                    $sheet->setCellValue($colName . $startHeaderRow, $field['label']);
+                    $sheet->mergeCells("{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
+                    $this->setHeaderCellStyle($sheet, "{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
+                    $columnIndex++;
+                }
+            }
+        }
+
+        // formFields
+        $headerColumns = [];
+        foreach ($formFields as $field) {
+            $colName = $this->getExcelColumnName($columnIndex);
+
+            if ($field['type'] === 'subform' && !empty($field['subformfields'])) {
+                $subfieldCount = count($field['subformfields']);
+                $endColName = $this->getExcelColumnName($columnIndex + $subfieldCount - 1);
+
+                $sheet->setCellValue($colName . $startHeaderRow, $field['label']);
+                $sheet->mergeCells("{$colName}{$startHeaderRow}:{$endColName}{$startHeaderRow}");
+                $this->setHeaderCellStyle($sheet, "{$colName}{$startHeaderRow}:{$endColName}{$startHeaderRow}");
+                $headerColumns[] = [$columnIndex, $subfieldCount];
+
+                foreach ($field['subformfields'] as $subfield) {
+                    $column_field_ids[] = $subfield['id'];
+                }
+
+                $columnIndex += $subfieldCount;
+            } else {
+                $sheet->setCellValue($colName . $startHeaderRow, $field['label']);
+                $sheet->mergeCells("{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
+                $this->setHeaderCellStyle($sheet, "{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
+                $column_field_ids[] = $field['id'];
+                $columnIndex++;
+            }
+        }
+
+        // second row of subfields
+        $num_subform = 0;
+        foreach ($formFields as $field) {
+            if ($field['type'] === 'subform' && !empty($field['subformfields'])) {
+                $startIndex = $headerColumns[$num_subform][0];
+                foreach ($field['subformfields'] as $i => $subfield) {
+                    $colName = $this->getExcelColumnName($startIndex + $i);
+                    $sheet->setCellValue($colName . $secondHeaderRow, $subfield['label']);
+                    $this->setHeaderCellStyle($sheet, $colName . $secondHeaderRow);
+                }
+                $num_subform++;
+            }
+        }
 
 
         return $column_field_ids;
