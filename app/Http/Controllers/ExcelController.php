@@ -216,10 +216,16 @@ class ExcelController extends Controller
             $sheet->getColumnDimension($col)->setAutoSize(true);
         }
 
+        if ($org_data && $org_data->logo_img) {
+            $logo_path = public_path("/uploads/orglogoes/" . $org_data->logo_img ?? '');
+        } else {
+            $logo_path = public_path("/images/icons/tsmc_logo.png");
+        }
+
 
         // ✅ เพิ่มโลโก้
         $drawing = new Drawing();
-        $drawing->setPath(public_path('images/icons/tsmc_logo.png')); // ใส่ path รูปโลโก้
+        $drawing->setPath($logo_path); // ใส่ path รูปโลโก้
         $drawing->setHeight(60); // ปรับขนาดโลโก้
         $drawing->setCoordinates('A1'); // ตำแหน่งรูป
         $drawing->setWorksheet($sheet);
