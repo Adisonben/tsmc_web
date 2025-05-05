@@ -68,6 +68,12 @@
                                     ทะเบียนเอกสาร
                                 </a>
                             </li>
+                            <li class="sidebar-item" id="workRecordTablePage">
+                                <a href="{{ route('work-records.table') }}" class="sidebar-link">
+                                    <i class="bi bi-table"></i>
+                                    ทะเบียนเวลาทำงาน
+                                </a>
+                            </li>
                             <li class="sidebar-header">
                                 แบบฟอร์ม
                             </li>
