@@ -379,7 +379,7 @@
                         throw new Error(data.message);
                     }
                     if (action !== 'checkin') {
-                        startTime = data.date ? new Date(data.date) : null;
+                        startTime = new Date();
                         fetchStatus = true;
                         working_id = data.work_id;
                     }
