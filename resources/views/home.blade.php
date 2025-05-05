@@ -378,9 +378,11 @@
                     if (data.status === 'error') {
                         throw new Error(data.message);
                     }
-                    startTime = data.date ? new Date(data.date) : null;
-                    fetchStatus = true;
-                    working_id = data.work_id;
+                    if (action !== 'checkin') {
+                        startTime = data.date ? new Date(data.date) : null;
+                        fetchStatus = true;
+                        working_id = data.work_id;
+                    }
 
                     Swal.fire({
                         toast: true,
