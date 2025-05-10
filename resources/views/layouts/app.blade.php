@@ -29,7 +29,7 @@
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
-        <aside id="sidebar">
+        <aside id="sidebar" style="z-index: 9999">
             <div class="sticky-top">
                 <div class="px-3 pt-2">
                     {{-- @php
@@ -352,6 +352,12 @@
                             <a href="{{ route('loginHistory') }}" class="sidebar-link">
                                 <i class="bi bi-clock-history"></i>
                                 ประวัติการเข้าใช้ระบบ
+                            </a>
+                        </li>
+                        <li class="sidebar-item d-md-none">
+                            <a href="{{ route('usermanual') }}" class="sidebar-link">
+                                <i class="bi bi-clock-history"></i>
+                                คู่มือการใช้งาน
                             </a>
                         </li>
                     </ul>
