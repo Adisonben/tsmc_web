@@ -24,7 +24,7 @@
 
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 mb-4">
                             <div class="">
-                                <label for="cateSelect" class="form-label">หมวดหมู่</label>
+                                <label for="cateSelect" class="form-label">หมวดหมู่ <span class="text-danger">*</span></label>
                                 <select class="form-select" id="cateSelect" x-model="filter_form_cate" @change="fetchForms()">
                                     <option value="" selected disabled>เลือกหมวดหมู่</option>
                                     @foreach ($form_cates as $form_cate)
@@ -33,7 +33,7 @@
                                 </select>
                             </div>
                             <div class="">
-                                <label for="formSelect" class="form-label">แบบฟอร์ม</label>
+                                <label for="formSelect" class="form-label">แบบฟอร์ม <span class="text-danger">*</span></label>
                                 <select class="form-select" id="formSelect" x-model="filter_form_id" @change="getFilteredForm()">
                                     <option selected value="" disabled>เลือกแบบฟอร์ม</option>
                                     <template x-for="form in form_datas" :key="form.id">
