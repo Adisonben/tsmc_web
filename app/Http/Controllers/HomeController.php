@@ -48,6 +48,10 @@ class HomeController extends Controller
         }
     }
 
+    public function usermanual() {
+        return view('usermanual');
+    }
+
     public function storeHistory(Request $request) {
         try {
             if ($request->user()) {

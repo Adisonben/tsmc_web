@@ -549,7 +549,7 @@
                                     </h5>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="alert alert-info" role="alert">
+                                    <div class="alert alert-warning" role="alert">
                                         <p class="mb-0">
                                             ระยะเวลาการใช้งานระบบ Transport Safety Manager (TSM) ของคุณได้สิ้นสุดลงแล้ว
                                             กรุณาติดต่อเจ้าหน้าที่ของเราเพื่อใช้งานต่อไป
@@ -642,6 +642,9 @@
                                         {{ Auth::user()->full_name }}
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('usermanual') }}">
+                                            คู่มือการใช้งาน
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
