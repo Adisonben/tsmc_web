@@ -9,7 +9,7 @@
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('คู่มือการใช้งานระบบ') }}</p>
                             <div class="text-center">
-                                <a href="{{ asset('TSM_User_Manual.pdf') }}" class="btn btn-primary" target="_blank">ดาวน์โหลดคู่มือ</a>
+                                <a href="{{ asset('TSM_User_Manual.pdf') }}" class="btn btn-info" target="_blank"><i class="bi bi-file-earmark-pdf"></i> เอกสารคู่มือ</a>
                             </div>
                         </div>
                     </div>
