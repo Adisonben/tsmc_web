@@ -9,7 +9,7 @@
                         <div class="d-flex justify-content-between">
                             <p class="mb-0 fs-4">{{ __('คู่มือการใช้งานระบบ') }}</p>
                             <div class="text-center">
-                                <a href="{{ asset('TSM_User_Manual.pdf') }}" class="btn btn-primary" target="_blank">ดาวน์โหลด</a>
+                                <a href="{{ asset('TSM_User_Manual.pdf') }}" class="btn btn-primary" target="_blank">ดาวน์โหลดคู่มือ</a>
                             </div>
                         </div>
                     </div>
@@ -19,7 +19,11 @@
                             <iframe src="{{ asset('TSM_User_Manual.pdf') }}" width="100%" height="600px" allowfullscreen></iframe>
                         </div> --}}
                         <div class="pdf-container">
-                            <iframe src="{{ asset('TSM_User_Manual.pdf') }}" frameborder="0" allowfullscreen></iframe>
+                            {{-- <iframe src="{{ asset('TSM_User_Manual.pdf') }}" frameborder="0" allowfullscreen></iframe> --}}
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/wX76IHs2C1Y?si=QVCZtmiccdpEMu82"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
