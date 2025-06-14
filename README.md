@@ -38,3 +38,4 @@ in line 157 ( in function username()).
 Command:
 - `php artisan app:resetUsersPassword` for reset users's password that username is "tsmc0....." to "tsmc" + date of monday (like '23092024')
 - `php artisan app:clear-preview` for clear demo user data
+- `php artisan app:set-unexpire {username}` for set a user's account to never expire if user is tsm, And set org to never expire if user account is not tsm
