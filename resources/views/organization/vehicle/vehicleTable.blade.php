@@ -240,11 +240,11 @@
                     <div class="card-body overflow-auto">
                         @if (session('vehicleSuccess'))
                             <div class="alert alert-success" role="alert">
-                                {{ session('success') }}
+                                {{ session('vehicleSuccess') }}
                             </div>
                         @elseif (session('vehicleError'))
                             <div class="alert alert-danger" role="alert">
-                                {{ session('error') }}
+                                {{ session('vehicleError') }}
                             </div>
                         @elseif ($errors->any())
                             <div class="alert alert-danger" role="alert">
@@ -464,24 +464,26 @@
                         header: 1
                     });
 
+                    const filteredData = jsonData.map(row => row.slice(0, 9));
+
                     // Validate columns length = 9
-                    if (jsonData[0].length !== 9) {
+                    if (filteredData[0].length !== 9) {
                         document.getElementById('alert_text').textContent = 'คอลัมน์ไม่ถูกต้อง';
                         return;
                     }
 
-                    jsonData.shift(); // Remove header row
+                    filteredData.shift(); // Remove header row
 
                     // Validate required rows
-                    if (jsonData.length < 1) {
+                    if (filteredData.length < 1) {
                         document.getElementById('alert_text').textContent = 'ไม่มีข้อมูลในไฟล์';
                         return;
                     }
 
                     // Display the number of vehicles found
-                    const vehicleCount = jsonData.length; // Exclude header row
+                    const vehicleCount = filteredData.length; // Exclude header row
                     document.getElementById('vehicle_count').textContent = vehicleCount;
-                    uploaded_data = jsonData.map(row => ({
+                    uploaded_data = filteredData.map(row => ({
                         license_category: row[1] || '-',
                         license_plate: row[2] || '-',
                         registration_province: row[3] || '-',

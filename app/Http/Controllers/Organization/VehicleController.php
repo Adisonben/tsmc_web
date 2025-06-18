@@ -20,7 +20,7 @@ class VehicleController extends Controller
     public function index()
     {
         $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
-        $vehicles = Vehicle::where('org_id', $org_id ?? '')->get();
+        $vehicles = Vehicle::where('org_id', $org_id ?? '')->orderByDesc('id')->get();
         return view('organization.vehicle.vehicleTable', compact('vehicles'));
     }
 
@@ -40,9 +40,20 @@ class VehicleController extends Controller
         $vehicle_data = $request->validated();
         try {
             $vehicle_data['org_id'] = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
-            Vehicle::create($vehicle_data);
+            $old_vehicle = Vehicle::where('license_plate', $vehicle_data['license_plate'])->onlyTrashed()->first();
+
+            if ($old_vehicle) {
+                $old_vehicle->forceDelete();
+            }
+            if (Vehicle::where('license_plate', $vehicle_data['license_plate'])->exists()) {
+                return redirect()->back()->with(['vehicleError'=> "หมายเลขทะเบียนรถนี้มีอยู่ในระบบแล้ว"]);
+            } else {
+                Vehicle::create($vehicle_data);
+            }
+
             return redirect()->back()->with(['vehicleSuccess'=> 'บันทึกข้อมูลรถสำเร็จ']);
         } catch (\Throwable $th) {
+            dd("error controller : ", $th->getMessage());
             return redirect()->back()->with(['vehicleError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
         }
     }
@@ -96,7 +107,7 @@ class VehicleController extends Controller
     public function destroy(string $id)
     {
         try {
-            Vehicle::findOrFail($id)->forceDelete();
+            Vehicle::findOrFail($id)->delete();
             return response()->json(['success'=> 'ลบข้อมูลรถสำเร็จ']);
         } catch (\Throwable $th) {
             return response()->json(['error'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);

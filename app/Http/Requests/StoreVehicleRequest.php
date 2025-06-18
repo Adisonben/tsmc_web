@@ -29,7 +29,6 @@ class StoreVehicleRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('vehicles', 'license_plate')->ignore($vehicleId),
             ],
             'registration_province' => 'nullable|string|max:255',
             'brand' => 'required|string|max:255',
@@ -50,7 +49,6 @@ class StoreVehicleRequest extends FormRequest
         {
             return [
                 'license_plate.required' => 'จำเป็นต้องกรอกหมายเลขทะเบียนรถ',
-                'license_plate.unique' => 'หมายเลขทะเบียนรถนี้มีอยู่ในระบบแล้ว',
                 'brand.required' => 'จำเป็นต้องกรอกยี่ห้อรถ',
                 'brand.max' => 'ยี่ห้อรถยาวเกินไป',
                 'model.max' => 'รุ่นรถยาวเกินไป',
