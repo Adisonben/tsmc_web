@@ -40,16 +40,8 @@ class VehicleController extends Controller
         $vehicle_data = $request->validated();
         try {
             $vehicle_data['org_id'] = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
-            $old_vehicle = Vehicle::where('license_plate', $vehicle_data['license_plate'])->onlyTrashed()->first();
 
-            if ($old_vehicle) {
-                $old_vehicle->forceDelete();
-            }
-            if (Vehicle::where('license_plate', $vehicle_data['license_plate'])->exists()) {
-                return redirect()->back()->with(['vehicleError'=> "หมายเลขทะเบียนรถนี้มีอยู่ในระบบแล้ว"]);
-            } else {
-                Vehicle::create($vehicle_data);
-            }
+            Vehicle::create($vehicle_data);
 
             return redirect()->back()->with(['vehicleSuccess'=> 'บันทึกข้อมูลรถสำเร็จ']);
         } catch (\Throwable $th) {
