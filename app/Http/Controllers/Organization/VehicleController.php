@@ -96,7 +96,7 @@ class VehicleController extends Controller
     public function destroy(string $id)
     {
         try {
-            Vehicle::findOrFail($id)->delete();
+            Vehicle::findOrFail($id)->forceDelete();
             return response()->json(['success'=> 'ลบข้อมูลรถสำเร็จ']);
         } catch (\Throwable $th) {
             return response()->json(['error'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
