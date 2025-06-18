@@ -155,16 +155,8 @@ class VehicleController extends Controller
             $vehicle_datas = json_decode($request['vehicle_datas'], true);
             if (count($vehicle_datas) > 0) {
                 foreach ($vehicle_datas as $key => $vehicle_data) {
-                    $vehicle = Vehicle::where('license_plate', $vehicle_data['license_plate'])->where('org_id', $org_id);
-                    if ($vehicle->withTrashed()->exists()) {
-                        if ($vehicle->onlyTrashed()->exists()) {
-                            $vehicle->onlyTrashed()->restore();
-                        }
-                        $vehicle->update($vehicle_data);
-                    } else {
-                        $vehicle_data['org_id'] = $org_id;
-                        Vehicle::create($vehicle_data);
-                    }
+                    $vehicle_data['org_id'] = $org_id;
+                    Vehicle::create($vehicle_data);
                 }
             }
             return response()->json(['success'=> 'บันทึกข้อมูลรถสำเร็จ']);
