@@ -73,8 +73,8 @@ class Form extends Model
     }
 
     public function countExportByQuarter($quarter) {
-        $quarter_start_date = now()->startOfYear()->addMonths(($quarter - 1) * 3);
-        $quarter_end_date = now()->startOfYear()->addMonths((($quarter - 1) * 3) + 3)->subDay();
+        $quarter_start_date = now()->startOfYear();
+        $quarter_end_date = now()->endOfYear();
         if (Auth()->user()->is_tsm) {
             $org_id = session('connected_org') ?? '';
         } else {
@@ -85,6 +85,7 @@ class Form extends Model
             ->where('org', $org_id)
             ->where('created_at', '>=', $quarter_start_date)
             ->where('created_at', '<=', $quarter_end_date)
+            ->where('quarter', $quarter)
             ->count();
     }
 }
