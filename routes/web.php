@@ -7,6 +7,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\LogBookController;
 use App\Http\Controllers\Organization\OrgController;
 use App\Http\Controllers\Organization\PositionController;
 use App\Http\Controllers\Organization\VehicleController;
@@ -38,6 +39,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tsm/org-{org_id}/update', [TSMUserController::class, 'updateOrg'])->name('tsm.org.update');
     Route::delete('/tsm/org/{org_id}', [TSMUserController::class, 'destroyOrg'])->name('tsm.org.delete');
     Route::get('/tsm/connect-org-{org_id}', [TSMUserController::class, 'connectOrg'])->name('tsm.org.connect');
+
+    // Log Book
+    Route::get('/logbook/car-ma-table', [LogBookController::class, 'index'])->name('car.ma.table');
+    Route::get('/logbook/car-ma-form', [LogBookController::class, 'create'])->name('car.ma.form');
+    Route::get('/logbook/table', [LogBookController::class, 'logbookTable'])->name('logbook.table');
+    Route::get('/logbook/create', [LogBookController::class, 'logbookCreate'])->name('logbook.create');
 
     Route::get('/', [App\Http\Controllers\HomeController::class, 'storeHistory']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -112,6 +119,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/document/export/filter', [DocumentController::class, 'filterDocument'])->name('document.export.filter');
     Route::get('/export-document', [ExcelController::class, 'export']);
+    Route::get('/performance-report', [ExcelController::class, 'performanceReport'])->name('performance.report');
+    Route::get('/export-performance-report', [ExcelController::class, 'exportPerformanceReport'])->name('export.performance.report');
 
     // API routes
     Route::prefix('/api')->group(function () {
