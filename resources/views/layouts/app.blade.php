@@ -212,12 +212,12 @@
                                 </a>
                             </li>
                         @endif
-                        <li class="sidebar-item" id="carMATablePage">
+                        {{-- <li class="sidebar-item" id="carMATablePage">
                             <a href="{{ route('car.ma.table') }}" class="sidebar-link">
                                 <i class="bi bi-car-front"></i>
                                 บันทึกการบำรุงรักษารถ
                             </a>
-                        </li>
+                        </li> --}}
                         {{-- @if (!optional(Auth::user()->userDetail->getPosition)->name || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_approve_table', optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
                             <li class="sidebar-item" id="formInsTablePage">
                                 <a href="" class="sidebar-link">
@@ -262,7 +262,7 @@
                                 </a>
                             </li>
                         @endif
-                        <li class="sidebar-item" id="logbookTablePage">
+                        {{-- <li class="sidebar-item" id="logbookTablePage">
                             <a href="{{ route('logbook.table') }}" class="sidebar-link">
                                 <i class="bi bi-journal"></i>
                                 log book
@@ -273,7 +273,7 @@
                                 <i class="bi bi-journal"></i>
                                 รายงานผลการปฏิบัติงาน
                             </a>
-                        </li>
+                        </li> --}}
 
                         @if (
                             (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
