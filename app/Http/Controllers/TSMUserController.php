@@ -6,6 +6,7 @@ use App\Models\Organization;
 use App\Models\Tsm_has_Org;
 use App\Models\User;
 use App\Models\User_detail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -235,6 +236,25 @@ class TSMUserController extends Controller
     {
         try {
             $org = Organization::findOrFail($org_id);
+            if (Auth::user()->expire_at) {
+                $org->update([
+                    'expire_at' => Auth::user()->expire_at,
+                ]);
+            } else {
+                if ($org->expire_at) {
+                    $expire_date = new Carbon($org->expire_at);
+                    $diffDay = (int) ceil(Carbon::now()->diffInDays($expire_date));
+                    if ($diffDay < 10) {
+                        $org->update([
+                            'expire_at' => Carbon::parse($org->expire_at)->addDays(30),
+                        ]);
+                    }
+                } else {
+                    $org->update([
+                        'expire_at' => now()->addDays(30),
+                    ]);
+                }
+            }
             Session::put('connected_org', $org->id);
             Session::put('org_status', $org->status);
             return redirect()->back()->with('success', 'เชื่อมต่อกับองค์กรเรียบร้อย');
