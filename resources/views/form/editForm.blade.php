@@ -135,7 +135,6 @@
     </div>
     <script>
         function formBuilder(existingData) {
-            console.log(existingData)
             return {
                 formId: existingData.form_id,
                 formCategory: existingData.form_category,

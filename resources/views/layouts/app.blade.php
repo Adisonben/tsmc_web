@@ -212,12 +212,12 @@
                                 </a>
                             </li>
                         @endif
-                        {{-- <li class="sidebar-item" id="carMATablePage">
+                        <li class="sidebar-item" id="carMATablePage">
                             <a href="{{ route('car.ma.table') }}" class="sidebar-link">
                                 <i class="bi bi-car-front"></i>
                                 บันทึกการบำรุงรักษารถ
                             </a>
-                        </li> --}}
+                        </li>
                         {{-- @if (!optional(Auth::user()->userDetail->getPosition)->name || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_approve_table', optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
                             <li class="sidebar-item" id="formInsTablePage">
                                 <a href="" class="sidebar-link">
@@ -262,7 +262,7 @@
                                 </a>
                             </li>
                         @endif
-                        {{-- <li class="sidebar-item" id="logbookTablePage">
+                        <li class="sidebar-item" id="logbookTablePage">
                             <a href="{{ route('logbook.table') }}" class="sidebar-link">
                                 <i class="bi bi-journal"></i>
                                 log book
@@ -273,7 +273,7 @@
                                 <i class="bi bi-journal"></i>
                                 รายงานผลการปฏิบัติงาน
                             </a>
-                        </li> --}}
+                        </li>
 
                         @if (
                             (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
@@ -384,12 +384,12 @@
                 <div class="sidebar-footer d-md-none">
                     <a class="sidebar-footer" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
+                                    document.getElementById('logout-form1').submit();">
                         <i class="bi bi-box-arrow-left"></i>
                         ออกจากระบบ
                     </a>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    <form id="logout-form1" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
                 </div>
@@ -526,9 +526,9 @@
                                                     เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="code"
-                                                        id="code" placeholder="กรอก code" required>
+                                                        id="code1" placeholder="กรอก code" required>
                                                     <button class="btn btn-primary" type="submit"
-                                                        id="button-addon2">ต่ออายุ</button>
+                                                        id="button-addon1">ต่ออายุ</button>
                                                 </div>
                                             </form>
                                         @else
@@ -538,7 +538,7 @@
                                                     เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="code"
-                                                        id="code" placeholder="กรอก code" required>
+                                                        id="code2" placeholder="กรอก code" required>
                                                     <button class="btn btn-primary" type="submit"
                                                         id="button-addon2">ต่ออายุ</button>
                                                 </div>
@@ -597,9 +597,9 @@
                                                     เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="code"
-                                                        id="code" placeholder="กรอก code" required>
+                                                        id="code3" placeholder="กรอก code" required>
                                                     <button class="btn btn-primary" type="submit"
-                                                        id="button-addon2">ต่ออายุ</button>
+                                                        id="button-addon3">ต่ออายุ</button>
                                                 </div>
                                             </form>
                                         @else
@@ -609,9 +609,9 @@
                                                     เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="code"
-                                                        id="code" placeholder="กรอก code" required>
+                                                        id="code4" placeholder="กรอก code" required>
                                                     <button class="btn btn-primary" type="submit"
-                                                        id="button-addon2">ต่ออายุ</button>
+                                                        id="button-addon4">ต่ออายุ</button>
                                                 </div>
                                             </form>
                                         @endif
@@ -620,12 +620,12 @@
                                 <div class="modal-footer">
                                     <a class="btn btn-secondary" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
+                                                    document.getElementById('logout-form2').submit();">
                                         <i class="bi bi-box-arrow-left"></i>
                                         ออกจากระบบ
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    <form id="logout-form2" action="{{ route('logout') }}" method="POST"
                                         class="d-none">
                                         @csrf
                                     </form>
@@ -671,11 +671,11 @@
                                         </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
+                                                    document.getElementById('logout-form3').submit();">
                                             {{ __('ออกจากระบบ') }}
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        <form id="logout-form3" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
                                             @csrf
                                         </form>
@@ -747,12 +747,12 @@
                 <div class="modal-footer ">
                     <a class="btn btn-secondary" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
+                            document.getElementById('logout-form4').submit();">
                         <i class="bi bi-box-arrow-left"></i>
                         ออกจากระบบ
                     </a>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    <form id="logout-form4" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
                 </div>

@@ -53,46 +53,27 @@
                                     <th scope="col">ทะเบียนรถ</th>
                                     <th scope="col">ประเภทการซ่อม</th>
                                     <th scope="col">วันที่ซ่อม</th>
-                                    <th scope="col">ค่าใช้จ่าย</th>
+                                    <th scope="col">ค่าใช้จ่ายทั้งหมด</th>
                                     <th scope="col">ผู้ดำเนินการ</th>
                                     <th scope="col">รายละเอียด</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @if (count($workRecords ?? []) > 0)
-                                    @foreach ($workRecords as $index => $workRecord)
+                                @if (count($repair_his ?? []) > 0)
+                                    @foreach ($repair_his as $index => $repair)
                                         @php
-                                            $startDate = new Carbon\Carbon($workRecord->start_at);
-                                            $endDate = new Carbon\Carbon($workRecord->end_at);
-
-                                            $duration = $startDate->diff($endDate);
-                                            $humanReadableDuration = '';
-
-                                            if ($duration->m > 0) {
-                                                $humanReadableDuration .= $duration->m . ' เดือน ';
-                                            }
-                                            if ($duration->d > 0) {
-                                                $humanReadableDuration .= $duration->d . ' วัน ';
-                                            }
-                                            if ($duration->h > 0) {
-                                                $humanReadableDuration .= $duration->h . ' ชั่วโมง ';
-                                            }
-                                            if ($duration->i > 0) {
-                                                $humanReadableDuration .= $duration->i . ' นาที';
-                                            }
-                                            if ($startDate->diffInMinutes($endDate) < 1) {
-                                                $humanReadableDuration = 'น้อยกว่า 1 นาที';
-                                            }
+                                            $repair_date = new Carbon\Carbon($repair->repair_date);
                                         @endphp
                                         <tr>
-                                            <td>{{ ($workRecords->currentPage() - 1) * 10 + ($index + 1) }}</td>
-                                            <td>{{ $workRecord->getUser->full_name }}</td>
-                                            <td>{{ $startDate->thaidate('j M Y \\เวลา H:i:s') }}</td>
-                                            <td>{{ $endDate->thaidate('j M Y \\เวลา H:i:s') }}</td>
-                                            <td>{{ $humanReadableDuration }}</td>
+                                            <td>{{ ($repair_his->currentPage() - 1) * 10 + ($index + 1) }}</td>
+                                            <td>{{ $repair->vehicle_plate }} : {{ optional($repair->getVehicle)->brand ?? "-" }}</td>
+                                            <td>{{ optional($repair->getMaItem)->name ?? "-" }}</td>
+                                            <td>{{ $repair_date->thaidate('j M Y') }}</td>
+                                            <td class="fw-bold">{{ number_format($repair->repair_cost + ($repair->partsTotalSum() ?? 0)) }}</td>
+                                            <td>{{ $repair->repair_operator }}</td>
                                             <td>
-                                                <a href="{{ route('work-records.geomap', ['workId' => $workRecord->id]) }}"
-                                                    class="btn btn-sm btn-info"><i class="bi bi-geo-alt"></i></a>
+                                                <a href="{{ route('car.ma.detail', ['repair_id' => $repair->id]) }}"
+                                                    class="btn btn-sm btn-info"><i class="bi bi-card-list"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -100,10 +81,10 @@
                                     <tr>
                                         <td colspan="6" class="text-center">ไม่พบข้อมูล</td>
                                     </tr>
-                                @endif --}}
+                                @endif
                             </tbody>
                         </table>
-                        {{-- {{ $workRecords->links() }} --}}
+                        {{ $repair_his->links() }}
                     </div>
                 </div>
             </div>

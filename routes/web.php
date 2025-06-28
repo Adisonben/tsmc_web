@@ -41,8 +41,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tsm/connect-org-{org_id}', [TSMUserController::class, 'connectOrg'])->name('tsm.org.connect');
 
     // Log Book
+    Route::get('/logbook/car-ma-detail/{repair_id}', [LogBookController::class, 'show'])->name('car.ma.detail');
     Route::get('/logbook/car-ma-table', [LogBookController::class, 'index'])->name('car.ma.table');
     Route::get('/logbook/car-ma-form', [LogBookController::class, 'create'])->name('car.ma.form');
+    Route::post('/logbook/car-ma/store', [LogBookController::class, 'store'])->name('car.ma.store');
+
     Route::get('/logbook/table', [LogBookController::class, 'logbookTable'])->name('logbook.table');
     Route::get('/logbook/create', [LogBookController::class, 'logbookCreate'])->name('logbook.create');
 

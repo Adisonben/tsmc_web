@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             FormCategoriesSeeder::class,
             PostPermissionSeeder::class,
             PositionPermissionSeeder::class,
+            LogBookSeeder::class
         ]);
     }
 }

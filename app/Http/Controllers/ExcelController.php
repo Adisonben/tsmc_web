@@ -122,9 +122,9 @@ class ExcelController extends Controller
         return $sheet;
     }
 
-    private function handleHeaderColumns($sheet, $concatHeaderFields, $formFields)
+    private function handleHeaderColumns($sheet, $concatHeaderFields, $formFields, $startHeaderRow)
     {
-        $startHeaderRow = 3;
+        // $startHeaderRow = 3;
         $secondHeaderRow = $startHeaderRow + 1;
 
         $columnIndex = 0;
@@ -194,7 +194,7 @@ class ExcelController extends Controller
         return $column_field_ids;
     }
 
-    private function handleDataRows($sheet, $submissions, $concatFields, $column_field_ids)
+    private function handleDataRows($sheet, $submissions, $concatFields, $column_field_ids, $startDataRow)
     {
         $normal_field_datas = [];
         foreach ($submissions ?? [] as $key => $submission) {
@@ -217,7 +217,7 @@ class ExcelController extends Controller
         }
 
         // Fill data from the database into the Excel sheet
-        $row = 5; // Start from row 4 to leave space for headers
+        $row = $startDataRow; // Start from row 4 to leave space for headers
         $count = 1; // Index counter
 
         foreach ($submissions as $submission) {
@@ -288,13 +288,13 @@ class ExcelController extends Controller
         $sheet = $this->initSheetTitle($sheet, $org_data, $form_data?->title);
 
         //  ----------------- Set the header row -----------------
-        $column_field_ids = $this->handleHeaderColumns($sheet, $concatHeaderFields, $formFields);
+        $column_field_ids = $this->handleHeaderColumns($sheet, $concatHeaderFields, $formFields, 3);
 
         // Fetch data from the database
         $submissions = $this->fetchSubmissionData($request->form_id, $request->start_date, $request->end_date, $request->vehicle_id, $request->user_id);
 
         //  ----------------- Set the data rows -----------------
-        $this->handleDataRows($sheet, $submissions, $concatFields, $column_field_ids);
+        $this->handleDataRows($sheet, $submissions, $concatFields, $column_field_ids, 5);
 
 
         // Create a writer for Xlsx format
@@ -449,16 +449,16 @@ class ExcelController extends Controller
         foreach (range('B', 'Z') as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);
         }
-        $sheet = $this->initSheetTitle($sheet, $org_data, $form_data?->title);
+        // $sheet = $this->initSheetTitle($sheet, $org_data, $form_data?->title);
 
         //  ----------------- Set the header row -----------------
-        $column_field_ids = $this->handleHeaderColumns($sheet, $concatHeaderFields, $formFields);
+        $column_field_ids = $this->handleHeaderColumns($sheet, $concatHeaderFields, $formFields, 1);
 
         // Fetch data from the database
         $submissions = $this->fetchSubmissionData($form_id, $quarter_start_date, $quarter_end_date, null, null);
 
         //  ----------------- Set the data rows -----------------
-        $this->handleDataRows($sheet, $submissions, $concatFields, $column_field_ids);
+        $this->handleDataRows($sheet, $submissions, $concatFields, $column_field_ids, 3);
 
 
         // Create a writer for Xlsx format
