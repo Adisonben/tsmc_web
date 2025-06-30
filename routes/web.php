@@ -46,8 +46,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logbook/car-ma-form', [LogBookController::class, 'create'])->name('car.ma.form');
     Route::post('/logbook/car-ma/store', [LogBookController::class, 'store'])->name('car.ma.store');
 
+    Route::get('/logbook/show/{logbook_id}', [LogBookController::class, 'logbookShow'])->name('logbook.show');
     Route::get('/logbook/table', [LogBookController::class, 'logbookTable'])->name('logbook.table');
     Route::get('/logbook/create', [LogBookController::class, 'logbookCreate'])->name('logbook.create');
+    Route::post('/logbook/store', [LogBookController::class, 'logbookStore'])->name('logbook.store');
 
     Route::get('/', [App\Http\Controllers\HomeController::class, 'storeHistory']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -60,7 +62,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/renewal-code/store', [RenewalCodeController::class, 'store'])->name('renewal_codes.store');
     Route::post('/renewal-code/user/redeem', [RenewalCodeController::class, 'userRedeem'])->name('renewal_codes.user.redeem');
     Route::post('/renewal-code/org/redeem', [RenewalCodeController::class, 'orgRedeem'])->name('renewal_codes.org.redeem');
-
 
     Route::resource('organizations', OrgController::class);
     Route::post('/organizations/update/{organization}', [OrgController::class, 'update'])->name('org.update');

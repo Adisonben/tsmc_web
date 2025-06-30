@@ -59,7 +59,9 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const modalBtn = document.getElementById('submitBtn');
-        modalBtn.click();
+        if (modalBtn) {
+            modalBtn.click();
+        }
     });
 </script>
 @endsection

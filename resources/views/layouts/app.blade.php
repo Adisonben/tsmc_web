@@ -765,11 +765,15 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modalBtn = document.getElementById('modalBtn');
-            modalBtn.click();
+            if (modalBtn) {
+                modalBtn.click();
+            }
         });
         document.addEventListener('DOMContentLoaded', function() {
             const orgStatusBtn = document.getElementById('orgStatusBtn');
-            orgStatusBtn.click();
+            if (orgStatusBtn) {
+                orgStatusBtn.click();
+            }
         });
     </script>
 </body>

@@ -6,6 +6,10 @@ use App\Models\MaCategory;
 use App\Models\PartUse;
 use App\Models\RepairHistory;
 use App\Models\Vehicle;
+use App\Models\Logbook;
+use App\Models\LogBookKmSchedule;
+use App\Models\LogBookMonthSchedule;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -32,6 +36,16 @@ class LogBookController extends Controller
             return redirect()->back();
         }
     }
+    public function logbookShow($logbook_id) {
+        try {
+            $logbook = LogBook::findOrFail($logbook_id);
+            $ma_categories = MaCategory::get(['id','name']);
+            return view('logbook.logBook', compact('logbook', 'ma_categories'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back();
+        }
+    }
 
     public function create(){
         $ma_categories = MaCategory::get(['id','name']);
@@ -41,11 +55,15 @@ class LogBookController extends Controller
     }
 
     public function logbookTable() {
-        return view('logbook.logBookTable');
+        $log_books = LogBook::where('org_id', Auth()->user()->is_tsm ? session('connected_org') : Auth::user()->userDetail->org)->paginate(10);
+        return view('logbook.logBookTable', compact('log_books'));
     }
 
     public function logbookCreate() {
-        return view('logbook.logBookForm');
+        // $ma_categories = MaCategory::get(['id','name']);
+        $vehicles = Vehicle::where('org_id', Auth()->user()->is_tsm ? session('connected_org') : Auth::user()->userDetail->org)
+            ->get(['id', 'license_plate', 'brand', 'type']);
+        return view('logbook.logBookForm', compact('vehicles'));
     }
 
     public function store(Request $request) {
@@ -127,7 +145,75 @@ class LogBookController extends Controller
             return response()->json(['success' => "บันทึกข้อมูลสำเร็จ"]);
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json(['errors' => "บันทึกข้อมูลไม่สำเร็จ ข้อมูลไม่สมบูรณ์", 'detail' => $th->getMessage()], 500);
+            return response()->json(['errors' => "บันทึกข้อมูลไม่สำเร็จ ข้อมูลไม่สมบูรณ์"], 500);
+        }
+    }
+
+    public function logbookStore(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'vehicle_id'        => ['required', 'exists:vehicles,id'],
+            'vehicle_type'      => ['required', 'string', 'max:255'],
+            'org_name'          => ['required', 'string', 'max:255'],
+            'start_mileage'     => ['required', 'integer', 'min:0'],
+            'start_date'        => ['required', 'date'],
+            'selectedDistances' => ['required', 'array', 'size:4'],
+            'selectedPeriodes'  => ['required', 'array', 'size:4'],
+        ], [
+            'vehicle_id.required'        => 'กรุณาเลือกทะเบียนรถ',
+            'vehicle_id.exists'          => 'ไม่พบข้อมูลทะเบียนรถที่เลือก',
+            'vehicle_type.required'      => 'กรุณาระบุประเภทรถ',
+            'vehicle_type.string'        => 'ประเภทรถต้องเป็นข้อความ',
+            'vehicle_type.max'           => 'ประเภทรถห้ามเกิน 255 ตัวอักษร',
+            'org_name.required'          => 'กรุณาระบุชื่อองค์กร',
+            'org_name.string'            => 'ชื่อองค์กรต้องเป็นข้อความ',
+            'org_name.max'               => 'ชื่อองค์กรห้ามเกิน 255 ตัวอักษร',
+            'start_mileage.required'     => 'กรุณาระบุเลขไมล์เริ่มต้น',
+            'start_mileage.integer'      => 'เลขไมล์เริ่มต้นต้องเป็นตัวเลขจำนวนเต็ม',
+            'start_mileage.min'          => 'เลขไมล์เริ่มต้นต้องมีค่ามากกว่าหรือเท่ากับ 0',
+            'start_date.required'        => 'กรุณาระบุวันที่เริ่มต้น',
+            'start_date.date'            => 'วันที่เริ่มต้นไม่ถูกต้อง',
+            'selectedDistances.required' => 'กรุณาเลือกระยะทาง',
+            'selectedDistances.array'    => 'ระยะทางต้องเป็นรูปแบบรายการ',
+            'selectedDistances.size'     => 'ต้องเลือกระยะทาง 4 รายการ',
+            'selectedPeriodes.required'  => 'กรุณาเลือกช่วงเวลา',
+            'selectedPeriodes.array'     => 'ช่วงเวลาต้องเป็นรูปแบบรายการ',
+            'selectedPeriodes.size'      => 'ต้องเลือกช่วงเวลา 4 รายการ',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        try {
+            $vehicle = Vehicle::findOrFail($request->vehicle_id);
+            $new_logbook = LogBook::create([
+                'vehicle_id' => $request->vehicle_id,
+                'start_mileage' => $request->start_mileage,
+                'vehicle_plate' => $vehicle->license_category . "-" . $vehicle->license_plate,
+                'vehicle_type' => $request->vehicle_type,
+                'org_name' => $request->org_name,
+                'org_id' => Auth::user()->userDetail->org,
+                'create_by' => Auth::user()->id,
+                'start_date' => $request->start_date,
+            ]);
+
+            foreach ($request->selectedDistances ?? [] as $key => $distance) {
+                LogBookKmSchedule::create([
+                    'log_book_id' => $new_logbook->id,
+                    'km_value' => $distance
+                ]);
+            }
+            foreach ($request->selectedPeriodes ?? [] as $key => $period) {
+                LogBookMonthSchedule::create([
+                    'log_book_id' => $new_logbook->id,
+                    'month_value' => $period
+                ]);
+            }
+
+            return response()->json(['success' => "บันทึกข้อมูลสำเร็จ"]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(['errors' => "บันทึกข้อมูลไม่สำเร็จ ข้อมูลไม่สมบูรณ์"], 500);
         }
     }
 }
