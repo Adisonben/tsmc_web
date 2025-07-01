@@ -20,11 +20,11 @@ class LogBookEntry extends Model
         'action_replace',
     ];
 
-    public function logBook(): BelongsTo {
+    public function logBook() {
         return $this->belongsTo(LogBook::class);
     }
 
-    public function maItem(): BelongsTo {
+    public function maItem() {
         return $this->belongsTo(MaItem::class);
     }
 }

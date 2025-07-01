@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\MaCategory;
+use App\Models\MaItem;
 use App\Models\PartUse;
 use App\Models\RepairHistory;
 use App\Models\Vehicle;
 use App\Models\Logbook;
+use App\Models\LogBookEntry;
 use App\Models\LogBookKmSchedule;
 use App\Models\LogBookMonthSchedule;
 
@@ -38,7 +40,12 @@ class LogBookController extends Controller
     }
     public function logbookShow($logbook_id) {
         try {
-            $logbook = LogBook::findOrFail($logbook_id);
+            if (Auth()->user()->is_tsm) {
+                $org_id = session('connected_org');
+            } else {
+                $org_id = Auth::user()->userDetail->org;
+            }
+            $logbook = LogBook::where('org_id', $org_id)->where('id', $logbook_id)->firstOrFail();
             $ma_categories = MaCategory::get(['id','name']);
             return view('logbook.logBook', compact('logbook', 'ma_categories'));
         } catch (\Throwable $th) {
@@ -214,6 +221,40 @@ class LogBookController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json(['errors' => "บันทึกข้อมูลไม่สำเร็จ ข้อมูลไม่สมบูรณ์"], 500);
+        }
+    }
+
+    public function logbookStoreEntry(Request $request, $logbook_id) {
+        // dd($request->all(), array_key_exists('entryAll', $request->all()));
+        try {
+            if (array_key_exists('entryAll', $request->all())) {
+                $items = MaItem::orderByDesc('created_at')->pluck('id');
+                foreach ($items as $item_id) {
+                    if (LogBookEntry::where('log_book_id', $logbook_id)->where('ma_item_id', $item_id)->where('schedule_column', $request->at_column)->doesntExist()) {
+                        LogBookEntry::create([
+                            'log_book_id' => $logbook_id,
+                            'ma_item_id' => $item_id,
+                            'schedule_column' => $request->at_column,
+                            'action_check' => array_key_exists('check', $request->action),
+                            'action_adjust' => array_key_exists('adjust', $request->action),
+                            'action_replace' => array_key_exists('change', $request->action),
+                        ]);
+                    }
+                }
+            } else {
+                LogBookEntry::create([
+                    'log_book_id' => $logbook_id,
+                    'ma_item_id' => $request->at_item,
+                    'schedule_column' => $request->at_column,
+                    'action_check' => array_key_exists('check', $request->action),
+                    'action_adjust' => array_key_exists('adjust', $request->action),
+                    'action_replace' => array_key_exists('change', $request->action),
+                ]);
+            }
+            return redirect()->back()->with('store_entry_success', 'บันทึกสำเร็จ');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('store_entry_error', 'บันทึกไม่สำเร็จ' . $th->getMessage());
         }
     }
 }

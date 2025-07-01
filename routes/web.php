@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logbook/table', [LogBookController::class, 'logbookTable'])->name('logbook.table');
     Route::get('/logbook/create', [LogBookController::class, 'logbookCreate'])->name('logbook.create');
     Route::post('/logbook/store', [LogBookController::class, 'logbookStore'])->name('logbook.store');
+    Route::post('/logbook/store/entry/{logbook_id}', [LogBookController::class, 'logbookStoreEntry'])->name('logbook.store.entry');
 
     Route::get('/', [App\Http\Controllers\HomeController::class, 'storeHistory']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

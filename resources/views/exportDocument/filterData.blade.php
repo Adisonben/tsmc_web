@@ -427,6 +427,9 @@
         }
     </script>
     <style>
+        #exportPage {
+            background-color: var(--main-color);
+        }
         #exportPaper {
             background-color: white;
             padding: 1cm;
