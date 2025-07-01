@@ -7,7 +7,7 @@ use App\Models\MaItem;
 use App\Models\PartUse;
 use App\Models\RepairHistory;
 use App\Models\Vehicle;
-use App\Models\Logbook;
+use App\Models\LogBook;
 use App\Models\LogBookEntry;
 use App\Models\LogBookKmSchedule;
 use App\Models\LogBookMonthSchedule;
