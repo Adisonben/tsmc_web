@@ -63,7 +63,7 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
-                        <h5 class="mb-2">ชุดระยะทาง (กิโลเมตร) - เลือกได้สูงสุด 4 ตัว</h5>
+                        <h5 class="mb-2">ชุดระยะทาง (กิโลเมตร) - เลือกให้ครบ 4 ระยะ</h5>
                         <div class="row row-cols-4">
                             <template x-for="dist in distance_list" :key="dist">
                                 <div class="col">
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <div class="mb-2">
-                        <h5 class="mb-2">ชุดระยะเวลา (เดือน) - เลือกได้สูงสุด 4 ตัว</h5>
+                        <h5 class="mb-2">ชุดระยะเวลา (เดือน) - เลือกให้ครบ 4 ระยะ</h5>
                         <div class="row row-cols-4">
                             <template x-for="period in period_list" :key="period">
                                 <div class="col">

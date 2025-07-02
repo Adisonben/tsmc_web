@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('รายงานผลการปฏิบัติงาน') }}</p>
+                            <p class="mb-0 fs-4">{{ __('รายงานผลการปฏิบัติงานสำหรับส่งกรมฯ') }}</p>
                             @if (session('wrSuccess'))
                                 <div class="alert alert-success m-0 p-2 ms-2" role="alert">
                                     {{ session('wrSuccess') }}
@@ -21,11 +21,12 @@
                                     {{ $errors->first() }}
                                 </div>
                             @endif
-                            <div>
+                            <div class="d-flex align-items-center">
                                 @php
                                     $currentdate = Carbon\Carbon::now();
                                 @endphp
-                                <select name="quarter" class="form-control me-2">
+                                <p class="text-nowrap me-2 mb-0">เลือกไตรมาส</p>
+                                <select name="quarter" class="form-control me-2 border-2 border-primary">
                                     <option value="1" {{ $quarter == 1 ? 'selected' : '' }}>ไตรมาสที่ 1 ปี
                                         {{ $currentdate->thaidate('Y') }}</option>
                                     <option value="2" {{ $quarter == 2 ? 'selected' : '' }}>ไตรมาสที่ 2 ปี

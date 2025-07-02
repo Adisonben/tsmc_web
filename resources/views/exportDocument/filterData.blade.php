@@ -7,7 +7,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">ออกรายงานเอกสาร</p>
+                            <p class="mb-0 fs-4">ค้นและออกรายงานเอกสาร</p>
                         </div>
                     </div>
 
