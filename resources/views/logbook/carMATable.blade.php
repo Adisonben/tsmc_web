@@ -26,17 +26,17 @@
                     </div>
 
                     <div class="card-body overflow-auto">
-                        <div>
+                        {{-- <div>
                             <form action="{{ route('work-records.table') }}" method="GET" class="d-flex mb-3">
                                 @csrf
                                 <select name="searchUser" class="form-control me-2">
                                     <option value="">-- พนักงานทั้งหมด --</option>
-                                    {{-- @foreach ($users ?? [] as $user)
+                                    @foreach ($users ?? [] as $user)
                                         <option value="{{ $user->id }}"
                                             {{ request('searchUser') == $user->id ? 'selected' : '' }}>
                                             {{ $user->full_name }}
                                         </option>
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
                                 <input type="date" name="startDate" class="form-control me-2"
                                     value="{{ request('startDate') }}">
@@ -44,7 +44,7 @@
                                     value="{{ request('endDate') }}">
                                 <button type="submit" class="btn btn-primary">ค้นหา</button>
                             </form>
-                        </div>
+                        </div> --}}
 
                         <table class="table table-hover table-bordered">
                             <thead class="table-dark">

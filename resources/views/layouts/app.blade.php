@@ -95,25 +95,49 @@
                                     จัดการผู้ประจำรถ
                                 </a>
                             </li>
-                            <li class="sidebar-item" id="exportPage">
+                            <li class="sidebar-item" id="orgDataPage">
+                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#org" aria-expanded="false" aria-controls="org">
+                                    <i class="bi bi-building"></i>
+                                    ออกรายงาน
+                                </a>
+                                <ul id="org" class="sidebar-dropdown list-unstyled collapse"
+                                    data-bs-parent="#sidebar">
+                                    <li class="sidebar-item" id="exportPage">
+                                        <a href="{{ route('document.export.filter') }}" class="sidebar-link">
+                                            ออกรายงาน
+                                        </a>
+                                    </li>
+
+                                    <li class="sidebar-item" id="logbookTablePage">
+                                        <a href="{{ route('logbook.table') }}" class="sidebar-link">
+                                            log book
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item" id="performanceReportPage">
+                                        <a href="{{ route('performance.report', ['quarter' => Carbon\Carbon::now()->quarterOfYear()]) }}"
+                                            class="sidebar-link">
+                                            รายงานผลการปฏิบัติงาน
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {{-- <li class="sidebar-item" id="exportPage">
                                 <a href="{{ route('document.export.filter') }}" class="sidebar-link">
-                                    <i class="bi bi-file-earmark-arrow-up"></i>
                                     ออกรายงาน
                                 </a>
                             </li>
 
                             <li class="sidebar-item" id="logbookTablePage">
                                 <a href="{{ route('logbook.table') }}" class="sidebar-link">
-                                    <i class="bi bi-journal"></i>
                                     log book
                                 </a>
                             </li>
                             <li class="sidebar-item" id="performanceReportPage">
                                 <a href="{{ route('performance.report', ['quarter' => Carbon\Carbon::now()->quarterOfYear()]) }}" class="sidebar-link">
-                                    <i class="bi bi-journal"></i>
                                     รายงานผลการปฏิบัติงาน
                                 </a>
-                            </li>
+                            </li> --}}
 
                             <li class="sidebar-header">
                                 ข้อมูลระบบ
@@ -189,9 +213,8 @@
                         {{-- @php
                             dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
                         @endphp --}}
-                        @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', Auth::user()->userDetail->org) ??
-                                false))
+                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', Auth::user()->userDetail->org) ??
+                                false)
                             <li class="sidebar-item" id="postsPage">
                                 <a href="{{ route('posts.index') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
@@ -199,9 +222,8 @@
                                 </a>
                             </li>
                         @endif
-                        @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_check', Auth::user()->userDetail->org) ??
-                                false))
+                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_check', Auth::user()->userDetail->org) ??
+                                false)
                             <li class="sidebar-item" id="formCheckpage">
                                 <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
@@ -209,10 +231,9 @@
                                 </a>
                             </li>
                         @endif
-                        @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'can_access_table',
-                                Auth::user()->userDetail->org) ?? false))
+                                Auth::user()->userDetail->org) ?? false)
                             <li class="sidebar-item" id="formCheckTablePage">
                                 <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>
@@ -220,10 +241,9 @@
                                 </a>
                             </li>
                         @endif
-                        @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'work_record_table',
-                                Auth::user()->userDetail->org) ?? false))
+                                Auth::user()->userDetail->org) ?? false)
                             <li class="sidebar-item" id="workRecordTablePage">
                                 <a href="{{ route('work-records.table') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>
@@ -231,10 +251,8 @@
                                 </a>
                             </li>
                         @endif
-                        @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'car_ma',
-                                Auth::user()->userDetail->org) ?? false))
+                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('car_ma', Auth::user()->userDetail->org) ??
+                                false)
                             <li class="sidebar-item" id="carMATablePage">
                                 <a href="{{ route('car.ma.table') }}" class="sidebar-link">
                                     <i class="bi bi-car-front"></i>
@@ -270,10 +288,9 @@
                                 </a>
                             </li>
                         @endif
-                        @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'can_assign_driver',
-                                optional(Auth::user()->userDetail)->org) ?? false))
+                                optional(Auth::user()->userDetail)->org) ?? false)
                             <li class="sidebar-item" id="assignPage">
                                 <a href="{{ route('vehicle.assignment.table') }}" class="sidebar-link">
                                     <i class="bi bi-person-badge"></i>
@@ -281,27 +298,34 @@
                                 </a>
                             </li>
                         @endif
-                        @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'can_export',
-                                optional(Auth::user()->userDetail)->org) ?? false))
-                            <li class="sidebar-item" id="exportPage">
-                                <a href="{{ route('document.export.filter') }}" class="sidebar-link">
+                                optional(Auth::user()->userDetail)->org) ?? false)
+                            <li class="sidebar-item" id="reportDataPage">
+                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#report" aria-expanded="false" aria-controls="report">
                                     <i class="bi bi-file-earmark-arrow-up"></i>
                                     ออกรายงาน
                                 </a>
-                            </li>
-                            <li class="sidebar-item" id="logbookTablePage">
-                                <a href="{{ route('logbook.table') }}" class="sidebar-link">
-                                    <i class="bi bi-journal"></i>
-                                    log book
-                                </a>
-                            </li>
-                            <li class="sidebar-item" id="performanceReportPage">
-                                <a href="{{ route('performance.report', ['quarter' => Carbon\Carbon::now()->quarterOfYear()]) }}" class="sidebar-link">
-                                    <i class="bi bi-journal"></i>
-                                    รายงานผลการปฏิบัติงาน
-                                </a>
+                                <ul id="report" class="sidebar-dropdown list-unstyled collapse"
+                                    data-bs-parent="#sidebar">
+                                    <li class="sidebar-item" id="exportPage">
+                                        <a href="{{ route('document.export.filter') }}" class="sidebar-link">
+                                            ออกรายงาน
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item" id="logbookTablePage">
+                                        <a href="{{ route('logbook.table') }}" class="sidebar-link">
+                                            log book
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item" id="performanceReportPage">
+                                        <a href="{{ route('performance.report', ['quarter' => Carbon\Carbon::now()->quarterOfYear()]) }}"
+                                            class="sidebar-link">
+                                            รายงานผลการปฏิบัติงาน
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         @endif
 
