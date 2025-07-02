@@ -95,13 +95,13 @@
                                     จัดการผู้ประจำรถ
                                 </a>
                             </li>
-                            <li class="sidebar-item" id="orgDataPage">
+                            <li class="sidebar-item" id="reportDataPage">
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#org" aria-expanded="false" aria-controls="org">
+                                    data-bs-target="#report" aria-expanded="false" aria-controls="report">
                                     <i class="bi bi-building"></i>
                                     ออกรายงาน
                                 </a>
-                                <ul id="org" class="sidebar-dropdown list-unstyled collapse"
+                                <ul id="report" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#sidebar">
                                     <li class="sidebar-item" id="exportPage">
                                         <a href="{{ route('document.export.filter') }}" class="sidebar-link">
