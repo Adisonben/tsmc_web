@@ -105,7 +105,7 @@
                                     data-bs-parent="#sidebar">
                                     <li class="sidebar-item" id="exportPage">
                                         <a href="{{ route('document.export.filter') }}" class="sidebar-link">
-                                            ออกรายงาน
+                                            ค้นและออกรายงาน
                                         </a>
                                     </li>
 
@@ -117,7 +117,7 @@
                                     <li class="sidebar-item" id="performanceReportPage">
                                         <a href="{{ route('performance.report', ['quarter' => Carbon\Carbon::now()->quarterOfYear()]) }}"
                                             class="sidebar-link">
-                                            รายงานผลการปฏิบัติงาน
+                                            รายงานผลส่งกรมฯ
                                         </a>
                                     </li>
                                 </ul>
@@ -135,7 +135,7 @@
                             </li>
                             <li class="sidebar-item" id="performanceReportPage">
                                 <a href="{{ route('performance.report', ['quarter' => Carbon\Carbon::now()->quarterOfYear()]) }}" class="sidebar-link">
-                                    รายงานผลการปฏิบัติงาน
+                                    รายงานผลส่งกรมฯ
                                 </a>
                             </li> --}}
 
@@ -227,7 +227,7 @@
                             <li class="sidebar-item" id="formCheckpage">
                                 <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
-                                    เอกสาร
+                                    ทำเอกสาร 5 หมวด
                                 </a>
                             </li>
                         @endif
@@ -311,7 +311,7 @@
                                     data-bs-parent="#sidebar">
                                     <li class="sidebar-item" id="exportPage">
                                         <a href="{{ route('document.export.filter') }}" class="sidebar-link">
-                                            ออกรายงาน
+                                            ค้นและออกรายงาน
                                         </a>
                                     </li>
                                     <li class="sidebar-item" id="logbookTablePage">
@@ -322,7 +322,7 @@
                                     <li class="sidebar-item" id="performanceReportPage">
                                         <a href="{{ route('performance.report', ['quarter' => Carbon\Carbon::now()->quarterOfYear()]) }}"
                                             class="sidebar-link">
-                                            รายงานผลการปฏิบัติงาน
+                                            รายงานผลส่งกรมฯ
                                         </a>
                                     </li>
                                 </ul>

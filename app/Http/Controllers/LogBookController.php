@@ -11,7 +11,7 @@ use App\Models\LogBook;
 use App\Models\LogBookEntry;
 use App\Models\LogBookKmSchedule;
 use App\Models\LogBookMonthSchedule;
-
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -55,8 +55,13 @@ class LogBookController extends Controller
     }
 
     public function create(){
+        if (Auth()->user()->is_tsm) {
+            $org_id = session('connected_org');
+        } else {
+            $org_id = Auth::user()->userDetail->org;
+        }
         $ma_categories = MaCategory::get(['id','name']);
-        $vehicles = Vehicle::where('org_id', Auth()->user()->is_tsm ? session('connected_org') : Auth::user()->userDetail->org)
+        $vehicles = Vehicle::where('org_id', $org_id)
             ->get(['id', 'license_plate', 'brand']);
         return view('logbook.carMAForm', compact('ma_categories', 'vehicles'));
     }
@@ -68,9 +73,16 @@ class LogBookController extends Controller
 
     public function logbookCreate() {
         // $ma_categories = MaCategory::get(['id','name']);
-        $vehicles = Vehicle::where('org_id', Auth()->user()->is_tsm ? session('connected_org') : Auth::user()->userDetail->org)
+        if (Auth()->user()->is_tsm) {
+            $org_id = session('connected_org');
+        } else {
+            $org_id = Auth::user()->userDetail->org;
+        }
+        $vehicles = Vehicle::where('org_id', $org_id)
             ->get(['id', 'license_plate', 'brand', 'type']);
-        return view('logbook.logBookForm', compact('vehicles'));
+        $org = Organization::find($org_id);
+        $org_name = $org->name ?? '';
+        return view('logbook.logBookForm', compact('vehicles', 'org_name'));
     }
 
     public function store(Request $request) {

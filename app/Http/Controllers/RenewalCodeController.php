@@ -6,7 +6,9 @@ use App\Models\Organization;
 use App\Models\RenewalCode;
 use App\Models\RenewalCodeUsage;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RenewalCodeController extends Controller
 {
@@ -95,6 +97,7 @@ class RenewalCodeController extends Controller
             }
 
             $user = User::find($request->user()->id);
+
             if (!$user) {
                 return redirect()->back()->with('redeemError', 'ไม่พบผู้ใช้งาน.');
             }
@@ -103,9 +106,18 @@ class RenewalCodeController extends Controller
                 return redirect()->back()->with('redeemError', 'โค้ดนี้ถูกใช้ไปแล้ว.');
             }
 
-            $user->update([
-                'expire_at' => $user->expire_at ? \Carbon\Carbon::parse($user->expire_at)->addDays(30) : now()->addDays(30),
-            ]);
+            $expire_date = new Carbon(Auth::user()->expire_at);
+            $diffDay = (int) ceil(Carbon::now()->diffInDays($expire_date));
+
+            if ($diffDay && $diffDay > 0) {
+                $user->update([
+                    'expire_at' => $user->expire_at ? Carbon::parse($user->expire_at)->addDays(30) : now()->addDays(30),
+                ]);
+            } else {
+                $user->update([
+                    'expire_at' => now()->addDays(30),
+                ]);
+            }
 
             // บันทึกการใช้โค้ด
             RenewalCodeUsage::create([
@@ -149,9 +161,19 @@ class RenewalCodeController extends Controller
             if ($renewalCode->isUseByOrg($org->id)) {
                 return redirect()->back()->with('redeemError', 'โค้ดนี้ถูกใช้ไปแล้ว.');
             }
-            $org->update([
-                'expire_at' => $org->expire_at ? \Carbon\Carbon::parse($org->expire_at)->addDays(30) : now()->addDays(30),
-            ]);
+
+            $expire_date = new Carbon($org->expire_at);
+            $diffDay = (int) ceil(Carbon::now()->diffInDays($expire_date));
+
+            if ($diffDay && $diffDay > 0) {
+                $org->update([
+                    'expire_at' => $org->expire_at ? Carbon::parse($org->expire_at)->addDays(30) : now()->addDays(30),
+                ]);
+            } else {
+                $org->update([
+                    'expire_at' => now()->addDays(30),
+                ]);
+            }
 
             // บันทึกการใช้โค้ด
             RenewalCodeUsage::create([

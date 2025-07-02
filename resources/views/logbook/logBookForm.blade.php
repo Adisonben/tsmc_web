@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container py-4" x-data="formBuilder(@js($vehicles), '{{ Auth::user()->userDetail->getOrg->name }}')">
+    <div class="container py-4" x-data="formBuilder(@js($vehicles), '{{ $org_name }}')">
         <form @submit.prevent="handleSubmit" class="vstack gap-4">
             <div class="text-center fs-4 fw-bold">
                 ฟอร์มสร้าง แบบบันทึกผลการบำรุงรักษารถ (Log Book)
