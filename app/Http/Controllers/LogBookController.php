@@ -204,6 +204,11 @@ class LogBookController extends Controller
         }
 
         try {
+            if (Auth()->user()->is_tsm) {
+                $org_id = session('connected_org');
+            } else {
+                $org_id = Auth::user()->userDetail->org;
+            }
             $vehicle = Vehicle::findOrFail($request->vehicle_id);
             $new_logbook = LogBook::create([
                 'vehicle_id' => $request->vehicle_id,
@@ -211,7 +216,7 @@ class LogBookController extends Controller
                 'vehicle_plate' => $vehicle->license_category . "-" . $vehicle->license_plate,
                 'vehicle_type' => $request->vehicle_type,
                 'org_name' => $request->org_name,
-                'org_id' => Auth::user()->userDetail->org,
+                'org_id' => $org_id,
                 'create_by' => Auth::user()->id,
                 'start_date' => $request->start_date,
             ]);
