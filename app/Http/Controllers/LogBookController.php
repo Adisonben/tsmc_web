@@ -251,6 +251,7 @@ class LogBookController extends Controller
                         LogBookEntry::create([
                             'log_book_id' => $logbook_id,
                             'ma_item_id' => $item_id,
+                            'date' => $request->repair_date ?? null,
                             'schedule_column' => $request->at_column,
                             'action_check' => array_key_exists('check', $request->action),
                             'action_adjust' => array_key_exists('adjust', $request->action),
@@ -262,6 +263,7 @@ class LogBookController extends Controller
                 LogBookEntry::create([
                     'log_book_id' => $logbook_id,
                     'ma_item_id' => $request->at_item,
+                    'date' => $request->repair_date ?? null,
                     'schedule_column' => $request->at_column,
                     'action_check' => array_key_exists('check', $request->action),
                     'action_adjust' => array_key_exists('adjust', $request->action),
