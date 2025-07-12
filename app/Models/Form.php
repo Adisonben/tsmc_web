@@ -54,6 +54,59 @@ class Form extends Model
         return $this->hasPosition()->where('position_id', $positionId)->exists();
     }
 
+    public function countFromSubmissionByQuarter($quarter, $form_id)
+    {
+        $quarter_start_date = now()->startOfYear()->addMonths(($quarter - 1) * 3);
+        $quarter_end_date = now()->startOfYear()->addMonths((($quarter - 1) * 3) + 3)->subDay();
+        if (Auth()->user()->is_tsm) {
+            $org_id = session('connected_org') ?? '';
+        } else {
+            $org_id = Auth::user()->userDetail->org ?? '';
+        }
+        // Fetch submissions and filter by isSuccessful accessor if needed
+        $query = $this->hasMany(FormSubmissions::class, 'form_id')
+            ->where('org', $org_id)
+            ->where('form_id', $form_id)
+            ->where('created_at', '>=', $quarter_start_date)
+            ->where('created_at', '<=', $quarter_end_date);
+
+        // If isSuccessful is an accessor or relationship, filter in PHP
+        // return $query->get()->filter(function ($submission) {
+        //     return $submission->isSubmissionSuccessful();
+        // })->count();
+        return $query->get()->count();
+    }
+
+    public function countFromSubmissionFieldByQuarterAndFieldId($quarter, $form_id, $field_id, $isSubform = false, $subform_id = null)
+    {
+        $quarter_start_date = now()->startOfYear()->addMonths(($quarter - 1) * 3);
+        $quarter_end_date = now()->startOfYear()->addMonths((($quarter - 1) * 3) + 3)->subDay();
+        if (Auth()->user()->is_tsm) {
+            $org_id = session('connected_org') ?? '';
+        } else {
+            $org_id = Auth::user()->userDetail->org ?? '';
+        }
+        // Fetch submissions and filter by isSuccessful accessor if needed
+        $query = FormSubmissions::where('org', $org_id)
+            ->where('form_id', $form_id)
+            ->where('created_at', '>=', $quarter_start_date)
+            ->where('created_at', '<=', $quarter_end_date);
+
+        if ($isSubform) {
+            $field_list = FormField::where('form_id', $subform_id)
+                ->pluck('id');
+            // return $field_list;
+            return $query->get()->sum(function ($submission) use ($field_list) {
+                return $submission->countSubmissionValuesByFieldList($field_list);
+            });
+        } else {
+            // If isSuccessful is an accessor or relationship, filter in PHP
+            return $query->get()->sum(function ($submission) use ($field_id) {
+                return $submission->countSubmissionValuesByField($field_id);
+            });
+        }
+    }
+
     public function countVehicleFromSubmissionByQuarter($quarter)
     {
         $quarter_start_date = now()->startOfYear()->addMonths(($quarter - 1) * 3);

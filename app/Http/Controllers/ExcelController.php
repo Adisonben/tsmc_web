@@ -323,6 +323,12 @@ class ExcelController extends Controller
         $categories = Form_category::all();
         return view('exportDocument.performanceReport', compact('categories', 'quarter'));
     }
+    public function submissionCount(Request $request)
+    {
+        $quarter = $request->quarter ?? Carbon::now()->quarterOfYear();
+        $categories = Form_category::all();
+        return view('exportDocument.submissionCount', compact('categories', 'quarter'));
+    }
 
     public function exportPerformanceReport(Request $request)
     {

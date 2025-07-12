@@ -49,6 +49,26 @@ class FormSubmissions extends Model
         return $this->hasMany(FormSubmissionValue::class, 'submission_id')->whereNull('value');
     }
 
+    public function getSubmissionValuesIsNotNull()
+    {
+        return $this->hasMany(FormSubmissionValue::class, 'submission_id')->whereNotNull('value')->count();
+    }
+
+    public function isSubmissionSuccessful()
+    {
+        return $this->getSubmissionValuesIsNull()->count() === 0;
+    }
+
+    public function countSubmissionValuesByField($fieldId)
+    {
+        return $this->getSubmissionValues()->where('field_id', $fieldId)->whereNotNull('value')->count();
+    }
+
+    public function countSubmissionValuesByFieldList($field_list)
+    {
+        return $this->getSubmissionValues()->whereIn('field_id', $field_list)->whereNotNull('value')->count() > 0 ? 1 : 0;
+    }
+
     public function getFieldValue ($fieldId) {
         return $this->getSubmissionValues()->where('field_id', $fieldId)->first();
     }

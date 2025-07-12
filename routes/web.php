@@ -126,6 +126,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/export-document', [ExcelController::class, 'export']);
     Route::get('/performance-report', [ExcelController::class, 'performanceReport'])->name('performance.report');
     Route::get('/export-performance-report', [ExcelController::class, 'exportPerformanceReport'])->name('export.performance.report');
+    Route::get('/submission-count', [ExcelController::class, 'submissionCount'])->name('submission.count');
 
     // API routes
     Route::prefix('/api')->group(function () {
