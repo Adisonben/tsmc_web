@@ -7,6 +7,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\LineController;
 use App\Http\Controllers\LogBookController;
 use App\Http\Controllers\Organization\OrgController;
 use App\Http\Controllers\Organization\PositionController;
@@ -21,6 +22,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/terms', function () {
     return view('terms');
 })->name('terms');
+
+Route::get('/line-login', function () {
+    return view('auth.line_login');
+})->name('line.login');
+
+Route::get('/line-check-user/{userId}', [LineController::class, 'lineCheckUser'])->name('line.check.user')->withoutMiddleware(['auth']);
+Route::post('/line-auth/{userId}', [LineController::class, 'lineAuth'])->name('line.auth')->withoutMiddleware(['auth']);
 
 // Route::get('tsm/login', [TSMUserController::class, 'showLogin'])->name('tsm.login')->withoutMiddleware(['auth']);
 Route::get('tsm/register', [TSMUserController::class, 'register'])->name('tsm.register')->withoutMiddleware(['auth']);

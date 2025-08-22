@@ -26,6 +26,7 @@ class User extends Authenticatable
         'pass_text',
         'is_tsm',
         'expire_at',
+        'line_user_id'
     ];
 
     /**
