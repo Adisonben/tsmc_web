@@ -41,7 +41,7 @@ class LineController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('username', $request->input('username'))->first();
+        $user = User::where('username', $request->input('username'))->firstOrFail();
 
         if ($user && Hash::check($request->input('password'), $user->password)) {
             $user->line_user_id = $lineUserId ?? null; // Assuming you want to store the LINE user ID

@@ -101,7 +101,7 @@
                 .then(data => {
                     // console.log('Log saved: ', data);
                     if (data.status === 'error') {
-                        throw new Error(data.message);
+                        throw new Error("Data error: ", data.message);
                     }
 
                     console.log('Login successful');
@@ -110,6 +110,12 @@
                 .catch(error => {
                     // console.error('Error saving.', error);
                     console.log('Error during login');
+                    Swal.fire({
+                        title: 'เข้าสู่ระบบไม่สำเร็จ',
+                        text: `กรุณาตรวจสอบชื่อผู้ใช้หรือรหัสผ่านอีกครั้ง หรือติดต่อผู้ดูแลระบบ`,
+                        icon: 'error',
+                        confirmButtonText: 'ตกลง'
+                    });
                 });
         } catch (error) {
             // Optionally show error to user
@@ -152,6 +158,12 @@
             document.getElementById("loadingCard").hidden = true;
             document.getElementById("loginFormCard").hidden = false;
             console.error("Error during Line Auth:", error);
+            Swal.fire({
+                title: 'เข้าสู่ระบบด้วย Line ไม่สำเร็จ',
+                text: `กรุณาเข้าสู่ระบบเพื่อผูกบัญชี LINE ของคุณกับบัญชีระบบ`,
+                icon: 'error',
+                confirmButtonText: 'ตกลง'
+            });
         }
     }
 
