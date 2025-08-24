@@ -80,6 +80,12 @@
                                     บันทึกการบำรุงรักษารถ
                                 </a>
                             </li>
+                            <li class="sidebar-item" id="elearningPage">
+                                <a href="{{ route('elearning') }}" class="sidebar-link">
+                                    <i class="bi bi-book"></i>
+                                    ความรู้ออนไลน์
+                                </a>
+                            </li>
                             <li class="sidebar-header">
                                 แบบฟอร์ม
                             </li>
@@ -260,6 +266,12 @@
                                 </a>
                             </li>
                         @endif
+                        <li class="sidebar-item" id="elearningPage">
+                            <a href="{{ route('elearning') }}" class="sidebar-link">
+                                <i class="bi bi-book"></i>
+                                ความรู้ออนไลน์
+                            </a>
+                        </li>
                         {{-- <li class="sidebar-item" id="carMATablePage">
                             <a href="{{ route('car.ma.table') }}" class="sidebar-link">
                                 <i class="bi bi-car-front"></i>
