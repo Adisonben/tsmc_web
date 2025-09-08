@@ -20,7 +20,7 @@ class PositionController extends Controller
     {
         if ((Auth()->user()->userDetail->org ?? false) || (Auth()->user()->is_tsm ?? false)) {
             $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
-            $positions = Position::where('org', $org_id)->orWhereNull('org')->get();
+            $positions = Position::where('org', $org_id)->orWhereNull('org')->paginate(10);
         } else {
             $positions = Position::orderBy('created_at', "desc")->paginate(10);
         }
