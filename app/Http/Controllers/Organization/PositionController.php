@@ -18,7 +18,7 @@ class PositionController extends Controller
      */
     public function index()
     {
-        if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
+        if ((Auth()->user()->userDetail->org ?? false) || (Auth()->user()->is_tsm ?? false)) {
             $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
             $positions = Position::where('org', $org_id)->orWhereNull('org')->get();
         } else {
