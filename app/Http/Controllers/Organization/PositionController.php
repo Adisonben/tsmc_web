@@ -22,7 +22,7 @@ class PositionController extends Controller
             $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
             $positions = Position::where('org', $org_id)->orWhereNull('org')->get();
         } else {
-            $positions = Position::all();
+            $positions = Position::paginate(10);
         }
         return view('organization.position.positionTable', compact('positions'));
     }

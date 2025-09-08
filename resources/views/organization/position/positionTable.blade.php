@@ -81,7 +81,7 @@
                             <tbody>
                                 @foreach ($positions as $index => $position)
                                     <tr>
-                                        <th scope="row">{{ $index + 1 }}</th>
+                                        <td scope="row" >{{ (($positions->currentPage()-1) * 10) + ($index+1) }}</td>
                                         <td>{{ $position->name }}</td>
                                         <td>{{ $position->parent ? $position->parent->name : '-' }}</td>
                                         <td>
@@ -159,6 +159,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $positions->links() }}
                     </div>
                 </div> {{-- End Department Card --}}
             </div>
