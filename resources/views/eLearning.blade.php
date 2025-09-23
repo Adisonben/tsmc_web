@@ -28,7 +28,8 @@
                             <a :href="'https://smarthub.trainingzenter.com/learn-from-tsmc/' + course.id
                                 + '?name={{ urlencode(Auth::user()->getFullNameAttribute() ?? '') }}'
                                 + '&username={{ urlencode(Auth::user()->username ?? '') }}'
-                                + '&org={{ urlencode(Auth::user()->getOrgNameAttribute() ?? '') }}'"
+                                + '&org={{ urlencode(Auth::user()->getOrgNameAttribute() ?? '') }}'
+                                + '&is_tsm={{ urlencode(Auth::user()->is_tsm ?? '0') }}'"
                                 target="_blank" class="card border-primary" style="width: 20rem;"
                             >
                                 <div class="bg-secondary w-100">
