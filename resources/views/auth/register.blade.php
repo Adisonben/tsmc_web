@@ -20,7 +20,7 @@
                             </div>
                         @endif
                         <div class="row mb-3">
-                            <label for="org_name" class="col-md-4 col-form-label text-md-end">บริษัท / บริษัท</label>
+                            <label for="org_name" class="col-md-4 col-form-label text-md-end">ชื่อบริษัท</label>
 
                             <div class="col-md-6">
                                 <input id="org_name" type="text" class="form-control @error('org_name') is-invalid @enderror" name="org_name" value="{{ old('org_name') }}" required autocomplete="org_name" autofocus>
