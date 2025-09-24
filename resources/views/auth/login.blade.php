@@ -49,7 +49,7 @@
                             </button>
                             <div class="d-flex gap-2 flex-wrap">
                                 <p class="mb-0">{{ __('messages.please_register') }}</p>
-                                <a href="{{ route('register') }}">ลงทะเบียนบัญชีองค์กร</a>
+                                <a href="{{ route('register') }}">ลงทะเบียนบัญชีบริษัท</a>
                                 <p class="mb-0">หรือ</p>
                                 <a href="{{ route('tsm.register') }}">ลงทะเบียนบัญชี TSM</a>
                                 <p class="mb-0">เพื่อเข้าใช้งานระบบ</p>

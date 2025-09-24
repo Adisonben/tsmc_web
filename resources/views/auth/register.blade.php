@@ -9,7 +9,7 @@
             </div>
             <p class="text-center text-wrap fs-4 fw-bold">Transport <span style="color: orange">Safety</span> Manager <br> Communication</p>
             <div class="card">
-                <div class="card-header text-center fs-5 fw-bold">ลงทะเบียน (สำหรับองค์กร)</div>
+                <div class="card-header text-center fs-5 fw-bold">ลงทะเบียน (สำหรับบริษัท)</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register.new.user') }}">
@@ -20,7 +20,7 @@
                             </div>
                         @endif
                         <div class="row mb-3">
-                            <label for="org_name" class="col-md-4 col-form-label text-md-end">หน่วยงาน / บริษัท</label>
+                            <label for="org_name" class="col-md-4 col-form-label text-md-end">บริษัท / บริษัท</label>
 
                             <div class="col-md-6">
                                 <input id="org_name" type="text" class="form-control @error('org_name') is-invalid @enderror" name="org_name" value="{{ old('org_name') }}" required autocomplete="org_name" autofocus>

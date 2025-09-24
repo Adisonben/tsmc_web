@@ -156,7 +156,7 @@ class RenewalCodeController extends Controller
             $org = Organization::find($request->user()->userDetail->org);
 
             if (!$org) {
-                return redirect()->back()->with('redeemError', 'ไม่พบองค์กร.');
+                return redirect()->back()->with('redeemError', 'ไม่พบบริษัท.');
             }
             if ($renewalCode->isUseByOrg($org->id)) {
                 return redirect()->back()->with('redeemError', 'โค้ดนี้ถูกใช้ไปแล้ว.');

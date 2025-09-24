@@ -29,7 +29,7 @@
                                         <th scope="col">Username</th>
                                         <th scope="col">ชื่อ</th>
                                         <th scope="col">วันที่ลงทะเบียน</th>
-                                        <th scope="col">หน่วยงาน</th>
+                                        <th scope="col">บริษัท</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>

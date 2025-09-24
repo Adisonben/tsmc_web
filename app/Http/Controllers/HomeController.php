@@ -83,7 +83,7 @@ class HomeController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'terms' => ['required'],
         ], [
-            'org_name.required' => 'กรุณากรอกชื่อองค์กร',
+            'org_name.required' => 'กรุณากรอกชื่อบริษัท',
             'prefix_id.required' => 'กรุณาเลือกคำนำหน้า',
             'fname.required' => 'กรุณากรอกชื่อ',
             'lname.required' => 'กรุณากรอกนามสกุล',

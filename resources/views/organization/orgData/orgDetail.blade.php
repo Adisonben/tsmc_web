@@ -7,7 +7,7 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('หน่วยงาน') }}</p>
+                            <p class="mb-0 fs-4">{{ __('บริษัท') }}</p>
                         </div>
                     </div>
 
@@ -17,7 +17,7 @@
                                 {{ session('success') }}
                             </div>
                         @endif
-                        <p>ชื่อหน่วยงาน : {{ $org->name }}</p>
+                        <p>ชื่อบริษัท : {{ $org->name }}</p>
                     </div>
                 </div>
 

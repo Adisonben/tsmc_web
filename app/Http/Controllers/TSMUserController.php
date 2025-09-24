@@ -164,8 +164,8 @@ class TSMUserController extends Controller
             'orgName' => 'required|string|max:255',
             'orgLogo' => 'nullable|mimes:jpeg,png,jpg,gif|max:2048', // max 2 megabytes (MB)
         ], [
-            'orgName.required' => 'กรุณากรอกชื่อองค์กร',
-            'orgLogo.max' => 'โลโก้หน่วยงานต้องมีขนาดไม่เกิน 2 MB',
+            'orgName.required' => 'กรุณากรอกชื่อบริษัท',
+            'orgLogo.max' => 'โลโก้บริษัทต้องมีขนาดไม่เกิน 2 MB',
         ]);
 
         try {
@@ -200,8 +200,8 @@ class TSMUserController extends Controller
             'orgName' => 'required|string|max:255',
             'orgLogo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2 megabytes (MB)
         ], [
-            'orgLogo.max' => 'โลโก้หน่วยงานต้องมีขนาดไม่เกิน 2 MB',
-            'orgName.required' => 'กรุณากรอกชื่อองค์กร',
+            'orgLogo.max' => 'โลโก้บริษัทต้องมีขนาดไม่เกิน 2 MB',
+            'orgName.required' => 'กรุณากรอกชื่อบริษัท',
         ]);
 
         try {
@@ -226,9 +226,9 @@ class TSMUserController extends Controller
                 }
             }
 
-            return redirect()->back()->with(['success' => "แก้ไขหน่วยงานสำเร็จ"]);
+            return redirect()->back()->with(['success' => "แก้ไขบริษัทสำเร็จ"]);
         } catch (\Throwable $th) {
-            return redirect()->back()->with(['error' => "ไม่สามารถแก้ไขหน่วยงาน"]);
+            return redirect()->back()->with(['error' => "ไม่สามารถแก้ไขบริษัท"]);
         }
     }
 
@@ -257,7 +257,7 @@ class TSMUserController extends Controller
             }
             Session::put('connected_org', $org->id);
             Session::put('org_status', $org->status);
-            return redirect()->back()->with('success', 'เชื่อมต่อกับองค์กรเรียบร้อย');
+            return redirect()->back()->with('success', 'เชื่อมต่อกับบริษัทเรียบร้อย');
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');

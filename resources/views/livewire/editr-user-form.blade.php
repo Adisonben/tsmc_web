@@ -56,9 +56,9 @@
             </div>
             @if (!$user->is_tsm)
                 <div class="col-md-4">
-                    <label for="userOrg" class="form-label">หน่วยงาน</label>
+                    <label for="userOrg" class="form-label">บริษัท</label>
                     <select id="userOrg" class="form-select" wire:model="org_id" wire:change="selectedOrgId" required>
-                        <option selected>เลือกหน่วยงาน</option>
+                        <option selected>เลือกบริษัท</option>
                         @foreach ($orgs as $org)
                             <option value="{{ $org->id }}">{{ $org->name }}</option>
                         @endforeach

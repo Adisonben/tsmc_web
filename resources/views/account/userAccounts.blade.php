@@ -31,7 +31,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Username</th>
                                         <th scope="col">ชื่อ</th>
-                                        <th scope="col">หน่วยงาน</th>
+                                        <th scope="col">บริษัท</th>
                                         <th scope="col">สาขา</th>
                                         <th scope="col">แผนก</th>
                                         <th scope="col">ตำแหน่ง</th>

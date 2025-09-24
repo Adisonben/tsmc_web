@@ -39,7 +39,7 @@
                                     <p class="mb-0 col-6">{{ Auth::user()->userDetail->getDpm->name ?? '-' }}</p>
                                     <p class="mb-0 col-6"><strong>สาขา:</strong></p>
                                     <p class="mb-0 col-6">{{ Auth::user()->userDetail->getBrn->name ?? '-' }}</p>
-                                    <p class="mb-0 col-6"><strong>หน่วยงาน:</strong></p>
+                                    <p class="mb-0 col-6"><strong>บริษัท:</strong></p>
                                     <p class="mb-0 col-6">{{ Auth::user()->userDetail->getOrg->name ?? '-' }}</p>
                                 </div>
                             </div>

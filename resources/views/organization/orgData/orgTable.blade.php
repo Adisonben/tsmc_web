@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('ข้อมูลองค์กร') }}</p>
+                            <p class="mb-0 fs-4">{{ __('ข้อมูลบริษัท') }}</p>
                             @if (Auth()->user()->username === "tsmcadmin")
                                 <a href="/organizations/create" class="btn btn-success btn-sm">สร้าง</a>
                             @endif

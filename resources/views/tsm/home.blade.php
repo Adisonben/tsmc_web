@@ -11,7 +11,7 @@
 
             <div class="d-flex align-items-center my-4">
                 <div class="flex-grow-1 border-top border-dark"></div>
-                <span class="mx-3 text-muted fs-5">รายการองค์กรที่คุณรับผิดชอบ</span>
+                <span class="mx-3 text-muted fs-5">รายการบริษัทที่คุณรับผิดชอบ</span>
                 <div class="flex-grow-1 border-top border-dark"></div>
             </div>
             @if (session('success'))

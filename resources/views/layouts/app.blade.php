@@ -152,13 +152,13 @@
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#org" aria-expanded="false" aria-controls="org">
                                     <i class="bi bi-building"></i>
-                                    องค์กร
+                                    บริษัท
                                 </a>
                                 <ul id="org" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#sidebar">
                                     <li class="sidebar-item">
                                         <a href="{{ route('organizations.index') }}"
-                                            class="sidebar-link">ข้อมูลองค์กร</a>
+                                            class="sidebar-link">ข้อมูลบริษัท</a>
                                     </li>
                                     <li class="sidebar-item">
                                         <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
@@ -204,7 +204,7 @@
                         <li class="sidebar-item" id="MyOrgListPage">
                             <a href="{{ route('tsm.manage-org') }}" class="sidebar-link">
                                 <i class="bi bi-building"></i>
-                                จัดการองค์กรที่รับผิดชอบ
+                                จัดการบริษัทที่รับผิดชอบ
                             </a>
                         </li>
                     </ul>
@@ -360,13 +360,13 @@
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#org" aria-expanded="false" aria-controls="org">
                                     <i class="bi bi-building"></i>
-                                    องค์กร
+                                    บริษัท
                                 </a>
                                 <ul id="org" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#sidebar">
                                     <li class="sidebar-item">
                                         <a href="{{ route('organizations.index') }}"
-                                            class="sidebar-link">ข้อมูลองค์กร</a>
+                                            class="sidebar-link">ข้อมูลบริษัท</a>
                                     </li>
                                     <li class="sidebar-item">
                                         <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
@@ -797,13 +797,13 @@
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title">
                         <i class="bi bi-info-circle-fill me-2"></i>
-                        หน่วยงานของคุณถูกปิดการใช้งาน
+                        บริษัทของคุณถูกปิดการใช้งาน
                     </h5>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-warning" role="alert">
                         <p class="mb-0">
-                            หน่วยงานของคุณถูกปิดการใช้งานแล้ว กรุณาติดต่อเจ้าหน้าที่ของเราเพื่อใช้งานต่อไป
+                            บริษัทของคุณถูกปิดการใช้งานแล้ว กรุณาติดต่อเจ้าหน้าที่ของเราเพื่อใช้งานต่อไป
                         </p>
                     </div>
 

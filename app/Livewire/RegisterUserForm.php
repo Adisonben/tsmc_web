@@ -79,7 +79,7 @@ class RegisterUserForm extends Component
                 'prefix_id.required' => 'กรุณาเลือกคำนำหน้า',
                 'fname.required' => 'กรุณากรอกชื่อ',
                 'lname.required' => 'กรุณากรอกนามสกุล',
-                'org_id.required' => 'กรุณาเลือกหน่วยงาน',
+                'org_id.required' => 'กรุณาเลือกบริษัท',
                 'branch_id.required' => 'กรุณาเลือกสาขา',
                 'department_id.required' => 'กรุณาเลือกแผนก',
                 'citizen_id.required' => 'กรุณากรอกเลขบัตรประชาชน',

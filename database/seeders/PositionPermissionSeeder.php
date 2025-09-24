@@ -44,7 +44,7 @@ class PositionPermissionSeeder extends Seeder
             ],
             [
                 'name' => 'can_manage_org',
-                'label' => 'จัดการข้อมูลองค์กร',
+                'label' => 'จัดการข้อมูลบริษัท',
             ],
             [
                 'name' => 'can_see_all_docs',

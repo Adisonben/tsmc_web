@@ -73,7 +73,7 @@
                                 </div>
                                 @if (!$user->is_tsm)
                                     <div class="d-flex mb-3 gap-2 align-items-center">
-                                        <div class="text-nowrap fw-bold">หน่วยงาน</div>
+                                        <div class="text-nowrap fw-bold">บริษัท</div>
                                         <div class="">{!! optional($user->userDetail->getOrg)->name ?? '<span class="text-warning">-ไม่ทราบ-</span>' !!}</div>
                                     </div>
                                     <div class="d-flex mb-3 gap-2 align-items-center">

@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('ข้อมูลองค์กรที่รับผิดชอบ') }}</p>
+                            <p class="mb-0 fs-4">{{ __('ข้อมูลบริษัทที่รับผิดชอบ') }}</p>
                             {{-- <a href="/organizations/create" class="btn btn-success btn-sm">สร้าง</a> --}}
                             <!-- Button trigger modal -->
                             @if (count($tsm_has_orgs ?? []) < 5)
@@ -23,7 +23,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="createOrgLabel">เพิ่มองค์กร</h1>
+                                            <h1 class="modal-title fs-5" id="createOrgLabel">เพิ่มบริษัท</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -33,14 +33,14 @@
                                                 @csrf
 
                                                 <div class="mb-3">
-                                                    <label for="orgName" class="form-label">ชื่อหน่วยงาน</label>
+                                                    <label for="orgName" class="form-label">ชื่อบริษัท</label>
                                                     <input type="text" maxlength="150" class="form-control"
-                                                        id="orgName" name="orgName" placeholder="กรุณากรอกชื่อหน่วยงาน"
+                                                        id="orgName" name="orgName" placeholder="กรุณากรอกชื่อบริษัท"
                                                         required>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="orgLogo" class="form-label">โลโก้หน่วยงาน (ขนาดไม่เกิน 2
+                                                    <label for="orgLogo" class="form-label">โลโก้บริษัท (ขนาดไม่เกิน 2
                                                         MB)</label>
                                                     <input class="form-control" type="file" id="orgLogo"
                                                         name="orgLogo">
@@ -131,7 +131,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="updateOrgLabel{{ $index }}">
-                                                            แก้ไของค์กร
+                                                            แก้ไขบริษัท
                                                         </h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -143,15 +143,15 @@
                                                             @csrf
 
                                                             <div class="mb-3">
-                                                                <label for="orgName" class="form-label">ชื่อหน่วยงาน</label>
+                                                                <label for="orgName" class="form-label">ชื่อบริษัท</label>
                                                                 <input type="text" maxlength="150" class="form-control"
                                                                     id="orgName" name="orgName"
                                                                     value="{{ $tsm_has_org?->getOrg?->name }}"
-                                                                    placeholder="กรุณากรอกชื่อหน่วยงาน" required>
+                                                                    placeholder="กรุณากรอกชื่อบริษัท" required>
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label for="orgLogo" class="form-label">โลโก้หน่วยงาน
+                                                                <label for="orgLogo" class="form-label">โลโก้บริษัท
                                                                     (ขนาดไม่เกิน 2 MB)
                                                                 </label>
                                                                 <input class="form-control" type="file" id="orgLogo"
