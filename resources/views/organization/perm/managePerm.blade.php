@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('การอนุญาต') }}</p>
+                            <p class="mb-0 fs-4">{{ __('สิทธิ์การเข้าถึง') }}</p>
                         </div>
                     </div>
 

@@ -168,7 +168,7 @@
                                     </li>
                                     @if (session('org_status') !== 2)
                                         <li class="sidebar-item">
-                                            <a href="{{ route('posit.perm') }}" class="sidebar-link">การอนุญาต</a>
+                                            <a href="{{ route('posit.perm') }}" class="sidebar-link">สิทธิ์การเข้าถึง</a>
                                         </li>
                                     @endif
                                 </ul>
@@ -375,7 +375,7 @@
                                         <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="{{ route('posit.perm') }}" class="sidebar-link">การอนุญาต</a>
+                                        <a href="{{ route('posit.perm') }}" class="sidebar-link">สิทธิ์การเข้าถึง</a>
                                     </li>
                                 </ul>
                             </li>
