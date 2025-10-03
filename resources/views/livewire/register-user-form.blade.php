@@ -30,7 +30,7 @@
         <div class="row g-3 mb-3">
             <div class="col-md-6">
                 <label for="citizen_id" class="form-label">หมายเลขประชาชน</label>
-                <input type="text" class="form-control" maxlength="150" id="citizen_id" wire:model="citizen_id" placeholder="กรุณากรอกหมายเลขประชาชน">
+                <input type="text" class="form-control" maxlength="15" id="citizen_id" wire:model="citizen_id" placeholder="กรุณากรอกหมายเลขประชาชน">
             </div>
             <div class="col-md-6">
                 <label for="prefix_id" class="form-label">คำนำหน้า</label>
