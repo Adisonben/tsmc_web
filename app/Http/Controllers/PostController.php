@@ -126,10 +126,10 @@ class PostController extends Controller
                 ]);
             }
 
-            return redirect()->route('home')->with(['success' => "โพสสำเร็จ"]);
+            return redirect()->route('posts.index')->with(['success' => "โพสสำเร็จ"]);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with(['error' => $th->getMessage()]);
+            return redirect()->route('posts.index')->with(['error' => $th->getMessage()]);
         }
     }
 
