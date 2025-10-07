@@ -126,7 +126,7 @@ class VehicleController extends Controller
                 ]);
             }
 
-            return redirect()->back()->with(['vehicleSuccess'=> 'บันทึกข้อมูลการจassignรถสำเร็จ']);
+            return redirect()->back()->with(['vehicleSuccess'=> 'บันทึกข้อมูลผู้ประจำรถสำเร็จ']);
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with(['vehicleError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);

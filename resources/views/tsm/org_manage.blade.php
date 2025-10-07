@@ -117,7 +117,7 @@
                                                         <i class="bi bi-pencil-square"></i>
                                                     </button>
                                                     <button type="button" class="btn btn-danger btn-sm delete-data-btn"
-                                                        del-id="{{ optional($tsm_has_org->getOrg)->id }}" del-target="tsm/org"
+                                                        del-id="{{ optional($tsm_has_org->getOrg)->id }}" del-target="organizations"
                                                         data-bs-toggle="tooltip" data-bs-title="ลบ"><i
                                                             class="bi bi-trash"></i></button>
                                                 </td>

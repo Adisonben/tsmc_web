@@ -264,7 +264,9 @@
                                     }
                                 });
                             } else {
-                                Swal.fire(data.success ? data.success :"บันทึกสำเร็จ", "", "success");
+                                Swal.fire(data.success ? data.success :"บันทึกสำเร็จ", "", "success").then(() => {
+                                    window.location.href = "/document/fill-out/select-form";
+                                });
                             }
                         })
                         .catch(error => {
