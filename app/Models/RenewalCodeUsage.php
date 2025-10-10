@@ -35,4 +35,15 @@ class RenewalCodeUsage extends Model
     {
         return $this->type === 'org' ? Organization::find($this->target) : null;
     }
+
+    public function getTargetName() {
+        if ($this->type === 'user') {
+            $user = $this->getUser();
+            return $user ? $user->getFullNameAttribute() : 'Unknown User';
+        } elseif ($this->type === 'org') {
+            $org = $this->getOrganization();
+            return $org ? $org->name : 'Unknown Organization';
+        }
+        return 'Unknown';
+    }
 }

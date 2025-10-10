@@ -26,26 +26,34 @@
                                 </div>
                                 <form action="{{ route('renewal_codes.store') }}" method="post">
                                     @csrf
-                                    <div class="modal-body">
-                                        <div class="mb-3">
+                                    <div class="modal-body d-flex flex-wrap">
+                                        {{-- <div class="mb-3">
                                             <ol class="bg-info text-white py-2 px-4 rounded">
                                                 <li>- จำนวนวันที่เพิ่มหลังจากใช้ code คือ 30 วัน</li>
                                             </ol>
-                                        </div>
-                                        <div class="mb-3">
+                                        </div> --}}
+                                        <div class="col-12">
                                             <label for="code" class="form-label">Code</label>
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" id="createInputCode" placeholder="กรอก code ที่ต้องการสร้าง" aria-label="กรอก code ที่ต้องการสร้าง" name="code" required aria-describedby="generateBtn">
                                                 <button class="btn btn-outline-secondary" type="button" id="generateBtn">Generate</button>
                                             </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="max_uses" class="form-label">จำนวนการใช้งาน (ครั้ง)</label>
-                                            <input type="number" class="form-control" id="max_uses" placeholder="กรอกจำนวนการใช้งาน" name="max_uses" value="1" min="0" max="100" step="1" required>
+                                        <div class="col-12 col-md-6">
+                                            <label for="max_uses" class="form-label">จำนวนผู้ใช้ (คน)</label>
+                                            <input type="number" class="form-control" id="max_uses" placeholder="กรอกจำนวนการใช้งาน" name="max_uses" value="1" min="1" max="1000" step="1" required>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="expires_at" class="form-label">วันหมดอายุ</label>
-                                            <input type="date" class="form-control" id="expires_at" placeholder="กรอกวันหมดอายุ" name="expires_at" value="{{ \Carbon\Carbon::now()->addDays(30)->format('Y-m-d') }}" required>
+                                        <div class="col-12 col-md-6">
+                                            <label for="use_per_user" class="form-label">จำนวนการใช้งานต่อ 1 ผู้ใช้ (ครั้ง)</label>
+                                            <input type="number" class="form-control" id="use_per_user" placeholder="กรอกจำนวนการใช้งาน" name="use_per_user" value="1" min="1" max="1000" step="1" required>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label for="renew_day" class="form-label">จำนวนวันที่ต่ออายุ (วัน)</label>
+                                            <input type="number" class="form-control" id="renew_day" placeholder="กรอกจำนวนการใช้งาน" name="renew_day" value="30" min="1" max="1000" step="1" required>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label for="expires_at" class="form-label">วันหมดอายุของโค้ด</label>
+                                            <input type="date" class="form-control" id="expires_at" placeholder="กรอกวันหมดอายุ" name="expires_at" value="{{ \Carbon\Carbon::now()->addDays(30)->format('Y-m-d') }}" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -77,8 +85,12 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Code</th>
-                                    <th scope="col">จำนวนการใช้</th>
+                                    <th scope="col">จำนวนการใช้ทั้งหมด</th>
+                                    <th scope="col">จำนวนผู้ใช้ทั้งหมด</th>
+                                    <th scope="col">จำนวนการใช้ต่อ 1 ผู้ใช้</th>
+                                    <th scope="col">จำนวนวันที่ต่ออายุ</th>
                                     <th scope="col">วันหมดอายุ</th>
+                                    <th scope="col">รายการผู้ใช้โค้ด</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,7 +103,10 @@
                                         <tr>
                                             <th scope="row">{{ $index + 1 }}</th>
                                             <td>{{ $code->code }}</td>
-                                            <td>{{ $code->usages()->count() }} / {{ $code->max_uses }}</td>
+                                            <td>{{ $code->usages()->count() }} / {{ $code->max_uses * $code->use_per_user }} ครั้ง</td>
+                                            <td>{{ $code->targetCount() }} / {{ $code->max_uses }} คน</td>
+                                            <td>{{ $code->use_per_user }} ครั้ง</td>
+                                            <td>{{ $code->renew_day }} วัน</td>
                                             <td> {{ $expire_date->thaidate('j M Y') }}
                                                 (
                                                 @if ($diffDay->invert === 1)
@@ -100,6 +115,11 @@
                                                     <span class="text-danger">หมดอายุแล้ว</span>
                                                 @endif
                                                 )
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('renewal_codes.show', ['code' => $code->code]) }}" class="btn btn-info btn-sm">
+                                                    <i class="bi bi-list"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach

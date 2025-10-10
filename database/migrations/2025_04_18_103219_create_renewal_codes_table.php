@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('target'); // user_id | organization_id
             $table->timestamps();
         });
-
     }
 
     /**

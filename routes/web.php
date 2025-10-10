@@ -67,7 +67,9 @@ Route::middleware(['auth'])->group(function () {
 
     // App data
     Route::resource('prefixes', PrefixController::class);
+
     Route::get('/renewal-codes', [RenewalCodeController::class, 'index'])->name('renewal_codes.index');
+    Route::get('/renewal-code/{code}', [RenewalCodeController::class, 'showRenewalList'])->name('renewal_codes.show');
     Route::post('/renewal-code/store', [RenewalCodeController::class, 'store'])->name('renewal_codes.store');
     Route::post('/renewal-code/user/redeem', [RenewalCodeController::class, 'userRedeem'])->name('renewal_codes.user.redeem');
     Route::post('/renewal-code/org/redeem', [RenewalCodeController::class, 'orgRedeem'])->name('renewal_codes.org.redeem');

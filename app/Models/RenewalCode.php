@@ -9,6 +9,8 @@ class RenewalCode extends Model
     protected $fillable = [
         'code',
         'max_uses',
+        'renew_day',
+        'use_per_user',
         'expires_at',
     ];
 
@@ -22,7 +24,21 @@ class RenewalCode extends Model
     }
     public function isUsedUp()
     {
-        return $this->usages()->count() >= $this->max_uses;
+        return $this->usages()->groupBy('target')->count() >= $this->max_uses;
+    }
+
+    public function targetCount() {
+        return $this->usages()
+        ->distinct('target')
+        ->count('target');
+    }
+
+    public function totalUserUsedUp($userId) {
+        return $this->usages()->where('type', 'user')->where('target', $userId)->count() >= $this->use_per_user;
+    }
+
+    public function totalOrgUsedUp($orgId) {
+        return $this->usages()->where('type', 'org')->where('target', $orgId)->count() >= $this->use_per_user;
     }
 
     public function isUseByUser($userId)
