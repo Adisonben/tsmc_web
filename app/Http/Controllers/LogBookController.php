@@ -54,6 +54,22 @@ class LogBookController extends Controller
         }
     }
 
+    public function logbookPrint($logbook_id) {
+        try {
+            if (Auth()->user()->is_tsm) {
+                $org_id = session('connected_org');
+            } else {
+                $org_id = Auth::user()->userDetail->org;
+            }
+            $logbook = LogBook::where('org_id', $org_id)->where('id', $logbook_id)->firstOrFail();
+            $ma_categories = MaCategory::get(['id','name']);
+            return view('logbook.logBookPrint', compact('logbook', 'ma_categories'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back();
+        }
+    }
+
     public function create(){
         if (Auth()->user()->is_tsm) {
             $org_id = session('connected_org');
@@ -67,7 +83,7 @@ class LogBookController extends Controller
     }
 
     public function logbookTable() {
-        $log_books = LogBook::where('org_id', Auth()->user()->is_tsm ? session('connected_org') : Auth::user()->userDetail->org)->paginate(10);
+        $log_books = LogBook::where('org_id', Auth()->user()->is_tsm ? session('connected_org') : Auth::user()->userDetail->org)->orderByDesc('id')->paginate(10);
         return view('logbook.logBookTable', compact('log_books'));
     }
 

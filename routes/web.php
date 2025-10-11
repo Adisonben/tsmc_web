@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logbook/car-ma/store', [LogBookController::class, 'store'])->name('car.ma.store');
 
     Route::get('/logbook/show/{logbook_id}', [LogBookController::class, 'logbookShow'])->name('logbook.show');
+    Route::get('/logbook/print/{logbook_id}', [LogBookController::class, 'logbookPrint'])->name('logbook.print');
     Route::get('/logbook/table', [LogBookController::class, 'logbookTable'])->name('logbook.table');
     Route::get('/logbook/create', [LogBookController::class, 'logbookCreate'])->name('logbook.create');
     Route::post('/logbook/store', [LogBookController::class, 'logbookStore'])->name('logbook.store');

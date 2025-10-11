@@ -11,11 +11,11 @@
                 {{ session('store_entry_error') }}
             </div>
         @endif
-        <div class="row justify-content-center">
-            <div class="card border-0" id="exportPaper">
+        <div class="row justify-content-center px-1 px-lg-5">
+            <div class="card border-0 " id="exportPaper">
                 <div class="card-body px-md-2">
                     {{-- <p class="text-center fs-5 mb-0 fw-bold">{{ Auth::user()->org_name }}</p> --}}
-                    <p class="text-center fs-6 mb-0 fw-bold">แบบบันทึกผลการบำรุงรักษารถ (Log Book)</p>
+                    <p class="text-center mb-0 fw-bold">แบบบันทึกผลการบำรุงรักษารถ (Log Book)</p>
                     @php
                         $start_date = new Carbon\Carbon($logbook->start_date);
                         $end_date = (new Carbon\Carbon($start_date))->addMonths(
@@ -23,7 +23,7 @@
                         );
                     @endphp
 
-                    <div class="d-flex flex-wrap gap-x-1 justify-content-between mt-3 mb-1 px-2" style="font-size: 12px">
+                    <div class="d-flex flex-wrap gap-x-1 justify-content-between mt-3 mb-1 px-2">
                         <div class="d-flex">
                             <p class="text-nowrap me-1 mb-0"> ผู้ประกอบการขนส่ง</p>
                             <p class="fw-bold mb-0"><u>{{ $logbook->org_name }}</u></p>
@@ -47,20 +47,20 @@
                         </div>
                     </div>
 
-                    <div>
-                        <p class="mb-0 text-danger" style="font-size: 10px">*เครื่องหมาย <i class="bi bi-check-lg"></i>|<i class="bi bi-check-lg"></i>|<i class="bi bi-check-lg"></i> หมายถึงการดำเนินการ ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่ ตามลำดับ โดยเครื่องหมาย <i class="bi bi-check-lg"></i> หมายถึงการดำเนินการแล้ว และ <i class="bi bi-x-lg"></i> หมายถึงไม่ได้ดำเนินการ</p>
+                    <p class="mb-0 text-danger">*เครื่องหมาย <i class="bi bi-check-lg"></i>|<i class="bi bi-check-lg"></i>|<i class="bi bi-check-lg"></i> หมายถึงการดำเนินการ ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่ ตามลำดับ โดยเครื่องหมาย <i class="bi bi-check-lg"></i> หมายถึงการดำเนินการแล้ว และ <i class="bi bi-x-lg"></i> หมายถึงไม่ได้ดำเนินการ</p>
+                    <div class="overflow-x-auto">
                         <table class="table table-bordered border-dark">
                             {{-- Table header --}}
                             <thead class="text-center">
                                 <tr class="table-dark">
-                                    <th rowspan="4" style="font-size: 12px">รายการ</th>
-                                    <th class="p-1 m-0" style="font-size: 10px">ทุกๆระยะทาง</th>
+                                    <th rowspan="4">รายการ</th>
+                                    <th class="p-1 m-0">ทุกๆระยะทาง</th>
                                     @foreach ($logbook->kmSchedules as $kmsc)
-                                        <th class="p-1 m-0" style="font-size: 10px">{{ number_format($kmsc->km_value) }} กม.
+                                        <th class="p-1 m-0">{{ number_format($kmsc->km_value) }} กม.
                                         </th>
                                     @endforeach
                                 </tr>
-                                <tr class="table-dark" style="font-size: 10px">
+                                <tr class="table-dark">
                                     <th class="p-1 m-0">หรือทุกๆระยะเวลา</th>
                                     @foreach ($logbook->monthSchedules as $mnsc)
                                         <th class="p-1 m-0">{{ $mnsc->month_value }} เดือน</th>
@@ -80,15 +80,15 @@
                                     @endfor
                                 </tr> --}}
                                 <tr class="table-dark">
-                                    <th class="p-0 m-0" style="font-size: 10px">การดำเนินการ</th>
-                                    <th class="p-0 m-0" style="font-size: 8px">ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่</th>
-                                    <th class="p-0 m-0" style="font-size: 8px">ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่</th>
-                                    <th class="p-0 m-0" style="font-size: 8px">ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่</th>
-                                    <th class="p-0 m-0" style="font-size: 8px">ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่</th>
+                                    <th class="p-0 m-0" >การดำเนินการ</th>
+                                    <th class="p-0 m-0" >ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่</th>
+                                    <th class="p-0 m-0" >ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่</th>
+                                    <th class="p-0 m-0" >ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่</th>
+                                    <th class="p-0 m-0" >ตรวจสอบ/ปรับตั้ง/เปลี่ยนใหม่</th>
                                 </tr>
                             </thead>
 
-                            <tbody style="font-size: 10px">
+                            <tbody>
                                 @foreach ($ma_categories ?? [] as $index => $ma_cate)
                                     @php
                                         $first_item = $ma_cate->maItems->first();
@@ -103,8 +103,8 @@
                                         <td class="text-start" rowspan="{{ count($ma_cate->maItems ?? []) }}">
                                             {{ $index + 1 }}.
                                             {{ $ma_cate->name }}</td>
-                                        <td class="px-1 py-0 m-0 text-start">{{ $first_item->name }}</td>
-                                        <td class="px-1 py-0 m-0" style="font-size: 10px">
+                                        <td class="text-start">{{ $first_item->name }}</td>
+                                        <td>
                                             @if ($column_data1)
                                                 {!! $column_data1->action_check ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
                                                 {!! $column_data1->action_adjust ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
@@ -121,7 +121,7 @@
                                                 </div>
                                             @endif
                                         </td>
-                                        <td class="px-1 py-0 m-0" style="font-size: 10px">
+                                        <td>
                                             @if ($column_data2)
                                                 {!! $column_data2->action_check ? '<i class="bi bi-check-lg m-0"></i>' : '<i class="bi bi-x-lg m-0 b-0"></i>' !!} |
                                                 {!! $column_data2->action_adjust ? '<i class="bi bi-check-lg m-0"></i>' : '<i class="bi bi-x-lg m-0 b-0"></i>' !!} |
@@ -138,7 +138,7 @@
                                                 </div>
                                             @endif
                                         </td>
-                                        <td class="px-1 py-0 m-0" style="font-size: 10px">
+                                        <td>
                                             @if ($column_data3)
                                                 {!! $column_data3->action_check ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
                                                 {!! $column_data3->action_adjust ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
@@ -155,7 +155,7 @@
                                                 </div>
                                             @endif
                                         </td>
-                                        <td class="px-1 py-0 m-0" style="font-size: 10px">
+                                        <td>
                                             @if ($column_data4)
                                                 {!! $column_data4->action_check ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
                                                 {!! $column_data4->action_adjust ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
@@ -185,7 +185,7 @@
                                         @endphp
                                         <tr class="text-center">
                                             <td class="px-1 py-0 m-0 text-start">{{ $ma_item->name }}</td>
-                                            <td class="px-1 py-0 m-0" style="font-size: 10px">
+                                            <td>
                                                 @if ($column_data1)
                                                     {!! $column_data1->action_check ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
                                                     {!! $column_data1->action_adjust ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
@@ -203,7 +203,7 @@
                                                     </div>
                                                 @endif
                                             </td>
-                                            <td class="px-1 py-0 m-0" style="font-size: 10px">
+                                            <td>
                                                 @if ($column_data2)
                                                     {!! $column_data2->action_check ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
                                                     {!! $column_data2->action_adjust ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
@@ -221,7 +221,7 @@
                                                     </div>
                                                 @endif
                                             </td>
-                                            <td class="px-1 py-0 m-0" style="font-size: 10px">
+                                            <td>
                                                 @if ($column_data3)
                                                     {!! $column_data3->action_check ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
                                                     {!! $column_data3->action_adjust ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
@@ -239,7 +239,7 @@
                                                     </div>
                                                 @endif
                                             </td>
-                                            <td class="px-1 py-0 m-0" style="font-size: 10px">
+                                            <td>
                                                 @if ($column_data4)
                                                     {!! $column_data4->action_check ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
                                                     {!! $column_data4->action_adjust ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-x-lg"></i>' !!} |
@@ -334,8 +334,9 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center gap-2 mt-2">
-                <button class="btn btn-success" type="button" onclick="window.print()">Print</button>
-                <a href="{{ route('car.ma.table') }}" class="btn btn-secondary">กลับ</a>
+                {{-- <button class="btn btn-success" type="button" onclick="window.print()">Print</button> --}}
+                <a href="{{ route('logbook.print', ['logbook_id' => $logbook->id]) }}" class="btn btn-success">พิมพ์</a>
+                <a href="{{ route('logbook.table') }}" class="btn btn-secondary">กลับ</a>
             </div>
         </div>
     </div>
@@ -371,11 +372,11 @@
             background-color: var(--main-color);
         }
 
-        #exportPaper {
+        /* #exportPaper {
             background-color: white;
             padding: 0.4cm;
             width: 210mm;
-        }
+        } */
 
         @media print {
             body {
