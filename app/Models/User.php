@@ -6,10 +6,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +23,10 @@ class User extends Authenticatable
         'email',
         'username',
         'password',
-        'pass_text'
+        'pass_text',
+        'is_tsm',
+        'expire_at',
+        'line_user_id'
     ];
 
     /**
@@ -58,9 +62,17 @@ class User extends Authenticatable
         return $this->userDetail ? ($this->userDetail->getPrefix->name ?? '') . $this->userDetail->fname . ' ' . $this->userDetail->lname : '';
     }
 
-    // User.php
-    // public function groups()
-    // {
-    //     return $this->belongsToMany(User_group::class, 'user_has_groups');
-    // }
+    public function getCitizenIdAttribute()
+    {
+        return $this->userDetail ? $this->userDetail->citizen_id : '';
+    }
+
+    public function getOrgNameAttribute()
+    {
+        return $this->userDetail ? $this->userDetail->getOrg?->name : '';
+    }
+
+    public function getTSMOrg() {
+        return $this->hasMany(Tsm_has_Org::class, 'tsm_id', 'id');
+    }
 }

@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('แก้ไขหน่วยงาน') }}</p>
+                            <p class="mb-0 fs-4">{{ __('แก้ไขบริษัท') }}</p>
                             <a href="/organizations" class="btn btn-secondary btn-sm">ย้อนกลับ</a>
                         </div>
                     </div>
@@ -27,8 +27,8 @@
                             @csrf
 
                             <div class="mb-3">
-                                <label for="orgName" class="form-label">ชื่อหน่วยงาน</label>
-                                <input type="text" maxlength="150" class="form-control" id="orgName" value="{{ $org->name }}" name="orgName" placeholder="กรุณากรอกชื่อหน่วยงาน" required>
+                                <label for="orgName" class="form-label">ชื่อบริษัท</label>
+                                <input type="text" maxlength="150" class="form-control" id="orgName" value="{{ $org->name }}" name="orgName" placeholder="กรุณากรอกชื่อบริษัท" required>
                             </div>
 
                             <div class="mb-3">
@@ -37,7 +37,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="orgLogo" class="form-label">โลโก้หน่วยงาน (ขนาดไม่เกิน 2 MB)</label>
+                                <label for="orgLogo" class="form-label">โลโก้บริษัท (ขนาดไม่เกิน 2 MB)</label>
                                 <input class="form-control" type="file" id="orgLogo" name="orgLogo">
                             </div>
 
@@ -48,4 +48,9 @@
             </div>
         </div>
     </div>
+    <style>
+        #orgDataPage {
+            background-color: var(--main-color);
+        }
+    </style>
 @endsection

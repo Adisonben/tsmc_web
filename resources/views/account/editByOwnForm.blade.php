@@ -18,4 +18,9 @@
             </div>
         </div>
     </div>
+    <style>
+        #profilePage {
+            background-color: var(--main-color);
+        }
+    </style>
 @endsection

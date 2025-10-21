@@ -8,7 +8,7 @@ deleteBtns.forEach((delBtn) => {
     delBtn.addEventListener("click", () => {
         const idToDelete = delBtn.getAttribute("del-id");
         const deleteTarget = delBtn.getAttribute("del-target");
-        const apiEndpoint = `${deleteTarget}/${idToDelete}`;
+        const apiEndpoint = `/${deleteTarget}/${idToDelete}`;
 
         Swal.fire({
             title: "Are you sure?",

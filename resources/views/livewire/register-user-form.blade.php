@@ -28,7 +28,11 @@
         <hr>
 
         <div class="row g-3 mb-3">
-            <div class="col-md-2">
+            <div class="col-md-6">
+                <label for="citizen_id" class="form-label">หมายเลขประชาชน</label>
+                <input type="text" class="form-control" maxlength="15" id="citizen_id" wire:model="citizen_id" placeholder="กรุณากรอกหมายเลขประชาชน">
+            </div>
+            <div class="col-md-6">
                 <label for="prefix_id" class="form-label">คำนำหน้า</label>
                 <select id="prefix_id" class="form-select" wire:model="prefix_id" required>
                     <option selected>เลือกคำนำหน้า</option>
@@ -39,19 +43,19 @@
                     @endif
                 </select>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <label for="fname" class="form-label">ชื่อ</label>
                 <input type="text" class="form-control" maxlength="150" wire:model="fname" id="fname" required placeholder="กรุณากรอกชื่อ {{ $prefix_id }}">
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <label for="lname" class="form-label">นามสกุล</label>
                 <input type="text" class="form-control" maxlength="150" id="lname" wire:model="lname" required placeholder="กรุณากรอกนามสกุล">
             </div>
 
             <div class="col-md-4">
-                <label for="userOrg" class="form-label">หน่วยงาน</label>
+                <label for="userOrg" class="form-label">บริษัท</label>
                 <select id="userOrg" class="form-select" wire:model="org_id" wire:change="selectedOrgId" required>
-                    <option selected>เลือกหน่วยงาน</option>
+                    <option selected>เลือกบริษัท</option>
                     @foreach ($orgs as $org)
                         <option value="{{ $org->id }}">{{ $org->name }}</option>
                     @endforeach
@@ -95,6 +99,6 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mb-3">บันทึก</button>
+        <button type="submit" class="btn btn-primary mb-3" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
     </form>
 </div>

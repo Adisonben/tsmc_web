@@ -18,7 +18,7 @@
                                         <th scope="col">Username</th>
                                         <th scope="col">Password</th>
                                         <th scope="col">ชื่อ</th>
-                                        <th scope="col">หน่วยงาน</th>
+                                        <th scope="col">บริษัท</th>
                                         <th scope="col">สาขา</th>
                                         <th scope="col">แผนก</th>
                                         <th scope="col">ตำแหน่ง</th>
@@ -31,10 +31,14 @@
                                             <td>{{ $user->username }}</td>
                                             <td>{{ $user->pass_text ?? '-' }}</td>
                                             <td>{{ $user->full_name }}</td>
-                                            <td>{{ optional($user->userDetail->getOrg)->name }}</td>
-                                            <td>{{ optional($user->userDetail->getBrn)->name }}</td>
-                                            <td>{{ optional($user->userDetail->getDpm)->name }}</td>
-                                            <td>{{ optional($user->userDetail->getPosition)->name }}</td>
+                                            @if ($user->is_tsm)
+                                                <td colspan="4" class="text-center"> เจ้าหน้าที่ TSM</td>
+                                            @else
+                                                <td>{{ optional($user->userDetail->getOrg)->name }}</td>
+                                                <td>{{ optional($user->userDetail->getBrn)->name }}</td>
+                                                <td>{{ optional($user->userDetail->getDpm)->name }}</td>
+                                                <td>{{ optional($user->userDetail->getPosition)->name }}</td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -67,6 +71,9 @@
                 top: 0;
                 color: black;
             }
+        }
+        #accountPage {
+            background-color: var(--main-color);
         }
     </style>
 @endsection

@@ -4,8 +4,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <div class="d-flex justify-content-center mb-2">
+                <img src="/images/icons/tsmc_logo.png" width="140" alt="">
+            </div>
+            <p class="text-center text-wrap fs-4 fw-bold">Transport <span style="color: orange">Safety</span> Manager <br> Communication</p>
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header text-center fs-5 fw-bold">{{ __('messages.please_login') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -39,30 +43,20 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
+                        <div class="d-flex flex-column justify-content-center align-items-center gap-2 mb-0">
+                            <button type="submit" class="btn btn-primary">
+                                {{ __('Login') }}
+                            </button>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <p class="mb-0">{{ __('messages.please_register') }}</p>
+                                <a href="{{ route('register') }}">ลงทะเบียนบัญชีบริษัท</a>
+                                <p class="mb-0">หรือ</p>
+                                <a href="{{ route('tsm.register') }}">ลงทะเบียนบัญชี TSM</a>
+                                <p class="mb-0">เพื่อเข้าใช้งานระบบ</p>
                             </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
+                            {{-- <button type="button" class="btn btn-secondary" onclick="window.location='{{ route('register') }}'">
+                                {{ __('Register') }}
+                            </button> --}}
                         </div>
                     </form>
                 </div>

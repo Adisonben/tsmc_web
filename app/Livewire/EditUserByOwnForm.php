@@ -23,6 +23,7 @@ class EditUserByOwnForm extends Component
     public $positions;
     public $error = null;
     public $user;
+    public $citizen_id;
 
     // submit data
     public $username;
@@ -57,6 +58,7 @@ class EditUserByOwnForm extends Component
         $this->branch_id = $userDetail->brn;
         $this->department_id = $userDetail->dpm;
         $this->position_id = $userDetail->position;
+        $this->citizen_id = $userDetail->citizen_id;
     }
 
     public function updateUser()
@@ -67,6 +69,7 @@ class EditUserByOwnForm extends Component
                 'prefix_id' => 'required',
                 'fname' => 'required|string|max:255',
                 'lname' => 'required|string|max:255',
+                'citizen_id' => 'required|max:255',
             ]);
 
             if ($this->password) {
@@ -93,6 +96,7 @@ class EditUserByOwnForm extends Component
                 'prefix' => $this->prefix_id,
                 'fname' => $this->fname,
                 'lname' => $this->lname,
+                'citizen_id' => $this->citizen_id,
             ]);
 
             // Redirect to a successful registration page

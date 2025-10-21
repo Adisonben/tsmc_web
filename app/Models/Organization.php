@@ -14,5 +14,8 @@ class Organization extends Model
         'name',
         'theme_color',
         'logo_img',
+        'expire_at',
+        'accept_terms',
+        'status', // 1: Active, 0: Inactive, 2: Default
     ];
 }

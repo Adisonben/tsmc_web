@@ -45,6 +45,20 @@ class Position extends Model
         return $query->first();
     }
 
+    public function hasFormType($formTypeId, $orgId = null)
+    {
+        $query = $this->formTypes()
+            ->where('form_type_id', $formTypeId);
+
+        if ($orgId !== null) {
+            $query->where('position_has_forms.org', $orgId);
+        } else {
+            $query->whereNull('position_has_forms.org');
+        }
+
+        return $query->first();
+    }
+
     public function hasPermissionName($permissionName, $orgId = null)
     {
         $query = $this->permissions()
@@ -60,6 +74,15 @@ class Position extends Model
         } else {
             $perm = $this->permissions()->where('perm_name', $permissionName)->whereNull('position_has_permissions.org')->first();
         }
-        return $perm;
+        return $perm?->pivot?->status;
+    }
+
+    public function hasForm() {
+        return $this->hasMany(PositionHasForm::class, 'position_id');
+    }
+
+    public function hasThisForm($formId = null)
+    {
+        return $this->hasForm()->where('form_id', $formId)->exists();
     }
 }

@@ -50,7 +50,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">ปิด</button>
-                                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                                        <button type="submit" class="btn btn-primary" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
                                     </div>
                                 </form>
                             </div>
@@ -74,27 +74,29 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">ชื่อตำแหน่ง</th>
+                                    <th scope="col">อยู่ภายใต้ตำแหน่ง</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($positions as $index => $position)
                                     <tr>
-                                        <th scope="row">{{ $index + 1 }}</th>
+                                        <td scope="row" >{{ (($positions->currentPage()-1) * 10) + ($index+1) }}</td>
                                         <td>{{ $position->name }}</td>
+                                        <td>{{ $position->parent ? $position->parent->name : '-' }}</td>
                                         <td>
                                             {{-- @php
                                                 dd([Auth()->user()->userDetail->getPosition->id, ...$position->descendants()->pluck('id')]);
                                             @endphp --}}
-                                            @if ($position->org ?? false || Auth()->user()->userDetail->fname === "admin")
+                                            @if ($position->org ?? false || Auth()->user()->username === "tsmcadmin")
                                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                                     data-bs-target="#updatePositModal{{ $index }}">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-danger btn-sm delete-data-btn" {{ $position->created_by ? '' : 'disabled' }}
                                                     del-id="{{ $position->id }}" del-target="positions"
-                                                    data-bs-toggle="tooltip" data-bs-title="ลบ"><i
-                                                        class="bi bi-trash"></i>
+                                                    data-bs-toggle="tooltip" data-bs-title="ลบ" {{ session('org_status') == 2 ? 'disabled' : '' }}>
+                                                    <i class="bi bi-trash"></i>
                                                 </button>
                                             @endif
                                         </td>
@@ -148,7 +150,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                             data-bs-dismiss="modal">ปิด</button>
-                                                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                                                        <button type="submit" class="btn btn-primary" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -157,11 +159,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $positions->links() }}
                     </div>
                 </div> {{-- End Department Card --}}
-                <div class="d-flex justify-content-center w-100">
-                    <img src="/images/assets/position_diagram.png" class="object-fit-contain mw-100" alt="">
-                </div>
             </div>
         </div>
     </div>

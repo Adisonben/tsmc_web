@@ -1,17 +1,24 @@
 import './bootstrap';
 import './prefix';
 import './organization';
-import './license_type';
-import './carType';
-// import './post';
-import './formscript';
-import './phonenum';
 
-const toggler = document.querySelector(".btn");
+const toggler = document.querySelector("#nav-toggle-btn");
+const toggler2 = document.querySelector("#nav-toggle-btn2");
 const sidebar = document.querySelector("#sidebar");
+const main = document.querySelector(".main");
 
 toggler.addEventListener("click",function(){
     sidebar.classList.toggle("collapsed");
+    if (window.innerWidth > 767) {
+        main.classList.toggle("collapsed");
+    }
+});
+
+toggler2.addEventListener("click",function(){
+    sidebar.classList.toggle("collapsed");
+    if (window.innerWidth > 767) {
+        main.classList.toggle("collapsed");
+    }
 });
 
 
@@ -19,8 +26,10 @@ toggler.addEventListener("click",function(){
 function checkScreenSize() {
     if (window.innerWidth <= 767) {
         sidebar.classList.add("collapsed");
+        main.classList.add("collapsed");
     } else {
         sidebar.classList.remove("collapsed");
+        main.classList.add("main-collapsed");
     }
 }
 checkScreenSize(); // Initial check

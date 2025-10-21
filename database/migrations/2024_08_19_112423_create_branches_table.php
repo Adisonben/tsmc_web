@@ -16,9 +16,6 @@ return new class extends Migration
             $table->id();
             $table->uuid('brn_id')->unique()->default(Str::uuid());
             $table->string('name');
-            $table->string('address')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
             $table->foreignId('org_id')->constrained('organizations')->onDelete('cascade');
             $table->timestamps();
         });

@@ -10,4 +10,9 @@ class LoginHistory extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'ip_address', 'agent'];
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

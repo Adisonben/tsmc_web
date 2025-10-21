@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Organization;
 use App\Models\Prefix;
+use App\Models\Tsm_has_Org;
 use App\Models\User;
 use App\Models\User_detail;
 use Illuminate\Http\Request;
@@ -14,17 +15,27 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    protected $org_id;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->org_id = session('key') ?? null;
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (Auth()->user()->userDetail->org ?? false) {
+        if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
             $users = User::whereNot('username', 'tsmcadmin')->whereHas('userDetail', function ($query) {
-                $query->where('org', Auth()->user()->userDetail->org);
+                $query->where('org', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org);
             })->get();
         } else {
-            $users = User::whereNot('username', 'tsmcadmin')->get();
+            $users = User::whereNot('username', 'tsmcadmin')->where('is_tsm', false)->get();
         }
         return view('account.userAccounts', compact('users'));
     }
@@ -82,7 +93,17 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         try {
-            User::where('id', $id)->delete();
+            $user = User::where('id', $id)->firstOrFail();
+            if ($user->is_tsm) {
+                if (Tsm_has_Org::where('tsm_id', $id)->count() > 0) {
+                    $org_ids = Tsm_has_Org::where('tsm_id', $id)->pluck('org_id');
+                    Organization::whereIn('id', $org_ids)->update([
+                        'status' => 0,
+                    ]);
+                    Tsm_has_Org::where('tsm_id', $id)->delete();
+                }
+            }
+            $user->delete();
             return response()->json([
                 'message' => 'Data deleted successfully : ' . $id
             ], 200);
@@ -147,9 +168,9 @@ class UserController extends Controller
     }
 
     public function exportUsers() {
-        if (Auth()->user()->userDetail->org ?? false) {
+        if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
             $users = User::whereNot('username', 'tsmcadmin')->whereHas('userDetail', function ($query) {
-                $query->where('org', Auth()->user()->userDetail->org);
+                $query->where('org', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org);
             })->get();
         } else {
             $users = User::whereNot('username', 'tsmcadmin')->get();

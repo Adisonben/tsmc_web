@@ -17,10 +17,11 @@ class OrgController extends Controller
      */
     public function index()
     {
-        if (is_null(Auth()->user()->userDetail->org)) {
+        if (is_null(Auth()->user()->userDetail->org) && !Auth()->user()->is_tsm) {
             $orgs = Organization::all();
         } else {
-            $orgs = Organization::where('id', Auth()->user()->userDetail->org)->get();
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+            $orgs = Organization::where('id', $org_id)->get();
         }
         return view('organization.orgData.orgTable', compact('orgs'));
     }
@@ -39,9 +40,9 @@ class OrgController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'orgLogo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2 megabytes (MB)
+            'orgLogo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2 megabytes (MB)
         ], [
-            'orgLogo.max' => 'โลโก้หน่วยงานต้องมีขนาดไม่เกิน 2 MB',
+            'orgLogo.max' => 'โลโก้บริษัทต้องมีขนาดไม่เกิน 2 MB',
         ]);
         try {
             $imageName = time() . '.' . $request->orgLogo->extension();
@@ -55,9 +56,9 @@ class OrgController extends Controller
 
             $request->orgLogo->move(public_path('uploads/orglogoes'), $imageName);
 
-            return redirect()->route('organizations.index')->with(['success' => "เพิ่มหน่วยงานสำเร็จ"]);
+            return redirect()->route('organizations.index')->with(['success' => "เพิ่มบริษัทสำเร็จ"]);
         } catch (\Throwable $th) {
-            return redirect()->back()->with(['error' => "ไม่สามารถเพิ่มหน่วยงาน"]);
+            return redirect()->back()->with(['error' => "ไม่สามารถเพิ่มบริษัท"]);
         }
     }
 
@@ -90,7 +91,7 @@ class OrgController extends Controller
         $request->validate([
             'orgLogo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // max 2 megabytes (MB)
         ], [
-            'orgLogo.max' => 'โลโก้หน่วยงานต้องมีขนาดไม่เกิน 2 MB',
+            'orgLogo.max' => 'โลโก้บริษัทต้องมีขนาดไม่เกิน 2 MB',
         ]);
 
         try {
@@ -116,9 +117,9 @@ class OrgController extends Controller
                 }
             }
 
-            return redirect()->route('organizations.index')->with(['success' => "แก้ไขหน่วยงานสำเร็จ"]);
+            return redirect()->route('organizations.index')->with(['success' => "แก้ไขบริษัทสำเร็จ"]);
         } catch (\Throwable $th) {
-            return redirect()->back()->with(['error' => "ไม่สามารถแก้ไขหน่วยงาน"]);
+            return redirect()->back()->with(['error' => "ไม่สามารถแก้ไขบริษัท"]);
         }
     }
 

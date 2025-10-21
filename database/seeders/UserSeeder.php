@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
 
         $adminUser = User::create([
             'username' => 'tsmcadmin',
+            'user_id' => Str::uuid(),
             'password' => Hash::make('iddrivesadmin'),
         ]);
 

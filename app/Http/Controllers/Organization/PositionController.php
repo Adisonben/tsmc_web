@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Position;
 use App\Models\Position_has_permission;
 use App\Models\Position_permission;
+use App\Models\PositionHasForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,10 +18,11 @@ class PositionController extends Controller
      */
     public function index()
     {
-        if (Auth()->user()->userDetail->org ?? false) {
-            $positions = Position::where('org', Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+        if ((Auth()->user()->userDetail->org ?? false) || (Auth()->user()->is_tsm ?? false)) {
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+            $positions = Position::where('org', $org_id)->orWhereNull('org')->paginate(10);
         } else {
-            $positions = Position::all();
+            $positions = Position::orderBy('created_at', "desc")->paginate(10);
         }
         return view('organization.position.positionTable', compact('positions'));
     }
@@ -39,10 +41,11 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         try {
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
             $newPosition = Position::create([
                 'name' => $request->positName,
                 'created_by' => $request->user()->id,
-                'org' => $request->user()->userDetail->org ?? null,
+                'org' => $org_id,
             ]);
             if ($request->parent && $request->parent !== '-') {
                 $parent = Position::find($request->parent);
@@ -116,8 +119,9 @@ class PositionController extends Controller
     }
 
     public function managePermission() {
-        if (Auth()->user()->userDetail->org ?? false) {
-            $positions = Position::where('org', Auth()->user()->userDetail->org)->orWhereNull('org')->get();
+        if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
+            $positions = Position::where('org', $org_id)->orWhereNull('org')->get();
         } else {
             $positions = Position::all();
         }
@@ -125,64 +129,121 @@ class PositionController extends Controller
         return view('organization.perm.managePerm', compact('positions', 'posit_perms'));
     }
 
-    public function updatePermission($positId , $permId , $status) {
+    public function updatePermission($positId , $permId , $status, $checkType) {
         try {
-            $permExist = Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->exists();
-            $permNullExist = Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->exists();
-            if ($status == 'true') {
-                if (is_null(Auth()->user()->userDetail->org)) {
-                    if ($permNullExist) {
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org ?? null;
+            if ($checkType === "perm") {
+                $permExist = Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', $org_id)->exists();
+                $permNullExist = Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->exists();
+                if ($status == 'true') {
+                    if (is_null(Auth()->user()->userDetail->org) && !Auth()->user()->is_tsm) {
+                        if ($permNullExist) {
+                            Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->update([
+                                'status' => true
+                            ]);
+                        } else {
+                            Position_has_permission::create([
+                                'position_id' => $positId,
+                                'permission_id' => $permId,
+                                'user_id' => Auth()->user()->id,
+                                'org' => $org_id ?? null,
+                                'status' => true
+                            ]);
+                        }
+                    } else {
+                        if ($permExist) {
+                            Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', $org_id)->update([
+                                'status' => true
+                            ]);
+                        } else {
+                            Position_has_permission::create([
+                                'position_id' => $positId,
+                                'permission_id' => $permId,
+                                'user_id' => Auth()->user()->id,
+                                'org' => $org_id,
+                                'status' => true
+                            ]);
+                        }
+                    }
+                } else {
+                    if (is_null(Auth()->user()->userDetail->org)  && !Auth()->user()->is_tsm) {
                         Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->update([
-                            'status' => true
-                        ]);
-                    } else {
-                        Position_has_permission::create([
-                            'position_id' => $positId,
-                            'permission_id' => $permId,
-                            'user_id' => Auth()->user()->id,
-                            'org' => Auth()->user()->userDetail->org ?? null,
-                            'status' => true
-                        ]);
-                    }
-                } else {
-                    if ($permExist) {
-                        Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
-                            'status' => true
-                        ]);
-                    } else {
-                        Position_has_permission::create([
-                            'position_id' => $positId,
-                            'permission_id' => $permId,
-                            'user_id' => Auth()->user()->id,
-                            'org' => Auth()->user()->userDetail->org,
-                            'status' => true
-                        ]);
-                    }
-                }
-            } else {
-                if (is_null(Auth()->user()->userDetail->org)) {
-                    Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->whereNull('org')->update([
-                        'status' => false
-                    ]);
-                } else {
-                    if ($permExist) {
-                        Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
                             'status' => false
                         ]);
                     } else {
-                        Position_has_permission::create([
-                            'position_id' => $positId,
-                            'permission_id' => $permId,
-                            'user_id' => Auth()->user()->id,
-                            'org' => Auth()->user()->userDetail->org,
-                            'status' => false
-                        ]);
+                        if ($permExist) {
+                            Position_has_permission::where('position_id', $positId)->where('permission_id', $permId)->where('org', $org_id)->update([
+                                'status' => false
+                            ]);
+                        } else {
+                            Position_has_permission::create([
+                                'position_id' => $positId,
+                                'permission_id' => $permId,
+                                'user_id' => Auth()->user()->id,
+                                'org' => $org_id,
+                                'status' => false
+                            ]);
+                        }
                     }
                 }
+            } elseif ($checkType === "form") {
+                // $permExist = PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->exists();
+                // $permNullExist = PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->whereNull('org')->exists();
+                // if ($status == 'true') {
+                //     if (is_null(Auth()->user()->userDetail->org)) {
+                //         if ($permNullExist) {
+                //             PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->whereNull('org')->update([
+                //                 'status' => true
+                //             ]);
+                //         } else {
+                //             PositionHasForm::create([
+                //                 'position_id' => $positId,
+                //                 'form_type_id' => $permId,
+                //                 'user_id' => Auth()->user()->id,
+                //                 'org' => Auth()->user()->userDetail->org ?? null,
+                //                 'status' => true
+                //             ]);
+                //         }
+                //     } else {
+                //         if ($permExist) {
+                //             PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
+                //                 'status' => true
+                //             ]);
+                //         } else {
+                //             PositionHasForm::create([
+                //                 'position_id' => $positId,
+                //                 'form_type_id' => $permId,
+                //                 'user_id' => Auth()->user()->id,
+                //                 'org' => Auth()->user()->userDetail->org,
+                //                 'status' => true
+                //             ]);
+                //         }
+                //     }
+                // } else {
+                //     if (is_null(Auth()->user()->userDetail->org)) {
+                //         PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->whereNull('org')->update([
+                //             'status' => false
+                //         ]);
+                //     } else {
+                //         if ($permExist) {
+                //             PositionHasForm::where('position_id', $positId)->where('form_type_id', $permId)->where('org', optional(Auth()->user()->userDetail)->org)->update([
+                //                 'status' => false
+                //             ]);
+                //         } else {
+                //             PositionHasForm::create([
+                //                 'position_id' => $positId,
+                //                 'form_type_id' => $permId,
+                //                 'user_id' => Auth()->user()->id,
+                //                 'org' => Auth()->user()->userDetail->org,
+                //                 'status' => false
+                //             ]);
+                //         }
+                //     }
+                // }
             }
 
             return response()->json([
-                'message' => 'Update perm : ' . $positId . $permId . $status . " : " . Auth()->user()->userDetail->fname
+                'message' => 'Update perm : ' . $positId . $permId . $status . $checkType . " : " . Auth()->user()->userDetail->fname
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

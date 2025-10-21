@@ -20,6 +20,31 @@ class PostController extends Controller
      */
     public function index()
     {
+        if (Auth()->user()->userDetail->org ?? false) {
+            $posts = Post::whereHas('getUser', function ($query) {
+                $query->where('org', Auth()->user()->userDetail->org);
+            })->where(function ($query) {
+                $query->orWhereHas('permissions', function ($query2) {
+                    $query2->where('name', "บุคคล")
+                          ->where('target', Auth()->user()->id);
+                })
+                ->orWhereHas('permissions', function ($query2) {
+                    $query2->where('name', "ตำแหน่ง")
+                          ->where('target', Auth()->user()->userDetail->position);
+                })
+                ->orWhereHas('permissions', function ($query2) {
+                    $query2->where('name', "ฝ่าย")
+                          ->where('target', Auth()->user()->userDetail->dpm);
+                })
+                ->orWhereHas('permissions', function ($query2) {
+                    $query2->where('name', "ทั้งหมด");
+                });
+            })->orWhere('created_by', Auth()->user()->id)
+            ->orderBy('created_at', "desc")->get();
+        } else {
+            $posts = Post::orderBy('created_at', "desc")->get();
+        }
+        return view('post.posts', compact('posts'));
     }
 
     /**
@@ -101,10 +126,10 @@ class PostController extends Controller
                 ]);
             }
 
-            return redirect()->route('home')->with(['success' => "โพสสำเร็จ"]);
+            return redirect()->route('posts.index')->with(['success' => "โพสสำเร็จ"]);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with(['error' => $th->getMessage()]);
+            return redirect()->route('posts.index')->with(['error' => $th->getMessage()]);
         }
     }
 
@@ -159,8 +184,8 @@ class PostController extends Controller
                 $filePath = public_path($media->folder . '/' . $media->file_name);
                 if (file_exists($filePath)) {
                     unlink($filePath);
-                    $media->delete();
                 }
+                $media->delete();
             }
 
             $doc_file_ids = $request->doc_files ?? [];
@@ -173,11 +198,11 @@ class PostController extends Controller
                 }
             }
 
-            return redirect()->route('home')->with(['success' => "แก้ไขโพสสำเร็จ"]);
+            return redirect()->route('posts.index')->with(['success' => "แก้ไขโพสสำเร็จ"]);
         } catch (\Throwable $th) {
             //throw $th;
             dd($th->getMessage());
-            return redirect()->back()->with(['error' => $th->getMessage()]);
+            return redirect()->route('posts.index')->with(['error' => $th->getMessage()]);
         }
     }
 

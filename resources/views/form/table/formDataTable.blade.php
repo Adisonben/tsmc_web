@@ -7,7 +7,8 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('ทะเบียน') }} {{ $form->title }}</p>
+                            <p class="mb-0 fs-4">{{ __('ทะเบียนเอกสาร') }} {{ $form_data->title }}</p>
+                            <a href="{{ route('document.table.selectform') }}" class="btn btn-secondary btn-sm">กลับ</a>
                         </div>
                     </div>
 
@@ -18,38 +19,94 @@
                             </div>
                         @endif --}}
 
-                        <table class="table table-hover table-bordered">
+                        <table class="table table-bordered">
                             <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">ผู้จัดทำ</th>
-                                    <th scope="col">ชื่อพนักงาน</th>
-                                    <th scope="col">ตำแหน่ง</th>
-                                    <th scope="col">วันที่จัดทำ</th>
-                                    <th scope="col">Action</th>
+                                    @if ($form_data->select_user)
+                                        <th scope="col">ชื่อพนักงาน</th>
+                                    @endif
+                                    @if ($form_data->select_vehicle)
+                                        <th scope="col">ยานพาหนะ</th>
+                                    @endif
+                                    <th scope="col">วันที่อัปเดตล่าสุด</th>
+                                    <th scope="col">สถานะ</th>
+                                    <th scope="col">ดำเนินการ</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($form_responses as $index => $form_response)
-                                    @php
-                                        $header_data = json_decode($form_response->header_data ?? "");
-                                    @endphp
+                                @if (count($submissions) > 0)
+                                    @foreach ($submissions as $index => $submission)
+                                        @php
+                                            $updatedDate = new Carbon\Carbon($submission->updated_at);
+                                            $fill_values = count($submission->getSubmissionValues ?? []);
+                                            $null_values = count($submission->getSubmissionValuesIsNull ?? []);
+                                            $is_success = $null_values ? false : true;
+                                        @endphp
+                                        <tr class="{{ $is_success ? 'table-success' : '' }}">
+                                            <th scope="row">{{ $index + 1 }}</th>
+                                            @if ($form_data->select_user)
+                                                <td>{{ optional($submission->getUser)->full_name ?? '-' }}</td>
+                                            @endif
+                                            @if ($form_data->select_vehicle)
+                                                <td>
+                                                    {{ optional($submission->getVehicle)->license_plate }} (
+                                                    {{ optional($submission->getVehicle)->brand }} )
+                                                </td>
+                                            @endif
+                                            <td>{{ $updatedDate->thaidate('j M Y') }}</td>
+                                            <td>{{ $is_success ? "สำเร็จ" : "ยังไม่สำเร็จ" }} ( {{ $fill_values - $null_values  }}/{{ $fill_values }} )</td>
+                                            <td>
+                                                @if (!$is_success)
+                                                    <a href="{{ route('document.submission.edit', ['submission_id' => $submission->submission_id ]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
+                                                        data-bs-title="ทำแบบฟอร์ม">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                @endif
+                                                <a href="{{ route('document.submission.show', ['submission_id' => $submission->submission_id ]) }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip"
+                                                    data-bs-title="รายละเอียด">
+                                                    <i class="bi bi-list-check"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#submissionhis{{ $index }}">
+                                                    <i class="bi bi-clock-history"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="submissionhis{{ $index }}" tabindex="-1"
+                                            aria-labelledby="submissionhisLabel{{ $index }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="submissionhisLabel{{ $index }}">ประวัติการทำเอกสาร</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <ol class="list-group list-group-numbered">
+                                                            @foreach ($submission->getSubmissionHistory ?? [] as $submitHis)
+                                                                @php
+                                                                    $submitDate = new Carbon\Carbon($submitHis->updated_at);
+                                                                @endphp
+                                                                <li class="list-group-item d-flex">
+                                                                    <div class="d-flex justify-content-around gap-4">
+                                                                        <p>{{ optional($submitHis->getUser)->full_name ?? "-" }}</p>
+                                                                        <p>{{ $submitDate->thaidate('วันที่ j M Y เวลา H:i:s') }}</p>
+                                                                    </div>
+                                                                </li>
+                                                            @endforeach
+                                                        </ol>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <th scope="row">{{ $index + 1 }}</th>
-                                        <td>{{ optional($form_response->getUser)->full_name ?? '-' }}</td>
-                                        <td>{{ $header_data->name }}</td>
-                                        <td>{{ $header_data->posit }}</td>
-                                        <td>{{ $form_response->updated_at }}</td>
-                                        <td>
-                                            <a href="{{ route('form.detail', ['formresid' => $form_response->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="รายละเอียด">
-                                                <i class="bi bi-card-list"></i>
-                                            </a>
-                                            {{-- <button type="button" class="btn btn-danger btn-sm delete-data-btn" del-id="{{ $user->id }}" del-target="users" data-bs-toggle="tooltip" data-bs-title="ลบ">
-                                                <i class="bi bi-trash"></i>
-                                            </button> --}}
-                                        </td>
+                                        <td colspan="5" class="text-center">ไม่มีข้อมูล</td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -57,4 +114,9 @@
             </div>
         </div>
     </div>
+    <style>
+        #formCheckTablePage {
+            background-color: var(--main-color);
+        }
+    </style>
 @endsection
