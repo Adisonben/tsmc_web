@@ -201,7 +201,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     axios
-                        .delete(`tsm/org/${idToDelete}`)
+                        .delete(`/tsm/org/${idToDelete}`)
                         .then((res) => {
                             console.log(res.data);
                             Swal.fire({
