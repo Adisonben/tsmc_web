@@ -120,7 +120,7 @@
                                                         data-bs-toggle="tooltip" data-bs-title="ลบ">
                                                         <i class="bi bi-trash"></i>
                                                     </a> --}}
-                                                    <button type="button" class="btn btn-danger btn-sm" id="delete-org-btn"
+                                                    <button type="button" class="btn btn-danger btn-sm delete-org-btn"
                                                         del-id="{{ optional($tsm_has_org->getOrg)->id }}"
                                                         data-bs-toggle="tooltip" data-bs-title="ลบ"><i
                                                             class="bi bi-trash"></i></button>
@@ -186,43 +186,45 @@
     </div>
     <script>
         // Delete function
-        const deleteBtns = document.querySelector("#delete-org-btn");
-        deleteBtns.addEventListener("click", () => {
-            const idToDelete = deleteBtns.getAttribute("del-id");
+        const deleteBtns = document.querySelectorAll(".delete-org-btn");
+        deleteBtns.forEach((delBtn) => {
+            delBtn.addEventListener("click", () => {
+                const idToDelete = delBtn.getAttribute("del-id");
 
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios
-                        .delete(`/tsm/org/${idToDelete}`)
-                        .then((res) => {
-                            console.log(res.data);
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: "Your file has been deleted.",
-                                icon: "success",
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.reload();
-                                }
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios
+                            .delete(`/tsm/org/${idToDelete}`)
+                            .then((res) => {
+                                console.log(res.data);
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Your file has been deleted.",
+                                    icon: "success",
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
+                            })
+                            .catch((error) => {
+                                console.log("Error deleting data: ", error);
+                                Swal.fire({
+                                    title: "Sorry!",
+                                    text: "Something went wrong!",
+                                    icon: "error",
+                                });
                             });
-                        })
-                        .catch((error) => {
-                            console.log("Error deleting data: ", error);
-                            Swal.fire({
-                                title: "Sorry!",
-                                text: "Something went wrong!",
-                                icon: "error",
-                            });
-                        });
-                }
+                    }
+                });
             });
         });
     </script>
