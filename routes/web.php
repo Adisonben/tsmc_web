@@ -7,6 +7,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\ImportDataController;
 use App\Http\Controllers\LineController;
 use App\Http\Controllers\LogBookController;
 use App\Http\Controllers\Organization\OrgController;
@@ -97,7 +98,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user-list/export', [UserController::class, 'exportUsers'])->name('user.list.export');
     Route::post('/users/store-image', [UserController::class, 'storeImage'])->name('users.store.image');
 
-
     // Route::resource('driver-license-types', LicenseTypeController::class);
 
     Route::resource('vehicles', VehicleController::class);
@@ -107,12 +107,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/vehicles/import', [VehicleController::class, 'importVehicles'])->name('vehicles.import');
     // Route::post('/cars/update-data/{car}', [CarController::class, 'update'])->name('cars.update.post');
 
-
     Route::resource('posts', PostController::class);
     Route::post('/posts/comment', [PostController::class, 'storeComment'])->name('posts.comment');
     Route::post('/posts/update/{post}', [PostController::class, 'update'])->name('posts.getUpdate');
     Route::delete('/posts/comment/{id}', [PostController::class, 'delComment'])->name('posts.comment.delete');
-
 
     Route::get('/forms/select-form-category', [FormController::class, 'selectFormCategory'])->name('form.select-form-category');
     Route::get('/forms/{form_category}/table', [FormController::class, 'showformTable'])->name('form.table');
@@ -138,6 +136,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/performance-report', [ExcelController::class, 'performanceReport'])->name('performance.report');
     Route::get('/export-performance-report', [ExcelController::class, 'exportPerformanceReport'])->name('export.performance.report');
     Route::get('/submission-count', [ExcelController::class, 'submissionCount'])->name('submission.count');
+
+    Route::get('/import-data', [ImportDataController::class, 'index'])->name('importdata.index');
 
     Route::get('/e-learning', function () {
         return view('eLearning');

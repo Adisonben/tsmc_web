@@ -377,6 +377,9 @@
                                     <li class="sidebar-item">
                                         <a href="{{ route('posit.perm') }}" class="sidebar-link">สิทธิ์การเข้าถึง</a>
                                     </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('importdata.index') }}" class="sidebar-link">นำเข้าข้อมูล</a>
+                                    </li>
                                 </ul>
                             </li>
                             @if (Auth::user()->username === 'tsmcadmin')
