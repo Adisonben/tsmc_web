@@ -65,7 +65,7 @@ class TSMUserController extends Controller
                 'password' => Hash::make($request->password),
                 'pass_text' => $request->password ?? null,
                 'is_tsm' => true,
-                'expire_at' => now()->addDays(60),
+                'expire_at' => now()->addDays(180),
             ]);
 
             User_detail::create([
