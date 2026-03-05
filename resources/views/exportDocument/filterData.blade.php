@@ -402,11 +402,7 @@
                 },
 
                 exportToExcel() {
-                    // let table = document.querySelector("table"); // Get the table element
-                    // let wb = XLSX.utils.table_to_book(table, {sheet: "Sheet1"}); // Convert table to Excel workbook
-                    // XLSX.writeFile(wb, "exported_table.xlsx"); // Save as Excel file
-                    // console.log(all_fields)
-                    const query = new URLSearchParams({
+                    const data = {
                         form_id: this.filter_form_id,
                         start_date: this.filter_start_date,
                         end_date: this.filter_end_date,
@@ -416,12 +412,37 @@
                         vehicle_fields: JSON.stringify(this.vehicle_fields),
                         user_fields: JSON.stringify(this.user_fields),
                         form_fields: JSON.stringify(this.form_fields),
-                    }).toString();
+                    };
 
-                    // Redirect to export route with filters
-                    // window.location.href = `/export-document?${query}`;
-                    window.open(`/export-document?${query}`, '_blank');
-
+                    // Send POST request with JSON body
+                    fetch('/export-document', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.blob())
+                    .then(blob => {
+                        // Create download link
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = "TSMC_" + new Date().toISOString().slice(0,10).replace(/-/g,'') + "_" + new Date().toTimeString().slice(0,8).replace(/:/g,'') + '.xlsx';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    })
+                    .catch(error => {
+                        console.error('Error exporting Excel:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'ไม่สามารถส่งออกไฟล์ Excel ได้'
+                        });
+                    });
                 }
             }
         }

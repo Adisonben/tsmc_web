@@ -132,7 +132,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/document/submission/{submission_id}/detail', [DocumentController::class, 'show'])->name('document.submission.show');
 
     Route::get('/document/export/filter', [DocumentController::class, 'filterDocument'])->name('document.export.filter');
-    Route::get('/export-document', [ExcelController::class, 'export']);
+    Route::post('/export-document', [ExcelController::class, 'export']);
     Route::get('/performance-report', [ExcelController::class, 'performanceReport'])->name('performance.report');
     Route::get('/export-performance-report', [ExcelController::class, 'exportPerformanceReport'])->name('export.performance.report');
     Route::get('/submission-count', [ExcelController::class, 'submissionCount'])->name('submission.count');
