@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\FunctionHelpers;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\LoginHistory;
@@ -9,13 +10,16 @@ use App\Models\Organization;
 use App\Models\Position;
 use App\Models\Position_has_permission;
 use App\Models\Position_permission;
+use App\Models\PositionHasForm;
 use App\Models\Post;
 use App\Models\Tsm_has_Org;
 use App\Models\User;
 use App\Models\User_detail;
 use App\Models\WorkRecord;
+use App\Services\MasterDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -73,7 +77,7 @@ class HomeController extends Controller
         return view('loginHistory', compact('histories'));
     }
 
-    public function registerNewUser(Request $request) {
+    public function registerNewUser(Request $request, MasterDataService $masterDataService) {
         $request->validate([
             'org_name' => ['required', 'string', 'max:255'],
             'prefix_id' => ['required', 'integer'],
@@ -96,25 +100,15 @@ class HomeController extends Controller
         ]);
 
         try {
+            DB::beginTransaction();
+
             $newOrg = Organization::create([
                 'org_id' => Str::uuid(),
                 'name' => $request->org_name,
                 'expire_at' => now()->addDays(180),
                 'accept_terms' => true,
             ]);
-
-            $newBranch = Branch::create([
-                'brn_id' => Str::uuid(),
-                'name'=> 'สำนักงานใหญ่',
-                'org_id' => $newOrg->id,
-            ]);
-
-            $newDpm = Department::create([
-                'dpm_id' => Str::uuid(),
-                'name'=> 'admin',
-                'brn_id' => $newBranch->id,
-            ]);
-
+            
             $newUser = User::create([
                 'user_id' => Str::uuid(),
                 'username' => $request->username,
@@ -122,11 +116,7 @@ class HomeController extends Controller
                 'pass_text' => $request->password ?? null,
             ]);
 
-            $newPosition = Position::create([
-                'name' => 'admin',
-                'created_by' => $newUser->id,
-                'org' => $newOrg->id,
-            ]);
+            $masterData = $masterDataService->generate($newOrg->id, $newUser->id);
 
             User_detail::create([
                 'user_id' => $newUser->id,
@@ -134,27 +124,18 @@ class HomeController extends Controller
                 'fname' => $request->fname,
                 'lname' => $request->lname,
                 'org' => $newOrg->id,
-                'brn' => $newBranch->id,
-                'dpm' => $newDpm->id,
-                'position' => $newPosition->id,
+                'brn' => $masterData['brn_id'],
+                'dpm' => $masterData['dpm_id'],
+                'position' => $masterData['pos_id'],
             ]);
 
-            $perms = Position_permission::whereIn('perm_name', ['can_manage_user', 'can_manage_org'])->get();
-
-            foreach ($perms as $perm) {
-                Position_has_permission::create([
-                    'position_id' => $newPosition->id,
-                    'permission_id' => $perm->id,
-                    'user_id' => $newUser->id,
-                    'org' => $newOrg->id,
-                    'status' => true
-                ]);
-            }
+            DB::commit();
 
             Auth::login($newUser);
 
             return redirect()->route('home');
         } catch (\Throwable $th) {
+            DB::rollBack();
             //throw $th;
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
         }

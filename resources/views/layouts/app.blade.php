@@ -86,6 +86,12 @@
                                     ความรู้ออนไลน์
                                 </a>
                             </li>
+                            <li class="sidebar-item" id="elearningPage">
+                                <a href="" class="sidebar-link">
+                                    <i class="bi bi-book"></i>
+                                    QMS (Coming Soon)
+                                </a>
+                            </li>
                             <li class="sidebar-header">
                                 แบบฟอร์ม
                             </li>
@@ -128,22 +134,6 @@
                                     </li>
                                 </ul>
                             </li>
-                            {{-- <li class="sidebar-item" id="exportPage">
-                                <a href="{{ route('document.export.filter') }}" class="sidebar-link">
-                                    ออกรายงาน
-                                </a>
-                            </li>
-
-                            <li class="sidebar-item" id="logbookTablePage">
-                                <a href="{{ route('logbook.table') }}" class="sidebar-link">
-                                    log book
-                                </a>
-                            </li>
-                            <li class="sidebar-item" id="performanceReportPage">
-                                <a href="{{ route('performance.report', ['quarter' => Carbon\Carbon::now()->quarterOfYear()]) }}" class="sidebar-link">
-                                    รายงานผลส่งกรมฯ
-                                </a>
-                            </li> --}}
 
                             <li class="sidebar-header">
                                 ข้อมูลระบบ
@@ -165,6 +155,9 @@
                                     </li>
                                     <li class="sidebar-item">
                                         <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('importdata.index') }}" class="sidebar-link">นำเข้าข้อมูล</a>
                                     </li>
                                     @if (session('org_status') !== 2)
                                         <li class="sidebar-item">
@@ -272,6 +265,12 @@
                                 ความรู้ออนไลน์
                             </a>
                         </li>
+                        <li class="sidebar-item" id="elearningPage">
+                            <a href="" class="sidebar-link">
+                                <i class="bi bi-book"></i>
+                                QMS (Coming Soon)
+                            </a>
+                        </li>
                         {{-- <li class="sidebar-item" id="carMATablePage">
                             <a href="{{ route('car.ma.table') }}" class="sidebar-link">
                                 <i class="bi bi-car-front"></i>
@@ -377,9 +376,9 @@
                                     <li class="sidebar-item">
                                         <a href="{{ route('posit.perm') }}" class="sidebar-link">สิทธิ์การเข้าถึง</a>
                                     </li>
-                                    {{-- <li class="sidebar-item">
+                                    <li class="sidebar-item">
                                         <a href="{{ route('importdata.index') }}" class="sidebar-link">นำเข้าข้อมูล</a>
-                                    </li> --}}
+                                    </li>
                                 </ul>
                             </li>
                             @if (Auth::user()->username === 'tsmcadmin')

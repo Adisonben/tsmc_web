@@ -6,6 +6,9 @@ use App\Models\ExportPerformanceReport;
 use App\Models\Form;
 use App\Models\Form_category;
 use App\Models\FormSubmissions;
+use App\Models\Department;
+use App\Models\Position;
+use App\Models\Prefix;
 use App\Models\Organization;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -329,6 +332,144 @@ class ExcelController extends Controller
         $categories = Form_category::all();
         return view('exportDocument.submissionCount', compact('categories', 'quarter'));
     }
+
+    public function downloadUserTemplate()
+    {
+        $spreadsheet = new Spreadsheet();
+
+        // --- User data sheet ---
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Users');
+
+        $headers = ['id', 'username', 'password', 'citizen_id', 'prefix_id', 'first_name', 'last_name', 'department_id', 'position_id'];
+
+        foreach ($headers as $index => $header) {
+            $col = $this->getExcelColumnName($index);
+            $sheet->setCellValue($col . '1', $header);
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $lastCol = $this->getExcelColumnName(count($headers) - 1);
+        $this->setHeaderCellStyle($sheet, 'A1:' . $lastCol . '1');
+
+        $orgId = Auth()->user()->is_tsm ? session('connected_org') : (Auth()->user()->userDetail->org ?? null);
+
+        // --- Department sheet ---
+        $departmentSheet = $spreadsheet->createSheet();
+        $departmentSheet->setTitle('Department');
+        $departmentSheet->setCellValue('A1', 'id');
+        $departmentSheet->setCellValue('B1', 'name');
+        $departmentSheet->getColumnDimension('A')->setAutoSize(true);
+        $departmentSheet->getColumnDimension('B')->setAutoSize(true);
+        $this->setHeaderCellStyle($departmentSheet, 'A1:B1');
+
+        $departmentQuery = Department::query()->select(['id', 'name'])->orderBy('name');
+        if ($orgId) {
+            $departmentQuery->whereHas('getBrn', function ($query) use ($orgId) {
+                $query->where('org_id', $orgId);
+            });
+        }
+        $departments = $departmentQuery->get();
+
+        foreach ($departments as $index => $department) {
+            $row = $index + 2;
+            $departmentSheet->setCellValue('A' . $row, $department->id);
+            $departmentSheet->setCellValue('B' . $row, $department->name);
+        }
+
+        // --- Position sheet ---
+        $positionSheet = $spreadsheet->createSheet();
+        $positionSheet->setTitle('Position');
+        $positionSheet->setCellValue('A1', 'id');
+        $positionSheet->setCellValue('B1', 'name');
+        $positionSheet->getColumnDimension('A')->setAutoSize(true);
+        $positionSheet->getColumnDimension('B')->setAutoSize(true);
+        $this->setHeaderCellStyle($positionSheet, 'A1:B1');
+
+        $positionQuery = Position::query()->select(['id', 'name'])->orderBy('name');
+        if ($orgId) {
+            $positionQuery->where(function ($query) use ($orgId) {
+                $query->where('org', $orgId)->orWhereNull('org');
+            });
+        }
+        $positions = $positionQuery->get();
+
+        foreach ($positions as $index => $position) {
+            $row = $index + 2;
+            $positionSheet->setCellValue('A' . $row, $position->id);
+            $positionSheet->setCellValue('B' . $row, $position->name);
+        }
+
+        // --- Prefix sheet ---
+        $prefixSheet = $spreadsheet->createSheet();
+        $prefixSheet->setTitle('Prefix');
+        $prefixSheet->setCellValue('A1', 'id');
+        $prefixSheet->setCellValue('B1', 'name');
+        $prefixSheet->getColumnDimension('A')->setAutoSize(true);
+        $prefixSheet->getColumnDimension('B')->setAutoSize(true);
+        $this->setHeaderCellStyle($prefixSheet, 'A1:B1');
+
+        $prefixes = Prefix::select(['id', 'name'])->orderBy('name')->get();
+
+        foreach ($prefixes as $index => $prefix) {
+            $row = $index + 2;
+            $prefixSheet->setCellValue('A' . $row, $prefix->id);
+            $prefixSheet->setCellValue('B' . $row, $prefix->name);
+        }
+
+        // make sure user sheet is active when opening
+        $spreadsheet->setActiveSheetIndex(0);
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = "TSMC_user_template_" . date('dmY_His') . ".xlsx";
+
+        return response()->stream(
+            function () use ($writer) {
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment;filename="' . $filename . '"',
+                'Cache-Control' => 'max-age=0',
+            ]
+        );
+    }
+
+    public function previewImportUsers(Request $request)
+    {
+        $request->validate([
+            'import_file' => 'required|file|mimes:xlsx,xls',
+        ]);
+
+        $file = $request->file('import_file');
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file->getPathname());
+        $sheet = $spreadsheet->getActiveSheet();
+        $rows = $sheet->toArray(null, true, true, true);
+
+        $headers = [];
+        $previewData = [];
+
+        foreach ($rows as $rowIndex => $row) {
+            if ($rowIndex === 1) {
+                $headers = array_values($row);
+                continue;
+            }
+            $rowData = [];
+            foreach (array_values($row) as $i => $value) {
+                $rowData[$headers[$i] ?? $i] = $value;
+            }
+            $previewData[] = $rowData;
+        }
+
+        session([
+            'previewData' => $previewData,
+            'previewHeaders' => $headers,
+        ]);
+
+        return redirect()->route('importdata.index')->with('success', 'นำเข้าไฟล์สำเร็จ');
+    }
+
 
     public function exportPerformanceReport(Request $request)
     {

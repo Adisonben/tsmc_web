@@ -11,7 +11,7 @@
 
             {{-- Card --}}
             <div class="d-flex justify-content-center">
-                <div class="card rounded-4 shadow-sm mb-3" style="width: 600px;">
+                <div class="card rounded-4 shadow-sm mb-3" style="width: 800px;">
                     <div class="card-body">
                         <div class="row g-0">
                             <!-- รูปภาพ (คอลัมน์ซ้าย) -->
@@ -31,16 +31,16 @@
                             <div class="col-md-8 info-column">
                                 <h3 class="card-title mb-2 text-center text-md-start">{{ Auth::user()->full_name }}</h3>
                                 <div class="row">
-                                    <p class="mb-0 col-6"><strong>หมายเลขประชาชน:</strong></p>
-                                    <p class="mb-0 col-6">{{ Auth::user()->userDetail->citizen_id ?? '-' }}</p>
-                                    <p class="mb-0 col-6"><strong>ตำแหน่ง:</strong></p>
-                                    <p class="mb-0 col-6">{{ Auth::user()->userDetail->getPosition->name ?? '-' }}</p>
-                                    <p class="mb-0 col-6"><strong>ฝ่าย:</strong></p>
-                                    <p class="mb-0 col-6">{{ Auth::user()->userDetail->getDpm->name ?? '-' }}</p>
-                                    <p class="mb-0 col-6"><strong>สาขา:</strong></p>
-                                    <p class="mb-0 col-6">{{ Auth::user()->userDetail->getBrn->name ?? '-' }}</p>
-                                    <p class="mb-0 col-6"><strong>บริษัท:</strong></p>
-                                    <p class="mb-0 col-6">{{ Auth::user()->userDetail->getOrg->name ?? '-' }}</p>
+                                    <p class="mb-0 col-4"><strong>หมายเลขประชาชน:</strong></p>
+                                    <p class="mb-0 col-8">{{ Auth::user()->userDetail->citizen_id ?? '-' }}</p>
+                                    <p class="mb-0 col-4"><strong>ตำแหน่ง:</strong></p>
+                                    <p class="mb-0 col-8">{{ Auth::user()->userDetail->getPosition->name ?? '-' }}</p>
+                                    <p class="mb-0 col-4"><strong>ฝ่าย:</strong></p>
+                                    <p class="mb-0 col-8">{{ Auth::user()->userDetail->getDpm->name ?? '-' }}</p>
+                                    <p class="mb-0 col-4"><strong>สาขา:</strong></p>
+                                    <p class="mb-0 col-8">{{ Auth::user()->userDetail->getBrn->name ?? '-' }}</p>
+                                    <p class="mb-0 col-4"><strong>บริษัท:</strong></p>
+                                    <p class="mb-0 col-8">{{ Auth::user()->userDetail->getOrg->name ?? '-' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                     false) || Auth::user()->username === 'tsmcadmin')
                 <div class="d-flex justify-content-center">
                     <!-- การ์ดบันทึกเวลาทำงาน -->
-                    <div class="card shadow-sm rounded-4" style="width: 600px;">
+                    <div class="card shadow-sm rounded-4" style="width: 800px;">
                         <div class="card-header bg-white">
                             <h5 class="card-title mb-0">บันทึกเวลาทำงาน</h5>
                         </div>

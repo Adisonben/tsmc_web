@@ -6,9 +6,11 @@ use App\Models\Organization;
 use App\Models\Tsm_has_Org;
 use App\Models\User;
 use App\Models\User_detail;
+use App\Services\MasterDataService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -158,7 +160,7 @@ class TSMUserController extends Controller
         return view('tsm.org_manage', compact('tsm_has_orgs'));
     }
 
-    public function storeOrg(Request $request, string $user_id)
+    public function storeOrg(Request $request, MasterDataService $masterDataService, string $user_id)
     {
         $request->validate([
             'orgName' => 'required|string|max:255',
@@ -174,6 +176,8 @@ class TSMUserController extends Controller
                 $request->orgLogo->move(public_path('uploads/orglogoes'), $imageName);
             }
 
+            DB::beginTransaction();
+
             $newOrg = Organization::create([
                 'org_id' => Str::uuid(),
                 'name' => $request->orgName,
@@ -182,13 +186,18 @@ class TSMUserController extends Controller
                 'accept_terms' => true,
             ]);
 
+            $masterDataService->generate($newOrg->id, $user_id);
+
             Tsm_has_Org::create([
                 'tsm_id' => $user_id,
                 'org_id' => $newOrg->id,
             ]);
 
+            DB::commit();
+
             return redirect()->back()->with('success', 'บันทึกข้อมูลเรียบร้อย');
         } catch (\Throwable $th) {
+            DB::rollBack();
             //throw $th;
             dd($th->getMessage());
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');

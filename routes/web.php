@@ -138,6 +138,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/submission-count', [ExcelController::class, 'submissionCount'])->name('submission.count');
 
     Route::get('/import-data', [ImportDataController::class, 'index'])->name('importdata.index');
+    Route::get('/import-data/download-template', [ExcelController::class, 'downloadUserTemplate'])->name('importdata.template');
+    Route::post('/import-data/preview-users', [ExcelController::class, 'previewImportUsers'])->name('importdata.preview');
+    Route::post('/import-data/save-users', [ImportDataController::class, 'saveImportedUsers'])->name('importdata.save');
 
     Route::get('/e-learning', function () {
         return view('eLearning');

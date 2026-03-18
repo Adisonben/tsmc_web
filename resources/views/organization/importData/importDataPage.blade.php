@@ -1,90 +1,166 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="">
-        <div class="row justify-content-center">
-            <div class="px-3 px-md-5">
+    <div class="row justify-content-center">
+        <div class="px-3 px-md-5">
 
-                {{-- Position table Card --}}
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('นำเข้าข้อมูล') }}</p>
-                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#createPositModal">
-                                เพิ่ม
+            {{-- Download Template --}}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <p class="mb-0 fs-4">นำเข้าข้อมูลผู้ใช้</p>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">ขั้นตอนที่ 1: ดาวน์โหลด template แล้วกรอกข้อมูลผู้ใช้ที่ต้องการนำเข้า</p>
+                    <ul class="mb-3 ps-3">
+                        <li>- กรอกข้อมูลในคอลัมน์ <strong>username, password, prefix_id, first_name, last_name, department_id, position_id</strong> <span class="text-danger">ให้ครบทุกแถว</span></li>
+                        <li>- คอลัมน์ <strong>citizen_id</strong> <u>ไม่จำเป็นต้องกรอก</u> หากไม่มีข้อมูลสามารถเว้นว่างได้</li>
+                        <li>- ตรวจสอบให้แน่ใจว่าเลือก <strong>department_id, position_id, prefix_id</strong> ที่ถูกต้อง โดยให้อ้างอิงจากหน้า Department, Position และ Prefix ที่อยู่ในไฟล์ template</li>
+                    </ul>
+                    <a href="{{ route('importdata.template') }}" class="btn btn-success">
+                        <i class="bi bi-file-earmark-arrow-down me-1"></i> ดาวน์โหลด Template
+                    </a>
+                </div>
+            </div>
+
+            {{-- Upload File --}}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <p class="mb-0 fs-5">ขั้นตอนที่ 2: อัปโหลดไฟล์ Excel</p>
+                </div>
+                <div class="card-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+                    @if (session('info'))
+                        <div class="alert alert-info">{{ session('info') }}</div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+                    @if (session('import_errors'))
+                        <div class="alert alert-warning">
+                            <p class="mb-1">บันทึกรายการบางส่วนไม่สำเร็จ:</p>
+                            <ul class="mb-0 ps-3">
+                                @foreach (session('import_errors') as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('importdata.preview') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="import_file" class="form-label">เลือกไฟล์ Excel (.xlsx, .xls)</label>
+                            <input type="file" class="form-control @error('import_file') is-invalid @enderror"
+                                id="import_file" name="import_file" accept=".xlsx,.xls">
+                            @error('import_file')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-upload me-1"></i> อัปโหลดและดูตัวอย่าง
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {{-- Preview Table --}}
+            @if (count($previewData) > 0)
+                @php
+                    $requiredHeaders = ['username', 'password', 'prefix_id', 'first_name', 'last_name', 'department_id', 'position_id'];
+                    $processedPreview = [];
+                    $hasIncompleteRows = false;
+                    foreach ($previewData as $idx => $previewRow) {
+                        $missing = [];
+                        foreach ($requiredHeaders as $requiredHeader) {
+                            $value = $previewRow[$requiredHeader] ?? null;
+                            if (is_string($value)) {
+                                $value = trim($value);
+                            }
+                            if ($value === '' || $value === null) {
+                                $missing[] = $requiredHeader;
+                            }
+                        }
+                        if (!empty($missing)) {
+                            $hasIncompleteRows = true;
+                        }
+                        $processedPreview[$idx] = [
+                            'row' => $previewRow,
+                            'missing' => $missing,
+                        ];
+                    }
+                @endphp
+
+                <form action="{{ route('importdata.save') }}" method="POST" class="mb-4">
+                    @csrf
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <p class="mb-0 fs-5">ตัวอย่างข้อมูลที่นำเข้า ({{ count($previewData) }} แถว)</p>
+                            <button type="submit" class="btn btn-success" {{ $hasIncompleteRows ? 'disabled' : '' }}
+                                @if ($hasIncompleteRows) title="กรุณาเติมข้อมูลให้ครบทุกคอลัมน์ที่จำเป็นก่อน" @endif>
+                                <i class="bi bi-save me-1"></i> Save
                             </button>
                         </div>
-                    </div>
-                    <!-- Create Modal -->
-                    <div class="modal fade" id="createPositModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                        tabindex="-1" aria-labelledby="createPositModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="createPositModalLabel">เพิ่มตำแหน่ง</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                        <div class="card-body">
+                            @if (session('import_errors'))
+                                <div class="alert alert-warning">
+                                    <p class="mb-1">บันทึกรายการบางส่วนไม่สำเร็จ:</p>
+                                    <ul class="mb-0 ps-3">
+                                        @foreach (session('import_errors') as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
-                                <form action="{{ route('positions.store') }}" method="post">
-                                    @csrf
-                                    <div class="modal-body">
+                            @endif
 
-                                        <div class="mb-3">
-                                            <label for="positName" class="form-label">ชื่อตำแหน่ง</label>
-                                            <input type="text" class="form-control" maxlength="150" id="positName"
-                                                name="positName" placeholder="กรุณากรอกชื่อตำแหน่ง" required>
-                                        </div>
+                            @if ($hasIncompleteRows)
+                                <div class="alert alert-warning">
+                                    พบแถวที่มีข้อมูลไม่ครบถ้วน (ยกเว้น citizen_id) กรุณาตรวจสอบและแก้ไขก่อนบันทึก
+                                </div>
+                            @endif
 
-                                        <div class="mb-3">
-                                            <label for="parent" class="form-label">อยู่ภายใต้ตำแหน่ง</label>
-                                            <select class="form-select" aria-label="Default select example" id="parent"
-                                                name="parent" required>
-                                                <option selected value="-">ไม่มี</option>
-                                                {{-- @foreach ($positions as $position)
-                                                    <option value="{{ $position->id }}">{{ $position->name }}</option>
-                                                @endforeach --}}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">ปิด</button>
-                                        <button type="submit" class="btn btn-primary" {{ session('org_status') == 2 ? 'disabled' : '' }}>บันทึก</button>
-                                    </div>
-                                </form>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            @foreach ($previewHeaders as $header)
+                                                <th>{{ $header }}</th>
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($processedPreview as $index => $rowInfo)
+                                            @php
+                                                $rowNumber = $index + 1;
+                                                $rowData = $rowInfo['row'];
+                                                $missingHeaders = $rowInfo['missing'];
+                                            @endphp
+                                            <tr class="{{ empty($missingHeaders) ? '' : 'table-warning' }}">
+                                                <td>{{ $rowNumber }}</td>
+                                                @foreach ($previewHeaders as $header)
+                                                    @php
+                                                        $cellValue = $rowData[$header] ?? '';
+                                                        $isMissing = in_array($header, $missingHeaders, true);
+                                                    @endphp
+                                                    <td class="{{ $isMissing ? 'table-danger' : '' }}">{{ $cellValue }}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+                </form>
+            @endif
 
-
-                    <div class="card-body">
-                        @if (session('positSuccess'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('positSuccess') }}
-                            </div>
-                        @elseif (session('positError'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ session('positError') }}
-                            </div>
-                        @endif
-
-                        <table class="table table-hover table-bordered">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">ชื่อตำแหน่ง</th>
-                                    <th scope="col">อยู่ภายใต้ตำแหน่ง</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div> {{-- End Department Card --}}
-            </div>
         </div>
     </div>
 @endsection
