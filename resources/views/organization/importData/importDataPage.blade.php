@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <p class="mb-2">ขั้นตอนที่ 1: ดาวน์โหลด template แล้วกรอกข้อมูลผู้ใช้ที่ต้องการนำเข้า</p>
                     <ul class="mb-3 ps-3">
-                        <li>- ห้ามเปลี่ยนแปลงหรือแก้ไขข้อมูลที่มีอยู่แล้วในไฟล์ Template เช่น ชื่อคอลัมน์, รูปแบบไฟล์ เป็นต้น</li>
+                        <li>- <span class="text-danger">ห้ามเปลี่ยนแปลงหรือแก้ไข </span>ข้อมูลที่มีอยู่แล้วในไฟล์ Template เช่น ชื่อคอลัมน์, รูปแบบไฟล์ เป็นต้น</li>
                         <li>- กรอกข้อมูลในคอลัมน์ <strong>username, password, prefix_id, first_name, last_name, department_id, position_id</strong> <span class="text-danger">ให้ครบทุกแถว</span></li>
                         <li>- คอลัมน์ <strong>citizen_id</strong> <u>ไม่จำเป็นต้องกรอก</u> หากไม่มีข้อมูลสามารถเว้นว่างได้</li>
                         <li>- ตรวจสอบให้แน่ใจว่าเลือก <strong>department_id, position_id, prefix_id</strong> ที่ถูกต้อง โดยให้อ้างอิงจากหน้า Department, Position และ Prefix ที่อยู่ในไฟล์ template</li>
