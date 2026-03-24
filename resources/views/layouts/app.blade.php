@@ -62,6 +62,18 @@
                             dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
                         @endphp --}}
                         @if (session('connected_org'))
+                            <li class="sidebar-item" id="postsPage">
+                                <a href="{{ route('posts.index') }}" class="sidebar-link">
+                                    <i class="bi bi-clipboard"></i>
+                                    โพส/ประกาศ
+                                </a>
+                            </li>
+                            <li class="sidebar-item" id="formCheckpage">
+                                <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
+                                    <i class="bi bi-clipboard"></i>
+                                    ทำเอกสาร 5 หมวด
+                                </a>
+                            </li>
                             <li class="sidebar-item" id="formCheckTablePage">
                                 <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>

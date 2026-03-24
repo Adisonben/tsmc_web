@@ -20,9 +20,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        if (Auth()->user()->userDetail->org ?? false) {
-            $posts = Post::whereHas('getUser', function ($query) {
-                $query->where('org', Auth()->user()->userDetail->org);
+        if (Auth()->user()->is_tsm) {
+            $org_id = session('connected_org') ?? '';
+        } else {
+            $org_id = Auth()->user()->userDetail->org ?? '';
+        }
+        if ($org_id ?? false) {
+            $posts = Post::whereHas('getUser', function ($query) use ($org_id) {
+                $query->where('org', $org_id);
             })->where(function ($query) {
                 $query->orWhereHas('permissions', function ($query2) {
                     $query2->where('name', "บุคคล")

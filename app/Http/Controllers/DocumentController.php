@@ -34,9 +34,15 @@ class DocumentController extends Controller
     }
 
     public function fillOutForm($form_id) {
+        if (Auth()->user()->is_tsm) {
+            $org_id = session('connected_org') ?? '';
+        } else {
+            $org_id = Auth::user()->userDetail->org ?? '';
+        }
+
         $form_data = Form::where('form_id', $form_id)->firstOrFail();
-        $users = User_detail::where('org', Auth::user()->userDetail->org ?? '')->get(['user_id', 'fname', 'lname']);
-        $vehicles = Vehicle::where('org_id', Auth::user()->userDetail->org ?? '')->get(['id', 'license_plate', 'brand']);
+        $users = User_detail::where('org', $org_id)->get(['user_id', 'fname', 'lname']);
+        $vehicles = Vehicle::where('org_id', $org_id)->get(['id', 'license_plate', 'brand']);
         return view('form.checking.fillOutForm', compact('form_data', 'users', 'vehicles'));
     }
 
@@ -66,13 +72,19 @@ class DocumentController extends Controller
         try {
             $form = Form::where('form_id', $form_id)->firstOrFail();
 
+            if (Auth()->user()->is_tsm) {
+                $org_id = session('connected_org') ?? null;
+            } else {
+                $org_id = Auth::user()->userDetail->org ?? null;
+            }
+
             $form_submission = FormSubmissions::create([
                 'submission_id' => Str::uuid(),
                 'form_id' => $form->id,
                 'user_id' => $request->selected_user_id ?? null,
                 'vehicle_id' => $request->selected_vehicle_id ?? null,
                 'submitted_by' => Auth::user()->id,
-                'org' => optional(Auth::user()->userDetail)->org ?? null,
+                'org' => $org_id,
             ]);
 
             foreach ($request->fieldsAns as $field) {

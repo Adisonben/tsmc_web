@@ -48,26 +48,28 @@
                         });
                     </script>
                 @endif
-                <div class="card rounded-5 mb-3">
-                    <div class="card-body">
-                        <div class="d-flex gap-3">
-                            <div class="d-flex gap-2">
-                                @if (
-                                    (Auth::user()->userDetail->icon ?? false) &&
-                                        file_exists(public_path('uploads/userImages/' . Auth::user()->userDetail->icon)))
-                                    <img src="/uploads/userImages/{{ Auth::user()->userDetail->icon }}"
-                                        class="object-fit-cover rounded-circle" width="40" height="40" alt="">
-                                @else
-                                    <img src="/images/icons/tsmc_logo.png" class="object-fit-contain" width="40"
-                                        alt="">
-                                @endif
+                @if (!Auth()->user()->is_tsm)
+                    <div class="card rounded-5 mb-3">
+                        <div class="card-body">
+                            <div class="d-flex gap-3">
+                                <div class="d-flex gap-2">
+                                    @if (
+                                        (Auth::user()->userDetail->icon ?? false) &&
+                                            file_exists(public_path('uploads/userImages/' . Auth::user()->userDetail->icon)))
+                                        <img src="/uploads/userImages/{{ Auth::user()->userDetail->icon }}"
+                                            class="object-fit-cover rounded-circle" width="40" height="40" alt="">
+                                    @else
+                                        <img src="/images/icons/tsmc_logo.png" class="object-fit-contain" width="40"
+                                            alt="">
+                                    @endif
+                                </div>
+                                <a href="{{ route('posts.create') }}" class="w-100"><input type="text"
+                                        class="form-control rounded-pill" style="cursor: pointer" id="exampleFormControlInput1"
+                                        placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
                             </div>
-                            <a href="{{ route('posts.create') }}" class="w-100"><input type="text"
-                                    class="form-control rounded-pill" style="cursor: pointer" id="exampleFormControlInput1"
-                                    placeholder="เขียนข้อความ หรือ ประกาศ" readonly></a>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 {{-- Post Card --}}
                 @if ($posts)

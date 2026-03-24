@@ -32,7 +32,7 @@
                                             <div>
                                                 @if (count($cate->getForms ?? []) > 0)
                                                     @foreach ($cate->getForms ?? [] as $form)
-                                                        @if ($form->hasThisPosition(Auth::user()->userDetail->position))
+                                                        @if ($form->hasThisPosition(Auth::user()->userDetail->position) || Auth()->user()->is_tsm)
                                                             <a href="{{ route('document.fill-out', ['form_id' => $form->form_id]) }}">
                                                                 <div class=" rounded p-2 mb-2 hover-bg-primary fs-5 text-dark"
                                                                     {{-- style="color: {{ $form->is_default ? 'red' : "black" }}" --}}
