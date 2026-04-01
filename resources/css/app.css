@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 *,
 ::after,
@@ -8,25 +8,40 @@
 }
 
 :root {
-    --main-color: #F8D247;
+    --main-color: #FBBF24;
+    --main-color-hover: #F59E0B;
     --second-color: #fff;
-    --third-color: #555859;
-    --bg-color: #dddddd;
+    --third-color: #0a1628;
+    --bg-color: #080e1c;
+    --bg-surface: #0d1a2e;
+    --bg-sidebar: rgba(10, 22, 40, 0.85);
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-subtle-hover: rgba(255, 255, 255, 0.12);
+    --text-muted: rgba(255, 255, 255, 0.4);
+    --text-secondary: rgba(255, 255, 255, 0.6);
 }
 
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     background-color: var(--bg-color);
+    color: var(--second-color);
 }
 
-#main-nav, #main-footer {
-    background-color: var(--main-color);
+#main-nav {
+    background: rgba(10, 22, 40, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+#main-footer {
+    background: var(--third-color);
+    border-top: 1px solid var(--border-subtle);
 }
 
 h3 {
     font-size: 1.2375rem;
-    /* color: #FFF; */
 }
 
 a {
@@ -39,7 +54,7 @@ li {
     list-style: none;
 }
 
-/* Layout skeleton */
+/* ═══ Layout skeleton ═══ */
 
 .wrapper {
     align-items: stretch;
@@ -47,22 +62,80 @@ li {
     width: 100%;
 }
 
+/* ═══ Sidebar ═══ */
+
 #sidebar {
     position: fixed;
-    max-width: 264px;
-    min-width: 264px;
+    max-width: 224px;
+    min-width: 224px;
     height: 100%;
     overflow-y: auto;
-    transition: all 0.35s ease-in-out;
-    box-shadow: 0 0 35px 0 rgba(49, 57, 66, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
     z-index: 1;
-    background-color: var(--third-color);
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-subtle);
 }
 
-/* Sidebar collapse */
+/* Scrollbar styling for sidebar */
+#sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+#sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+#sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+}
 
+/* ─── Sidebar collapse (hide off-screen) ─── */
 #sidebar.collapsed {
-    margin-left: -264px;
+    margin-left: -224px;
+}
+
+/* ─── Sidebar icon-only mode ─── */
+#sidebar.sidebar-icon-only {
+    max-width: 64px;
+    min-width: 64px;
+}
+
+#sidebar.sidebar-icon-only .sidebar-logo a,
+#sidebar.sidebar-icon-only .sidebar-header,
+#sidebar.sidebar-icon-only .sidebar-link span,
+#sidebar.sidebar-icon-only .sidebar-footer-text,
+#sidebar.sidebar-icon-only .sidebar-role-badge .sidebar-role-text,
+#sidebar.sidebar-icon-only .sidebar-link[data-bs-toggle="collapse"]::after {
+    display: none;
+}
+
+#sidebar.sidebar-icon-only .sidebar-logo {
+    padding: 0.75rem;
+    justify-content: center;
+}
+
+#sidebar.sidebar-icon-only .sidebar-logo img {
+    width: 36px !important;
+}
+
+#sidebar.sidebar-icon-only a.sidebar-link {
+    padding: 0.625rem 0;
+    justify-content: center;
+    text-align: center;
+}
+
+#sidebar.sidebar-icon-only a.sidebar-link i {
+    margin-right: 0;
+    font-size: 1.2rem;
+}
+
+#sidebar.sidebar-icon-only .sidebar-dropdown {
+    display: none !important;
+}
+
+#sidebar.sidebar-icon-only .sidebar-role-badge {
+    padding: 0.5rem;
+    justify-content: center;
 }
 
 .main.collapsed {
@@ -70,7 +143,12 @@ li {
 }
 
 .main-collapsed {
-    margin-left: 264px;
+    margin-left: 224px;
+}
+
+/* When sidebar is icon-only */
+.main.sidebar-icon-only-active {
+    margin-left: 64px;
 }
 
 .main {
@@ -79,55 +157,114 @@ li {
     min-height: 100vh;
     width: 100%;
     overflow: hidden;
-    transition: all 0.35s ease-in-out;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: var(--bg-color);
 }
 
+/* ─── Sidebar Logo Area ─── */
+
 .sidebar-logo {
-    padding: 1.15rem 1.5rem;
+    padding: 0.875rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .sidebar-logo a {
     color: var(--main-color);
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
+.sidebar-logo-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.2;
+    display: block;
+}
+
+.sidebar-toggle-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.sidebar-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+/* ─── Sidebar Nav ─── */
+
 .sidebar-nav {
-    padding: 0;
+    padding: 0.5rem 0.75rem;
 }
 
 .sidebar-header {
     color: var(--main-color);
-    font-size: .75rem;
-    padding: .8rem 1.5rem .3rem;
+    font-size: .7rem;
+    font-weight: 600;
+    padding: 1rem 0.875rem 0.3rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
-.sidebar-footer{
-    background-color: var(--main-color);
-}
-
-a.sidebar-footer {
-    padding: .625rem 0rem;
-    color: var(--third-color);
-    position: relative;
-    display: block;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-}
+/* ─── Sidebar Links ─── */
 
 a.sidebar-link {
-    padding: .625rem 1.625rem;
-    color: var(--second-color);
+    padding: 0.6rem 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
     position: relative;
-    display: block;
-    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 12px;
+    margin-bottom: 2px;
+    transition: all 0.15s ease;
+    border-left: 3px solid transparent;
 }
 
-.sidebar-item:hover .sidebar-link{
-    background-color: var(--main-color);
-    color: var(--third-color);
+a.sidebar-link i {
+    font-size: 1.1rem;
+    width: 1.25rem;
+    text-align: center;
+    flex-shrink: 0;
 }
+
+a.sidebar-link span {
+    flex: 1;
+}
+
+.sidebar-item:hover .sidebar-link {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border-left-color: rgba(251, 191, 36, 0.4);
+    padding-left: 1rem;
+}
+
+.sidebar-item.active .sidebar-link,
+.sidebar-item .sidebar-link.active {
+    background-color: rgba(251, 191, 36, 0.12);
+    color: var(--main-color);
+    border-left-color: var(--main-color);
+    font-weight: 600;
+}
+
+/* ─── Sidebar Collapse Arrow ─── */
 
 .sidebar-link[data-bs-toggle="collapse"]::after {
     border: solid;
@@ -136,10 +273,11 @@ a.sidebar-link {
     display: inline-block;
     padding: 2px;
     position: absolute;
-    right: 1.5rem;
-    top: 1.4rem;
+    right: 1rem;
+    top: 1.1rem;
     transform: rotate(-135deg);
     transition: all .2s ease-out;
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
@@ -147,16 +285,266 @@ a.sidebar-link {
     transition: all .2s ease-out;
 }
 
+/* ─── Sidebar Dropdown ─── */
+
+.sidebar-dropdown a.sidebar-link {
+    padding-left: 2.5rem;
+    font-size: 0.85rem;
+}
+
+/* ─── Sidebar Footer ─── */
+
+.sidebar-footer {
+    background-color: transparent;
+    border-top: 1px solid var(--border-subtle);
+}
+
+a.sidebar-footer {
+    padding: .625rem 0rem;
+    color: var(--main-color);
+    position: relative;
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+a.sidebar-footer:hover {
+    color: #fff;
+    background: rgba(251, 191, 36, 0.1);
+}
+
+/* ─── Sidebar Role Badge ─── */
+
+.sidebar-role-badge {
+    margin: 0.5rem 0.75rem 0.75rem;
+    padding: 0.75rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.06), transparent);
+    border: 1px solid rgba(251, 191, 36, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.sidebar-role-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(251, 191, 36, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--main-color);
+    flex-shrink: 0;
+}
+
+.sidebar-role-text .role-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    display: block;
+    line-height: 1.2;
+}
+
+.sidebar-role-text .role-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: block;
+    line-height: 1.2;
+}
+
+/* ═══ Main Content ═══ */
+
 .content {
     flex: 1;
     max-width: 100vw;
     width: 100vw;
 }
 
-/* Responsive */
+/* ═══ Navbar ═══ */
 
-@media (min-width:768px) {
+#main-nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+#main-nav .navbar-brand {
+    color: var(--main-color);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+#main-nav .nav-link {
+    color: var(--text-secondary);
+}
+
+#main-nav .nav-link:hover {
+    color: #fff;
+}
+
+#main-nav .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+#main-nav .btn {
+    font-size: 0.85rem;
+}
+
+/* Navbar avatar */
+.nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #FBBF24, #F59E0B);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    flex-shrink: 0;
+}
+
+/* Navbar dropdown dark */
+#main-nav .dropdown-menu {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    padding: 0.5rem;
+}
+
+#main-nav .dropdown-item {
+    color: var(--text-secondary);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    transition: all 0.15s;
+}
+
+#main-nav .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+}
+
+/* Navbar breadcrumb */
+.nav-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8rem;
+}
+
+.nav-breadcrumb .breadcrumb-separator {
+    color: rgba(255, 255, 255, 0.15);
+}
+
+.nav-breadcrumb .breadcrumb-current {
+    color: var(--main-color);
+    font-weight: 500;
+}
+
+/* ═══ Footer ═══ */
+
+#main-footer {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+#main-footer a {
+    color: var(--main-color);
+}
+
+#main-footer a:hover {
+    color: var(--main-color-hover);
+}
+
+/* ═══ Card / Alert overrides for dark layout ═══ */
+
+.main .card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    color: var(--second-color);
+}
+
+.main .card-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--second-color);
+}
+
+.main .table {
+    color: var(--second-color);
+}
+
+.main .table thead th {
+    border-bottom-color: var(--border-subtle);
+}
+
+.main .table td,
+.main .table th {
+    border-color: var(--border-subtle);
+}
+
+.main .form-control,
+.main .form-select {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: var(--border-subtle);
+    color: var(--second-color);
+}
+
+.main .form-control:focus,
+.main .form-select:focus {
+    border-color: rgba(251, 191, 36, 0.4);
+    box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.15);
+    background-color: rgba(255, 255, 255, 0.06);
+    color: var(--second-color);
+}
+
+.main .form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.main .form-label,
+.main .col-form-label {
+    color: var(--text-secondary);
+}
+
+/* Modal dark styling */
+.modal-content {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    color: var(--second-color);
+}
+
+.modal-header {
+    border-bottom-color: var(--border-subtle);
+}
+
+.modal-footer {
+    border-top-color: var(--border-subtle);
+}
+
+/* ═══ Responsive ═══ */
+
+@media (min-width: 768px) {
     .content {
         width: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    #sidebar {
+        max-width: 224px;
+        min-width: 224px;
+        margin-left: -224px;
+    }
+    #sidebar.show {
+        margin-left: 0;
+    }
+    .main {
+        margin-left: 0 !important;
     }
 }

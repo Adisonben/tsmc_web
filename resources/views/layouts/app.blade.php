@@ -31,23 +31,15 @@
         <!-- Sidebar -->
         <aside id="sidebar" style="z-index: 9999">
             <div class="sticky-top">
-                <div class="px-3 pt-2">
-                    {{-- @php
-                    dd(Auth::user()->userDetail->getOrg);
-                    @endphp --}}
-                    <img src="/uploads/orglogoes/{{ Auth::user()->userDetail->getOrg->logo_img ?? '' }}" width="50"
-                        alt="">
-                    <img src="/images/icons/tsmc_logo.png" width="50" alt="">
-                    {{-- <img src="/images/icons/iddrives_logo.png" width="50" alt=""> --}}
-                    <img src="/images/icons/tz_logo.png" width="50" alt="">
-                    <img src="/images/icons/nt_logo.jpg" width="50" alt="" class="rounded-circle">
-                    <!-- Button for sidebar toggle -->
-                </div>
-                <div class="sidebar-logo d-flex justify-content-between">
-                    <a href="#">Welcome</a>
-                    <div class="text-white fs-4" id="nav-toggle-btn2" style="cursor: pointer;">
-                        <i class="bi bi-list"></i>
+                <div class="sidebar-logo">
+                    <img src="/images/icons/tsmc_logo.png" width="40" alt="TSMC" style="border-radius:12px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(251,191,36,0.4))">
+                    <div>
+                        <a href="/home">TSMC</a>
+                        <span class="sidebar-logo-sub">Transport Safety</span>
                     </div>
+                    <button class="sidebar-toggle-btn" id="nav-toggle-btn2" title="ซ่อนเมนู">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
                 </div>
                 <!-- Sidebar Navigation -->
                 @if (Auth::user()->is_tsm)
@@ -55,7 +47,7 @@
                         <li class="sidebar-item" id="homepage">
                             <a href="/home" class="sidebar-link">
                                 <i class="bi bi-house"></i>
-                                หน้าหลัก
+                                <span>หน้าหลัก</span>
                             </a>
                         </li>
                         {{-- @php
@@ -65,43 +57,43 @@
                             <li class="sidebar-item" id="postsPage">
                                 <a href="{{ route('posts.index') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
-                                    โพส/ประกาศ
+                                    <span>โพส/ประกาศ</span>
                                 </a>
                             </li>
                             <li class="sidebar-item" id="formCheckpage">
                                 <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
-                                    ทำเอกสาร 5 หมวด
+                                    <span>ทำเอกสาร 5 หมวด</span>
                                 </a>
                             </li>
                             <li class="sidebar-item" id="formCheckTablePage">
                                 <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>
-                                    ทะเบียนเอกสาร
+                                    <span>ทะเบียนเอกสาร</span>
                                 </a>
                             </li>
                             <li class="sidebar-item" id="workRecordTablePage">
                                 <a href="{{ route('work-records.table') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>
-                                    ทะเบียนเวลาทำงาน
+                                    <span>ทะเบียนเวลาทำงาน</span>
                                 </a>
                             </li>
                             <li class="sidebar-item" id="carMATablePage">
                                 <a href="{{ route('car.ma.table') }}" class="sidebar-link">
                                     <i class="bi bi-car-front"></i>
-                                    บันทึกการบำรุงรักษารถ
+                                    <span>บันทึกการบำรุงรักษารถ</span>
                                 </a>
                             </li>
                             <li class="sidebar-item" id="elearningPage">
                                 <a href="{{ route('elearning') }}" class="sidebar-link">
                                     <i class="bi bi-book"></i>
-                                    ความรู้ออนไลน์
+                                    <span>ความรู้ออนไลน์</span>
                                 </a>
                             </li>
                             <li class="sidebar-item" id="elearningPage">
                                 <a href="" class="sidebar-link">
                                     <i class="bi bi-book"></i>
-                                    QMS (Coming Soon)
+                                    <span>QMS (Coming Soon)</span>
                                 </a>
                             </li>
                             <li class="sidebar-header">
@@ -110,20 +102,20 @@
                             <li class="sidebar-item" id="formManagePage">
                                 <a href="{{ route('form.select-form-category') }}" class="sidebar-link">
                                     <i class="bi bi-gear"></i>
-                                    จัดการแบบฟอร์ม
+                                    <span>จัดการแบบฟอร์ม</span>
                                 </a>
                             </li>
                             <li class="sidebar-item" id="assignPage">
                                 <a href="{{ route('vehicle.assignment.table') }}" class="sidebar-link">
                                     <i class="bi bi-person-badge"></i>
-                                    จัดการผู้ประจำรถ
+                                    <span>จัดการผู้ประจำรถ</span>
                                 </a>
                             </li>
                             <li class="sidebar-item" id="reportDataPage">
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#report" aria-expanded="false" aria-controls="report">
                                     <i class="bi bi-building"></i>
-                                    ออกรายงาน
+                                    <span>ออกรายงาน</span>
                                 </a>
                                 <ul id="report" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#sidebar">
@@ -154,7 +146,7 @@
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#org" aria-expanded="false" aria-controls="org">
                                     <i class="bi bi-building"></i>
-                                    บริษัท
+                                    <span>บริษัท</span>
                                 </a>
                                 <ul id="org" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#sidebar">
@@ -181,7 +173,7 @@
                             <li class="sidebar-item" id="accountPage">
                                 <a href="{{ route('users.index') }}" class="sidebar-link">
                                     <i class="bi bi-people"></i>
-                                    บัญชีผู้ใช้ทั้งหมด
+                                    <span>บัญชีผู้ใช้ทั้งหมด</span>
                                 </a>
                             </li>
                         @endif
@@ -192,7 +184,7 @@
                         <li class="sidebar-item" id="loginHistoryPage">
                             <a href="{{ route('loginHistory') }}" class="sidebar-link">
                                 <i class="bi bi-clock-history"></i>
-                                ประวัติการเข้าใช้ระบบ
+                                <span>ประวัติการเข้าใช้ระบบ</span>
                             </a>
                         </li>
 
@@ -203,13 +195,13 @@
                             <a href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}"
                                 class="sidebar-link">
                                 <i class="bi bi-person"></i>
-                                บัญชีของฉัน
+                                <span>บัญชีของฉัน</span>
                             </a>
                         </li>
                         <li class="sidebar-item" id="MyOrgListPage">
                             <a href="{{ route('tsm.manage-org') }}" class="sidebar-link">
                                 <i class="bi bi-building"></i>
-                                จัดการบริษัทที่รับผิดชอบ
+                                <span>จัดการบริษัทที่รับผิดชอบ</span>
                             </a>
                         </li>
                     </ul>
@@ -218,7 +210,7 @@
                         <li class="sidebar-item" id="homepage">
                             <a href="/home" class="sidebar-link">
                                 <i class="bi bi-house"></i>
-                                หน้าหลัก
+                                <span>หน้าหลัก</span>
                             </a>
                         </li>
                         {{-- @php
@@ -229,7 +221,7 @@
                             <li class="sidebar-item" id="postsPage">
                                 <a href="{{ route('posts.index') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
-                                    โพส/ประกาศ
+                                    <span>โพส/ประกาศ</span>
                                 </a>
                             </li>
                         @endif
@@ -238,7 +230,7 @@
                             <li class="sidebar-item" id="formCheckpage">
                                 <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
-                                    ทำเอกสาร 5 หมวด
+                                    <span>ทำเอกสาร 5 หมวด</span>
                                 </a>
                             </li>
                         @endif
@@ -248,7 +240,7 @@
                             <li class="sidebar-item" id="formCheckTablePage">
                                 <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>
-                                    ทะเบียนเอกสาร
+                                    <span>ทะเบียนเอกสาร</span>
                                 </a>
                             </li>
                         @endif
@@ -258,7 +250,7 @@
                             <li class="sidebar-item" id="workRecordTablePage">
                                 <a href="{{ route('work-records.table') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>
-                                    ทะเบียนเวลาทำงาน
+                                    <span>ทะเบียนเวลาทำงาน</span>
                                 </a>
                             </li>
                         @endif
@@ -267,20 +259,20 @@
                             <li class="sidebar-item" id="carMATablePage">
                                 <a href="{{ route('car.ma.table') }}" class="sidebar-link">
                                     <i class="bi bi-car-front"></i>
-                                    บันทึกการบำรุงรักษารถ
+                                    <span>บันทึกการบำรุงรักษารถ</span>
                                 </a>
                             </li>
                         @endif
                         <li class="sidebar-item" id="elearningPage">
                             <a href="{{ route('elearning') }}" class="sidebar-link">
                                 <i class="bi bi-book"></i>
-                                ความรู้ออนไลน์
+                                <span>ความรู้ออนไลน์</span>
                             </a>
                         </li>
                         <li class="sidebar-item" id="elearningPage">
                             <a href="" class="sidebar-link">
                                 <i class="bi bi-book"></i>
-                                QMS (Coming Soon)
+                                <span>QMS (Coming Soon)</span>
                             </a>
                         </li>
                         {{-- <li class="sidebar-item" id="carMATablePage">
@@ -307,7 +299,7 @@
                             <li class="sidebar-item" id="formManagePage">
                                 <a href="{{ route('form.select-form-category') }}" class="sidebar-link">
                                     <i class="bi bi-gear"></i>
-                                    จัดการแบบฟอร์ม
+                                    <span>จัดการแบบฟอร์ม</span>
                                 </a>
                             </li>
                         @endif
@@ -317,7 +309,7 @@
                             <li class="sidebar-item" id="assignPage">
                                 <a href="{{ route('vehicle.assignment.table') }}" class="sidebar-link">
                                     <i class="bi bi-person-badge"></i>
-                                    จัดการผู้ประจำรถ
+                                    <span>จัดการผู้ประจำรถ</span>
                                 </a>
                             </li>
                         @endif
@@ -328,7 +320,7 @@
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#report" aria-expanded="false" aria-controls="report">
                                     <i class="bi bi-file-earmark-arrow-up"></i>
-                                    ออกรายงาน
+                                    <span>ออกรายงาน</span>
                                 </a>
                                 <ul id="report" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#sidebar">
@@ -371,7 +363,7 @@
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#org" aria-expanded="false" aria-controls="org">
                                     <i class="bi bi-building"></i>
-                                    บริษัท
+                                    <span>บริษัท</span>
                                 </a>
                                 <ul id="org" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#sidebar">
@@ -398,7 +390,7 @@
                                     <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
                                         data-bs-target="#sys" aria-expanded="false" aria-controls="sys">
                                         <i class="bi bi-database-gear"></i>
-                                        ระบบ
+                                        <span>ระบบ</span>
                                     </a>
                                     <ul id="sys" class="sidebar-dropdown list-unstyled collapse"
                                         data-bs-parent="#sidebar">
@@ -424,7 +416,7 @@
                             <a href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}"
                                 class="sidebar-link">
                                 <i class="bi bi-person"></i>
-                                บัญชีของฉัน
+                                <span>บัญชีของฉัน</span>
                             </a>
                         </li>
                         @if (
@@ -436,7 +428,7 @@
                             <li class="sidebar-item" id="accountPage">
                                 <a href="{{ route('users.index') }}" class="sidebar-link">
                                     <i class="bi bi-people"></i>
-                                    บัญชีผู้ใช้ทั้งหมด
+                                    <span>บัญชีผู้ใช้ทั้งหมด</span>
                                 </a>
                             </li>
                         @endif
@@ -444,7 +436,7 @@
                             <li class="sidebar-item" id="accountTSMPage">
                                 <a href="{{ route('tsms.index') }}" class="sidebar-link">
                                     <i class="bi bi-people"></i>
-                                    บัญชีผู้ใช้ TSM ทั้งหมด
+                                    <span>บัญชีผู้ใช้ TSM ทั้งหมด</span>
                                 </a>
                             </li>
                         @endif
@@ -455,13 +447,13 @@
                         <li class="sidebar-item" id="loginHistoryPage">
                             <a href="{{ route('loginHistory') }}" class="sidebar-link">
                                 <i class="bi bi-clock-history"></i>
-                                ประวัติการเข้าใช้ระบบ
+                                <span>ประวัติการเข้าใช้ระบบ</span>
                             </a>
                         </li>
                         <li class="sidebar-item d-md-none">
                             <a href="{{ route('usermanual') }}" class="sidebar-link">
                                 <i class="bi bi-clock-history"></i>
-                                คู่มือการใช้งาน
+                                <span>คู่มือการใช้งาน</span>
                             </a>
                         </li>
                     </ul>
@@ -472,7 +464,7 @@
                         onclick="event.preventDefault();
                                     document.getElementById('logout-form1').submit();">
                         <i class="bi bi-box-arrow-left"></i>
-                        ออกจากระบบ
+                        <span>ออกจากระบบ</span>
                     </a>
 
                     <form id="logout-form1" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -483,15 +475,17 @@
         </aside>
 
         <div id="app" class="main">
-            <nav id="main-nav" class="navbar navbar-expand-md navbar-light shadow-sm">
-                <div class="d-flex align-items-center justify-content-between w-100 mx-sm-4">
+            <nav id="main-nav" class="navbar navbar-expand-md shadow-none">
+                <div class="d-flex align-items-center justify-content-between w-100 px-2 px-sm-4">
                     <!-- Button for sidebar toggle -->
-                    <button class="btn" id="nav-toggle-btn" type="button" data-bs-theme="light">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn p-1" id="nav-toggle-btn" type="button" style="color: rgba(255,255,255,0.5);">
+                            <i class="bi bi-list fs-5"></i>
+                        </button>
+                        <a class="navbar-brand d-none d-sm-block" href="{{ url('/') }}">
+                            {{ config('app.name', 'Laravel') }}
+                        </a>
+                    </div>
 
                     <!-- Button trigger modal -->
                     @if (Auth::user()->is_tsm)
@@ -720,55 +714,46 @@
                         </div>
                     </div>
 
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <!-- Left Side Of Navbar -->
-                        <ul class="navbar-nav me-auto">
-
-                        </ul>
-
-                        <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav ms-auto">
-                            <!-- Authentication Links -->
-                            @guest
-                                @if (Route::has('login'))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                    </li>
-                                @endif
-
-                                @if (Route::has('register'))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                    </li>
-                                @endif
-                            @else
-                                <li class="nav-item dropdown">
-                                    @php
-                                        $user = Auth::user()->with('userDetail')->first();
-                                    @endphp
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
-                                        role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false" v-pre>
-                                        {{ Auth::user()->full_name }}
+                    <!-- Right Side Of Navbar -->
+                    <div class="d-flex align-items-center gap-2 ms-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            @if (Route::has('login'))
+                                <a class="nav-link" href="{{ route('login') }}" style="color: var(--text-secondary);">{{ __('Login') }}</a>
+                            @endif
+                            @if (Route::has('register'))
+                                <a class="nav-link" href="{{ route('register') }}" style="color: var(--text-secondary);">{{ __('Register') }}</a>
+                            @endif
+                        @else
+                            @php
+                                $user = Auth::user()->with('userDetail')->first();
+                                $initials = mb_substr(Auth::user()->full_name ?? 'U', 0, 1);
+                            @endphp
+                            <div class="dropdown">
+                                <button class="btn d-flex align-items-center gap-2 p-1 pe-2" id="navbarDropdown"
+                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                    style="border: 1px solid var(--border-subtle); border-radius: 14px;">
+                                    <div class="nav-avatar">{{ $initials }}</div>
+                                    <span class="d-none d-sm-inline" style="font-size:0.85rem;color:#fff;font-weight:500;">{{ Auth::user()->full_name }}</span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('usermanual') }}">
+                                        <i class="bi bi-book me-2"></i> คู่มือการใช้งาน
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('usermanual') }}">
-                                            คู่มือการใช้งาน
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                    document.getElementById('logout-form3').submit();">
-                                            {{ __('ออกจากระบบ') }}
-                                        </a>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                document.getElementById('logout-form3').submit();"
+                                        style="color: #F87171;">
+                                        <i class="bi bi-box-arrow-left me-2"></i> {{ __('ออกจากระบบ') }}
+                                    </a>
 
-                                        <form id="logout-form3" action="{{ route('logout') }}" method="POST"
-                                            class="d-none">
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </li>
-                            @endguest
-                        </ul>
+                                    <form id="logout-form3" action="{{ route('logout') }}" method="POST"
+                                        class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </div>
+                        @endguest
                     </div>
                 </div>
             </nav>
