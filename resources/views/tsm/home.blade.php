@@ -85,10 +85,6 @@
             /* Set height to 60% of viewport height */
         }
 
-        #homepage {
-            background-color: var(--main-color);
-        }
-
         .shortcut-card {
             transition: all 0.3s ease;
         }

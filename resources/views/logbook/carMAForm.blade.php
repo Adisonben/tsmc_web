@@ -346,9 +346,4 @@
             }
         }
     </script>
-    <style>
-        #carMATablePage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

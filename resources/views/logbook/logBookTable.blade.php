@@ -90,9 +90,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #logbookTablePage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

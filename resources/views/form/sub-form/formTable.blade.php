@@ -69,9 +69,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #formManagePage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

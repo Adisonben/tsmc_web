@@ -527,6 +527,312 @@ a.sidebar-footer:hover {
     border-top-color: var(--border-subtle);
 }
 
+/* ═══ Manage Data Page ═══ */
+
+.manage-data-stat-card {
+    border-radius: 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.manage-data-stat-card .stat-number {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--main-color);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.manage-data-stat-card .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.manage-data-category {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-subtle);
+}
+
+.manage-data-category-header {
+    padding: 0.875rem 1rem;
+    background: linear-gradient(135deg, #FBBF24, #F59E0B);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.manage-data-category-header .category-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.manage-data-category-header .category-desc {
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+}
+
+.manage-data-grid {
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .manage-data-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .manage-data-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.manage-data-card {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.875rem;
+    border-radius: 12px;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    text-decoration: none;
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+.manage-data-card:hover {
+    background: rgba(251, 191, 36, 0.04);
+    border-color: rgba(251, 191, 36, 0.2);
+    transform: translateX(4px);
+}
+
+.manage-data-card .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.manage-data-card .card-icon i {
+    font-size: 1.25rem;
+}
+
+.manage-data-card .card-content {
+    flex: 1;
+}
+
+.manage-data-card .card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 0.125rem 0;
+}
+
+.manage-data-card .card-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.manage-data-card .card-arrow {
+    color: var(--text-muted);
+    font-size: 1rem;
+    transition: all 0.15s ease;
+}
+
+.manage-data-card:hover .card-arrow {
+    color: var(--main-color);
+    transform: translateX(4px);
+}
+
+/* ═══ Card Styling ═══ */
+
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--second-color);
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--second-color);
+}
+
+.card-body {
+    color: var(--second-color);
+}
+
+.card-title {
+    color: var(--second-color);
+}
+
+.card-text {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ═══ Modal Styling ═══ */
+
+.modal-content {
+    background: rgba(10, 22, 40, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--second-color);
+}
+
+.modal-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--second-color);
+}
+
+.modal-title {
+    color: var(--second-color);
+}
+
+.modal-body {
+    color: var(--second-color);
+}
+
+.modal-footer {
+    background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ═══ Form Styling ═══ */
+
+.form-label {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--second-color);
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--main-color);
+    color: var(--second-color);
+    box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.form-select {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--second-color);
+}
+
+.form-select:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--main-color);
+    color: var(--second-color);
+    box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+}
+
+.form-check-label {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.form-text {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ═══ Table Styling ═══ */
+
+.table {
+    color: var(--second-color);
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--second-color);
+}
+
+.table-bordered {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.table-bordered th,
+.table-bordered td {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ═══ Accordion Styling ═══ */
+
+.accordion-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.accordion-button {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--second-color);
+}
+
+.accordion-button:not(.collapsed) {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--main-color);
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+}
+
+.accordion-body {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--second-color);
+}
+
+/* ═══ Alert Styling ═══ */
+
+.alert {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.alert-success {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.3);
+    color: rgb(134, 239, 172);
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: rgb(252, 165, 165);
+}
+
+.alert-warning {
+    background: rgba(251, 191, 36, 0.15);
+    border-color: rgba(251, 191, 36, 0.3);
+    color: rgb(253, 224, 71);
+}
+
+.alert-info {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: rgb(147, 197, 253);
+}
+
 /* ═══ Responsive ═══ */
 
 @media (min-width: 768px) {

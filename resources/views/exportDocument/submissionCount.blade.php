@@ -106,9 +106,4 @@
             });
         });
     </script>
-    <style>
-        #performanceReportPage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

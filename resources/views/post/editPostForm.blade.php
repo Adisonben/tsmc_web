@@ -95,9 +95,4 @@
             });
         });
     </script>
-    <style>
-        #postsPage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

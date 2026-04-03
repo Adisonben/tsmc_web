@@ -4,10 +4,10 @@
     <div class="">
         <div class="row justify-content-center">
             <div class="px-3 px-md-5">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="card-header" style="background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.1);">
                         <div class="d-flex justify-content-between">
-                            <p class="mb-0 fs-4">{{ __('สิทธิ์การเข้าถึง') }}</p>
+                            <p class="mb-0 fs-4 text-white">{{ __('สิทธิ์การเข้าถึง') }}</p>
                         </div>
                     </div>
 
@@ -19,9 +19,9 @@
                                 {{-- @php
                                     dd($posit->hasPermission(2, optional(Auth::user()->userDetail)->org)->pivot->status);
                                 @endphp --}}
-                                <div class="mb-3 p-2 rounded" style="background-color: rgb(230, 230, 230)">
-                                    <p class="fw-bold fs-5">{{ $posit->name }}</p>
-                                    <p>เมนูระบบ</p>
+                                <div class="mb-3 p-3 rounded" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);">
+                                    <p class="fw-bold fs-5 text-white mb-2">{{ $posit->name }}</p>
+                                    <p class="text-white-50 mb-3">เมนูระบบ</p>
                                     <div class="d-flex flex-wrap gap-md-3 gap-2 px-md-4">
                                         @foreach ($posit_perms as $perm)
                                             <div class="form-check">
@@ -32,7 +32,7 @@
                                                     posit-id="{{ $posit->id }}" value="{{ $perm->id }}" id="perm{{ $perm->id }}{{ $posit->id }}"
                                                     {{ $posit_perm->pivot->status ?? false ? "checked" : '' }}
                                                     >
-                                                <label class="form-check-label" for="perm{{ $perm->id }}{{ $posit->id }}">
+                                                <label class="form-check-label text-white" for="perm{{ $perm->id }}{{ $posit->id }}">
                                                     {{ $perm->label }}
                                                 </label>
                                             </div>

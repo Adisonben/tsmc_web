@@ -197,9 +197,6 @@
         window.onload = getWeatherAndMap;
     </script>
     <style>
-        #workRecordTablePage {
-            background-color: var(--main-color);
-        }
 
         #map {
             height: 500px;

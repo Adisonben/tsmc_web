@@ -71,9 +71,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #accountTSMPage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

@@ -228,9 +228,4 @@
             });
         });
     </script>
-    <style>
-        #MyOrgListPage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

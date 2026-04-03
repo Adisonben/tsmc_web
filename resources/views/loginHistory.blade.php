@@ -50,9 +50,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #loginHistoryPage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

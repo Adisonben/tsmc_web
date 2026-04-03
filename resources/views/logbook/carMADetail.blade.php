@@ -87,9 +87,6 @@
         </div>
     </div>
     <style>
-        #formCheckpage {
-            background-color: var(--main-color);
-        }
 
         #exportPaper {
             background-color: white;

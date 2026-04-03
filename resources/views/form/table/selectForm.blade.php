@@ -75,9 +75,6 @@
         </div>
     </div>
     <style>
-        #formCheckTablePage {
-            background-color: var(--main-color);
-        }
 
         .hover-bg-primary:hover {
             background-color: #ddf2fc; !important;

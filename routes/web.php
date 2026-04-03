@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/user-manual', [App\Http\Controllers\HomeController::class, 'usermanual'])->name('usermanual');
     Route::get('/login-history', [App\Http\Controllers\HomeController::class, 'loginHistoryTable'])->name('loginHistory');
+    Route::get('/manage-data', [App\Http\Controllers\ManageDataController::class, 'index'])->name('manage.data');
 
     // App data
     Route::resource('prefixes', PrefixController::class);

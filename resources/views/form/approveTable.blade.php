@@ -59,9 +59,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #formInsTablePage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

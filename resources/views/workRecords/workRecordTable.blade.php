@@ -107,9 +107,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #workRecordTablePage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

@@ -79,7 +79,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="6" class="text-center">ไม่พบข้อมูล</td>
+                                        <td colspan="7" class="text-center">ไม่พบข้อมูล</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -90,9 +90,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #carMATablePage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

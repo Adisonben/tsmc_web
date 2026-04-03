@@ -45,7 +45,7 @@ class VehicleController extends Controller
 
             return redirect()->back()->with(['vehicleSuccess'=> 'บันทึกข้อมูลรถสำเร็จ']);
         } catch (\Throwable $th) {
-            dd("error controller : ", $th->getMessage());
+            // dd("error controller : ", $th->getMessage());
             return redirect()->back()->with(['vehicleError'=> "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"]);
         }
     }

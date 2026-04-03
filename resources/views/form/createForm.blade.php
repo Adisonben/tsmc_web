@@ -265,9 +265,4 @@
             }
         }
     </script>
-    <style>
-        #formManagePage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

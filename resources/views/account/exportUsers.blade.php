@@ -72,8 +72,5 @@
                 color: black;
             }
         }
-        #accountPage {
-            background-color: var(--main-color);
-        }
     </style>
 @endsection

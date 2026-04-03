@@ -153,29 +153,29 @@
                                 </div>
                                 <form enctype="multipart/form-data" id="importForm">
                                     <div class="modal-body">
-                                        <div class="border-l-4 border-blue-500 p-2 mb-2 rounded"
-                                            style="background-color: rgb(160, 255, 255)">
+                                        <div class="p-3 mb-3 rounded" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3);">
                                             <div class="accordion" id="accordionExample">
-                                                <div class="accordion-item">
+                                                <div class="accordion-item" style="background: transparent; border: none;">
                                                     <h2 class="accordion-header">
-                                                        <button class="accordion-button collapsed p-2" type="button"
+                                                        <button class="accordion-button collapsed p-2 text-white" type="button"
                                                             data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                                                            aria-expanded="true" aria-controls="collapseOne">
-                                                            <i class="bi bi-exclamation-circle"></i> &nbsp;
+                                                            aria-expanded="true" aria-controls="collapseOne"
+                                                            style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.3);">
+                                                            <i class="bi bi-exclamation-circle text-blue-400"></i> &nbsp;
                                                             คำแนะนำการนำเข้าข้อมูล
                                                         </button>
                                                     </h2>
                                                     <div id="collapseOne" class="accordion-collapse collapse"
                                                         data-bs-parent="#accordionExample">
-                                                        <div class="accordion-body">
+                                                        <div class="accordion-body" style="background: rgba(59, 130, 246, 0.1);">
                                                             <div class="m-0">
-                                                                <p class="mb-0">- ข้อมูลจะต้องอยู่ในรูปแบบไฟล์ Excel
+                                                                <p class="mb-0 text-white">- ข้อมูลจะต้องอยู่ในรูปแบบไฟล์ Excel
                                                                     (.xlsx หรือ .xls)</p>
-                                                                <p class="mb-0">- ข้อมูลจะต้องมีหัวตารางตรงตาม template
+                                                                <p class="mb-0 text-white">- ข้อมูลจะต้องมีหัวตารางตรงตาม template
                                                                 </p>
-                                                                <p class="mb-0">- ห้ามลบหรือเพิ่มคอลัมน์ในไฟล์ template
+                                                                <p class="mb-0 text-white">- ห้ามลบหรือเพิ่มคอลัมน์ในไฟล์ template
                                                                 </p>
-                                                                <p class="mb-0">- ห้ามมีช่องว่างในข้อมูลที่จำเป็นต้องกรอก
+                                                                <p class="mb-0 text-white">- ห้ามมีช่องว่างในข้อมูลที่จำเป็นต้องกรอก
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -196,7 +196,7 @@
                                                     <li>- ห้ามมีช่องว่างในข้อมูลที่จำเป็นต้องกรอก</li>
                                                 </ul>
                                             </div> --}}
-                                            <p class="text-blue-700 mt-2 px-2">กรุณาจัดทำข้อมูลให้ตรงตาม template ที่กำหนด
+                                            <p class="text-white mt-2 px-2">กรุณาจัดทำข้อมูลให้ตรงตาม template ที่กำหนด
                                                 เพื่อป้องกันความผิดพลาดในการนำเข้าข้อมูล</p>
                                             <hr>
                                             <div class="d-flex flex-column justify-content-center align-items-center">
@@ -267,7 +267,7 @@
                             <tbody>
                                 @if (count($vehicles ?? []) == 0)
                                     <tr>
-                                        <td colspan="6" class="text-center">ไม่มีข้อมูล</td>
+                                        <td colspan="7" class="text-center">ไม่มีข้อมูล</td>
                                     </tr>
                                 @else
                                     @foreach ($vehicles as $index => $vehicle)

@@ -229,9 +229,5 @@
             height: 60vh;
             /* Set height to 60% of viewport height */
         }
-
-        #postsPage {
-            background-color: var(--main-color);
-        }
     </style>
 @endsection

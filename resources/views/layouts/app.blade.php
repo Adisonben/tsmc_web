@@ -90,7 +90,7 @@
                                     <span>ความรู้ออนไลน์</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item" id="elearningPage">
+                            <li class="sidebar-item">
                                 <a href="" class="sidebar-link">
                                     <i class="bi bi-book"></i>
                                     <span>QMS (Coming Soon)</span>
@@ -99,7 +99,7 @@
                             <li class="sidebar-header">
                                 แบบฟอร์ม
                             </li>
-                            <li class="sidebar-item" id="formManagePage">
+                            {{-- <li class="sidebar-item" id="formManagePage">
                                 <a href="{{ route('form.select-form-category') }}" class="sidebar-link">
                                     <i class="bi bi-gear"></i>
                                     <span>จัดการแบบฟอร์ม</span>
@@ -110,7 +110,7 @@
                                     <i class="bi bi-person-badge"></i>
                                     <span>จัดการผู้ประจำรถ</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="sidebar-item" id="reportDataPage">
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#report" aria-expanded="false" aria-controls="report">
@@ -138,65 +138,22 @@
                                     </li>
                                 </ul>
                             </li>
-
-                            <li class="sidebar-header">
-                                ข้อมูลระบบ
-                            </li>
-                            <li class="sidebar-item" id="orgDataPage">
-                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#org" aria-expanded="false" aria-controls="org">
-                                    <i class="bi bi-building"></i>
-                                    <span>บริษัท</span>
-                                </a>
-                                <ul id="org" class="sidebar-dropdown list-unstyled collapse"
-                                    data-bs-parent="#sidebar">
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('organizations.index') }}"
-                                            class="sidebar-link">ข้อมูลบริษัท</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('importdata.index') }}" class="sidebar-link">นำเข้าข้อมูล</a>
-                                    </li>
-                                    @if (session('org_status') !== 2)
-                                        <li class="sidebar-item">
-                                            <a href="{{ route('posit.perm') }}" class="sidebar-link">สิทธิ์การเข้าถึง</a>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </li>
-                            <li class="sidebar-item" id="accountPage">
+                            {{-- <li class="sidebar-item" id="accountPage">
                                 <a href="{{ route('users.index') }}" class="sidebar-link">
                                     <i class="bi bi-people"></i>
                                     <span>บัญชีผู้ใช้ทั้งหมด</span>
+                                </a>
+                            </li> --}}
+                            <li class="sidebar-item" id="manageDataPage">
+                                <a href="{{ route('manage.data') }}" class="sidebar-link">
+                                    <i class="bi bi-database"></i>
+                                    <span>จัดการข้อมูล</span>
                                 </a>
                             </li>
                         @endif
 
                         <li class="sidebar-header">
-                            ทั่วไป
-                        </li>
-                        <li class="sidebar-item" id="loginHistoryPage">
-                            <a href="{{ route('loginHistory') }}" class="sidebar-link">
-                                <i class="bi bi-clock-history"></i>
-                                <span>ประวัติการเข้าใช้ระบบ</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-header">
                             สำหรับ TSM
-                        </li>
-                        <li class="sidebar-item" id="profilePage">
-                            <a href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}"
-                                class="sidebar-link">
-                                <i class="bi bi-person"></i>
-                                <span>บัญชีของฉัน</span>
-                            </a>
                         </li>
                         <li class="sidebar-item" id="MyOrgListPage">
                             <a href="{{ route('tsm.manage-org') }}" class="sidebar-link">
@@ -269,7 +226,7 @@
                                 <span>ความรู้ออนไลน์</span>
                             </a>
                         </li>
-                        <li class="sidebar-item" id="elearningPage">
+                        <li class="sidebar-item">
                             <a href="" class="sidebar-link">
                                 <i class="bi bi-book"></i>
                                 <span>QMS (Coming Soon)</span>
@@ -289,13 +246,13 @@
                                 </a>
                             </li>
                         @endif --}}
-                        @if (
+                        <li class="sidebar-header">
+                            จัดการข้อมูล
+                        </li>
+                        {{-- @if (
                             (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'can_manage_form',
                                 optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
-                            <li class="sidebar-header">
-                                แบบฟอร์ม
-                            </li>
                             <li class="sidebar-item" id="formManagePage">
                                 <a href="{{ route('form.select-form-category') }}" class="sidebar-link">
                                     <i class="bi bi-gear"></i>
@@ -312,7 +269,7 @@
                                     <span>จัดการผู้ประจำรถ</span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
                                 'can_export',
                                 optional(Auth::user()->userDetail)->org) ?? false)
@@ -356,103 +313,17 @@
                                 optional(Auth::user()->userDetail)->org) ?? false) ||
                                 Auth::user()->username === 'tsmcadmin' ||
                                 Auth::user()->userDetail->position === null)
-                            <li class="sidebar-header">
-                                ข้อมูลระบบ
-                            </li>
-                            <li class="sidebar-item" id="orgDataPage">
-                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#org" aria-expanded="false" aria-controls="org">
-                                    <i class="bi bi-building"></i>
-                                    <span>บริษัท</span>
-                                </a>
-                                <ul id="org" class="sidebar-dropdown list-unstyled collapse"
-                                    data-bs-parent="#sidebar">
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('organizations.index') }}"
-                                            class="sidebar-link">ข้อมูลบริษัท</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('positions.index') }}" class="sidebar-link">ตำแหน่ง</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('posit.perm') }}" class="sidebar-link">สิทธิ์การเข้าถึง</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('importdata.index') }}" class="sidebar-link">นำเข้าข้อมูล</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            @if (Auth::user()->username === 'tsmcadmin')
-                                <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                        data-bs-target="#sys" aria-expanded="false" aria-controls="sys">
-                                        <i class="bi bi-database-gear"></i>
-                                        <span>ระบบ</span>
-                                    </a>
-                                    <ul id="sys" class="sidebar-dropdown list-unstyled collapse"
-                                        data-bs-parent="#sidebar">
-                                        <li class="sidebar-item">
-                                            <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
-                                        </li>
-                                        <li class="sidebar-item">
-                                            <a href="{{ route('renewal_codes.index') }}"
-                                                class="sidebar-link">รหัสต่ออายุ</a>
-                                        </li>
-                                        {{-- <li class="sidebar-item">
-                                            <a href="{{ route('form.types') }}" class="sidebar-link">ประเภทฟอร์ม</a>
-                                        </li> --}}
-                                    </ul>
-                                </li>
-                            @endif
-                        @endif
-
-                        <li class="sidebar-header">
-                            ผู้ใช้
-                        </li>
-                        <li class="sidebar-item" id="profilePage">
-                            <a href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}"
-                                class="sidebar-link">
-                                <i class="bi bi-person"></i>
-                                <span>บัญชีของฉัน</span>
-                            </a>
-                        </li>
-                        @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_manage_user',
-                                optional(Auth::user()->userDetail)->org) ?? false) ||
-                                Auth::user()->username === 'tsmcadmin' ||
-                                Auth::user()->userDetail->position === null)
-                            <li class="sidebar-item" id="accountPage">
-                                <a href="{{ route('users.index') }}" class="sidebar-link">
-                                    <i class="bi bi-people"></i>
-                                    <span>บัญชีผู้ใช้ทั้งหมด</span>
-                                </a>
-                            </li>
-                        @endif
-                        @if (Auth::user()->username === 'tsmcadmin')
-                            <li class="sidebar-item" id="accountTSMPage">
-                                <a href="{{ route('tsms.index') }}" class="sidebar-link">
-                                    <i class="bi bi-people"></i>
-                                    <span>บัญชีผู้ใช้ TSM ทั้งหมด</span>
+                            <li class="sidebar-item" id="manageDataPage">
+                                <a href="{{ route('manage.data') }}" class="sidebar-link">
+                                    <i class="bi bi-database"></i>
+                                    <span>จัดการข้อมูลระบบ</span>
                                 </a>
                             </li>
                         @endif
 
-                        <li class="sidebar-header">
-                            ทั่วไป
-                        </li>
-                        <li class="sidebar-item" id="loginHistoryPage">
-                            <a href="{{ route('loginHistory') }}" class="sidebar-link">
-                                <i class="bi bi-clock-history"></i>
-                                <span>ประวัติการเข้าใช้ระบบ</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item d-md-none">
                             <a href="{{ route('usermanual') }}" class="sidebar-link">
-                                <i class="bi bi-clock-history"></i>
+                                <i class="bi bi-book"></i>
                                 <span>คู่มือการใช้งาน</span>
                             </a>
                         </li>
@@ -486,6 +357,26 @@
                             {{ config('app.name', 'Laravel') }}
                         </a>
                     </div>
+                    @auth
+                        @php
+                            $breadcrumbItems = \App\Helpers\FunctionHelpers::getBreadcrumbItems();
+                        @endphp
+                        <nav aria-label="breadcrumb" class="d-none d-md-block ms-3">
+                            <ol class="breadcrumb mb-0" style="background: transparent;">
+                                @foreach($breadcrumbItems as $index => $item)
+                                    @if($loop->last)
+                                        <li class="breadcrumb-item active" aria-current="page" style="color: var(--main-color);">{{ $item['label'] }}</li>
+                                    @else
+                                        <li class="breadcrumb-item">
+                                            <a href="{{ $item['url'] }}" style="color: rgba(255,255,255,0.6); text-decoration: none;">
+                                                {{ $item['label'] }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ol>
+                        </nav>
+                    @endauth
 
                     <!-- Button trigger modal -->
                     @if (Auth::user()->is_tsm)
@@ -737,6 +628,13 @@
                                     <span class="d-none d-sm-inline" style="font-size:0.85rem;color:#fff;font-weight:500;">{{ Auth::user()->full_name }}</span>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('users.show', ['user' => Auth::user()->user_id ?? '-']) }}">
+                                        <i class="bi bi-person me-2"></i> บัญชีของฉัน
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('loginHistory') }}">
+                                        <i class="bi bi-clock-history me-2"></i> ประวัติการเข้าใช้ระบบ
+                                    </a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('usermanual') }}">
                                         <i class="bi bi-book me-2"></i> คู่มือการใช้งาน
                                     </a>
@@ -756,6 +654,26 @@
                         @endguest
                     </div>
                 </div>
+                @auth
+                    @php
+                        $breadcrumbItems = \App\Helpers\FunctionHelpers::getBreadcrumbItems();
+                    @endphp
+                    <nav aria-label="breadcrumb" class="d-block d-md-none w-100 px-2 mt-2">
+                        <ol class="breadcrumb mb-0" style="background: transparent; font-size: 0.85rem;">
+                            @foreach($breadcrumbItems as $index => $item)
+                                @if($loop->last)
+                                    <li class="breadcrumb-item active" aria-current="page" style="color: var(--main-color);">{{ $item['label'] }}</li>
+                                @else
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ $item['url'] }}" style="color: rgba(255,255,255,0.6); text-decoration: none;">
+                                            {{ $item['label'] }}
+                                        </a>
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ol>
+                    </nav>
+                @endauth
             </nav>
 
             <main class="py-4">
@@ -844,6 +762,79 @@
             const orgStatusBtn = document.getElementById('orgStatusBtn');
             if (orgStatusBtn) {
                 orgStatusBtn.click();
+            }
+        });
+
+        // Active menu highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            
+            // Route to menu ID mapping
+            const routeMenuMap = {
+                '/home': 'homepage',
+                '/manage-data': 'manageDataPage',
+                '/posts': 'postsPage',
+                '/posts/create': 'postsPage',
+                '/document/fill-out/select-form': 'formCheckpage',
+                '/document/table/select-form': 'formCheckTablePage',
+                '/work-records/table': 'workRecordTablePage',
+                '/logbook/car-ma-table': 'carMATablePage',
+                '/logbook/car-ma-form': 'carMATablePage',
+                '/logbook/table': 'logbookTablePage',
+                '/logbook/create': 'logbookTablePage',
+                '/e-learning': 'elearningPage',
+                '/document/export/filter': 'reportDataPage',
+                '/performance-report': 'reportDataPage',
+                '/submission-count': 'reportDataPage',
+                '/users': 'manageDataPage',
+                '/organizations': 'manageDataPage',
+                '/positions': 'manageDataPage',
+                '/vehicles': 'manageDataPage',
+                '/vehicle-assignment/table': 'manageDataPage',
+                '/position-permission/manage': 'manageDataPage',
+                '/forms': 'manageDataPage',
+                '/import-data': 'manageDataPage',
+                '/prefixes': 'manageDataPage',
+                '/renewal-codes': 'manageDataPage',
+                '/tsms': 'manageDataPage',
+                '/tsm/manage-org': 'MyOrgListPage',
+                '/user-manual': 'accountPage',
+                '/login-history': 'accountPage'
+            };
+
+            // Find matching menu item
+            let activeMenuId = null;
+            
+            // Check exact match first
+            if (routeMenuMap[currentPath]) {
+                activeMenuId = routeMenuMap[currentPath];
+            } else {
+                // Check if current path starts with any route
+                for (const [route, menuId] of Object.entries(routeMenuMap)) {
+                    if (currentPath.startsWith(route)) {
+                        activeMenuId = menuId;
+                        break;
+                    }
+                }
+            }
+
+            // Apply active class
+            if (activeMenuId) {
+                const menuItem = document.getElementById(activeMenuId);
+                if (menuItem) {
+                    menuItem.classList.add('active');
+                    
+                    // If menu item is inside a collapsed dropdown, expand it
+                    const parentCollapse = menuItem.closest('.collapse');
+                    if (parentCollapse) {
+                        parentCollapse.classList.add('show');
+                        const toggleButton = document.querySelector(`[data-bs-target="#${parentCollapse.id}"]`);
+                        if (toggleButton) {
+                            toggleButton.classList.remove('collapsed');
+                            toggleButton.setAttribute('aria-expanded', 'true');
+                        }
+                    }
+                }
             }
         });
     </script>

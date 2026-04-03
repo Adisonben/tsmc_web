@@ -108,9 +108,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #assignPage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

@@ -81,9 +81,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #accountPage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

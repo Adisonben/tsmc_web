@@ -55,9 +55,6 @@
         </div>
     </div>
     <style>
-        #formCheckpage {
-            background-color: var(--main-color);
-        }
 
         .hover-bg-primary:hover {
             background-color: #ddf2fc; !important;

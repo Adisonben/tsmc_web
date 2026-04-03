@@ -48,9 +48,4 @@
             </div>
         </div>
     </div>
-    <style>
-        #orgDataPage {
-            background-color: var(--main-color);
-        }
-    </style>
 @endsection

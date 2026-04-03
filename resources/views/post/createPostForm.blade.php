@@ -147,8 +147,3 @@
         })
     </script>
 @endsection
-<style>
-    #postsPage {
-        background-color: var(--main-color);
-    }
-</style>

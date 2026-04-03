@@ -352,9 +352,6 @@
         }
     </script>
     <style>
-        #logbookTablePage {
-            background-color: var(--main-color);
-        }
 
         #exportPaper {
             background-color: white;

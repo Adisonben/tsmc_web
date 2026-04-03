@@ -94,10 +94,6 @@ function formBuilder() {
 </script>
 
 <style>
-    #elearningPage {
-        background-color: var(--main-color);
-    }
-
     .card-text {
         display: -webkit-box;
         -webkit-line-clamp: 2; /* จำกัด 3 บรรทัด */
