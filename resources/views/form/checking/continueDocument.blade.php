@@ -141,7 +141,7 @@
                                             <!-- Select Dropdown -->
                                             <template x-if="field.type === 'select'">
                                                 <select class="form-control ms-2" x-model="field.answer" {{ $is_show ? 'disabled' : '' }}>
-                                                    <option value="" selected disabled>กรุณาเลือกคำตอบ</option>
+                                                    <option value="" selected>กรุณาเลือกคำตอบ</option>
                                                     <template x-for="option in field.options" :key="option.value">
                                                         <option :value="option.value" x-text="option.value" :selected="option.value === field.answer"></option>
                                                     </template>
