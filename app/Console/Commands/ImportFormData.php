@@ -97,14 +97,14 @@ class ImportFormData extends Command
                             throw new \Exception("Failed to parse Excel numeric date '{$dateValue}' for row " . ($key + 1) . ": " . $e->getMessage());
                         }
                     } else {
-                        // String date format - Thai format d/m/Y with Buddhist Era
+                        // String date format - m/d/Y with Buddhist Era
                         $parts = explode('/', $dateValue);
                         if (count($parts) !== 3) {
                             throw new \Exception("Invalid date format '{$dateValue}' for row " . ($key + 1));
                         }
                         
-                        $day = (int)$parts[0];
-                        $month = (int)$parts[1];
+                        $month = (int)$parts[0];
+                        $day = (int)$parts[1];
                         $year = (int)$parts[2];
                         
                         // Convert Buddhist Era to Christian Era
