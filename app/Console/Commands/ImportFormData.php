@@ -105,6 +105,11 @@ class ImportFormData extends Command
                                 $month = (int)$matches[2];
                                 $year = (int)$matches[3];
                                 
+                                // Debug first row
+                                if ($key === 0) {
+                                    $this->info("Raw date: '{$dateValue}' -> Day: {$day}, Month: {$month}, Year: {$year}");
+                                }
+                                
                                 // Convert Buddhist Era to Christian Era (subtract 543)
                                 if ($year > 2500) {
                                     $year = $year - 543;
