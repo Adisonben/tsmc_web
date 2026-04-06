@@ -33,7 +33,7 @@ class ImportFormData extends Command
      */
     public function handle()
     {
-        $orgId = $this->argument('org_id');
+        $orgId = $this->argument('org_id'); //493
         $this->info("Starting import for org_id: {$orgId}");
 
         $data = $this->readExcelFile();
@@ -89,8 +89,8 @@ class ImportFormData extends Command
                         'submitted_by' => $users->user_id,
                         'status' => 1,
                         'org' => $orgId,
-                        'created_at' => Carbon::parse($row[0])->setTime(8, 0, 0),
-                        'updated_at' => Carbon::parse($row[0])->setTime(8, 0, 0),
+                        'created_at' => Carbon::parse($row[1])->setTime(8, 0, 0),
+                        'updated_at' => Carbon::parse($row[1])->setTime(8, 0, 0),
                     ]);
 
                     foreach ($this->formfields as $key => $value) {
