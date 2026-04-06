@@ -117,26 +117,26 @@ class ImportFormData extends Command
                     
                     $submissionDate->setTime(8, 0, 0);
                     $this->info("Submission date: " . $submissionDate->format('Y-m-d H:i:s'));
-                    // $form_submited = FormSubmissions::create([
-                    //     'submission_id' => Str::uuid(),
-                    //     'form_id' => 5,
-                    //     'user_id' => $users->user_id,
-                    //     'vehicle_id' => $vehicles->id,
-                    //     'submitted_by' => $users->user_id,
-                    //     'status' => 1,
-                    //     'org' => $orgId,
-                    //     'created_at' => $submissionDate,
-                    //     'updated_at' => $submissionDate,
-                    // ]);
+                    $form_submited = FormSubmissions::create([
+                        'submission_id' => Str::uuid(),
+                        'form_id' => 5,
+                        'user_id' => $users->user_id,
+                        'vehicle_id' => $vehicles->id,
+                        'submitted_by' => $users->user_id,
+                        'status' => 1,
+                        'org' => $orgId,
+                        'created_at' => $submissionDate,
+                        'updated_at' => $submissionDate,
+                    ]);
 
-                    // foreach ($this->formfields as $key => $value) {
-                    //     FormSubmissionValue::create([
-                    //         'submission_id' => $form_submited->id,
-                    //         'field_id' => $key,
-                    //         'value' => $row[$value],
-                    //         'submitted_by' => $users->user_id,
-                    //     ]);
-                    // }
+                    foreach ($this->formfields as $key => $value) {
+                        FormSubmissionValue::create([
+                            'submission_id' => $form_submited->id,
+                            'field_id' => $key,
+                            'value' => $row[$value],
+                            'submitted_by' => $users->user_id,
+                        ]);
+                    }
                     $successCount++;
                 }
             }
