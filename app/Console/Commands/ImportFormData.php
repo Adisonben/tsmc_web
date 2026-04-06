@@ -101,8 +101,8 @@ class ImportFormData extends Command
                         try {
                             // Check if date contains Thai year (> 2500 = Buddhist Era)
                             if (preg_match('#(\d{1,2})/(\d{1,2})/(\d{4})#', $dateValue, $matches)) {
-                                $day = $matches[1];
-                                $month = $matches[2];
+                                $day = (int)$matches[1];
+                                $month = (int)$matches[2];
                                 $year = (int)$matches[3];
                                 
                                 // Convert Buddhist Era to Christian Era (subtract 543)
@@ -110,7 +110,8 @@ class ImportFormData extends Command
                                     $year = $year - 543;
                                 }
                                 
-                                $submissionDate = Carbon::createFromFormat('d/m/Y', "{$day}/{$month}/{$year}");
+                                // Create date using Carbon::create() with explicit day, month, year
+                                $submissionDate = Carbon::create($year, $month, $day, 0, 0, 0);
                             } else {
                                 // Fallback to automatic parsing
                                 $submissionDate = Carbon::parse($dateValue);
@@ -126,7 +127,7 @@ class ImportFormData extends Command
                     }
                     
                     $submissionDate->setTime(8, 0, 0);
-                    $this->info("Submission date: " . $submissionDate->format('Y-m-d H:i:s')); 
+
                     // $form_submited = FormSubmissions::create([
                     //     'submission_id' => Str::uuid(),
                     //     'form_id' => 5,
