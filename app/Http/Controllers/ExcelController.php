@@ -43,7 +43,7 @@ class ExcelController extends Controller
             $query->where('user_id', $userId);
         }
 
-        $submissions = $query->get();
+        $submissions = $query->orderBy('created_at', 'desc')->get();
 
         return $submissions;
     }
