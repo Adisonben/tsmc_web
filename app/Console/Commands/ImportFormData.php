@@ -81,6 +81,22 @@ class ImportFormData extends Command
                     $this->info("Vehicle: " . $row[2] . " " . $row[3] . " User: " . $row[10] . " - Not found in database");
                     $skipCount++;
                 } else {
+                    // Parse date from Excel
+                    $dateValue = $row[1] ?? null;
+                    
+                    if (!$dateValue) {
+                        throw new \Exception("Date value is missing for row " . ($key + 1));
+                    }
+                    
+                    // Excel stores dates as numeric values (days since 1900-01-01)
+                    if (is_numeric($dateValue)) {
+                        $submissionDate = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($dateValue));
+                    } else {
+                        $submissionDate = Carbon::parse($dateValue);
+                    }
+                    
+                    $submissionDate->setTime(8, 0, 0);
+
                     $form_submited = FormSubmissions::create([
                         'submission_id' => Str::uuid(),
                         'form_id' => 5,
@@ -89,8 +105,8 @@ class ImportFormData extends Command
                         'submitted_by' => $users->user_id,
                         'status' => 1,
                         'org' => $orgId,
-                        'created_at' => Carbon::parse($row[1])->setTime(8, 0, 0),
-                        'updated_at' => Carbon::parse($row[1])->setTime(8, 0, 0),
+                        'created_at' => $submissionDate,
+                        'updated_at' => $submissionDate,
                     ]);
 
                     foreach ($this->formfields as $key => $value) {
