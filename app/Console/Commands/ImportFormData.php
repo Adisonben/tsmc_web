@@ -97,38 +97,22 @@ class ImportFormData extends Command
                             throw new \Exception("Failed to parse Excel numeric date '{$dateValue}' for row " . ($key + 1) . ": " . $e->getMessage());
                         }
                     } else {
-                        // String date format - handle Thai Buddhist Era (BE) dates
-                        try {
-                            // Check if date contains Thai year (> 2500 = Buddhist Era)
-                            if (preg_match('#(\d{1,2})/(\d{1,2})/(\d{4})#', $dateValue, $matches)) {
-                                $day = (int)$matches[1];
-                                $month = (int)$matches[2];
-                                $year = (int)$matches[3];
-                                
-                                // Debug first row
-                                if ($key === 0) {
-                                    $this->info("Raw date: '{$dateValue}' -> Day: {$day}, Month: {$month}, Year: {$year}");
-                                }
-                                
-                                // Convert Buddhist Era to Christian Era (subtract 543)
-                                if ($year > 2500) {
-                                    $year = $year - 543;
-                                }
-                                
-                                // Create date using Carbon::create() with explicit day, month, year
-                                $submissionDate = Carbon::create($year, $month, $day, 0, 0, 0);
-                            } else {
-                                // Fallback to automatic parsing
-                                $submissionDate = Carbon::parse($dateValue);
-                            }
-                        } catch (\Exception $e) {
-                            throw new \Exception("Failed to parse date '{$dateValue}' for row " . ($key + 1) . ": " . $e->getMessage());
+                        // String date format - Thai format d/m/Y with Buddhist Era
+                        $parts = explode('/', $dateValue);
+                        if (count($parts) !== 3) {
+                            throw new \Exception("Invalid date format '{$dateValue}' for row " . ($key + 1));
                         }
-                    }
-                    
-                    // Validate the year is reasonable (between 2000 and 2100)
-                    if ($submissionDate->year < 2000 || $submissionDate->year > 2100) {
-                        throw new \Exception("Invalid date year: {$submissionDate->year} from value: '{$dateValue}' for row " . ($key + 1));
+                        
+                        $day = (int)$parts[0];
+                        $month = (int)$parts[1];
+                        $year = (int)$parts[2];
+                        
+                        // Convert Buddhist Era to Christian Era
+                        if ($year > 2500) {
+                            $year = $year - 543;
+                        }
+                        
+                        $submissionDate = Carbon::create($year, $month, $day, 0, 0, 0);
                     }
                     
                     $submissionDate->setTime(8, 0, 0);
