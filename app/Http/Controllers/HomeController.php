@@ -105,7 +105,7 @@ class HomeController extends Controller
             $newOrg = Organization::create([
                 'org_id' => Str::uuid(),
                 'name' => $request->org_name,
-                'expire_at' => now()->addDays(180),
+                'expire_at' => now()->addDays(90),
                 'accept_terms' => true,
             ]);
             
