@@ -88,9 +88,24 @@ class ImportFormData extends Command
                         throw new \Exception("Date value is missing for row " . ($key + 1));
                     }
                     
+                    // Debug: Show the date value
+                    if ($key === 0) {
+                        $this->info("Sample date value from Excel: '{$dateValue}' (type: " . gettype($dateValue) . ")");
+                    }
+                    
                     // Excel stores dates as numeric values (days since 1900-01-01)
                     if (is_numeric($dateValue)) {
-                        $submissionDate = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($dateValue));
+                        try {
+                            $dateTime = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($dateValue);
+                            $submissionDate = Carbon::instance($dateTime);
+                            
+                            // Validate the year is reasonable (between 1900 and 2100)
+                            if ($submissionDate->year < 1900 || $submissionDate->year > 2100) {
+                                throw new \Exception("Invalid date year: {$submissionDate->year} for value: {$dateValue}");
+                            }
+                        } catch (\Exception $e) {
+                            throw new \Exception("Failed to parse Excel date '{$dateValue}' for row " . ($key + 1) . ": " . $e->getMessage());
+                        }
                     } else {
                         $submissionDate = Carbon::parse($dateValue);
                     }
