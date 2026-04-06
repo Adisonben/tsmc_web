@@ -16,7 +16,9 @@ class FormSubmissions extends Model
         'vehicle_id',
         'submitted_by',
         'status',
-        'org'
+        'org',
+        'created_at',
+        'updated_at',
     ];
 
     public function getForm()
