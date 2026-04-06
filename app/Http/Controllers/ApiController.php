@@ -85,7 +85,7 @@ class ApiController extends Controller
             $query->where('user_id', $request->user_id);
         }
 
-        $querySubmissions = $query->get();
+        $querySubmissions = $query->orderBy('created_at', 'desc')->get();
 
         $responseData = [];
 
