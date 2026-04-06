@@ -127,7 +127,7 @@ class ImportFormData extends Command
                     }
                     
                     $submissionDate->setTime(8, 0, 0);
-
+                    $this->info("Submission date: " . $submissionDate->format('Y-m-d H:i:s'));
                     // $form_submited = FormSubmissions::create([
                     //     'submission_id' => Str::uuid(),
                     //     'form_id' => 5,
