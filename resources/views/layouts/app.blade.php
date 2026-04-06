@@ -98,12 +98,12 @@
                                     ความรู้ออนไลน์
                                 </a>
                             </li>
-                            <li class="sidebar-item" id="elearningPage">
+                            {{-- <li class="sidebar-item" id="elearningPage">
                                 <a href="" class="sidebar-link">
                                     <i class="bi bi-book"></i>
                                     QMS (Coming Soon)
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="sidebar-header">
                                 แบบฟอร์ม
                             </li>
@@ -277,12 +277,12 @@
                                 ความรู้ออนไลน์
                             </a>
                         </li>
-                        <li class="sidebar-item" id="elearningPage">
+                        {{-- <li class="sidebar-item" id="elearningPage">
                             <a href="" class="sidebar-link">
                                 <i class="bi bi-book"></i>
                                 QMS (Coming Soon)
                             </a>
-                        </li>
+                        </li> --}}
                         {{-- <li class="sidebar-item" id="carMATablePage">
                             <a href="{{ route('car.ma.table') }}" class="sidebar-link">
                                 <i class="bi bi-car-front"></i>
@@ -492,6 +492,10 @@
                     <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
+
+                    <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#contactModal">
+                        <i class="bi bi-chat-left-dots"></i> ติดต่อเรา
+                    </button>
 
                     <!-- Button trigger modal -->
                     @if (Auth::user()->is_tsm)
@@ -720,6 +724,54 @@
                         </div>
                     </div>
 
+                    <!-- Contact Modal -->
+                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="contactModalLabel">
+                                        <i class="bi bi-chat-left-dots me-2"></i>
+                                        ติดต่อเรา
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="text-center mb-4">
+                                        <h5 class="fw-bold">ช่องทางการติดต่อ</h5>
+                                        <p class="text-muted">ติดต่อสอบถามข้อมูลเพิ่มเติมได้ที่</p>
+                                    </div>
+
+                                    <div class="contact-info d-flex flex-column flex-md-row gap-3">
+                                        <div class="d-flex align-items-center p-3 bg-light rounded flex-grow-1">
+                                            <div class="me-3">
+                                                <i class="bi bi-telephone-fill text-primary fs-3"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1 fw-bold">เบอร์โทรศัพท์</h6>
+                                                <a href="tel:0992952666" class="text-decoration-none fs-5">0992952666</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center p-3 bg-light rounded flex-grow-1">
+                                            <div class="me-3">
+                                                <i class="bi bi-line text-success fs-3"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1 fw-bold">LINE ID</h6>
+                                                <p class="mb-0 fs-5 text-success fw-bold">examcare</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                                </div> --}}
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav me-auto">
@@ -742,6 +794,12 @@
                                     </li>
                                 @endif
                             @else
+                                <!-- Contact Us Button -->
+                                {{-- <li class="nav-item">
+                                    <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#contactModal">
+                                        <i class="bi bi-chat-left-dots"></i> ติดต่อเรา
+                                    </button>
+                                </li> --}}
                                 <li class="nav-item dropdown">
                                     @php
                                         $user = Auth::user()->with('userDetail')->first();

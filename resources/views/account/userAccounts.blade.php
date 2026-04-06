@@ -10,7 +10,8 @@
                             <p class="mb-0 fs-4">{{ __('ผู้ใช้ทั้งหมด') }}</p>
                             <div>
                                 <a href="{{ route('users.create') }}" class="btn btn-success btn-sm">สร้าง</a>
-                                @if (session('org_status') !== 2)
+                                {{-- @if (session('org_status') !== 2) --}}
+                                @if (Auth::user()->username === 'tsmcadmin')
                                     <a href="{{ route('user.list.export') }}" class="btn btn-secondary btn-sm"
                                         data-bs-toggle="tooltip" data-bs-title="ออกรายงาน"><i class="bi bi-file-pdf"></i></a>
                                 @endif
@@ -75,6 +76,7 @@
                                     @endif
                                 </tbody>
                             </table>
+                            {{ $users->links() }}
                         </div>
                     </div>
                 </div>

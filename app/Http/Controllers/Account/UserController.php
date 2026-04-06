@@ -33,9 +33,9 @@ class UserController extends Controller
         if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
             $users = User::whereNot('username', 'tsmcadmin')->whereHas('userDetail', function ($query) {
                 $query->where('org', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org);
-            })->get();
+            })->paginate(15);
         } else {
-            $users = User::whereNot('username', 'tsmcadmin')->where('is_tsm', false)->get();
+            $users = User::whereNot('username', 'tsmcadmin')->where('is_tsm', false)->paginate(15);
         }
         return view('account.userAccounts', compact('users'));
     }
