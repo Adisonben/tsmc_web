@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <!-- Sidebar Navigation -->
-                @if (Auth::user()->is_tsm)
+                @if (Auth::user()->is_tsm ?? false)
                     <ul class="sidebar-nav">
                         <li class="sidebar-item" id="homepage">
                             <a href="/home" class="sidebar-link">
