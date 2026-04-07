@@ -348,12 +348,12 @@
                                             รายงานผลส่งกรมฯ
                                         </a>
                                     </li>
-                                    <li class="sidebar-item" id="performanceReportPage">
+                                    {{-- <li class="sidebar-item" id="performanceReportPage">
                                         <a href="{{ route('submission.count', ['quarter' => Carbon\Carbon::now()->quarterOfYear()]) }}"
                                             class="sidebar-link">
                                             จำนวนการทำเอกสาร 5 หมวด
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </li>
                         @endif
