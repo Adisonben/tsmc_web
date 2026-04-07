@@ -40,3 +40,11 @@ Command:
 - `php artisan app:clear-preview` for clear demo user data
 - `php artisan app:set-unexpire {username}` for set a user's account to never expire if user is tsm, And set org to never expire if user account is not tsm
 - `app:unlink-line {username}` for unlink user from line user id
+
+load test by k6:
+- `k6 run --vus 50 --duration 30s tests/login-test.js`
+
+07/04/2026 load test result: 
+- 20–30 users => p95 ~ 2-4s 
+- 40-50 users => p95 ~ 5-7s
+- 60-80 users => p95 ~ 8-12s
