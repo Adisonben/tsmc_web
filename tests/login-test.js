@@ -1,10 +1,10 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
-export const options = {
-  vus: 20,
-  duration: '30s',
-};
+// export const options = {
+//   vus: 50,
+//   duration: '30s',
+// };
 
 export default function () {
   // 1. เข้าหน้า login (เอา CSRF + cookie)
