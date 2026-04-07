@@ -504,11 +504,7 @@
                                 $expire_date = new Carbon\Carbon(Auth::user()->expire_at);
                                 $diffDay = (int) ceil(Carbon\Carbon::now()->diffInDays($expire_date));
                             @endphp
-                            @if ($diffDay > 10)
-                                <button type="button" class="btn btn-primary">
-                                    <i class="bi bi-clock"></i> {{ $diffDay }} วัน
-                                </button>
-                            @elseif ($diffDay <= 10 && $diffDay > 0)
+                            @if ($diffDay == 60 || $diffDay == 30 || ($diffDay <= 10 && $diffDay > 0))
                                 <button type="button" class="btn btn-warning border-danger" data-bs-toggle="modal"
                                     data-bs-target="#warningModal">
                                     <i class="bi bi-clock"></i> {{ $diffDay }} วัน
@@ -519,6 +515,10 @@
                                         contact
                                     </button>
                                 @endif
+                            @elseif ($diffDay > 10)
+                                <button type="button" class="btn btn-primary">
+                                    <i class="bi bi-clock"></i> {{ $diffDay }} วัน
+                                </button>
                             @else
                                 <button type="button" class="btn btn-danger">
                                     <i class="bi bi-clock"></i> หมดอายุ
