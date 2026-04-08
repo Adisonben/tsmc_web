@@ -199,7 +199,7 @@ class TSMUserController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             //throw $th;
-            dd($th->getMessage());
+            // dd($th->getMessage());
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
         }
     }

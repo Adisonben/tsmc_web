@@ -206,7 +206,7 @@ class PostController extends Controller
             return redirect()->route('posts.index')->with(['success' => "แก้ไขโพสสำเร็จ"]);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            // dd($th->getMessage());
             return redirect()->route('posts.index')->with(['error' => $th->getMessage()]);
         }
     }

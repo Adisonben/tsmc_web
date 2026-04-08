@@ -11,7 +11,7 @@
                         </div>
                     </div>
 
-                    <div class="card-body">
+                    <div class="card-body overflow-auto">
                         <table class="table table-hover table-bordered">
                             <thead class="table-dark">
                                 <tr>
