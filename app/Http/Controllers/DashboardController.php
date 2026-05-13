@@ -24,14 +24,16 @@ class DashboardController extends Controller
     public function index()
     {
         // For organization filtering if necessary
-        $orgId = (Auth::user()->is_tsm ? session('connected_org') : Auth::user()->userDetail->org) ?? null;
+        $orgId = Auth::user()->is_tsm ? session('connected_org') : Auth::user()->userDetail->org;
 
         $today = Carbon::today();
         $startOfWeek = Carbon::now()->startOfWeek();
         $startOfMonth = Carbon::now()->startOfMonth();
 
         // 1. User Login Today
-        $loginsToday = LoginHistory::whereDate('created_at', $today)
+        $loginsToday = LoginHistory::whereHas('getUser.userDetail', function ($q) use ($orgId) {
+            if ($orgId) $q->where('org', $orgId);
+        })->whereDate('created_at', $today)
             ->distinct('user_id')
             ->count('user_id');
 
@@ -41,7 +43,9 @@ class DashboardController extends Controller
                 $q->where('org', $orgId);
         })->count();
 
-        $activeWorkers = WorkRecord::whereNull('end_at')->count();
+        $activeWorkers = WorkRecord::whereHas('getUser.userDetail', function ($q) use ($orgId) {
+            if ($orgId) $q->where('org', $orgId);
+        })->whereNull('end_at')->count();
 
         // 3. Fleet Utilization
         $totalVehicles = Vehicle::when($orgId, function ($q) use ($orgId) {
@@ -76,7 +80,9 @@ class DashboardController extends Controller
         $checkinsData = [];
         for ($i = 6; $i >= 0; $i--) {
             $date = Carbon::today()->subDays($i);
-            $count = WorkRecord::whereDate('created_at', $date)->count();
+            $count = WorkRecord::whereHas('getUser.userDetail', function ($q) use ($orgId) {
+                if ($orgId) $q->where('org', $orgId);
+            })->whereDate('created_at', $date)->count();
             $checkinsData['labels'][] = $date->format('D, d M');
             $checkinsData['data'][] = $count;
         }
@@ -91,13 +97,19 @@ class DashboardController extends Controller
 
         // --- Recent Activity Feeds ---
         // A. Recent Work Records
-        $recentWorkRecords = WorkRecord::with('getUser.userDetail')->latest()->take(5)->get();
+        $recentWorkRecords = WorkRecord::whereHas('getUser.userDetail', function ($q) use ($orgId) {
+            if ($orgId) $q->where('org', $orgId);
+        })->with('getUser.userDetail')->latest()->take(5)->get();
 
         // B. Recent Submissions
-        $recentSubmissions = FormSubmissions::with(['getUser', 'getForm'])->latest()->take(5)->get();
+        $recentSubmissions = FormSubmissions::when($orgId, function ($q) use ($orgId) {
+            return $q->where('org', $orgId);
+        })->with(['getUser', 'getForm'])->latest()->take(5)->get();
 
         // C. Latest Posts
-        $recentPosts = \App\Models\Post::latest()->take(5)->get();
+        $recentPosts = \App\Models\Post::whereHas('getUser', function ($q) use ($orgId) {
+            if ($orgId) $q->where('org', $orgId);
+        })->latest()->take(5)->get();
 
         return view('dashboard.index', compact(
             'loginsToday',
