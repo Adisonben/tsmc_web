@@ -59,9 +59,16 @@
                             </a>
                         </li>
                         {{-- @php
-                            dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
+                        dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post',
+                        optional(Auth::user()->userDetail)->org));
                         @endphp --}}
                         @if (session('connected_org'))
+                            <li class="sidebar-item" id="dashboardPage">
+                                <a href="{{ route('dashboard') }}" class="sidebar-link">
+                                    <i class="bi bi-speedometer2"></i>
+                                    แดชบอร์ด
+                                </a>
+                            </li>
                             <li class="sidebar-item" id="postsPage">
                                 <a href="{{ route('posts.index') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
@@ -120,13 +127,12 @@
                                 </a>
                             </li>
                             <li class="sidebar-item" id="reportDataPage">
-                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#report" aria-expanded="false" aria-controls="report">
+                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#report"
+                                    aria-expanded="false" aria-controls="report">
                                     <i class="bi bi-building"></i>
                                     ออกรายงาน
                                 </a>
-                                <ul id="report" class="sidebar-dropdown list-unstyled collapse"
-                                    data-bs-parent="#sidebar">
+                                <ul id="report" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                                     <li class="sidebar-item" id="exportPage">
                                         <a href="{{ route('document.export.filter') }}" class="sidebar-link">
                                             ค้นและออกรายงาน
@@ -151,16 +157,14 @@
                                 ข้อมูลระบบ
                             </li>
                             <li class="sidebar-item" id="orgDataPage">
-                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#org" aria-expanded="false" aria-controls="org">
+                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#org"
+                                    aria-expanded="false" aria-controls="org">
                                     <i class="bi bi-building"></i>
                                     บริษัท
                                 </a>
-                                <ul id="org" class="sidebar-dropdown list-unstyled collapse"
-                                    data-bs-parent="#sidebar">
+                                <ul id="org" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                                     <li class="sidebar-item">
-                                        <a href="{{ route('organizations.index') }}"
-                                            class="sidebar-link">ข้อมูลบริษัท</a>
+                                        <a href="{{ route('organizations.index') }}" class="sidebar-link">ข้อมูลบริษัท</a>
                                     </li>
                                     <li class="sidebar-item">
                                         <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
@@ -222,10 +226,24 @@
                             </a>
                         </li>
                         {{-- @php
-                            dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post', optional(Auth::user()->userDetail)->org));
+                        dd(Auth::user()->userDetail->getPosition->hasPermissionName('can_post',
+                        optional(Auth::user()->userDetail)->org));
                         @endphp --}}
-                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', Auth::user()->userDetail->org) ??
-                                false)
+                        @if (
+                                optional(Auth::user()->userDetail->getPosition)->hasPermissionName('dashboard', Auth::user()->userDetail->org) ??
+                                false
+                            )
+                            <li class="sidebar-item" id="dashboardPage">
+                                <a href="{{ route('dashboard') }}" class="sidebar-link">
+                                    <i class="bi bi-speedometer2"></i>
+                                    แดชบอร์ด
+                                </a>
+                            </li>
+                        @endif
+                        @if (
+                                optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', Auth::user()->userDetail->org) ??
+                                false
+                            )
                             <li class="sidebar-item" id="postsPage">
                                 <a href="{{ route('posts.index') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
@@ -233,8 +251,10 @@
                                 </a>
                             </li>
                         @endif
-                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_check', Auth::user()->userDetail->org) ??
-                                false)
+                        @if (
+                                optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_check', Auth::user()->userDetail->org) ??
+                                false
+                            )
                             <li class="sidebar-item" id="formCheckpage">
                                 <a href="{{ route('document.fill-out.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-clipboard"></i>
@@ -242,9 +262,12 @@
                                 </a>
                             </li>
                         @endif
-                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_access_table',
-                                Auth::user()->userDetail->org) ?? false)
+                        @if (
+                                optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'can_access_table',
+                                    Auth::user()->userDetail->org
+                                ) ?? false
+                            )
                             <li class="sidebar-item" id="formCheckTablePage">
                                 <a href="{{ route('document.table.selectform') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>
@@ -252,9 +275,12 @@
                                 </a>
                             </li>
                         @endif
-                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'work_record_table',
-                                Auth::user()->userDetail->org) ?? false)
+                        @if (
+                                optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'work_record_table',
+                                    Auth::user()->userDetail->org
+                                ) ?? false
+                            )
                             <li class="sidebar-item" id="workRecordTablePage">
                                 <a href="{{ route('work-records.table') }}" class="sidebar-link">
                                     <i class="bi bi-table"></i>
@@ -262,8 +288,10 @@
                                 </a>
                             </li>
                         @endif
-                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('car_ma', Auth::user()->userDetail->org) ??
-                                false)
+                        @if (
+                                optional(Auth::user()->userDetail->getPosition)->hasPermissionName('car_ma', Auth::user()->userDetail->org) ??
+                                false
+                            )
                             <li class="sidebar-item" id="carMATablePage">
                                 <a href="{{ route('car.ma.table') }}" class="sidebar-link">
                                     <i class="bi bi-car-front"></i>
@@ -289,18 +317,22 @@
                                 บันทึกการบำรุงรักษารถ
                             </a>
                         </li> --}}
-                        {{-- @if (!optional(Auth::user()->userDetail->getPosition)->name || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_approve_table', optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
-                            <li class="sidebar-item" id="formInsTablePage">
-                                <a href="" class="sidebar-link">
-                                    <i class="bi bi-clipboard-check"></i>
-                                    เอกสารรอตรวจสอบ
-                                </a>
-                            </li>
+                        {{-- @if (!optional(Auth::user()->userDetail->getPosition)->name ||
+                        (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_approve_table',
+                        optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                        <li class="sidebar-item" id="formInsTablePage">
+                            <a href="" class="sidebar-link">
+                                <i class="bi bi-clipboard-check"></i>
+                                เอกสารรอตรวจสอบ
+                            </a>
+                        </li>
                         @endif --}}
                         @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_manage_form',
-                                optional(Auth::user()->userDetail)->org) ?? false) || Auth::user()->username === 'tsmcadmin')
+                                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'can_manage_form',
+                                    optional(Auth::user()->userDetail)->org
+                                ) ?? false) || Auth::user()->username === 'tsmcadmin'
+                            )
                             <li class="sidebar-header">
                                 แบบฟอร์ม
                             </li>
@@ -311,9 +343,12 @@
                                 </a>
                             </li>
                         @endif
-                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_assign_driver',
-                                optional(Auth::user()->userDetail)->org) ?? false)
+                        @if (
+                                optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'can_assign_driver',
+                                    optional(Auth::user()->userDetail)->org
+                                ) ?? false
+                            )
                             <li class="sidebar-item" id="assignPage">
                                 <a href="{{ route('vehicle.assignment.table') }}" class="sidebar-link">
                                     <i class="bi bi-person-badge"></i>
@@ -321,17 +356,19 @@
                                 </a>
                             </li>
                         @endif
-                        @if (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_export',
-                                optional(Auth::user()->userDetail)->org) ?? false)
+                        @if (
+                                optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'can_export',
+                                    optional(Auth::user()->userDetail)->org
+                                ) ?? false
+                            )
                             <li class="sidebar-item" id="reportDataPage">
-                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#report" aria-expanded="false" aria-controls="report">
+                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#report"
+                                    aria-expanded="false" aria-controls="report">
                                     <i class="bi bi-file-earmark-arrow-up"></i>
                                     ออกรายงาน
                                 </a>
-                                <ul id="report" class="sidebar-dropdown list-unstyled collapse"
-                                    data-bs-parent="#sidebar">
+                                <ul id="report" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                                     <li class="sidebar-item" id="exportPage">
                                         <a href="{{ route('document.export.filter') }}" class="sidebar-link">
                                             ค้นและออกรายงาน
@@ -359,25 +396,25 @@
                         @endif
 
                         @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_manage_org',
-                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'can_manage_org',
+                                    optional(Auth::user()->userDetail)->org
+                                ) ?? false) ||
                                 Auth::user()->username === 'tsmcadmin' ||
-                                Auth::user()->userDetail->position === null)
+                                Auth::user()->userDetail->position === null
+                            )
                             <li class="sidebar-header">
                                 ข้อมูลระบบ
                             </li>
                             <li class="sidebar-item" id="orgDataPage">
-                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#org" aria-expanded="false" aria-controls="org">
+                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#org"
+                                    aria-expanded="false" aria-controls="org">
                                     <i class="bi bi-building"></i>
                                     บริษัท
                                 </a>
-                                <ul id="org" class="sidebar-dropdown list-unstyled collapse"
-                                    data-bs-parent="#sidebar">
+                                <ul id="org" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                                     <li class="sidebar-item">
-                                        <a href="{{ route('organizations.index') }}"
-                                            class="sidebar-link">ข้อมูลบริษัท</a>
+                                        <a href="{{ route('organizations.index') }}" class="sidebar-link">ข้อมูลบริษัท</a>
                                     </li>
                                     <li class="sidebar-item">
                                         <a href="{{ route('vehicles.index') }}" class="sidebar-link">ข้อมูลรถ</a>
@@ -395,19 +432,17 @@
                             </li>
                             @if (Auth::user()->username === 'tsmcadmin')
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                        data-bs-target="#sys" aria-expanded="false" aria-controls="sys">
+                                    <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#sys"
+                                        aria-expanded="false" aria-controls="sys">
                                         <i class="bi bi-database-gear"></i>
                                         ระบบ
                                     </a>
-                                    <ul id="sys" class="sidebar-dropdown list-unstyled collapse"
-                                        data-bs-parent="#sidebar">
+                                    <ul id="sys" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                                         <li class="sidebar-item">
                                             <a href="{{ route('prefixes.index') }}" class="sidebar-link">คำนำหน้า</a>
                                         </li>
                                         <li class="sidebar-item">
-                                            <a href="{{ route('renewal_codes.index') }}"
-                                                class="sidebar-link">รหัสต่ออายุ</a>
+                                            <a href="{{ route('renewal_codes.index') }}" class="sidebar-link">รหัสต่ออายุ</a>
                                         </li>
                                         {{-- <li class="sidebar-item">
                                             <a href="{{ route('form.types') }}" class="sidebar-link">ประเภทฟอร์ม</a>
@@ -428,11 +463,13 @@
                             </a>
                         </li>
                         @if (
-                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                'can_manage_user',
-                                optional(Auth::user()->userDetail)->org) ?? false) ||
+                                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'can_manage_user',
+                                    optional(Auth::user()->userDetail)->org
+                                ) ?? false) ||
                                 Auth::user()->username === 'tsmcadmin' ||
-                                Auth::user()->userDetail->position === null)
+                                Auth::user()->userDetail->position === null
+                            )
                             <li class="sidebar-item" id="accountPage">
                                 <a href="{{ route('users.index') }}" class="sidebar-link">
                                     <i class="bi bi-people"></i>
@@ -468,8 +505,7 @@
                 @endif
 
                 <div class="sidebar-footer d-md-none">
-                    <a class="sidebar-footer" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
+                    <a class="sidebar-footer" href="{{ route('logout') }}" onclick="event.preventDefault();
                                     document.getElementById('logout-form1').submit();">
                         <i class="bi bi-box-arrow-left"></i>
                         ออกจากระบบ
@@ -493,7 +529,8 @@
                         {{ config('app.name', 'Laravel') }}
                     </a>
 
-                    <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#contactModal">
+                    <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#contactModal">
                         <i class="bi bi-chat-left-dots"></i> ติดต่อเรา
                     </button>
 
@@ -510,8 +547,8 @@
                                     <i class="bi bi-clock"></i> {{ $diffDay }} วัน
                                 </button>
                                 @if (!session('is_modal_active'))
-                                    <button type="button" class="btn btn-primary" id="modalBtn"
-                                        data-bs-toggle="modal" hidden data-bs-target="#warningModal">
+                                    <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal" hidden
+                                        data-bs-target="#warningModal">
                                         contact
                                     </button>
                                 @endif
@@ -523,8 +560,8 @@
                                 <button type="button" class="btn btn-danger">
                                     <i class="bi bi-clock"></i> หมดอายุ
                                 </button>
-                                <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal"
-                                    hidden data-bs-target="#exampleModal">
+                                <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal" hidden
+                                    data-bs-target="#exampleModal">
                                     contact
                                 </button>
                             @endif
@@ -545,8 +582,8 @@
                                     <i class="bi bi-clock"></i> {{ $diffDay }} วัน
                                 </button>
                                 @if (!session('is_modal_active'))
-                                    <button type="button" class="btn btn-primary" id="modalBtn"
-                                        data-bs-toggle="modal" hidden data-bs-target="#warningModal">
+                                    <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal" hidden
+                                        data-bs-target="#warningModal">
                                         contact
                                     </button>
                                 @endif
@@ -554,8 +591,8 @@
                                 <button type="button" class="btn btn-danger">
                                     <i class="bi bi-clock"></i> หมดอายุ
                                 </button>
-                                <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal"
-                                    hidden data-bs-target="#exampleModal">
+                                <button type="button" class="btn btn-primary" id="modalBtn" data-bs-toggle="modal" hidden
+                                    data-bs-target="#exampleModal">
                                     contact
                                 </button>
                             @endif
@@ -615,8 +652,8 @@
                                                 <label for="code" class="form-label">หรือกรอก Code
                                                     เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="code"
-                                                        id="code1" placeholder="กรอก code" required>
+                                                    <input type="text" class="form-control" name="code" id="code1"
+                                                        placeholder="กรอก code" required>
                                                     <button class="btn btn-primary" type="submit"
                                                         id="button-addon1">ต่ออายุ</button>
                                                 </div>
@@ -627,8 +664,8 @@
                                                 <label for="code" class="form-label">หรือกรอก Code
                                                     เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="code"
-                                                        id="code2" placeholder="กรอก code" required>
+                                                    <input type="text" class="form-control" name="code" id="code2"
+                                                        placeholder="กรอก code" required>
                                                     <button class="btn btn-primary" type="submit"
                                                         id="button-addon2">ต่ออายุ</button>
                                                 </div>
@@ -686,8 +723,8 @@
                                                 <label for="code" class="form-label">หรือกรอก Code
                                                     เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="code"
-                                                        id="code3" placeholder="กรอก code" required>
+                                                    <input type="text" class="form-control" name="code" id="code3"
+                                                        placeholder="กรอก code" required>
                                                     <button class="btn btn-primary" type="submit"
                                                         id="button-addon3">ต่ออายุ</button>
                                                 </div>
@@ -698,8 +735,8 @@
                                                 <label for="code" class="form-label">หรือกรอก Code
                                                     เพื่อต่ออายุการใช้งาน</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="code"
-                                                        id="code4" placeholder="กรอก code" required>
+                                                    <input type="text" class="form-control" name="code" id="code4"
+                                                        placeholder="กรอก code" required>
                                                     <button class="btn btn-primary" type="submit"
                                                         id="button-addon4">ต่ออายุ</button>
                                                 </div>
@@ -708,15 +745,13 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a class="btn btn-secondary" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
+                                    <a class="btn btn-secondary" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                     document.getElementById('logout-form2').submit();">
                                         <i class="bi bi-box-arrow-left"></i>
                                         ออกจากระบบ
                                     </a>
 
-                                    <form id="logout-form2" action="{{ route('logout') }}" method="POST"
-                                        class="d-none">
+                                    <form id="logout-form2" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
@@ -750,7 +785,8 @@
                                             </div>
                                             <div class="flex-grow-1">
                                                 <h6 class="mb-1 fw-bold">เบอร์โทรศัพท์</h6>
-                                                <a href="tel:0992952666" class="text-decoration-none fs-5">0992952666</a>
+                                                <a href="tel:0992952666"
+                                                    class="text-decoration-none fs-5">0992952666</a>
                                             </div>
                                         </div>
 
@@ -796,7 +832,8 @@
                             @else
                                 <!-- Contact Us Button -->
                                 {{-- <li class="nav-item">
-                                    <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#contactModal">
+                                    <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal"
+                                        data-bs-target="#contactModal">
                                         <i class="bi bi-chat-left-dots"></i> ติดต่อเรา
                                     </button>
                                 </li> --}}
@@ -804,23 +841,20 @@
                                     @php
                                         $user = Auth::user()->with('userDetail')->first();
                                     @endphp
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
-                                        role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false" v-pre>
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ Auth::user()->full_name }}
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="{{ route('usermanual') }}">
                                             คู่มือการใช้งาน
                                         </a>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                    document.getElementById('logout-form3').submit();">
+                                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                            document.getElementById('logout-form3').submit();">
                                             {{ __('ออกจากระบบ') }}
                                         </a>
 
-                                        <form id="logout-form3" action="{{ route('logout') }}" method="POST"
-                                            class="d-none">
+                                        <form id="logout-form3" action="{{ route('logout') }}" method="POST" class="d-none">
                                             @csrf
                                         </form>
                                     </div>
@@ -859,13 +893,13 @@
             statusalert
         </button>
     @endif
-    <div class="modal fade" id="closeOrgModal" tabindex="-1" aria-labelledby="closeOrgModalLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal fade" id="closeOrgModal" tabindex="-1" aria-labelledby="closeOrgModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 {{-- <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="closeOrgModalLabel">ติดต่อสอบถามได้ที่</h1>
-                                </div> --}}
+                    <h1 class="modal-title fs-5" id="closeOrgModalLabel">ติดต่อสอบถามได้ที่</h1>
+                </div> --}}
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title">
                         <i class="bi bi-info-circle-fill me-2"></i>
@@ -889,8 +923,7 @@
                     </div>
                 </div>
                 <div class="modal-footer ">
-                    <a class="btn btn-secondary" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
+                    <a class="btn btn-secondary" href="{{ route('logout') }}" onclick="event.preventDefault();
                             document.getElementById('logout-form4').submit();">
                         <i class="bi bi-box-arrow-left"></i>
                         ออกจากระบบ
@@ -907,13 +940,13 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const modalBtn = document.getElementById('modalBtn');
             if (modalBtn) {
                 modalBtn.click();
             }
         });
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const orgStatusBtn = document.getElementById('orgStatusBtn');
             if (orgStatusBtn) {
                 orgStatusBtn.click();

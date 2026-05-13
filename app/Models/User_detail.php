@@ -50,4 +50,9 @@ class User_detail extends Model
     {
         return $this->belongsTo(Position::class, 'position', 'id');
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->getPrefix->name . $this->fname . ' ' . $this->lname;
+    }
 }
