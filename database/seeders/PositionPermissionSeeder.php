@@ -62,6 +62,10 @@ class PositionPermissionSeeder extends Seeder
                 'name' => 'car_ma',
                 'label' => 'บันทึกการบำรุงรักษารถ',
             ],
+            [
+                'name' => 'dashboard',
+                'label' => 'Dashboard',
+            ],
         ];
         foreach ($post_perms as $perm) {
             Position_permission::create([
