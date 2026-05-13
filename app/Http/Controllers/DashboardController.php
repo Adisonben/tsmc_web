@@ -32,7 +32,8 @@ class DashboardController extends Controller
 
         // 1. User Login Today
         $loginsToday = LoginHistory::whereHas('getUser.userDetail', function ($q) use ($orgId) {
-            if ($orgId) $q->where('org', $orgId);
+            if ($orgId)
+                $q->where('org', $orgId);
         })->whereDate('created_at', $today)
             ->distinct('user_id')
             ->count('user_id');
@@ -44,7 +45,8 @@ class DashboardController extends Controller
         })->count();
 
         $activeWorkers = WorkRecord::whereHas('getUser.userDetail', function ($q) use ($orgId) {
-            if ($orgId) $q->where('org', $orgId);
+            if ($orgId)
+                $q->where('org', $orgId);
         })->whereNull('end_at')->count();
 
         // 3. Fleet Utilization
@@ -62,13 +64,18 @@ class DashboardController extends Controller
             return $q->where('org_id', $orgId);
         })->whereMonth('repair_date', Carbon::now()->month)->count();
 
-        // 5. Upcoming/Missed Vehicle Maintenance (LogBook)
-        // Here we fetch recent log books with schedules that might need attention.
+        // 5. Log Book Success / Total
+        $totalLogBooks = LogBook::when($orgId, function ($q) use ($orgId) {
+            return $q->where('org_id', $orgId);
+        })->count();
+
+        $successLogBooks = LogBook::when($orgId, function ($q) use ($orgId) {
+            return $q->where('org_id', $orgId);
+        })->withCount('entries')->get()->where('entries_count', 112)->count();
+
         $logBooks = LogBook::when($orgId, function ($q) use ($orgId) {
             return $q->where('org_id', $orgId);
         })->with(['kmSchedules', 'monthSchedules'])->latest()->take(5)->get();
-        // A simple count of flagged or recent log books for display
-        $maintenanceFlagsCount = $logBooks->count();
 
         // 6. Pending Form Submissions Today
         $formsToday = FormSubmissions::when($orgId, function ($q) use ($orgId) {
@@ -81,7 +88,8 @@ class DashboardController extends Controller
         for ($i = 6; $i >= 0; $i--) {
             $date = Carbon::today()->subDays($i);
             $count = WorkRecord::whereHas('getUser.userDetail', function ($q) use ($orgId) {
-                if ($orgId) $q->where('org', $orgId);
+                if ($orgId)
+                    $q->where('org', $orgId);
             })->whereDate('created_at', $date)->count();
             $checkinsData['labels'][] = $date->format('D, d M');
             $checkinsData['data'][] = $count;
@@ -98,7 +106,8 @@ class DashboardController extends Controller
         // --- Recent Activity Feeds ---
         // A. Recent Work Records
         $recentWorkRecords = WorkRecord::whereHas('getUser.userDetail', function ($q) use ($orgId) {
-            if ($orgId) $q->where('org', $orgId);
+            if ($orgId)
+                $q->where('org', $orgId);
         })->with('getUser.userDetail')->latest()->take(5)->get();
 
         // B. Recent Submissions
@@ -108,7 +117,8 @@ class DashboardController extends Controller
 
         // C. Latest Posts
         $recentPosts = \App\Models\Post::whereHas('getUser', function ($q) use ($orgId) {
-            if ($orgId) $q->where('org', $orgId);
+            if ($orgId)
+                $q->where('org', $orgId);
         })->latest()->take(5)->get();
 
         return view('dashboard.index', compact(
@@ -118,7 +128,8 @@ class DashboardController extends Controller
             'activeVehicles',
             'totalVehicles',
             'completedRepairs',
-            'maintenanceFlagsCount',
+            'successLogBooks',
+            'totalLogBooks',
             'formsToday',
             'logBooks',
             'checkinsData',
