@@ -153,8 +153,14 @@ class VehicleController extends Controller
         try {
             $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
             $vehicle_datas = json_decode($request['vehicle_datas'], true);
-            if (count($vehicle_datas) > 0) {
+            if (is_array($vehicle_datas) && count($vehicle_datas) > 0) {
                 foreach ($vehicle_datas as $key => $vehicle_data) {
+                    $licensePlate = trim($vehicle_data['license_plate'] ?? '');
+                    if ($licensePlate === '' || $licensePlate === '-') {
+                        continue;
+                    }
+
+                    $vehicle_data['license_plate'] = $licensePlate;
                     $vehicle_data['org_id'] = $org_id;
                     Vehicle::create($vehicle_data);
                 }
