@@ -10,6 +10,7 @@ use App\Models\Prefix;
 use App\Models\Tsm_has_Org;
 use App\Models\User;
 use App\Models\User_detail;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -167,14 +168,59 @@ class UserController extends Controller
         }
     }
 
-    public function exportUsers() {
+    public function exportUsers(Request $request) {
+        $org_id = null;
         if ((Auth()->user()->userDetail->org ?? false) || Auth()->user()->is_tsm) {
-            $users = User::whereNot('username', 'tsmcadmin')->whereHas('userDetail', function ($query) {
-                $query->where('org', Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org);
-            })->get();
-        } else {
-            $users = User::whereNot('username', 'tsmcadmin')->get();
+            $org_id = Auth()->user()->is_tsm ? session('connected_org') : Auth()->user()->userDetail->org;
         }
-        return view('account.exportUsers', compact('users'));
+
+        $query = User::whereNot('username', 'tsmcadmin');
+
+        if ($org_id) {
+            $query->whereHas('userDetail', function ($q) use ($org_id) {
+                $q->where('org', $org_id);
+            });
+        }
+
+        // Apply filters
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('username', 'like', "%$search%")
+                  ->orWhereHas('userDetail', function($q2) use ($search) {
+                      $q2->where('fname', 'like', "%$search%")
+                         ->orWhere('lname', 'like', "%$search%");
+                  });
+            });
+        }
+
+        if ($request->filled('branch')) {
+            $query->whereHas('userDetail', function($q) use ($request) {
+                $q->where('brn', $request->branch);
+            });
+        }
+
+        if ($request->filled('department')) {
+            $query->whereHas('userDetail', function($q) use ($request) {
+                $q->where('dpm', $request->department);
+            });
+        }
+
+        if ($request->filled('position')) {
+            $query->whereHas('userDetail', function($q) use ($request) {
+                $q->where('position', $request->position);
+            });
+        }
+
+        $users = $query->get();
+
+        // Get options for filters
+        $branches = Branch::where('org_id', $org_id)->get();
+        $departments = Department::whereHas('getBrn', function($q) use ($org_id) {
+            $q->where('org_id', $org_id);
+        })->get();
+        $positions = Position::where('org', $org_id)->orWhereNull('org')->get();
+
+        return view('account.exportUsers', compact('users', 'branches', 'departments', 'positions'));
     }
 }
