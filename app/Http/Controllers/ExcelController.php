@@ -759,6 +759,8 @@ class ExcelController extends Controller
             }
         }
 
+        dd($formFields);
+
         $defaultFields = [
             [
                 'name' => 'created_at',
