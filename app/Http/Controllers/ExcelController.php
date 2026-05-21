@@ -284,11 +284,11 @@ class ExcelController extends Controller
                     ['type' => 'concat', 'name' => 'standard'],
                     ['type' => 'concat', 'name' => 'type'],
                     ['type' => 'form',   'id' => 21],
+                    ['type' => 'form',   'id' => 22],
+                    ['type' => 'form',   'id' => 23],
                     ['type' => 'concat', 'name' => 'citizen_id'],
                     ['type' => 'concat', 'name' => 'fname'],
                     ['type' => 'concat', 'name' => 'lname'],
-                    ['type' => 'form',   'id' => 22],
-                    ['type' => 'form',   'id' => 23],
                     ['type' => 'form',   'id' => 24],
                     ['type' => 'form',   'id' => 25],
                     ['type' => 'form',   'id' => 26],
@@ -299,23 +299,29 @@ class ExcelController extends Controller
                 ],
             ],
             // 2) Configuration for Form ID 2: Excludes 2 fields (brand and form field 14 are omitted)
-            6 => [
+            8 => [
                 'column_order' => [
-                    ['type' => 'concat', 'name' => 'created_at'],
-                    ['type' => 'concat', 'name' => 'license_category'],
-                    ['type' => 'concat', 'name' => 'license_plate'],
-                    ['type' => 'concat', 'name' => 'registration_province'],
-                    // 'brand' is excluded here
-                    ['type' => 'concat', 'name' => 'standard'],
-                    ['type' => 'concat', 'name' => 'type'],
-                    ['type' => 'concat', 'name' => 'ins_company'],
-                    ['type' => 'concat', 'name' => 'ins_type'],
-                    ['type' => 'concat', 'name' => 'fname'],
-                    ['type' => 'concat', 'name' => 'lname'],
-                    ['type' => 'form',   'id' => 21],
-                    ['type' => 'concat', 'name' => 'citizen_id'],
-                    ['type' => 'form',   'id' => 22],
-                    // Form field 14 is excluded here
+
+                ],
+            ],
+            9 => [
+                'column_order' => [
+
+                ],
+            ],
+            10 => [
+                'column_order' => [
+
+                ],
+            ],
+            13 => [
+                'column_order' => [
+
+                ],
+            ],
+            15 => [
+                'column_order' => [
+
                 ],
             ],
         ];
@@ -764,70 +770,7 @@ class ExcelController extends Controller
             }
         }
 
-        /*
-        $formFields = [
-            0 => array:4 [▼
-                "id" => 21
-                "label" => "หมายเลขงาน"
-                "type" => "text"
-                "subformfields" => []
-            ],
-            1 => array:4 [▼
-                "id" => 22
-                "label" => "ประเภทสิ่งของที่บรรทุก"
-                "type" => "text"
-                "subformfields" => []
-            ]
-            2 => array:4 [▼
-                "id" => 23
-                "label" => "ปริมาณบรรทุก"
-                "type" => "text"
-                "subformfields" => []
-            ]
-            3 => array:4 [▼
-                "id" => 24
-                "label" => "หน้าที่ความรับผิดชอบของผู้ประจำรถ"
-                "type" => "text"
-                "subformfields" => []
-            ]
-            4 => array:4 [▼
-                "id" => 25
-                "label" => "แผนการทำงานของผู้ขับรถ"
-                "type" => "text"
-                "subformfields" => []
-            ]
-            5 => array:4 [▼
-                "id" => 26
-                "label" => "การจัดทำคู่มือการปฏิบัติงาน"
-                "type" => "text"
-                "subformfields" => []
-            ]
-            6 => array:4 [▼
-                "id" => 27
-                "label" => "ผลการตรวจสอบยานพาหนะประจำวันสำหรับรถบรรทุก"
-                "type" => "subform"
-                "subformfields" => array:6 [▶]
-            ]
-            7 => array:4 [▼
-                "id" => 28
-                "label" => "ผลการตรวจการจัดเรียงของสินค้าและอุปกรณ์ยึดตรึงสินค้า"
-                "type" => "text"
-                "subformfields" => []
-            ]
-            8 => array:4 [▼
-                "id" => 29
-                "label" => "ผลการตรวจสอบการรัดตรึงสินค้า"
-                "type" => "text"
-                "subformfields" => []
-            ]
-            9 => array:4 [▼
-                "id" => 30
-                "label" => "การตรวจสอบความปลอดภัยในการบรรทุก"
-                "type" => "select"
-                "subformfields" => []
-            ]
-        ]
-        */
+        dd($formFields);
 
         $defaultFields = [
             [
