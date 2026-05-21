@@ -1,0 +1,457 @@
+====== 5 การตรวจความพร้อมสำหรับรถบรรทุก ======
+0 => array:4 [▼
+    "id" => 21
+    "label" => "หมายเลขงาน"
+    "type" => "text"
+    "subformfields" => []
+],
+1 => array:4 [▼
+    "id" => 22
+    "label" => "ประเภทสิ่งของที่บรรทุก"
+    "type" => "text"
+    "subformfields" => []
+]
+2 => array:4 [▼
+    "id" => 23
+    "label" => "ปริมาณบรรทุก"
+    "type" => "text"
+    "subformfields" => []
+]
+3 => array:4 [▼
+    "id" => 24
+    "label" => "หน้าที่ความรับผิดชอบของผู้ประจำรถ"
+    "type" => "text"
+    "subformfields" => []
+]
+4 => array:4 [▼
+    "id" => 25
+    "label" => "แผนการทำงานของผู้ขับรถ"
+    "type" => "text"
+    "subformfields" => []
+]
+5 => array:4 [▼
+    "id" => 26
+    "label" => "การจัดทำคู่มือการปฏิบัติงาน"
+    "type" => "text"
+    "subformfields" => []
+]
+6 => array:4 [▼
+    "id" => 27
+    "label" => "ผลการตรวจสอบยานพาหนะประจำวันสำหรับรถบรรทุก"
+    "type" => "subform"
+    "subformfields" => array:6 [▶]
+]
+7 => array:4 [▼
+    "id" => 28
+    "label" => "ผลการตรวจการจัดเรียงของสินค้าและอุปกรณ์ยึดตรึงสินค้า"
+    "type" => "text"
+    "subformfields" => []
+]
+8 => array:4 [▼
+    "id" => 29
+    "label" => "ผลการตรวจสอบการรัดตรึงสินค้า"
+    "type" => "text"
+    "subformfields" => []
+]
+9 => array:4 [▼
+    "id" => 30
+    "label" => "การตรวจสอบความปลอดภัยในการบรรทุก"
+    "type" => "select"
+    "subformfields" => []
+]
+
+======== 8 การทำ ROLLCALL ก่อนปฏิบัติงานสำหรับรถบรรทุก ============================
+0 => array:4 [▼
+    "id" => 50
+    "label" => "สภาพอากาศ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  1 => array:4 [▼
+    "id" => 51
+    "label" => "สำนักงาน/อู่/โกดัง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  2 => array:4 [▼
+    "id" => 52
+    "label" => "หมายเลขงาน"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  3 => array:4 [▼
+    "id" => 53
+    "label" => "ประเภทสิ่งของที่บรรทุก"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  4 => array:4 [▼
+    "id" => 54
+    "label" => "ปริมาณที่บรรทุก"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  5 => array:4 [▼
+    "id" => 55
+    "label" => "เวลาที่ออกเดินทาง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  6 => array:4 [▼
+    "id" => 56
+    "label" => "จุดหมายการขนส่ง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  7 => array:4 [▼
+    "id" => 57
+    "label" => "วิธีดำเนินการ"
+    "type" => "select"
+    "subformfields" => []
+  ]
+  8 => array:4 [▼
+    "id" => 58
+    "label" => "สถานที่ในการทำ ROLL CALL"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  9 => array:4 [▼
+    "id" => 59
+    "label" => "เวลาที่ทำ ROLL CALL"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  10 => array:4 [▼
+    "id" => 60
+    "label" => "การตรวจแอลกอฮอล์"
+    "type" => "subform"
+    "subformfields" => array:2 [▶]
+  ]
+  11 => array:4 [▼
+    "id" => 61
+    "label" => "การตรวจสารเสพติดในร่างกาย"
+    "type" => "subform"
+    "subformfields" => array:2 [▶]
+  ]
+  12 => array:4 [▼
+    "id" => 62
+    "label" => "การตรวจสอบยานพาหนะประจำวัน"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  13 => array:4 [▼
+    "id" => 63
+    "label" => "การตรวจสอบสุขภาพ/ความล้า"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  14 => array:4 [▼
+    "id" => 64
+    "label" => "การตรวจสอบความพร้อมด้านจิตใจ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  15 => array:4 [▼
+    "id" => 65
+    "label" => "ข้อแนะนำ/ชี้แจง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  16 => array:4 [▼
+    "id" => 66
+    "label" => "ผู้รับผิดชอบ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+
+
+======================== 9 การทำ ROLLCALL ระหว่างปฏิบัติงาน =====================================
+0 => array:4 [▼
+    "id" => 67
+    "label" => "สภาพอากาศ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  1 => array:4 [▼
+    "id" => 68
+    "label" => "สำนักงาน/อู่/โกดัง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  2 => array:4 [▼
+    "id" => 69
+    "label" => "จุดหมายการขนส่ง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  3 => array:4 [▼
+    "id" => 70
+    "label" => "เวลาที่ถึงที่หมาย"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  4 => array:4 [▼
+    "id" => 71
+    "label" => "เวลาที่ใช้จริง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  5 => array:4 [▼
+    "id" => 72
+    "label" => "วิธีการดำเนินการ"
+    "type" => "select"
+    "subformfields" => []
+  ]
+  6 => array:4 [▼
+    "id" => 73
+    "label" => "สถานที่ในการทำ ROLL CALL"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  7 => array:4 [▼
+    "id" => 74
+    "label" => "เวลาที่ทำ ROLL CALL"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  8 => array:4 [▼
+    "id" => 75
+    "label" => "การตรวจแอลกอฮอล์"
+    "type" => "subform"
+    "subformfields" => array:2 [▶]
+  ]
+  9 => array:4 [▼
+    "id" => 76
+    "label" => "การตรวจสารเสพติดในร่างกาย"
+    "type" => "subform"
+    "subformfields" => array:2 [▶]
+  ]
+  10 => array:4 [▼
+    "id" => 77
+    "label" => "การตรวจสอบยานพาหนะประจำวัน"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  11 => array:4 [▼
+    "id" => 78
+    "label" => "การตรวจสอบสุขภาพ/ความล้า"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  12 => array:4 [▼
+    "id" => 79
+    "label" => "ข้อแนะนำ/ข้อชี้แจง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  13 => array:4 [▼
+    "id" => 80
+    "label" => "ผู้รับผิดชอบ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+
+=============================== 10 การทำ ROLLCALL หลังปฏิบัติงาน ===========================================
+0 => array:4 [▼
+    "id" => 81
+    "label" => "สภาพอากาศ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  1 => array:4 [▼
+    "id" => 82
+    "label" => "สำนักงาน/อู่/โกดัง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  2 => array:4 [▼
+    "id" => 83
+    "label" => "จุดหมายการขนส่ง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  3 => array:4 [▼
+    "id" => 84
+    "label" => "วิธีดำเนินการ"
+    "type" => "select"
+    "subformfields" => []
+  ]
+  4 => array:4 [▼
+    "id" => 85
+    "label" => "สถานที่ในการทำ ROLL CALL"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  5 => array:4 [▼
+    "id" => 86
+    "label" => "เวลาที่ทำ ROLL CALL"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  6 => array:4 [▼
+    "id" => 87
+    "label" => "การตรวจแอลกอฮอล์"
+    "type" => "subform"
+    "subformfields" => array:2 [▶]
+  ]
+  7 => array:4 [▼
+    "id" => 88
+    "label" => "จำนวนวันที่ปฏิบัติงาน"
+    "type" => "number"
+    "subformfields" => []
+  ]
+  8 => array:4 [▼
+    "id" => 89
+    "label" => "สภาพยานพาหนะ/สภาพเส้นทาง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  9 => array:4 [▼
+    "id" => 90
+    "label" => "รายการรายงานข้อมูล"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  10 => array:4 [▼
+    "id" => 91
+    "label" => "ข้อแนะนำ/ข้อชี้แจง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  11 => array:4 [▼
+    "id" => 92
+    "label" => "ผู้รับผิดชอบ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+
+
+============================= 13 บันทึกการตรวจสุขภาพของผู้ประจำรถ ===========================================
+0 => array:4 [▼
+    "id" => 113
+    "label" => "สถานที่ตรวจสุขภาพ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  1 => array:4 [▼
+    "id" => 114
+    "label" => "รายละเอียด/ผลการตรวจสุขภาพ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  2 => array:4 [▼
+    "id" => 115
+    "label" => "หมายเหตุ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+
+=========================== 15 การจัดการเหตุฉุกเฉิน ===============================================
+0 => array:4 [▼
+    "id" => 127
+    "label" => "วันที่เกิดเหตุ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  1 => array:4 [▼
+    "id" => 128
+    "label" => "เวลาที่เกิดเหตุ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  2 => array:4 [▼
+    "id" => 129
+    "label" => "สถานที่เกิดเหตุ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  3 => array:4 [▼
+    "id" => 130
+    "label" => "จำนวนผู้โดยสารทั้งหมด"
+    "type" => "number"
+    "subformfields" => []
+  ]
+  4 => array:4 [▼
+    "id" => 131
+    "label" => "จำนวนผู้เสียชีวิต"
+    "type" => "number"
+    "subformfields" => []
+  ]
+  5 => array:4 [▼
+    "id" => 132
+    "label" => "ประเภทสินค้าที่ขนส่ง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  6 => array:4 [▼
+    "id" => 133
+    "label" => "ปริมาณที่ขนส่ง"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  7 => array:4 [▼
+    "id" => 134
+    "label" => "ลักษณะของถนนบริเวณที่เกิดอุบัติเหตุ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  8 => array:4 [▼
+    "id" => 135
+    "label" => "สภาพอากาศ ณ เวลาเกิดเหตุ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  9 => array:4 [▼
+    "id" => 136
+    "label" => "ลักษณะการเกิดอุบัติเหตุ"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  10 => array:4 [▼
+    "id" => 137
+    "label" => "รายละเอียดความเสียหาย"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  11 => array:4 [▼
+    "id" => 138
+    "label" => "สาเหตุ/ข้อสันนิษฐาน"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  12 => array:4 [▼
+    "id" => 139
+    "label" => "แนวทางแก้ปัญหา"
+    "type" => "text"
+    "subformfields" => []
+  ]
+  13 => array:4 [▼
+    "id" => 140
+    "label" => "การจัดทำแผนการรับมืออุบัติเหตุหรือเหตุฉุกเฉิน"
+    "type" => "select"
+    "subformfields" => []
+  ]
+  14 => array:4 [▼
+    "id" => 141
+    "label" => "การบริหารจัดการและติดต่อประสานงานกรณีเกิดเหตุฉุกเฉิน"
+    "type" => "select"
+    "subformfields" => []
+  ]
+  15 => array:4 [▼
+    "id" => 142
+    "label" => "การจัดทำรายงานอุบัติเหตุ"
+    "type" => "select"
+    "subformfields" => []
+  ]
+  16 => array:4 [▼
+    "id" => 143
+    "label" => "การจัดทำรายงานวิเคราะห์ข้อมูลอุบัติเหตุ"
+    "type" => "select"
+    "subformfields" => []
+  ]
+  17 => array:4 [▼
+    "id" => 144
+    "label" => "การจัดทำรายงานวิเคราะห์และประเมินผลการจัดการความปลอดภัยในการขนส่ง"
+    "type" => "select"
+    "subformfields" => []
+  ]
