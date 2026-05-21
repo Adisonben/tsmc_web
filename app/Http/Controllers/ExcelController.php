@@ -274,7 +274,7 @@ class ExcelController extends Controller
     {
         $configs = [
             // 1) Configuration for Form ID 1: Includes all fields, with form field 12 placed before citizen_id
-            1 => [
+            5 => [
                 'column_order' => [
                     ['type' => 'concat', 'name' => 'created_at'],
                     ['type' => 'concat', 'name' => 'license_category'],
@@ -294,7 +294,7 @@ class ExcelController extends Controller
                 ],
             ],
             // 2) Configuration for Form ID 2: Excludes 2 fields (brand and form field 14 are omitted)
-            2 => [
+            6 => [
                 'column_order' => [
                     ['type' => 'concat', 'name' => 'created_at'],
                     ['type' => 'concat', 'name' => 'license_category'],
@@ -325,7 +325,7 @@ class ExcelController extends Controller
     {
         // Only keep concat fields that are checked
         $activeConcatFields = array_filter($concatFields, function ($field) {
-            return !empty($field['is_checked']);
+            return ! empty($field['is_checked']);
         });
 
         // Key by name for easy lookup
@@ -349,6 +349,7 @@ class ExcelController extends Controller
             foreach ($formFields as $field) {
                 $unified[] = array_merge($field, ['unified_type' => 'form']);
             }
+
             return $unified;
         }
 
@@ -378,7 +379,7 @@ class ExcelController extends Controller
 
         // Column 0: ลำดับ
         $colName = $this->getExcelColumnName($columnIndex);
-        $sheet->setCellValue($colName . $startHeaderRow, 'ลำดับ');
+        $sheet->setCellValue($colName.$startHeaderRow, 'ลำดับ');
         $sheet->mergeCells("{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
         $this->setHeaderCellStyle($sheet, "{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
         $columnIndex++;
@@ -387,28 +388,28 @@ class ExcelController extends Controller
             $colName = $this->getExcelColumnName($columnIndex);
 
             if ($column['unified_type'] === 'concat') {
-                $sheet->setCellValue($colName . $startHeaderRow, $column['label']);
+                $sheet->setCellValue($colName.$startHeaderRow, $column['label']);
                 $sheet->mergeCells("{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
                 $this->setHeaderCellStyle($sheet, "{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
                 $columnIndex++;
             } elseif ($column['unified_type'] === 'form') {
-                if ($column['type'] === 'subform' && !empty($column['subformfields'])) {
+                if ($column['type'] === 'subform' && ! empty($column['subformfields'])) {
                     $subfieldCount = count($column['subformfields']);
                     $endColName = $this->getExcelColumnName($columnIndex + $subfieldCount - 1);
 
-                    $sheet->setCellValue($colName . $startHeaderRow, $column['label']);
+                    $sheet->setCellValue($colName.$startHeaderRow, $column['label']);
                     $sheet->mergeCells("{$colName}{$startHeaderRow}:{$endColName}{$startHeaderRow}");
                     $this->setHeaderCellStyle($sheet, "{$colName}{$startHeaderRow}:{$endColName}{$startHeaderRow}");
 
                     foreach ($column['subformfields'] as $i => $subfield) {
                         $subColName = $this->getExcelColumnName($columnIndex + $i);
-                        $sheet->setCellValue($subColName . $secondHeaderRow, $subfield['label']);
-                        $this->setHeaderCellStyle($sheet, $subColName . $secondHeaderRow);
+                        $sheet->setCellValue($subColName.$secondHeaderRow, $subfield['label']);
+                        $this->setHeaderCellStyle($sheet, $subColName.$secondHeaderRow);
                     }
 
                     $columnIndex += $subfieldCount;
                 } else {
-                    $sheet->setCellValue($colName . $startHeaderRow, $column['label']);
+                    $sheet->setCellValue($colName.$startHeaderRow, $column['label']);
                     $sheet->mergeCells("{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
                     $this->setHeaderCellStyle($sheet, "{$colName}{$startHeaderRow}:{$colName}{$secondHeaderRow}");
                     $columnIndex++;
@@ -450,8 +451,8 @@ class ExcelController extends Controller
             $colName = $this->getExcelColumnName($columnIndex);
 
             // Column 0: ลำดับ
-            $sheet->setCellValue($colName . $row, $count);
-            $sheet->getStyle($colName . $row)->applyFromArray([
+            $sheet->setCellValue($colName.$row, $count);
+            $sheet->getStyle($colName.$row)->applyFromArray([
                 'borders' => [
                     'left' => ['borderStyle' => Border::BORDER_THIN],
                     'right' => ['borderStyle' => Border::BORDER_THIN],
@@ -463,8 +464,8 @@ class ExcelController extends Controller
                 if ($column['unified_type'] === 'concat') {
                     $cellColName = $this->getExcelColumnName($columnIndex);
                     $val = $normal_field_datas[$submission->id][$column['name']] ?? '';
-                    $sheet->setCellValueExplicit($cellColName . $row, $val, DataType::TYPE_STRING);
-                    $sheet->getStyle($cellColName . $row)->applyFromArray([
+                    $sheet->setCellValueExplicit($cellColName.$row, $val, DataType::TYPE_STRING);
+                    $sheet->getStyle($cellColName.$row)->applyFromArray([
                         'borders' => [
                             'left' => ['borderStyle' => Border::BORDER_THIN],
                             'right' => ['borderStyle' => Border::BORDER_THIN],
@@ -472,12 +473,12 @@ class ExcelController extends Controller
                     ]);
                     $columnIndex++;
                 } elseif ($column['unified_type'] === 'form') {
-                    if ($column['type'] === 'subform' && !empty($column['subformfields'])) {
+                    if ($column['type'] === 'subform' && ! empty($column['subformfields'])) {
                         foreach ($column['subformfields'] as $subfield) {
                             $cellColName = $this->getExcelColumnName($columnIndex);
                             $val = optional($submission->getFieldValue($subfield['id']))->value ?? '';
-                            $sheet->setCellValueExplicit($cellColName . $row, $val, DataType::TYPE_STRING);
-                            $sheet->getStyle($cellColName . $row)->applyFromArray([
+                            $sheet->setCellValueExplicit($cellColName.$row, $val, DataType::TYPE_STRING);
+                            $sheet->getStyle($cellColName.$row)->applyFromArray([
                                 'borders' => [
                                     'left' => ['borderStyle' => Border::BORDER_THIN],
                                     'right' => ['borderStyle' => Border::BORDER_THIN],
@@ -488,8 +489,8 @@ class ExcelController extends Controller
                     } else {
                         $cellColName = $this->getExcelColumnName($columnIndex);
                         $val = optional($submission->getFieldValue($column['id']))->value ?? '';
-                        $sheet->setCellValueExplicit($cellColName . $row, $val, DataType::TYPE_STRING);
-                        $sheet->getStyle($cellColName . $row)->applyFromArray([
+                        $sheet->setCellValueExplicit($cellColName.$row, $val, DataType::TYPE_STRING);
+                        $sheet->getStyle($cellColName.$row)->applyFromArray([
                             'borders' => [
                                 'left' => ['borderStyle' => Border::BORDER_THIN],
                                 'right' => ['borderStyle' => Border::BORDER_THIN],
