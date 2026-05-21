@@ -10,6 +10,7 @@ use App\Models\VehicleAssignment;
 use App\Models\RepairHistory;
 use App\Models\LogBook;
 use App\Models\FormSubmissions;
+use App\Models\Form;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -121,6 +122,23 @@ class DashboardController extends Controller
                 $q->where('org', $orgId);
         })->latest()->take(5)->get();
 
+        // D. Performance Reports Exports Count for This Month
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+        $performanceReportsThisMonth = Form::where('is_sub_form', false)
+        ->where(function ($query) use ($orgId) {
+            if ($orgId) {
+                $query->where('org', $orgId)->orWhere('is_default', true);
+            } else {
+                $query->where('is_default', true);
+            }
+        })
+        ->withCount(['exportPerformanceReports as monthly_exports_count' => function ($query) use ($orgId, $startOfMonth, $endOfMonth) {
+            $query->where('org', $orgId)
+                  ->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+        }])
+        ->get();
+
         return view('dashboard.index', compact(
             'loginsToday',
             'activeWorkers',
@@ -136,7 +154,8 @@ class DashboardController extends Controller
             'formsByCategory',
             'recentWorkRecords',
             'recentSubmissions',
-            'recentPosts'
+            'recentPosts',
+            'performanceReportsThisMonth'
         ));
     }
 }

@@ -125,6 +125,11 @@ class Form extends Model
             ->count('vehicle_id');
     }
 
+    public function exportPerformanceReports()
+    {
+        return $this->hasMany(ExportPerformanceReport::class, 'form_id');
+    }
+
     public function countExportByQuarter($quarter) {
         $quarter_start_date = now()->startOfYear();
         $quarter_end_date = now()->endOfYear();

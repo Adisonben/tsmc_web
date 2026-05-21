@@ -14,121 +14,206 @@
             </div>
         </div>
 
-        <!-- KPI Cards Row -->
-        <div class="row mb-4 g-3">
-            <!-- User Login Today -->
-            <div class="col-12 col-md-4 col-lg-2">
-                <div class="card h-100 shadow-sm border-0 border-start border-primary border-4">
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
-                                ผู้เข้าใช้งานวันนี้</h6>
-                            <i class="bi bi-person-check fs-4 text-primary"></i>
+        <!-- Alert Notification & KPI Cards Row -->
+        @php
+            $totalForms = $performanceReportsThisMonth->count();
+            $exportedFormsCount = $performanceReportsThisMonth->where('monthly_exports_count', '>=', 1)->count();
+        @endphp
+
+        <div class="row mb-4 g-3 align-items-stretch">
+            <!-- KPI Cards Grid (Left Column) -->
+            <div class="col-12 col-lg-8">
+                <div class="row g-3">
+                    <!-- User Login Today -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 shadow-sm border-0 border-start border-primary border-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
+                                        ผู้เข้าใช้งานวันนี้</h6>
+                                    <i class="bi bi-person-check fs-4 text-primary"></i>
+                                </div>
+                                <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $loginsToday }}</h2>
+                                <div class="mt-auto">
+                                    <a href="{{ route('loginHistory') }}" class="btn btn-sm btn-outline-primary w-100 py-0"
+                                        style="font-size: 0.7rem;">ดูทั้งหมด</a>
+                                </div>
+                            </div>
                         </div>
-                        <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $loginsToday }}</h2>
-                        <div class="mt-auto">
-                            <a href="{{ route('loginHistory') }}" class="btn btn-sm btn-outline-primary w-100 py-0" style="font-size: 0.7rem;">ดูทั้งหมด</a>
+                    </div>
+
+                    <!-- Active Workforce -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 shadow-sm border-0 border-start border-success border-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
+                                        พนักงานที่ทำงานอยู่</h6>
+                                    <i class="bi bi-people fs-4 text-success"></i>
+                                </div>
+                                <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $activeWorkers }} <span
+                                        class="text-muted fs-6">/
+                                        {{ $totalUsers }}</span></h2>
+                                <div class="mt-auto">
+                                    @if (Auth::user()->is_tsm ||
+                                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                                'work_record_table',
+                                                Auth::user()->userDetail->org) ?? false))
+                                        <a href="{{ route('work-records.table') }}"
+                                            class="btn btn-sm btn-outline-success w-100 py-0"
+                                            style="font-size: 0.7rem;">ดูทั้งหมด</a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fleet Utilization -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 shadow-sm border-0 border-start border-info border-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
+                                        รถที่กำลังใช้งาน
+                                    </h6>
+                                    <i class="bi bi-car-front fs-4 text-info"></i>
+                                </div>
+                                <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $activeVehicles }} <span
+                                        class="text-muted fs-6">/
+                                        {{ $totalVehicles }}</span></h2>
+                                <div class="mt-auto">
+                                    @if (Auth::user()->is_tsm ||
+                                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                                'can_manage_org',
+                                                Auth::user()->userDetail->org) ?? false))
+                                        <a href="{{ route('vehicles.index') }}"
+                                            class="btn btn-sm btn-outline-info w-100 py-0"
+                                            style="font-size: 0.7rem;">ดูทั้งหมด</a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Completed Repairs -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 shadow-sm border-0 border-start border-secondary border-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
+                                        การซ่อมบำรุง</h6>
+                                    <i class="bi bi-tools fs-4 text-secondary"></i>
+                                </div>
+                                <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $completedRepairs }} <span
+                                        class="text-muted fs-6">ในเดือนนี้</span></h2>
+                                <div class="mt-auto">
+                                    @if (Auth::user()->is_tsm ||
+                                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('car_ma', Auth::user()->userDetail->org) ??
+                                                false))
+                                        <a href="{{ route('car.ma.table') }}"
+                                            class="btn btn-sm btn-outline-secondary w-100 py-0"
+                                            style="font-size: 0.7rem;">ดูทั้งหมด</a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming/Missed Maintenance -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 shadow-sm border-0 border-start border-warning border-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
+                                        Log Book สมบูรณ์</h6>
+                                    <i class="bi bi-journal-check fs-4 text-warning"></i>
+                                </div>
+                                <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $successLogBooks }} <span
+                                        class="text-muted fs-6">/
+                                        {{ $totalLogBooks }}</span> <span class="text-muted fs-6">รายการ</span></h2>
+                                <div class="mt-auto">
+                                    @if (Auth::user()->is_tsm ||
+                                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('car_ma', Auth::user()->userDetail->org) ??
+                                                false))
+                                        <a href="{{ route('logbook.table') }}"
+                                            class="btn btn-sm btn-outline-warning w-100 py-0"
+                                            style="font-size: 0.7rem;">ดูทั้งหมด</a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pending Forms -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 shadow-sm border-0 border-start border-danger border-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
+                                        เอกสารวันนี้</h6>
+                                    <i class="bi bi-file-earmark-text fs-4 text-danger"></i>
+                                </div>
+                                <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $formsToday }}</h2>
+                                <div class="mt-auto">
+                                    @if (Auth::user()->is_tsm ||
+                                            (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                                'can_access_table',
+                                                Auth::user()->userDetail->org) ?? false))
+                                        <a href="{{ route('document.table.selectform') }}"
+                                            class="btn btn-sm btn-outline-danger w-100 py-0"
+                                            style="font-size: 0.7rem;">ดูทั้งหมด</a>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Active Workforce -->
-            <div class="col-12 col-md-4 col-lg-2">
-                <div class="card h-100 shadow-sm border-0 border-start border-success border-4">
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
-                                พนักงานที่ทำงานอยู่</h6>
-                            <i class="bi bi-people fs-4 text-success"></i>
-                        </div>
-                        <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $activeWorkers }} <span class="text-muted fs-6">/
-                                {{ $totalUsers }}</span></h2>
-                        <div class="mt-auto">
-                            @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('work_record_table', Auth::user()->userDetail->org) ?? false))
-                                <a href="{{ route('work-records.table') }}" class="btn btn-sm btn-outline-success w-100 py-0" style="font-size: 0.7rem;">ดูทั้งหมด</a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fleet Utilization -->
-            <div class="col-12 col-md-4 col-lg-2">
-                <div class="card h-100 shadow-sm border-0 border-start border-info border-4">
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">รถที่กำลังใช้งาน
-                            </h6>
-                            <i class="bi bi-car-front fs-4 text-info"></i>
-                        </div>
-                        <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $activeVehicles }} <span class="text-muted fs-6">/
-                                {{ $totalVehicles }}</span></h2>
-                        <div class="mt-auto">
-                            @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_manage_org', Auth::user()->userDetail->org) ?? false))
-                                <a href="{{ route('vehicles.index') }}" class="btn btn-sm btn-outline-info w-100 py-0" style="font-size: 0.7rem;">ดูทั้งหมด</a>
-                            @endif
+            <!-- Alert Notification (Right Column) -->
+            <div class="col-12 col-lg-4">
+                @if ($totalForms == 0 || $exportedFormsCount == 0)
+                    <div class="alert alert-warning border-0 border-start border-warning border-4 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center text-center p-4 m-0"
+                        role="alert">
+                        <i class="bi bi-exclamation-triangle-fill fs-1 mb-3 text-warning"></i>
+                        <div>
+                            <h5 class="fw-bold mb-2">เรียนผู้ประกอบการ</h5>
+                            <p class="mb-0 fs-5 text-dark">TSM
+                                ยังไม่ได้นำส่งข้อมูลรายงานผลการปฏิบัติงานให้ท่าน กรุณาติดต่อเจ้าหน้าที่ TSM
+                                เพื่อส่งข้อมูลให้ท่านนำส่งต่อไปยัง <a href="https://tsmthai.com" target="_blank"
+                                    class="alert-link fw-bold text-decoration-underline text-success">tsmthai.com</a>
+                                <br> ด้วยความขอบพระคุณยิ่ง
+                            </p>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Completed Repairs -->
-            <div class="col-12 col-md-4 col-lg-2">
-                <div class="card h-100 shadow-sm border-0 border-start border-secondary border-4">
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">การซ่อมบำรุง</h6>
-                            <i class="bi bi-tools fs-4 text-secondary"></i>
-                        </div>
-                        <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $completedRepairs }} <span class="text-muted fs-6">ในเดือนนี้</span></h2>
-                        <!-- <small class="text-muted mb-2">ในเดือนนี้</small> -->
-                        <div class="mt-auto">
-                            @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('car_ma', Auth::user()->userDetail->org) ?? false))
-                                <a href="{{ route('car.ma.table') }}" class="btn btn-sm btn-outline-secondary w-100 py-0" style="font-size: 0.7rem;">ดูทั้งหมด</a>
-                            @endif
+                @elseif($exportedFormsCount == $totalForms)
+                    <div class="alert alert-success border-0 border-start border-success border-4 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center text-center p-4 m-0"
+                        role="alert">
+                        <i class="bi bi-check-circle-fill fs-1 mb-3 text-success"></i>
+                        <div>
+                            <h5 class="fw-bold mb-2">เรียนผู้ประกอบการ</h5>
+                            <p class="mb-0 fs-5 text-dark">เจ้าหน้าที่ TSM
+                                ได้จัดส่งข้อมูลทั้งหมดให้ท่านเรียบร้อยแล้ว <b>ท่านกรุณาส่งข้อมูลต่อไปยัง <a
+                                        href="https://tsmthai.com" target="_blank"
+                                        class="alert-link fw-bold text-decoration-underline text-success">tsmthai.com</a>
+                                    <br> ด้วยความขอบพระคุณยิ่ง</b></p>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Upcoming/Missed Maintenance -->
-            <div class="col-12 col-md-4 col-lg-2">
-                <div class="card h-100 shadow-sm border-0 border-start border-warning border-4">
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
-                                Log Book สมบูรณ์</h6>
-                            <i class="bi bi-journal-check fs-4 text-warning"></i>
-                        </div>
-                        <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $successLogBooks }} <span class="text-muted fs-6">/
-                                {{ $totalLogBooks }}</span> <span class="text-muted fs-6">รายการ</span></h2>
-                        <!-- <small class="text-muted mb-2">รายการ</small> -->
-                        <div class="mt-auto">
-                            @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('car_ma', Auth::user()->userDetail->org) ?? false))
-                                <a href="{{ route('logbook.table') }}" class="btn btn-sm btn-outline-warning w-100 py-0" style="font-size: 0.7rem;">ดูทั้งหมด</a>
-                            @endif
+                @else
+                    <div class="alert alert-info border-0 border-start border-info border-4 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center text-center p-4 m-0"
+                        role="alert">
+                        <i class="bi bi-info-circle-fill fs-1 mb-3 text-info"></i>
+                        <div>
+                            <h5 class="fw-bold mb-2">เรียนผู้ประกอบการ</h5>
+                            <p class="mb-0 fs-5 text-dark">เจ้าหน้าที่ TSM
+                                ได้จัดส่งข้อมูลบางส่วนให้ท่านเรียบร้อยแล้ว **ท่านกรุณาส่งข้อมูลต่อไปยัง <a
+                                    href="https://tsmthai.com" target="_blank"
+                                    class="alert-link fw-bold text-decoration-underline text-info">tsmthai.com</a>
+                                <br> ด้วยความขอบพระคุณยิ่ง
+                            </p>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Pending Forms -->
-            <div class="col-12 col-md-4 col-lg-2">
-                <div class="card h-100 shadow-sm border-0 border-start border-danger border-4">
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">เอกสารวันนี้</h6>
-                            <i class="bi bi-file-earmark-text fs-4 text-danger"></i>
-                        </div>
-                        <h2 class="fw-bold mb-1" style="font-size: 2.2rem;">{{ $formsToday }}</h2>
-                        <div class="mt-auto">
-                            @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_access_table', Auth::user()->userDetail->org) ?? false))
-                                <a href="{{ route('document.table.selectform') }}" class="btn btn-sm btn-outline-danger w-100 py-0" style="font-size: 0.7rem;">ดูทั้งหมด</a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
+                @endif
             </div>
         </div>
 
@@ -139,8 +224,12 @@
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-header bg-white border-0 pt-3 pb-0 d-flex justify-content-between align-items-center">
                         <h6 class="fw-bold mb-0"><i class="bi bi-graph-up me-2"></i>การลงเวลาทำงาน 7 วันล่าสุด</h6>
-                        @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('work_record_table', Auth::user()->userDetail->org) ?? false))
-                            <a href="{{ route('work-records.table') }}" class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
+                        @if (Auth::user()->is_tsm ||
+                                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'work_record_table',
+                                    Auth::user()->userDetail->org) ?? false))
+                            <a href="{{ route('work-records.table') }}"
+                                class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
                         @endif
                     </div>
                     <div class="card-body">
@@ -149,24 +238,25 @@
                 </div>
             </div>
 
-            <!-- Forms by Category -->
+            <!-- Performance Report Exports This Month -->
             <div class="col-12 col-lg-4">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-header bg-white border-0 pt-3 pb-0 d-flex justify-content-between align-items-center">
-                        <h6 class="fw-bold mb-0"><i class="bi bi-pie-chart me-2"></i>เอกสารแยกตามหมวดหมู่</h6>
-                        @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_access_table', Auth::user()->userDetail->org) ?? false))
-                            <a href="{{ route('document.table.selectform') }}" class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
-                        @endif
+                        <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-excel me-2"></i>การออกรายงานส่งกรมฯ เดือนนี้
+                        </h6>
+                        <a href="{{ route('performance.report') }}"
+                            class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
                     </div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
-                            @forelse($formsByCategory as $stat)
-                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
-                                    {{ $stat->getForm->title ?? 'Unknown Form' }}
-                                    <span class="badge bg-primary fs-6">{{ $stat->count }}</span>
+                            @forelse($performanceReportsThisMonth as $form)
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                                    {{ $form->title }}
+                                    <span class="badge bg-success fs-6">{{ $form->monthly_exports_count }}</span>
                                 </li>
                             @empty
-                                <li class="list-group-item text-muted px-0 border-0">ไม่มีประวัติการส่งเอกสารล่าสุด</li>
+                                <li class="list-group-item text-muted px-0 border-0">ไม่มีข้อมูลการออกรายงานในเดือนนี้</li>
                             @endforelse
                         </ul>
                     </div>
@@ -179,10 +269,15 @@
             <!-- Recent Work Records -->
             <div class="col-12 col-lg-4">
                 <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white border-bottom pt-3 pb-2 d-flex justify-content-between align-items-center">
+                    <div
+                        class="card-header bg-white border-bottom pt-3 pb-2 d-flex justify-content-between align-items-center">
                         <h6 class="fw-bold mb-0"><i class="bi bi-geo-alt me-2"></i>ประวัติการลงเวลาล่าสุด</h6>
-                        @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('work_record_table', Auth::user()->userDetail->org) ?? false))
-                            <a href="{{ route('work-records.table') }}" class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
+                        @if (Auth::user()->is_tsm ||
+                                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'work_record_table',
+                                    Auth::user()->userDetail->org) ?? false))
+                            <a href="{{ route('work-records.table') }}"
+                                class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
                         @endif
                     </div>
                     <div class="card-body p-0">
@@ -209,10 +304,16 @@
             <!-- Recent Submissions -->
             <div class="col-12 col-lg-4">
                 <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white border-bottom pt-3 pb-2 d-flex justify-content-between align-items-center">
-                        <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-check me-2"></i>ประวัติการทำเอกสารล่าสุด</h6>
-                        @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_access_table', Auth::user()->userDetail->org) ?? false))
-                            <a href="{{ route('document.table.selectform') }}" class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
+                    <div
+                        class="card-header bg-white border-bottom pt-3 pb-2 d-flex justify-content-between align-items-center">
+                        <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-check me-2"></i>ประวัติการทำเอกสารล่าสุด
+                        </h6>
+                        @if (Auth::user()->is_tsm ||
+                                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'can_access_table',
+                                    Auth::user()->userDetail->org) ?? false))
+                            <a href="{{ route('document.table.selectform') }}"
+                                class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
                         @endif
                     </div>
                     <div class="card-body p-0">
@@ -226,7 +327,8 @@
                                         <small
                                             class="text-muted">{{ \Carbon\Carbon::parse($submission->created_at)->diffForHumans() }}</small>
                                     </div>
-                                    <p class="mb-1 small text-muted">โดย: {{ $submission->getUser->fullName ?? 'Unknown' }}</p>
+                                    <p class="mb-1 small text-muted">โดย:
+                                        {{ $submission->getUser->fullName ?? 'Unknown' }}</p>
                                 </div>
                             @empty
                                 <div class="list-group-item text-muted">ไม่พบประวัติการทำเอกสารล่าสุด</div>
@@ -236,33 +338,32 @@
                 </div>
             </div>
 
-            <!-- Latest Posts -->
+            <!-- Forms by Category -->
             <div class="col-12 col-lg-4">
                 <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white border-bottom pt-3 pb-2 d-flex justify-content-between align-items-center">
-                        <h6 class="fw-bold mb-0"><i class="bi bi-megaphone me-2"></i>ประกาศล่าสุด</h6>
-                        @if(Auth::user()->is_tsm || (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_post', Auth::user()->userDetail->org) ?? false))
-                            <a href="{{ route('posts.index') }}" class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
+                    <div
+                        class="card-header bg-white border-bottom pt-3 pb-2 d-flex justify-content-between align-items-center">
+                        <h6 class="fw-bold mb-0"><i class="bi bi-pie-chart me-2"></i>เอกสารแยกตามหมวดหมู่</h6>
+                        @if (Auth::user()->is_tsm ||
+                                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                                    'can_access_table',
+                                    Auth::user()->userDetail->org) ?? false))
+                            <a href="{{ route('document.table.selectform') }}"
+                                class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
                         @endif
                     </div>
-                    <div class="card-body p-0">
-                        <div class="list-group list-group-flush">
-                            @forelse($recentPosts as $post)
-                                <div class="list-group-item">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1 text-truncate" style="max-width: 70%;">
-                                            {{ $post->getUser->fullName ?? 'Unknown' }}</h6>
-                                        <small
-                                            class="text-muted">{{ \Carbon\Carbon::parse($post->created_at)->format('d M') }}</small>
-                                    </div>
-                                    <p class="mb-1 small text-muted text-truncate">
-                                        {{ Str::limit(strip_tags($post->content), 50) }}
-                                    </p>
-                                </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            @forelse($formsByCategory as $stat)
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                                    {{ $stat->getForm->title ?? 'Unknown Form' }}
+                                    <span class="badge bg-primary fs-6">{{ $stat->count }}</span>
+                                </li>
                             @empty
-                                <div class="list-group-item text-muted">ไม่พบประกาศล่าสุด</div>
+                                <li class="list-group-item text-muted px-0 border-0">ไม่มีประวัติการส่งเอกสารล่าสุด</li>
                             @endforelse
-                        </div>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -273,7 +374,7 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const checkinsData = @json($checkinsData);
 
             if (checkinsData && checkinsData.labels) {
@@ -296,11 +397,15 @@
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                ticks: { precision: 0 }
+                                ticks: {
+                                    precision: 0
+                                }
                             }
                         },
                         plugins: {
-                            legend: { display: false }
+                            legend: {
+                                display: false
+                            }
                         }
                     }
                 });
