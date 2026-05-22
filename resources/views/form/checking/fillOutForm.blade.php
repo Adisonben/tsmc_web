@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="px-3 px-md-5">
                 <div class="card">
-                    <div class="card-body px-md-5" x-data="formFillOut({{ $form_data->formFields }}, {{ $vehicles }})">
+                    <div class="card-body px-md-5" x-data="formFillOut({{ $form_data->formFields }}, {{ $vehicles }}, '{{ $form_data->form_id }}')">
                         <p class="text-center fs-5 fw-bold">{{ $form_data->title }}</p>
                         <form @submit.prevent="handleSubmit">
                             @csrf
@@ -174,7 +174,7 @@
         </div>
     </div>
     <script>
-        function formFillOut(fieldData, vehicles) {
+        function formFillOut(fieldData, vehicles, formId) {
             return {
                 formFieldsAnswer: fieldData.map((field) => ({
                     id: field.id,
@@ -198,6 +198,48 @@
                 selectVehicleId: '',
                 showVehicleError: false,
                 showUserError: false,
+                storageKey: `form_history_${formId}`,
+
+                init() {
+                    this.restoreHistory();
+                },
+
+                // บันทึก history ลง LocalStorage
+                saveHistory() {
+                    const snapshot = {
+                        fields: this.formFieldsAnswer.map(field => ({
+                            id: field.id,
+                            answer: field.answer,
+                            subfields: Array.isArray(field.subfields)
+                                ? field.subfields.map(sf => ({ id: sf.id, answer: sf.answer }))
+                                : null
+                        }))
+                    };
+                    localStorage.setItem(this.storageKey, JSON.stringify(snapshot));
+                },
+
+                // เติมข้อมูลจาก history กลับเข้าฟอร์ม
+                restoreHistory() {
+                    const today = new Date().toISOString().split('T')[0];
+                    const raw = localStorage.getItem(this.storageKey);
+                    const snapshot = raw ? JSON.parse(raw) : null;
+
+                    // Reassign array ทั้งหมดเพื่อให้ Alpine detect การเปลี่ยนแปลงได้แน่นอน
+                    this.formFieldsAnswer = this.formFieldsAnswer.map(field => {
+                        const savedField = snapshot?.fields?.find(sf => sf.id === field.id);
+
+                        const restoredSubfields = Array.isArray(field.subfields)
+                            ? field.subfields.map(sf => {
+                                const savedSub = savedField?.subfields?.find(s => s.id === sf.id);
+                                if (sf.type === 'date') return { ...sf, answer: today };
+                                return { ...sf, answer: savedSub?.answer ?? sf.answer };
+                            })
+                            : field.subfields;
+
+                        if (field.type === 'date') return { ...field, answer: today, subfields: restoredSubfields };
+                        return { ...field, answer: savedField?.answer ?? field.answer, subfields: restoredSubfields };
+                    });
+                },
 
                 updateError() {
                     this.showVehicleError = !this.selectVehicleId;
@@ -218,6 +260,7 @@
 
 
                 handleSubmit() {
+                    this.saveHistory();
                     const allFields = this.formFieldsAnswer.flatMap(field =>
                         field.type === "subform" ? field.subfields : field
                     );
