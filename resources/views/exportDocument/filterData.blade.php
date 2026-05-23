@@ -210,7 +210,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p class="text-end" style="font-size: 10px">print on TSMCPlus at
+                        <p class="text-end" style="font-size: 10px">print on TSMC at
                             {{ new Carbon\Carbon()->format('d/m/Y G:i:s') }}</p>
                     </div>
                 </div>
@@ -443,7 +443,7 @@
                             const url = window.URL.createObjectURL(blob);
                             const a = document.createElement('a');
                             a.href = url;
-                            a.download = "TSMCPlus_" + new Date().toISOString().slice(0, 10).replace(/-/g, '') + "_" +
+                            a.download = "TSMC_" + new Date().toISOString().slice(0, 10).replace(/-/g, '') + "_" +
                                 new Date().toTimeString().slice(0, 8).replace(/:/g, '') + '.xlsx';
                             document.body.appendChild(a);
                             a.click();
