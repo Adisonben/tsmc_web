@@ -83,18 +83,8 @@ class DashboardController extends Controller
             return $q->where('org', $orgId);
         })->whereDate('created_at', $today)->count();
 
-        // --- Chart Data ---
-        // Chart 1: Check-ins Last 7 Days
-        $checkinsData = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::today()->subDays($i);
-            $count = WorkRecord::whereHas('getUser.userDetail', function ($q) use ($orgId) {
-                if ($orgId)
-                    $q->where('org', $orgId);
-            })->whereDate('created_at', $date)->count();
-            $checkinsData['labels'][] = $date->format('D, d M');
-            $checkinsData['data'][] = $count;
-        }
+        // --- Quarter Calculation & Reports Data ---
+        $quarter = Carbon::now()->quarter;
 
         // Chart 2: Forms by Category (Mocked structure for view)
         $formsByCategory = FormSubmissions::when($orgId, function ($q) use ($orgId) {
@@ -135,7 +125,17 @@ class DashboardController extends Controller
         })
         ->withCount(['exportPerformanceReports as monthly_exports_count' => function ($query) use ($orgId, $startOfMonth, $endOfMonth) {
             $query->where('org', $orgId)
+                  ->where('accepted', false)
                   ->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+        }])
+        ->withCount(['exportPerformanceReports as total_exports_count' => function ($query) use ($orgId, $startOfMonth, $endOfMonth) {
+            $query->where('org', $orgId)
+                  ->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+        }])
+        ->with(['exportPerformanceReports' => function ($query) use ($orgId, $startOfMonth, $endOfMonth) {
+            $query->where('org', $orgId)
+                  ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+                  ->latest();
         }])
         ->get();
 
@@ -150,12 +150,30 @@ class DashboardController extends Controller
             'totalLogBooks',
             'formsToday',
             'logBooks',
-            'checkinsData',
+            'quarter',
             'formsByCategory',
             'recentWorkRecords',
             'recentSubmissions',
             'recentPosts',
             'performanceReportsThisMonth'
         ));
+    }
+
+    public function acceptPerformanceReports(Request $request)
+    {
+        $orgId = Auth::user()->is_tsm ? session('connected_org') : Auth::user()->userDetail->org;
+        
+        if (!$orgId) {
+            return redirect()->back()->with('error', 'ไม่พบข้อมูลบริษัท');
+        }
+
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        \App\Models\ExportPerformanceReport::where('org', $orgId)
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->update(['accepted' => true]);
+
+        return redirect()->route('dashboard')->with('success', 'ตรวจสอบรายงานผลการปฏิบัติงานเรียบร้อยแล้ว');
     }
 }

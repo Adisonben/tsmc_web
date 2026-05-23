@@ -1,7 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
+    <style>
+        .kpi-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .kpi-report-item {
+            transition: background-color 0.2s ease, padding-left 0.2s ease;
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        .kpi-report-item:hover {
+            background-color: rgba(25, 135, 84, 0.05) !important;
+            padding-left: 12px !important;
+        }
+    </style>
     <div class="container-fluid p-4">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="row mb-4">
             <div class="col-12 d-flex justify-content-between align-items-center">
                 <h2 class="fw-bold">
@@ -17,7 +50,9 @@
         <!-- Alert Notification & KPI Cards Row -->
         @php
             $totalForms = $performanceReportsThisMonth->count();
-            $exportedFormsCount = $performanceReportsThisMonth->where('monthly_exports_count', '>=', 1)->count();
+            $exportedFormsCount = $performanceReportsThisMonth->where('total_exports_count', '>=', 1)->count();
+            $unacceptedFormsCount = $performanceReportsThisMonth->where('monthly_exports_count', '>=', 1)->count();
+            $hasAcceptedAll = $exportedFormsCount > 0 && $unacceptedFormsCount == 0;
         @endphp
 
         <div class="row mb-4 g-3 align-items-stretch">
@@ -26,7 +61,7 @@
                 <div class="row g-3">
                     <!-- User Login Today -->
                     <div class="col-12 col-md-4">
-                        <div class="card h-100 shadow-sm border-0 border-start border-primary border-4">
+                        <div class="card h-100 shadow-sm border border-dark bg-primary bg-opacity-10 kpi-card">
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
@@ -44,7 +79,7 @@
 
                     <!-- Active Workforce -->
                     <div class="col-12 col-md-4">
-                        <div class="card h-100 shadow-sm border-0 border-start border-success border-4">
+                        <div class="card h-100 shadow-sm border border-dark bg-success bg-opacity-10 kpi-card">
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
@@ -70,7 +105,7 @@
 
                     <!-- Fleet Utilization -->
                     <div class="col-12 col-md-4">
-                        <div class="card h-100 shadow-sm border-0 border-start border-info border-4">
+                        <div class="card h-100 shadow-sm border border-dark bg-info bg-opacity-10 kpi-card">
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
@@ -97,7 +132,7 @@
 
                     <!-- Completed Repairs -->
                     <div class="col-12 col-md-4">
-                        <div class="card h-100 shadow-sm border-0 border-start border-secondary border-4">
+                        <div class="card h-100 shadow-sm border border-dark bg-secondary bg-opacity-10 kpi-card">
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
@@ -121,7 +156,7 @@
 
                     <!-- Upcoming/Missed Maintenance -->
                     <div class="col-12 col-md-4">
-                        <div class="card h-100 shadow-sm border-0 border-start border-warning border-4">
+                        <div class="card h-100 shadow-sm border border-dark bg-warning bg-opacity-10 kpi-card">
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
@@ -146,7 +181,7 @@
 
                     <!-- Pending Forms -->
                     <div class="col-12 col-md-4">
-                        <div class="card h-100 shadow-sm border-0 border-start border-danger border-4">
+                        <div class="card h-100 shadow-sm border border-dark bg-danger bg-opacity-10 kpi-card">
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.8rem;">
@@ -172,15 +207,27 @@
 
             <!-- Alert Notification (Right Column) -->
             <div class="col-12 col-lg-4">
-                @if ($totalForms == 0 || $exportedFormsCount == 0)
+                @if ($hasAcceptedAll)
+                    <div class="alert alert-success border-0 border-start border-success border-4 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center text-center p-4 m-0"
+                        role="alert">
+                        <i class="bi bi-check-circle-fill fs-1 mb-3 text-success"></i>
+                        <div>
+                            <h5 class="fw-bold mb-2">เรียนผู้ประกอบการ</h5>
+                            <p class="mb-0 fs-5 text-dark">
+                                ท่านได้ตรวจสอบและยืนยันรายงานผลการปฏิบัติงานทั้งหมดในเดือนนี้เรียบร้อยแล้ว
+                                <b>ขอขอบพระคุณยิ่ง</b>
+                            </p>
+                        </div>
+                    </div>
+                @elseif ($totalForms == 0 || $exportedFormsCount == 0)
                     <div class="alert alert-warning border-0 border-start border-warning border-4 shadow-sm h-100 d-flex flex-column align-items-center justify-content-center text-center p-4 m-0"
                         role="alert">
                         <i class="bi bi-exclamation-triangle-fill fs-1 mb-3 text-warning"></i>
                         <div>
                             <h5 class="fw-bold mb-2">เรียนผู้ประกอบการ</h5>
                             <p class="mb-0 fs-5 text-dark">TSM
-                                ยังไม่ได้นำส่งข้อมูลรายงานผลการปฏิบัติงานให้ท่าน กรุณาติดต่อเจ้าหน้าที่ TSM
-                                เพื่อส่งข้อมูลให้ท่านนำส่งต่อไปยัง <a href="https://tsmthai.com" target="_blank"
+                                ยังไม่ได้จัดส่งรายงานผลการปฏิบัติงานให้ท่าน กรุณาติดต่อเจ้าหน้าที่ TSM
+                                เพื่อส่งรายงานให้ท่านตรวจสอบในระบบ <a href="https://tsmthai.com" target="_blank"
                                     class="alert-link fw-bold text-decoration-underline text-success">tsmthai.com</a>
                                 <br> ด้วยความขอบพระคุณยิ่ง
                             </p>
@@ -193,10 +240,17 @@
                         <div>
                             <h5 class="fw-bold mb-2">เรียนผู้ประกอบการ</h5>
                             <p class="mb-0 fs-5 text-dark">เจ้าหน้าที่ TSM
-                                ได้จัดส่งข้อมูลทั้งหมดให้ท่านเรียบร้อยแล้ว <b>ท่านกรุณาส่งข้อมูลต่อไปยัง <a
+                                ได้จัดส่งรายงานผลการปฏิบัติงานทั้งหมดให้ท่านเรียบร้อยแล้ว <b>ท่านกรุณาตรวจสอบรายงานในระบบ <a
                                         href="https://tsmthai.com" target="_blank"
                                         class="alert-link fw-bold text-decoration-underline text-success">tsmthai.com</a>
                                     <br> ด้วยความขอบพระคุณยิ่ง</b></p>
+                            <form action="{{ route('dashboard.accept-performance-reports') }}" method="POST"
+                                class="mt-3">
+                                @csrf
+                                <button type="submit" class="btn btn-success fw-bold px-4 py-2 shadow-sm rounded-pill">
+                                    <i class="bi bi-check-all me-1"></i> ตรวจสอบแล้ว
+                                </button>
+                            </form>
                         </div>
                     </div>
                 @else
@@ -206,11 +260,19 @@
                         <div>
                             <h5 class="fw-bold mb-2">เรียนผู้ประกอบการ</h5>
                             <p class="mb-0 fs-5 text-dark">เจ้าหน้าที่ TSM
-                                ได้จัดส่งข้อมูลบางส่วนให้ท่านเรียบร้อยแล้ว **ท่านกรุณาส่งข้อมูลต่อไปยัง <a
-                                    href="https://tsmthai.com" target="_blank"
-                                    class="alert-link fw-bold text-decoration-underline text-info">tsmthai.com</a>
-                                <br> ด้วยความขอบพระคุณยิ่ง
+                                ได้จัดส่งรายงานผลการปฏิบัติงานบางส่วนให้ท่านเรียบร้อยแล้ว <b>ท่านกรุณาตรวจสอบรายงานในระบบ <a
+                                        href="https://tsmthai.com" target="_blank"
+                                        class="alert-link fw-bold text-decoration-underline text-info">tsmthai.com</a>
+                                    <br> ด้วยความขอบพระคุณยิ่ง</b>
                             </p>
+                            <form action="{{ route('dashboard.accept-performance-reports') }}" method="POST"
+                                class="mt-3">
+                                @csrf
+                                <button type="submit"
+                                    class="btn btn-info text-white fw-bold px-4 py-2 shadow-sm rounded-pill">
+                                    <i class="bi bi-check-all me-1"></i> ตรวจสอบแล้ว
+                                </button>
+                            </form>
                         </div>
                     </div>
                 @endif
@@ -219,21 +281,21 @@
 
         <!-- Analytics Charts Row -->
         <div class="row mb-4 g-3">
-            <!-- Check-ins Chart -->
+            <!-- Performance Report Exports This Quarter -->
             <div class="col-12 col-lg-8">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-header bg-white border-0 pt-3 pb-0 d-flex justify-content-between align-items-center">
-                        <h6 class="fw-bold mb-0"><i class="bi bi-graph-up me-2"></i>การลงเวลาทำงาน 7 วันล่าสุด</h6>
-                        @if (Auth::user()->is_tsm ||
-                                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
-                                    'work_record_table',
-                                    Auth::user()->userDetail->org) ?? false))
-                            <a href="{{ route('work-records.table') }}"
-                                class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
-                        @endif
+                        <h6 class="fw-bold mb-0">
+                            <i class="bi bi-bar-chart-line me-2"></i>การออกรายงานส่งกรมฯ ไตรมาสที่ {{ $quarter }}
+                            (ภาคบังคับ)
+                        </h6>
+                        <a href="{{ route('performance.report', ['quarter' => $quarter]) }}"
+                            class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
                     </div>
-                    <div class="card-body">
-                        <canvas id="checkinsChart" height="100"></canvas>
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <div class="w-100" style="position: relative; height: 320px;">
+                            <canvas id="quarterlyPerformanceChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -243,6 +305,7 @@
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-header bg-white border-0 pt-3 pb-0 d-flex justify-content-between align-items-center">
                         <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-excel me-2"></i>การออกรายงานส่งกรมฯ เดือนนี้
+                            (ภาคสมัคใจ)
                         </h6>
                         <a href="{{ route('performance.report') }}"
                             class="btn btn-sm btn-link text-decoration-none">ดูทั้งหมด</a>
@@ -250,10 +313,20 @@
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                             @forelse($performanceReportsThisMonth as $form)
-                                <li
-                                    class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
-                                    {{ $form->title }}
-                                    <span class="badge bg-success fs-6">{{ $form->monthly_exports_count }}</span>
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 kpi-report-item"
+                                    style="cursor: pointer;" data-title="{{ $form->title }}"
+                                    data-exports="{{ json_encode($form->exportPerformanceReports->map(fn($e) => ['date' => \Carbon\Carbon::parse($e->created_at)->translatedFormat('j M Y H:i น.'), 'accepted' => (bool) $e->accepted])) }}">
+                                    <div>
+                                        <i class="bi bi-file-earmark-excel me-1 text-success"></i>
+                                        {{ $form->title }}
+                                    </div>
+                                    @if ($form->total_exports_count >= 1 && $form->monthly_exports_count == 0)
+                                        <span class="text-success fs-5" title="ตรวจสอบแล้ว">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                        </span>
+                                    @else
+                                        <span class="badge bg-success fs-6">{{ $form->monthly_exports_count }}</span>
+                                    @endif
                                 </li>
                             @empty
                                 <li class="list-group-item text-muted px-0 border-0">ไม่มีข้อมูลการออกรายงานในเดือนนี้</li>
@@ -369,47 +442,140 @@
             </div>
         </div>
     </div>
+
+    <!-- Export Dates Modal -->
+    <div class="modal fade" id="exportDatesModal" tabindex="-1" aria-labelledby="exportDatesModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+                <div class="modal-header bg-success text-white border-0 py-3">
+                    <h5 class="modal-title fw-bold" id="exportDatesModalLabel">
+                        <i class="bi bi-calendar-event me-2"></i> ประวัติการออกรายงาน
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <h6 class="fw-bold mb-3 text-secondary" id="modalFormTitle"></h6>
+                    <ul class="list-group list-group-flush" id="modalExportList"
+                        style="max-height: 300px; overflow-y: auto;">
+                        <!-- Items will be injected dynamically -->
+                    </ul>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary px-4 rounded-pill"
+                        data-bs-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const checkinsData = @json($checkinsData);
+            // Quarterly Performance Chart
+            const quarterlyPerformanceData = {
+                labels: @json($performanceReportsThisMonth->pluck('title')),
+                exports: @json($performanceReportsThisMonth->map(fn($form) => $form->countExportByQuarter($quarter))),
+                vehicles: @json($performanceReportsThisMonth->map(fn($form) => $form->countVehicleFromSubmissionByQuarter($quarter)))
+            };
 
-            if (checkinsData && checkinsData.labels) {
-                const ctx = document.getElementById('checkinsChart').getContext('2d');
+            if (quarterlyPerformanceData && quarterlyPerformanceData.labels.length > 0) {
+                const ctx = document.getElementById('quarterlyPerformanceChart').getContext('2d');
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: checkinsData.labels,
+                        labels: quarterlyPerformanceData.labels.map(label => {
+                            return label.length > 25 ? label.substring(0, 25) + '...' : label;
+                        }),
                         datasets: [{
-                            label: 'การลงเวลา',
-                            data: checkinsData.data,
-                            backgroundColor: 'rgba(13, 110, 253, 0.2)',
-                            borderColor: 'rgba(13, 110, 253, 1)',
-                            borderWidth: 1,
-                            borderRadius: 4
-                        }]
+                                label: 'จำนวนที่ออกรายงาน (ครั้ง)',
+                                data: quarterlyPerformanceData.exports,
+                                backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                                borderColor: 'rgba(13, 110, 253, 1)',
+                                borderWidth: 1,
+                                borderRadius: 4
+                            },
+                            {
+                                label: 'จำนวนรถ (คัน)',
+                                data: quarterlyPerformanceData.vehicles,
+                                backgroundColor: 'rgba(13, 202, 240, 0.7)',
+                                borderColor: 'rgba(13, 202, 240, 1)',
+                                borderWidth: 1,
+                                borderRadius: 4
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         scales: {
                             y: {
                                 beginAtZero: true,
                                 ticks: {
                                     precision: 0
                                 }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
                             }
                         },
                         plugins: {
                             legend: {
-                                display: false
+                                position: 'top',
+                                labels: {
+                                    boxWidth: 12,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle'
+                                }
                             }
                         }
                     }
                 });
             }
+
+            // Export Dates Modal Handling
+            const reportItems = document.querySelectorAll('.kpi-report-item');
+            const exportDatesModal = new bootstrap.Modal(document.getElementById('exportDatesModal'));
+            const modalFormTitle = document.getElementById('modalFormTitle');
+            const modalExportList = document.getElementById('modalExportList');
+
+            reportItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const title = this.getAttribute('data-title');
+                    const exports = JSON.parse(this.getAttribute('data-exports') || '[]');
+
+                    modalFormTitle.textContent = title;
+                    modalExportList.innerHTML = '';
+
+                    if (exports.length === 0) {
+                        modalExportList.innerHTML =
+                            '<li class="list-group-item text-muted border-0 px-0">ไม่มีข้อมูลการออกรายงานในเดือนนี้</li>';
+                    } else {
+                        exports.forEach((record, index) => {
+                            const statusBadge = record.accepted ?
+                                '<span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>ตรวจสอบแล้ว</span>' :
+                                '<span class="badge bg-warning text-dark"><i class="bi bi-clock me-1"></i>ยังไม่ตรวจสอบ</span>';
+
+                            modalExportList.innerHTML += `
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2 border-bottom">
+                                    <div class="d-flex flex-column">
+                                        <span class="text-dark fw-bold" style="font-size: 0.9rem;">ครั้งที่ ${exports.length - index}</span>
+                                        <small class="text-muted"><i class="bi bi-calendar-check me-1"></i>${record.date}</small>
+                                    </div>
+                                    <div>${statusBadge}</div>
+                                </li>
+                            `;
+                        });
+                    }
+
+                    exportDatesModal.show();
+                });
+            });
         });
     </script>
 @endpush

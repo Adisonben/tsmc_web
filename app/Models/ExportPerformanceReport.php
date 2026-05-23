@@ -10,6 +10,11 @@ class ExportPerformanceReport extends Model
         'user_id',
         'form_id',
         'quarter',
-        'org'
+        'org',
+        'accepted'
+    ];
+
+    protected $casts = [
+        'accepted' => 'boolean',
     ];
 }

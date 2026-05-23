@@ -24,8 +24,10 @@
 
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 mb-4">
                             <div class="">
-                                <label for="cateSelect" class="form-label">หมวดหมู่ <span class="text-danger">*</span></label>
-                                <select class="form-select" id="cateSelect" x-model="filter_form_cate" @change="fetchForms()">
+                                <label for="cateSelect" class="form-label">หมวดหมู่ <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="cateSelect" x-model="filter_form_cate"
+                                    @change="fetchForms()">
                                     <option value="" selected disabled>เลือกหมวดหมู่</option>
                                     @foreach ($form_cates as $form_cate)
                                         <option value="{{ $form_cate->id }}">{{ $form_cate->name }}</option>
@@ -33,8 +35,10 @@
                                 </select>
                             </div>
                             <div class="">
-                                <label for="formSelect" class="form-label">แบบฟอร์ม <span class="text-danger">*</span></label>
-                                <select class="form-select" id="formSelect" x-model="filter_form_id" @change="getFilteredForm()">
+                                <label for="formSelect" class="form-label">แบบฟอร์ม <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="formSelect" x-model="filter_form_id"
+                                    @change="getFilteredForm()">
                                     <option selected value="" disabled>เลือกแบบฟอร์ม</option>
                                     <template x-for="form in form_datas" :key="form.id">
                                         <option x-text="form.title" :value="form.id"></option>
@@ -53,25 +57,26 @@
                             <div class="">
                                 <label for="userSelect" class="form-label">พนักงาน</label>
                                 <select class="form-select" id="userSelect" x-model="filter_user_id">
-                                    <option selected value="" >พนักงานทั้งหมด</option>
+                                    <option selected value="">พนักงานทั้งหมด</option>
                                     @foreach ($users as $user)
-                                        <option value="{{ $user->user_id }}">{{ $user->fname }} {{ $user->lname }}</option>
+                                        <option value="{{ $user->user_id }}">{{ $user->fname }} {{ $user->lname }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="row g-3 align-items-center mb-4">
                             <div class="col-auto">
-                              <label for="startDate" class="col-form-label">ตั้งแต่วันที่</label>
+                                <label for="startDate" class="col-form-label">ตั้งแต่วันที่</label>
                             </div>
                             <div class="col-auto">
-                              <input type="date" id="startDate" class="form-control" x-model="filter_start_date">
+                                <input type="date" id="startDate" class="form-control" x-model="filter_start_date">
                             </div>
                             <div class="col-auto">
-                              <label for="endDate" class="col-form-label">ถึงวันที่</label>
+                                <label for="endDate" class="col-form-label">ถึงวันที่</label>
                             </div>
                             <div class="col-auto">
-                              <input type="date" id="endDate" class="form-control" x-model="filter_end_date">
+                                <input type="date" id="endDate" class="form-control" x-model="filter_end_date">
                             </div>
                         </div>
 
@@ -82,7 +87,8 @@
                             <div class="col-auto d-flex flex-wrap gap-4">
                                 <template x-for="field in default_fields" :key="field.name">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" :id="field.name" x-model="field.is_checked">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            :id="field.name" x-model="field.is_checked">
                                         <label class="form-check-label" :for="field.name" x-text="field.label"></label>
                                     </div>
                                 </template>
@@ -96,7 +102,8 @@
                             <div class="col-auto d-flex flex-wrap gap-4">
                                 <template x-for="field in vehicle_fields" :key="field.name">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" :id="field.name" x-model="field.is_checked">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            :id="field.name" x-model="field.is_checked">
                                         <label class="form-check-label" :for="field.name" x-text="field.label"></label>
                                     </div>
                                 </template>
@@ -109,17 +116,22 @@
                             <div class="col-auto d-flex flex-wrap gap-4">
                                 <template x-for="field in user_fields" :key="field.name">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" :id="field.name" x-model="field.is_checked">
-                                        <label class="form-check-label" :for="field.name" x-text="field.label"></label>
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            :id="field.name" x-model="field.is_checked">
+                                        <label class="form-check-label" :for="field.name"
+                                            x-text="field.label"></label>
                                     </div>
                                 </template>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-primary" onclick="window.print()"><i class="bi bi-file-earmark-pdf"></i> PDF</button>
-                        <button class="btn btn-primary" @click="exportToExcel()"><i class="bi bi-file-earmark-excel"></i> Excel</button>
-                        <button class="btn btn-success" id="searchBtn" @click="fetchDocs()"><i class="bi bi-search"></i> ค้นหา</button>
+                        <button class="btn btn-primary" onclick="window.print()"><i class="bi bi-file-earmark-pdf"></i>
+                            PDF</button>
+                        <button class="btn btn-primary" @click="exportToExcel()"><i class="bi bi-file-earmark-excel"></i>
+                            Excel</button>
+                        <button class="btn btn-success" id="searchBtn" @click="fetchDocs()"><i class="bi bi-search"></i>
+                            ค้นหา</button>
                     </div>
                 </div>
 
@@ -131,14 +143,14 @@
                 {{-- Table --}}
                 <div class="d-md-flex justify-content-center overflow-x-auto">
                     <div id="exportPaper">
-                        <p class="text-center fs-5 mb-0 fw-bold">{{ Auth()->user()->userDetail->getOrg->name ?? "-" }}</p>
+                        <p class="text-center fs-5 mb-0 fw-bold">{{ Auth()->user()->userDetail->getOrg->name ?? '-' }}</p>
                         <p class="text-center fs-5 mb-0 fw-bold">รายงานบันทึกประวัติ</p>
                         <p class="text-center fs-5" x-text="form_filtered_data.title"></p>
                         <div id="dataTable" class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr class="text-center">
-                                        <th class="text-nowrap" rowspan="2" >ลำดับ</th>
+                                        <th class="text-nowrap" rowspan="2">ลำดับ</th>
                                         <template x-for="field in default_fields" :key="field.name">
                                             <template x-if="field.is_checked">
                                                 <th rowspan="2" x-text="field.label"></th>
@@ -155,7 +167,9 @@
                                             </template>
                                         </template>
                                         <template x-for="field in form_fields" :key="field.id">
-                                            <th x-text="field.label" :rowspan="field.type === 'subform' ? '1' : '2'" :colspan="field.subformfields.length > 0 ? field.subformfields.length : '1'"></th>
+                                            <th x-text="field.label" :rowspan="field.type === 'subform' ? '1' : '2'"
+                                                :colspan="field.subformfields.length > 0 ? field.subformfields.length : '1'">
+                                            </th>
                                         </template>
                                     </tr>
                                     <tr>
@@ -165,7 +179,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <template x-if="doc_datas.length !== 0" >
+                                    <template x-if="doc_datas.length !== 0">
                                         <template x-for="(doc, index) in doc_datas" :key="doc.id">
                                             <tr>
                                                 <td x-text="index + 1"></td>
@@ -196,14 +210,17 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p class="text-end" style="font-size: 10px">print on TSMC at {{ (new Carbon\Carbon())->format('d/m/Y G:i:s') }}</p>
+                        <p class="text-end" style="font-size: 10px">print on TSMCPlus at
+                            {{ new Carbon\Carbon()->format('d/m/Y G:i:s') }}</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
@@ -224,16 +241,13 @@
                 form_subfields: [],
                 all_field_count: 0,
 
-                default_fields: [
-                    {
-                        label: 'วันที่',
-                        name: 'created_at',
-                        is_checked: true,
-                    },
-                ],
+                default_fields: [{
+                    label: 'วันที่',
+                    name: 'created_at',
+                    is_checked: true,
+                }, ],
 
-                vehicle_fields: [
-                    {
+                vehicle_fields: [{
                         label: 'หมวดทะเบียนรถ',
                         name: 'license_category',
                         is_checked: false,
@@ -275,8 +289,7 @@
                     },
                 ],
 
-                user_fields: [
-                    {
+                user_fields: [{
                         label: 'ชื่อพนักงาน',
                         name: 'fname',
                         is_checked: false,
@@ -416,33 +429,35 @@
 
                     // Send POST request with JSON body
                     fetch('/export-document', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify(data)
-                    })
-                    .then(response => response.blob())
-                    .then(blob => {
-                        // Create download link
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = "TSMC_" + new Date().toISOString().slice(0,10).replace(/-/g,'') + "_" + new Date().toTimeString().slice(0,8).replace(/:/g,'') + '.xlsx';
-                        document.body.appendChild(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-                        document.body.removeChild(a);
-                    })
-                    .catch(error => {
-                        console.error('Error exporting Excel:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'เกิดข้อผิดพลาด',
-                            text: 'ไม่สามารถส่งออกไฟล์ Excel ได้'
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                    'content')
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.blob())
+                        .then(blob => {
+                            // Create download link
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = "TSMCPlus_" + new Date().toISOString().slice(0, 10).replace(/-/g, '') + "_" +
+                                new Date().toTimeString().slice(0, 8).replace(/:/g, '') + '.xlsx';
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                            document.body.removeChild(a);
+                        })
+                        .catch(error => {
+                            console.error('Error exporting Excel:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'เกิดข้อผิดพลาด',
+                                text: 'ไม่สามารถส่งออกไฟล์ Excel ได้'
+                            });
                         });
-                    });
                 }
             }
         }
@@ -451,6 +466,7 @@
         #exportPage {
             background-color: var(--main-color);
         }
+
         #exportPaper {
             background-color: white;
             padding: 1cm;
@@ -461,6 +477,7 @@
             body {
                 visibility: hidden;
             }
+
             #exportPaper {
                 visibility: visible;
                 position: absolute;

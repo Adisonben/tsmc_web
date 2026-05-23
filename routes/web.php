@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'storeHistory']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard/accept-performance-reports', [DashboardController::class, 'acceptPerformanceReports'])->name('dashboard.accept-performance-reports');
     Route::get('/user-manual', [App\Http\Controllers\HomeController::class, 'usermanual'])->name('usermanual');
     Route::get('/login-history', [App\Http\Controllers\HomeController::class, 'loginHistoryTable'])->name('loginHistory');
 
