@@ -86,7 +86,7 @@
                             <p class="text-center fs-5 mb-0 fw-bold">
                                 {{ optional(Auth()->user()->userDetail->getOrg)->name }}</p>
                         @endif
-                        <p class="text-center fs-5 fw-bold mb-0">รายงาน ทะเบียนบัญชีผู้ใช้ในระบบ TSMC</p>
+                        <p class="text-center fs-5 fw-bold mb-0">รายงาน ทะเบียนบัญชีผู้ใช้ในระบบ TSMCPlus</p>
                         <p class="text-center">วันที่
                             {{ new Carbon\Carbon()->startOfWeek(Carbon\Carbon::MONDAY)->thaidate('j F Y') }} ถึง
                             {{ new Carbon\Carbon()->endOfWeek(Carbon\Carbon::SUNDAY)->thaidate('j F Y') }}</p>
@@ -124,7 +124,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p class="text-end" style="font-size: 10px">print on TSMC at
+                        <p class="text-end" style="font-size: 10px">print on TSMCPlus at
                             {{ new Carbon\Carbon()->format('d/m/Y G:i:s') }}</p>
                     </div>
                 </div>

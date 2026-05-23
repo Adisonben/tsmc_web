@@ -656,7 +656,7 @@ class ExcelController extends Controller
         $writer = new Xlsx($spreadsheet);
 
         // Set the filename and export the Excel file
-        $filename = 'TSMC_'.date('dmY_His').'.xlsx';
+        $filename = 'TSMCPlus_'.date('dmY_His').'.xlsx';
 
         // Output to browser
         return response()->stream(
@@ -776,7 +776,7 @@ class ExcelController extends Controller
         $spreadsheet->setActiveSheetIndex(0);
 
         $writer = new Xlsx($spreadsheet);
-        $filename = 'TSMC_user_template_'.date('dmY_His').'.xlsx';
+        $filename = 'TSMCPlus_user_template_'.date('dmY_His').'.xlsx';
 
         return response()->stream(
             function () use ($writer) {
@@ -969,7 +969,7 @@ class ExcelController extends Controller
         $writer = new Xlsx($spreadsheet);
 
         // Set the filename and export the Excel file
-        $filename = 'TSMC_'.date('dmY_His').'.xlsx';
+        $filename = 'TSMCPlus_'.date('dmY_His').'.xlsx';
 
         ExportPerformanceReport::create([
             'user_id' => Auth::user()->id,
