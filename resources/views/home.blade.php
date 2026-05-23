@@ -6,7 +6,8 @@
     <div class="">
         <div class="container px-3 px-md-5">
             <div class="h3 mt-4 mb-5 text-center fw-bold">
-                Transport <span class="text-warning">Safety</span> Manager Communication
+                Transport <span style="color: #ff7a2d">Safety</span> Manager Communication <span
+                    style="color: #ff7a2d">Plus</span>
             </div>
 
             {{-- Card --}}
@@ -50,8 +51,9 @@
 
             {{-- บันทึกเวลาทำงาน --}}
             @if (
-                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName('can_record_work', Auth::user()->userDetail->org) ??
-                    false) || Auth::user()->username === 'tsmcadmin')
+                (optional(Auth::user()->userDetail->getPosition)->hasPermissionName(
+                    'can_record_work',
+                    Auth::user()->userDetail->org) ?? false) || Auth::user()->username === 'tsmcadmin')
                 <div class="d-flex justify-content-center">
                     <!-- การ์ดบันทึกเวลาทำงาน -->
                     <div class="card shadow-sm rounded-4" style="width: 800px;">
@@ -120,7 +122,8 @@
 
                             <div class="mt-4">
                                 <h6 class="mb-0 fw-bold">ตำแหน่งปัจจุบัน</h6>
-                                <p class="p-0 mb-2" style="font-size: smaller">*กรุณาใช้อุปกรณ์ที่รองรับ GPS เช่น โทรศัพท์มือถือ เพื่อความแม่นยำในการระบุตำแหน่ง</p>
+                                <p class="p-0 mb-2" style="font-size: smaller">*กรุณาใช้อุปกรณ์ที่รองรับ GPS เช่น
+                                    โทรศัพท์มือถือ เพื่อความแม่นยำในการระบุตำแหน่ง</p>
                                 <div class="weather-box" id="weather-box">
                                     <p>กดปุ่มเพื่อโหลดข้อมูล</p>
                                 </div>
@@ -294,7 +297,7 @@
             }
         };
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const workRecord = @json($work_record ?? []);
             if (workRecord && workRecord.id) {
                 startTime = workRecord.start_at ? new Date(workRecord.start_at) : null;
