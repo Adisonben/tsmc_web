@@ -23,7 +23,7 @@
                                     <img src="/uploads/userImages/{{ Auth::user()->userDetail->icon }}" alt="..."
                                         style="width: 100px; height: 100px;" class="object-fit-fill">
                                 @else
-                                    <img src="/images/icons/tsmc_logo.png" alt="..."
+                                    <img src="/images/icons/tsmcp_logo.png" alt="..."
                                         style="width: 100px; height: 100px;" class="object-fit-fill">
                                 @endif
                             </div>

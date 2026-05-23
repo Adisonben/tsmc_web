@@ -5,11 +5,12 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="d-flex justify-content-center mb-2">
-                    <img src="/images/icons/tsmc_logo.png" width="140" alt="">
+                    <img src="/images/icons/tsmcp_logo.png" width="140" alt="">
                 </div>
                 <p class="text-center text-wrap fs-4 fw-bold">Transport <span style="color: #ff7a2d">Safety</span> Manager
                     <br>
-                    Communication <span style="color: #ff7a2d">Plus</span></p>
+                    Communication <span style="color: #ff7a2d">Plus</span>
+                </p>
                 <div class="card">
                     <div class="card-header text-center fs-5 fw-bold">ลงทะเบียน (สำหรับบริษัท)</div>
 

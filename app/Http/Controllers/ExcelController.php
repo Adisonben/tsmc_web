@@ -80,7 +80,7 @@ class ExcelController extends Controller
         if ($org_data && $org_data->logo_img) {
             $logo_path = public_path('/uploads/orglogoes/'.$org_data->logo_img ?? '');
         } else {
-            $logo_path = public_path('/images/icons/tsmc_logo.png');
+            $logo_path = public_path('/images/icons/tsmcp_logo.png');
         }
 
         // ✅ เพิ่มโลโก้

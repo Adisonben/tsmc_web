@@ -44,7 +44,7 @@
                                         <img src="/uploads/userImages/{{ $user->userDetail->icon }}"
                                             class="object-fit-contain" width="150" alt="">
                                     @else
-                                        <img src="/images/icons/tsmc_logo.png" class="object-fit-contain" width="150"
+                                        <img src="/images/icons/tsmcp_logo.png" class="object-fit-contain" width="150"
                                             alt="">
                                     @endif
                                 </div>

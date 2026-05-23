@@ -37,7 +37,7 @@
                                 <img src="/uploads/orglogoes/{{ optional($tsm_has_org->getOrg)->logo_img }}" height="100"
                                     class="card-img-top object-fit-contain" alt="org logo">
                             @else
-                                <img src="/images/icons/tsmc_logo.png" height="100"
+                                <img src="/images/icons/tsmcp_logo.png" height="100"
                                     class="card-img-top object-fit-contain" alt="org logo">
                             @endif
                         </div>
@@ -60,7 +60,7 @@
                                 <img src="/uploads/orglogoes/{{ $default_org->logo_img }}" height="100"
                                     class="card-img-top object-fit-contain" alt="org logo">
                             @else
-                                <img src="/images/icons/tsmc_logo.png" height="100"
+                                <img src="/images/icons/tsmcp_logo.png" height="100"
                                     class="card-img-top object-fit-contain" alt="org logo">
                             @endif
                         </div>
