@@ -7,8 +7,9 @@
                 <div class="d-flex justify-content-center mb-2">
                     <img src="/images/icons/tsmc_logo.png" width="140" alt="">
                 </div>
-                <p class="text-center text-wrap fs-4 fw-bold">Transport <span style="color: orange">Safety</span> Manager <br>
-                    Communication <span style="color: orange">Plus</span></p>
+                <p class="text-center text-wrap fs-4 fw-bold">Transport <span style="color: #ff7a2d">Safety</span> Manager
+                    <br>
+                    Communication <span style="color: #ff7a2d">Plus</span></p>
                 <div class="card">
                     <div class="card-header text-center fs-5 fw-bold">{{ __('messages.please_login') }}</div>
 
