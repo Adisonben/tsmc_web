@@ -211,7 +211,7 @@
                             </table>
                         </div>
                         <p class="text-end" style="font-size: 10px">print on TSMC at
-                            {{ new Carbon\Carbon()->format('d/m/Y G:i:s') }}</p>
+                            {{ now()->format('d/m/Y G:i:s') }}</p>
                     </div>
                 </div>
             </div>
