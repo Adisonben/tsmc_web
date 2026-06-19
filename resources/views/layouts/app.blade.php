@@ -553,7 +553,8 @@
                                     </button>
                                 @endif
                             @elseif ($diffDay > 10)
-                                <button type="button" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#normalModal">
                                     <i class="bi bi-clock"></i> {{ $diffDay }} วัน
                                 </button>
                             @else
@@ -573,7 +574,8 @@
                                 $diffDay = (int) ceil(Carbon\Carbon::now()->diffInDays($expire_date));
                             @endphp
                             @if ($diffDay > 10)
-                                <button type="button" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#normalModal">
                                     <i class="bi bi-clock"></i> {{ $diffDay }} วัน
                                 </button>
                             @elseif ($diffDay <= 10 && $diffDay > 0)
@@ -754,6 +756,73 @@
                                     <form id="logout-form2" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Normal Modal -->
+                    <div class="modal fade" id="normalModal" tabindex="-1" aria-labelledby="normalModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-success text-white">
+                                    <h5 class="modal-title" id="normalModalLabel">
+                                        <i class="bi bi-check-circle-fill me-2"></i>
+                                        การใช้งานของคุณยังเปิดใช้งานอยู่
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-success" role="alert">
+                                        <p class="mb-0">
+                                            ระบบ Transport Safety Manager (TSM) ของคุณยังเปิดใช้งานอยู่
+                                            เหลือเวลาอีก {{ $diffDay ?? '-' }} วัน
+                                            (หมดอายุวันที่ {{ isset($expire_date) ? $expire_date->format('d/m/Y') : '-' }})
+                                        </p>
+                                    </div>
+
+                                    <div class="text-center mb-2">
+                                        <h5 class="fw-bold mb-3">ต้องการต่ออายุล่วงหน้า ติดต่อได้ง่ายๆ</h5>
+                                        <div class="qr-code mb-2">
+                                            <img src="/images/contact.jpg" width="120"
+                                                alt="QR Code สำหรับต่ออายุการใช้งาน" class="img-fluid" />
+                                        </div>
+                                        <p class="text-muted">สแกน QR Code เพื่อติดต่อสอบถามและต่ออายุการใช้งาน</p>
+                                    </div>
+
+                                    <div>
+                                        @if (Auth::user()->is_tsm)
+                                            <form action="{{ route('renewal_codes.user.redeem') }}" method="post">
+                                                @csrf
+                                                <label for="code5" class="form-label">หรือกรอก Code
+                                                    เพื่อต่ออายุการใช้งาน</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="code" id="code5"
+                                                        placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit"
+                                                        id="button-addon5">ต่ออายุ</button>
+                                                </div>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('renewal_codes.org.redeem') }}" method="post">
+                                                @csrf
+                                                <label for="code5" class="form-label">หรือกรอก Code
+                                                    เพื่อต่ออายุการใช้งาน</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="code" id="code5"
+                                                        placeholder="กรอก code" required>
+                                                    <button class="btn btn-primary" type="submit"
+                                                        id="button-addon5">ต่ออายุ</button>
+                                                </div>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
