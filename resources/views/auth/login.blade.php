@@ -52,18 +52,18 @@
                                 </div>
                             </div>
 
-                            {{-- <div class="d-flex flex-column justify-content-center align-items-center gap-2 mb-0">
+                            <div class="d-flex flex-column justify-content-center align-items-center gap-2 mb-0">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
-                                <div class="d-flex gap-2 flex-wrap">
+                                {{-- <div class="d-flex gap-2 flex-wrap">
                                     <p class="mb-0">{{ __('messages.please_register') }}</p>
                                     <a href="{{ route('register') }}">ลงทะเบียนบัญชีบริษัท</a>
                                     <p class="mb-0">หรือ</p>
                                     <a href="{{ route('tsm.register') }}">ลงทะเบียนบัญชี TSM</a>
                                     <p class="mb-0">เพื่อเข้าใช้งานระบบ</p>
-                                </div>
-                            </div> --}}
+                                </div> --}}
+                            </div>
                         </form>
                     </div>
                 </div>
