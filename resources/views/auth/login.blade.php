@@ -54,7 +54,7 @@
 
                             <div class="d-flex flex-column justify-content-center align-items-center gap-2 mb-0">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
+                                    เข้าสู่ระบบ
                                 </button>
                                 {{-- <div class="d-flex gap-2 flex-wrap">
                                     <p class="mb-0">{{ __('messages.please_register') }}</p>
