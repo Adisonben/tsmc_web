@@ -88,8 +88,8 @@
                         @endif
                         <p class="text-center fs-5 fw-bold mb-0">รายงาน ทะเบียนบัญชีผู้ใช้ในระบบ TSMCPlus</p>
                         <p class="text-center">วันที่
-                            {{ new Carbon\Carbon()->startOfWeek(Carbon\Carbon::MONDAY)->thaidate('j F Y') }} ถึง
-                            {{ new Carbon\Carbon()->endOfWeek(Carbon\Carbon::SUNDAY)->thaidate('j F Y') }}</p>
+                            {{ \Carbon\Carbon::now()->startOfWeek(Carbon\Carbon::MONDAY)->thaidate('j F Y') }} ถึง
+                            {{ \Carbon\Carbon::now()->endOfWeek(Carbon\Carbon::SUNDAY)->thaidate('j F Y') }}</p>
                         <div id="dataTable">
                             <table class="table">
                                 <thead>
@@ -125,7 +125,7 @@
                             </table>
                         </div>
                         <p class="text-end" style="font-size: 10px">print on TSMCPlus at
-                            {{ new Carbon\Carbon()->format('d/m/Y G:i:s') }}</p>
+                            {{ \Carbon\Carbon::now()->format('d/m/Y G:i:s') }}</p>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-4">
