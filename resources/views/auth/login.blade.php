@@ -52,7 +52,7 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex flex-column justify-content-center align-items-center gap-2 mb-0">
+                            {{-- <div class="d-flex flex-column justify-content-center align-items-center gap-2 mb-0">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
@@ -63,10 +63,7 @@
                                     <a href="{{ route('tsm.register') }}">ลงทะเบียนบัญชี TSM</a>
                                     <p class="mb-0">เพื่อเข้าใช้งานระบบ</p>
                                 </div>
-                                {{-- <button type="button" class="btn btn-secondary" onclick="window.location='{{ route('register') }}'">
-                                {{ __('Register') }}
-                            </button> --}}
-                            </div>
+                            </div> --}}
                         </form>
                     </div>
                 </div>

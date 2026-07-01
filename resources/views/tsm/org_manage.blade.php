@@ -10,7 +10,7 @@
                             <p class="mb-0 fs-4">{{ __('ข้อมูลบริษัทที่รับผิดชอบ') }}</p>
                             {{-- <a href="/organizations/create" class="btn btn-success btn-sm">สร้าง</a> --}}
                             <!-- Button trigger modal -->
-                            @if (count($tsm_has_orgs ?? []) < 5)
+                            @if (count($tsm_has_orgs ?? []) < 100)
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                     data-bs-target="#createOrg">
                                     เพิ่ม
