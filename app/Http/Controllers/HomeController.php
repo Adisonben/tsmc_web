@@ -188,7 +188,7 @@ class HomeController extends Controller
 
             Auth::login($newUser);
 
-            return redirect()->route('home');
+            return redirect('/');
         } catch (\Throwable $th) {
             DB::rollBack();
             //throw $th;
