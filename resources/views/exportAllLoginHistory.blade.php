@@ -21,15 +21,15 @@
                             <p class="text-center">ชื่อผู้ใช้: {{ request('username') }}</p>
                         @endif
                         <div id="dataTable">
-                            <table class="table">
+                            <table class="table" style="table-layout: fixed; width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th scope="col">ลำดับ</th>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">ชื่อ</th>
-                                        <th scope="col">วันที่</th>
-                                        <th scope="col">Ip</th>
-                                        <th scope="col">Agent</th>
+                                        <th scope="col" style="width: 6%;">ลำดับ</th>
+                                        <th scope="col" style="width: 12%;">Username</th>
+                                        <th scope="col" style="width: 15%;">ชื่อ</th>
+                                        <th scope="col" style="width: 17%;">วันที่</th>
+                                        <th scope="col" style="width: 12%;">Ip</th>
+                                        <th scope="col" style="width: 38%;">Agent</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,8 +42,8 @@
                                             <td>{{ $history->getUser->username ?? '-' }}</td>
                                             <td>{{ $history->getUser->full_name ?? '-' }}</td>
                                             <td>{{ $createdDate->thaidate('j F Y \\เวลา H:i:s') }}</td>
-                                            <td>{{ $history->ip_address }}</td>
-                                            <td>{{ $history->agent }}</td>
+                                            <td style="word-break: break-all;">{{ $history->ip_address }}</td>
+                                            <td style="word-break: break-all;">{{ $history->agent }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -67,6 +67,10 @@
         }
 
         @media print {
+            @page {
+                size: landscape;
+            }
+
             body {
                 visibility: hidden;
             }
