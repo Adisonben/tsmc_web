@@ -9,12 +9,12 @@
                         <p class="text-center">
                             @if (request()->filled('date_from') || request()->filled('date_to'))
                                 วันที่
-                                {{ request('date_from') ? new Carbon\Carbon(request('date_from'))->thaidate('j F Y') : '-' }}
+                                {{ request('date_from') ? (new Carbon\Carbon(request('date_from')))->thaidate('j F Y') : '-' }}
                                 ถึง
-                                {{ request('date_to') ? new Carbon\Carbon(request('date_to'))->thaidate('j F Y') : '-' }}
+                                {{ request('date_to') ? (new Carbon\Carbon(request('date_to')))->thaidate('j F Y') : '-' }}
                             @else
-                                วันที่ {{ new Carbon\Carbon()->subDays(30)->thaidate('j F Y') }} ถึง
-                                {{ new Carbon\Carbon()->thaidate('j F Y') }}
+                                วันที่ {{ (new Carbon\Carbon())->subDays(30)->thaidate('j F Y') }} ถึง
+                                {{ (new Carbon\Carbon())->thaidate('j F Y') }}
                             @endif
                         </p>
                         @if (request()->filled('username'))
@@ -50,7 +50,7 @@
                             </table>
                         </div>
                         <p class="text-end" style="font-size: 10px">print on TSMC at
-                            {{ new Carbon\Carbon()->format('d/m/Y G:i:s') }}</p>
+                            {{ (new Carbon\Carbon())->format('d/m/Y G:i:s') }}</p>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-4 d-print-none">
