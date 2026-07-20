@@ -77,6 +77,61 @@ class HomeController extends Controller
         return view('loginHistory', compact('histories'));
     }
 
+    private function filterAllLoginHistory(Request $request) {
+        $query = LoginHistory::whereHas('getUser', function ($q) {
+            $q->where('username', '!=', 'tsmcadmin');
+        })->with(['getUser.userDetail.getOrg']);
+
+        if ($request->filled('username')) {
+            $username = $request->username;
+            $query->whereHas('getUser', function ($q) use ($username) {
+                $q->where('username', 'like', "%$username%");
+            });
+        }
+
+        if ($request->filled('org')) {
+            $org = $request->org;
+            $query->whereHas('getUser.userDetail', function ($q) use ($org) {
+                $q->where('org', $org);
+            });
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        if (!$request->filled('date_from') && !$request->filled('date_to')) {
+            $query->where('created_at', '>=', now()->subDays(30));
+        }
+
+        return $query->orderBy('created_at', 'desc');
+    }
+
+    public function allLoginHistory(Request $request) {
+        if (Auth::user()->username !== 'tsmcadmin') {
+            abort(403);
+        }
+
+        $histories = $this->filterAllLoginHistory($request)->paginate(10)->appends($request->query());
+        $organizations = Organization::orderBy('name')->get();
+
+        return view('allLoginHistory', compact('histories', 'organizations'));
+    }
+
+    public function exportAllLoginHistory(Request $request) {
+        if (Auth::user()->username !== 'tsmcadmin') {
+            abort(403);
+        }
+
+        $histories = $this->filterAllLoginHistory($request)->get();
+
+        return view('exportAllLoginHistory', compact('histories'));
+    }
+
     public function registerNewUser(Request $request, MasterDataService $masterDataService) {
         $request->validate([
             'org_name' => ['required', 'string', 'max:255'],

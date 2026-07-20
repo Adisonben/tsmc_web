@@ -199,6 +199,14 @@
                                 ประวัติการเข้าใช้ระบบ
                             </a>
                         </li>
+                        @if (Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-item" id="allLoginHistoryPage">
+                                <a href="{{ route('allLoginHistory') }}" class="sidebar-link">
+                                    <i class="bi bi-clock-history"></i>
+                                    ประวัติการเข้าใช้ระบบทั้งหมด
+                                </a>
+                            </li>
+                        @endif
 
                         <li class="sidebar-header">
                             สำหรับ TSM
@@ -495,6 +503,14 @@
                                 ประวัติการเข้าใช้ระบบ
                             </a>
                         </li>
+                        @if (Auth::user()->username === 'tsmcadmin')
+                            <li class="sidebar-item" id="allLoginHistoryPage">
+                                <a href="{{ route('allLoginHistory') }}" class="sidebar-link">
+                                    <i class="bi bi-clock-history"></i>
+                                    ประวัติการเข้าใช้ระบบทั้งหมด
+                                </a>
+                            </li>
+                        @endif
                         <li class="sidebar-item d-md-none">
                             <a href="{{ route('usermanual') }}" class="sidebar-link">
                                 <i class="bi bi-clock-history"></i>

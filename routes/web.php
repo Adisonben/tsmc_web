@@ -69,6 +69,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/accept-performance-reports', [DashboardController::class, 'acceptPerformanceReports'])->name('dashboard.accept-performance-reports');
     Route::get('/user-manual', [App\Http\Controllers\HomeController::class, 'usermanual'])->name('usermanual');
     Route::get('/login-history', [App\Http\Controllers\HomeController::class, 'loginHistoryTable'])->name('loginHistory');
+    Route::get('/login-history/all', [App\Http\Controllers\HomeController::class, 'allLoginHistory'])->name('allLoginHistory');
+    Route::get('/login-history/all/export', [App\Http\Controllers\HomeController::class, 'exportAllLoginHistory'])->name('allLoginHistory.export');
 
     // App data
     Route::resource('prefixes', PrefixController::class);
