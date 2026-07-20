@@ -27,6 +27,7 @@
                                         <th scope="col">ลำดับ</th>
                                         <th scope="col">Username</th>
                                         <th scope="col">ชื่อ</th>
+                                        <th scope="col">บริษัท</th>
                                         <th scope="col">วันที่</th>
                                     </tr>
                                 </thead>
@@ -39,6 +40,7 @@
                                             <th scope="row">{{ $index + 1 }}</th>
                                             <td>{{ $history->getUser->username ?? '-' }}</td>
                                             <td>{{ $history->getUser->full_name ?? '-' }}</td>
+                                            <td>{{ $history->getUser->org_name ?? '-' }}</td>
                                             <td>{{ $createdDate->thaidate('j F Y \\เวลา H:i:s') }}</td>
                                         </tr>
                                     @endforeach

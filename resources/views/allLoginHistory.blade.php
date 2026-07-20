@@ -62,6 +62,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Username</th>
                                     <th scope="col">ชื่อ</th>
+                                    <th scope="col">บริษัท</th>
                                     <th scope="col">วันที่</th>
                                     <th scope="col">Ip</th>
                                     <th scope="col">Agent</th>
@@ -77,6 +78,7 @@
                                             <td>{{ (($histories->currentPage() - 1) * 10) + ($index + 1) }}</td>
                                             <td>{{ $history->getUser->username ?? '-' }}</td>
                                             <td>{{ $history->getUser->full_name ?? '-' }}</td>
+                                            <td>{{ $history->getUser->org_name ?? '-' }}</td>
                                             <td>{{ $createdDate->thaidate('j F Y \\เวลา H:i:s') }}</td>
                                             <td>{{ $history->ip_address }}</td>
                                             <td>{{ $history->agent }}</td>
@@ -84,7 +86,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="6" class="text-center">ไม่พบข้อมูล</td>
+                                        <td colspan="7" class="text-center">ไม่พบข้อมูล</td>
                                     </tr>
                                 @endif
                             </tbody>
